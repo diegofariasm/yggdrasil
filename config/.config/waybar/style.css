@@ -1,0 +1,176 @@
+/*
+
+$bg:           #F47F79;
+$fg:           #534035;
+
+ */
+/*
+$fg : #FBF1C7;
+$bg: #32302F;
+
+$fg-opposite:  #d4be98;
+$green-dark:   #747E40;
+*/
+#backlight, #battery, #cpu, #disk, #idle_inhibitor, #keyboard-state,
+#pulseaudio, #clock, #tags, #language, #memory, #network, #sndio,
+#mode, #window, #workspaces, #temperature, #taskbar, #workspaces,
+#custom-treefetch-downloads {
+  box-shadow: 4px 4px 0 #151517;
+  margin-bottom: 4px;
+  margin-right: 4px;
+  margin-left: 3px;
+  margin-right: 7px;
+  padding: 0 10px;
+  background: #202023;
+  border-radius: 0px;
+}
+
+* {
+  min-height: 0;
+}
+
+window#waybar {
+  background: transparent;
+  color: #8DA3B9;
+}
+
+.modules-left, .modules-center, .modules-right {
+  background: transparent;
+  margin-top: 4px;
+  border-radius: 0px;
+  font-family: "JetBrains Mono Nerd Font, Font Awesome 5 Free", monospace;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.modules-left {
+  margin-left: 6px;
+}
+
+.modules-right {
+  margin-right: 6px;
+}
+
+#mpd, #custom-mpd-song-scroll {
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+#pulseaudio {
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+}
+
+#mpd {
+  color: #151517;
+  margin-left: 5px;
+}
+
+#custom-mpd-song-scroll {
+  color: #8DA3B9;
+  margin-right: 50px;
+}
+
+#workspaces button {
+  color: #8DA3B9;
+  font-family: "Source Han Sans JP";
+  font-weight: 700;
+  padding: 0 6px;
+  margin: 0 4px;
+  font-size: 17px;
+  border-radius: 0;
+  border: none;
+  min-width: 2rem;
+}
+
+#workspaces button.occupied {
+  color: inherit;
+  background: #ffffff;
+}
+
+#workspaces button:hover {
+  color: aliceblue;
+  background: #151517;
+  box-shadow: none;
+  text-shadow: none;
+  transition: 0.2s;
+}
+
+#workspaces button.urgent {
+  color: #ea6962;
+}
+
+#workspaces button.focused {
+  color: #5a20cb;
+  background: #151517;
+  box-shadow: none;
+  text-shadow: none;
+  transition: 0.2s;
+}
+
+#tags button {
+  color: #151517;
+  font-family: "Source Han Sans JP";
+  font-weight: 700;
+  padding: 0 6px;
+  margin: 0 4px;
+  font-size: 17px;
+  border-radius: 0;
+  border: none;
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
+#tags button.occupied {
+  color: inherit;
+}
+
+#tags button:hover {
+  color: #202023;
+  background: #151517;
+  box-shadow: none;
+  text-shadow: none;
+  transition: 0.2s;
+}
+
+#tags button.focused {
+  color: #5A20CB;
+  background-color: #151517;
+}
+
+#tags button.urgent {
+  color: #ea6962;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+tooltip {
+  background: #202023;
+  border-radius: 7px;
+  font-family: "JetBrains Mono Nerd Font, Font Awesome 5 Free", monospace;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 5px;
+  animation-name: fadein;
+  animation-duration: 0.2s;
+  border: 2px solid #151517;
+  text-shadow: none;
+  color: #8DA3B9;
+}
+
+tooltip label {
+  color: #8DA3B9;
+}
+
+#tray menu {
+  background: #202023;
+  color: #8DA3B9;
+  border-radius: 5px;
+  border: 2px solid #151517;
+}

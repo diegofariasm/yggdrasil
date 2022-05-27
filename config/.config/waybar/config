@@ -1,0 +1,114 @@
+{
+    "layer": "top",
+    "height": 45,
+    "spacing": 0,
+    // If you're using sway, replace `river/tags` with `sway/workspaces` .
+    "modules-left": [
+      "sway/workspaces",
+      "river/tags"
+    ],
+    "modules-center": [
+    ],
+    "modules-right": [
+        "tray",
+        "pulseaudio",
+        "clock#date",
+        "clock"
+    ],
+    "river/tags": {
+        "num-tags": 6,
+        "tag-labels": [
+            "一",
+            "二",
+            "三",
+            "四",
+            "五",
+            "六",
+        ]
+    },
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "一",
+            "2": "二",
+            "3": "三",
+            "4": "四",
+            "5": "五",
+            "6": "六",
+        }
+    },
+    "mpd": {
+        "format": "{stateIcon} {elapsedTime:%M:%S}/{totalTime:%M:%S} ",
+        "format-stopped": "",
+        "interval": 1,
+        "state-icons": {
+            "paused": "▶️",
+            "playing": "⏸"
+        },
+        "tooltip-format": "MPD (connected)",
+        "tooltip-format-disconnected": "MPD (disconnected)",
+        "on-scroll-up": "mpc seek +3",
+        "on-scroll-down": "mpc seek -3",
+        "on-click": "mpc toggle",
+        "on-click-right": "alacritty --command ncmpcpp"
+    },
+    "tray": {
+        "icon-size": 21,
+        "spacing": 10
+    },
+    "clock": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": " {:%I:%M %p}",
+    },
+    "clock#date": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "   {:%a, %b %d}",
+    },
+    "backlight": {
+        "device": "intel-backlight",
+        "format": "{icon} {percent}%",
+        "format-icons": [
+            "🍿"
+        ],
+        "on-scroll-up": "xbacklight -inc 5",
+        "on-scroll-down": "xbacklight -dec 5",
+    },
+    "pulseaudio": {
+        "scroll-step": 5 , // %, can be a float
+        "format": "{icon} {volume}% ",
+        "format-muted": "   : Mute",
+        "format-icons": {
+            "default": [
+            "  ---------",
+            "  ---------",
+            "  ---------",
+            "  ---------",
+            "  ---------",
+            "  ---------",
+            "  ---------",
+            "  ---------",
+            "  ---------",
+            "  ---------",
+
+            ]
+        },
+        "on-click": "pamixer -t",
+        "on-click-middle": "pavucontrol",
+    },
+    // Need mpd installed for this to work
+    "custom/mpd-song-scroll": {
+        "format": "{}",
+        "max-length": 80,
+        "escape": true,
+        "exec": "~/.config/waybar/scripts/mpd-song-scroll.py"
+    },
+    // List the downloads for a specific Github repo
+    "custom/treefetch-downloads": {
+        "format": "🌶️ <span underline='single'>Axyl</span> {} downloads",
+        "interval": 240,
+        "escape": true,
+        "exec": "~/.config/waybar/scripts/downloads.py axyl-os axyl-iso"
+    }
+}
