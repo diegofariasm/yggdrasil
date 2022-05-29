@@ -96,16 +96,20 @@ input "type:keyboard" {
     bindsym $mod+d exec rofi -show drun
     #bindsym ctrl+Scroll_Lock exec ~/.scripts/rofi/Screen.sh
 
-bindsym F2 exec pamixer -i 5 --allow-boost
-bindsym F1 exec pamixer -d 5 --allow-boost
-bindsym F3 exec pamixer -t
+bindsym F2 exec pamixer -d 5 --allow-boost
+bindsym F3 exec pamixer -i 5 --allow-boost
+#bindsym F1 exec pamixer -t
 
 bindsym F9 exec light -A 2
 bindsym F6 exec light -U 2 
 
 bindsym F7  exec mpc toggle
-bindsym XF86AudioPrev exec mpc prev
-bindsym XF86AudioNext exec mpc next
+#bindsym XF86AudioNext exec mpc next
+bindsym F4 exec mpc next
+
+#bindsym XF86AudioPrev exec mpc prev
+bindsym F1 exec mpc prev
+
 bindsym XF86AudioStop exec mpc stop
 bindsym $alt+a exec playerctl play-pause
 
@@ -129,7 +133,7 @@ bindsym $mod+e exec emacsclient -c -a 'emacs'
 bindsym $mod+c exec killall -SIGUSR1 waybar
 
 #bindsym $mod+b exec farge
-bindsym $mod+b exec "$HOME/.scripts/bar.sh"
+bindsym $mod+b exec "$HOME/.bin/init/components/bar.sh"
 
 bindsym $mod+a border toggle
 
@@ -310,5 +314,5 @@ client.background           $unfocused
 include /etc/sway/config.d/*
     
 # Autostart
-exec_always ~/.scripts/autostart.sh
-exec_always ~/.scripts/bar.sh
+exec_always ~/.bin/init/components/autostart.sh
+exec_always ~/.bin/init/components/bar.sh

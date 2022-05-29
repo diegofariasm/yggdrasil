@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Version 0.1 Tuesday, 07 May 2013
 # Comments and complaints http://www.nicknorton.net
 # GUI for mouse wheel speed using imwheel in Gnome

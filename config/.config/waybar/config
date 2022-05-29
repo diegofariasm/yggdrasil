@@ -78,20 +78,10 @@
     "pulseaudio": {
         "scroll-step": 5 , // %, can be a float
         "format": "{icon} {volume}% ",
-        "format-muted": "   : Mute",
+        "format-muted": " Vol: Mute",
         "format-icons": {
             "default": [
-            "  ---------",
-            "  ---------",
-            "  ---------",
-            "  ---------",
-            "  ---------",
-            "  ---------",
-            "  ---------",
-            "  ---------",
-            "  ---------",
-            "  ---------",
-
+            "Vol:",
             ]
         },
         "on-click": "pamixer -t",
