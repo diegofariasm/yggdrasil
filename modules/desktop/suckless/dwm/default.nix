@@ -38,6 +38,8 @@ in
     };
     user.packages = with pkgs; [
       sxhkd
+      xclip
+      xsel
       
     ];
   fonts.fonts = with pkgs; [
