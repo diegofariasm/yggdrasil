@@ -1,8 +1,0 @@
-#/usr/bin/env nix-shell
-rofi -no-lazy-grab \
--disable-history \
--modi "drun" -show drun \
--location 2 \
--font "JetBrainsMono Nerd Font 10" \
--theme ~/.config/rofi/appmenu.rasi \
--xoffset +0 -yoffset +200 \

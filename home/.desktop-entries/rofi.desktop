@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Version=1.0
-Name=Rofi
-Comment=Rofi app launcher
-Exec=/home/dovah/dotfiles/desktop-entries/rofi.sh
-Icon=rofi

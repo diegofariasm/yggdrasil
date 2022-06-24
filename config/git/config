@@ -1,0 +1,8 @@
+[user]
+	name = fushiii
+	email = fushitheimortal@gmail.com
+
+[includeIf "gitdir:~/Developments/personal/"]
+  path = ~/.gitconfig-personal
+[includeIf "gitdir:~/Developments/work/"]
+  path = ~/.gitconfig-work
