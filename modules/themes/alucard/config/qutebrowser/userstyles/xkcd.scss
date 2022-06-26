@@ -4,13 +4,18 @@
         color: #f8f8f2 !important;
     }
 
-    img, div[class="self"] {
+    img,
+    div[class="self"] {
         filter: hue-rotate(180deg) invert(100%) !important;
         -webkit-filter: hue-rotate(180deg) invert(100%) !important;
     }
 
     /*Exceptions*/
-    img[alt="Stargazing"], img[alt="Flashlights"], img[alt="Google Maps"], img[alt="Alternative Energy Revolution"], img[alt="Man Page"] {
+    img[alt="Stargazing"],
+    img[alt="Flashlights"],
+    img[alt="Google Maps"],
+    img[alt="Alternative Energy Revolution"],
+    img[alt="Man Page"] {
         filter: invert(0%) !important;
         -webkit-filter: invert(0%) !important;
     }
@@ -79,7 +84,11 @@
     }
 
     /*Exceptions*/
-    img[alt="Stargazing"], img[alt="Flashlights"], img[alt="Google Maps"], img[alt="Alternative Energy Revolution"], img[alt="Man Page"] {
+    img[alt="Stargazing"],
+    img[alt="Flashlights"],
+    img[alt="Google Maps"],
+    img[alt="Alternative Energy Revolution"],
+    img[alt="Man Page"] {
         filter: invert(0%) !important;
         -webkit-filter: invert(0%) !important;
     }

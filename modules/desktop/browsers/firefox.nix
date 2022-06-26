@@ -3,25 +3,29 @@
 # Oh Firefox, gateway to the interwebs, devourer of ram. Give onto me your
 # infinite knowledge and shelter me from ads, but bless my $HOME with
 # directories nobody needs and live long enough to turn into Chrome.
-
-{ options, config, lib, pkgs, ... }:
-
+{
+  options,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.desktop.browsers.firefox;
+with lib.my; let
+  cfg = config.modules.desktop.browsers.firefox;
 in {
   options.modules.desktop.browsers.firefox = with types; {
     enable = mkBoolOpt false;
     profileName = mkOpt types.str config.user.name;
 
-    settings = mkOpt' (attrsOf (oneOf [ bool int str ])) {} ''
+    settings = mkOpt' (attrsOf (oneOf [bool int str])) {} ''
       Firefox preferences to set in <filename>user.js</filename>
     '';
     extraConfig = mkOpt' lines "" ''
       Extra lines to add to <filename>user.js</filename>
     '';
 
-    userChrome  = mkOpt' lines "" "CSS Styles for Firefox's interface";
+    userChrome = mkOpt' lines "" "CSS Styles for Firefox's interface";
     userContent = mkOpt' lines "" "Global CSS Styles for websites";
   };
 
@@ -35,7 +39,7 @@ in {
           genericName = "Open a private Firefox window";
           icon = "firefox";
           exec = "${unstable.firefox-bin}/bin/firefox --private-window";
-          categories = [ "Network" ];
+          categories = ["Network"];
         })
       ];
 
@@ -103,13 +107,13 @@ in {
         # Show whole URL in address bar
         "browser.urlbar.trimURLs" = false;
         # Disable some not so useful functionality.
-        "browser.disableResetPrompt" = true;       # "Looks like you haven't started Firefox in a while."
-        "browser.onboarding.enabled" = false;      # "New to Firefox? Let's get started!" tour
+        "browser.disableResetPrompt" = true; # "Looks like you haven't started Firefox in a while."
+        "browser.onboarding.enabled" = false; # "New to Firefox? Let's get started!" tour
         "browser.aboutConfig.showWarning" = false; # Warning when opening about:config
         "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
         "extensions.pocket.enabled" = false;
         "extensions.shield-recipe-client.enabled" = false;
-        "reader.parse-on-load.enabled" = false;  # "reader view"
+        "reader.parse-on-load.enabled" = false; # "reader view"
 
         # Security-oriented defaults
         "security.family_safety.mode" = 0;
@@ -126,7 +130,7 @@ in {
         "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
         "extensions.htmlaboutaddons.recommendations.enabled" = false;
         "extensions.htmlaboutaddons.discover.enabled" = false;
-        "extensions.getAddons.showPane" = false;  # uses Google Analytics
+        "extensions.getAddons.showPane" = false; # uses Google Analytics
         "browser.discovery.enabled" = false;
         # Reduce File IO / SSD abuse
         # Otherwise, Firefox bombards the HD with writes. Not so nice for SSDs.
@@ -185,7 +189,7 @@ in {
         # Disable crash reports
         "breakpad.reportURL" = "";
         "browser.tabs.crashReporting.sendReport" = false;
-        "browser.crashReports.unsubmittedCheck.autoSubmit2" = false;  # don't submit backlogged reports
+        "browser.crashReports.unsubmittedCheck.autoSubmit2" = false; # don't submit backlogged reports
 
         # Disable Form autofill
         # https://wiki.mozilla.org/Firefox/Features/Form_Autofill
@@ -198,7 +202,9 @@ in {
       };
 
       # Use a stable profile name so we can target it in themes
-      home.file = let cfgPath = ".mozilla/firefox"; in {
+      home.file = let
+        cfgPath = ".mozilla/firefox";
+      in {
         "${cfgPath}/profiles.ini".text = ''
           [Profile0]
           Name=default
@@ -211,25 +217,23 @@ in {
           Version=2
         '';
 
-        "${cfgPath}/${cfg.profileName}.default/user.js" =
-          mkIf (cfg.settings != {} || cfg.extraConfig != "") {
-            text = ''
-              ${concatStrings (mapAttrsToList (name: value: ''
+        "${cfgPath}/${cfg.profileName}.default/user.js" = mkIf (cfg.settings != {} || cfg.extraConfig != "") {
+          text = ''
+            ${concatStrings (mapAttrsToList (name: value: ''
                 user_pref("${name}", ${builtins.toJSON value});
-              '') cfg.settings)}
-              ${cfg.extraConfig}
-            '';
-          };
+              '')
+              cfg.settings)}
+            ${cfg.extraConfig}
+          '';
+        };
 
-        "${cfgPath}/${cfg.profileName}.default/chrome/userChrome.css" =
-          mkIf (cfg.userChrome != "") {
-            text = cfg.userChrome;
-          };
+        "${cfgPath}/${cfg.profileName}.default/chrome/userChrome.css" = mkIf (cfg.userChrome != "") {
+          text = cfg.userChrome;
+        };
 
-        "${cfgPath}/${cfg.profileName}.default/chrome/userContent.css" =
-          mkIf (cfg.userContent != "") {
-            text = cfg.userContent;
-          };
+        "${cfgPath}/${cfg.profileName}.default/chrome/userContent.css" = mkIf (cfg.userContent != "") {
+          text = cfg.userContent;
+        };
       };
     }
   ]);

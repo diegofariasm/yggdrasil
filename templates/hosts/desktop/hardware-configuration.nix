@@ -1,6 +1,10 @@
-{ config, lib, pkgs, modulesPath, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}: {
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
   ];
@@ -41,7 +45,7 @@
     "/" = {
       device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
-      options = [ "noatime" ];
+      options = ["noatime"];
     };
     "/boot" = {
       device = "/dev/disk/by-label/boot";
@@ -50,8 +54,8 @@
     "/home" = {
       device = "/dev/disk/by-label/home";
       fsType = "ext4";
-      options = [ "noatime" ];
+      options = ["noatime"];
     };
   };
-  swapDevices = [ "/dev/disk/by-label/swap" ];
+  swapDevices = ["/dev/disk/by-label/swap"];
 }

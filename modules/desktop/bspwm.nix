@@ -1,9 +1,14 @@
-{ options, config, lib, pkgs, ... }:
-
+{
+  options,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.desktop.bspwm;
-    configDir = config.dotfiles.configDir;
+with lib.my; let
+  cfg = config.modules.desktop.bspwm;
+  configDir = config.dotfiles.configDir;
 in {
   options.modules.desktop.bspwm = {
     enable = mkBoolOpt false;
@@ -42,7 +47,7 @@ in {
     systemd.user.services."dunst" = {
       enable = true;
       description = "";
-      wantedBy = [ "default.target" ];
+      wantedBy = ["default.target"];
       serviceConfig.Restart = "always";
       serviceConfig.RestartSec = 2;
       serviceConfig.ExecStart = "${pkgs.dunst}/bin/dunst";

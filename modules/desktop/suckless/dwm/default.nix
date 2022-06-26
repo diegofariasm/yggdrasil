@@ -1,31 +1,28 @@
-
-
-
-{ options, config, lib, pkgs, ... }:
-
+{
+  options,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let
+with lib.my; let
   cfg = config.modules.desktop.suckless.dwm;
   configDir = config.dotfiles.configDir;
-
-in
-{
+in {
   options.modules.desktop.suckless.dwm = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
-  
     nixpkgs.overlays = [
       (final: prev: {
         dwm = prev.dwm.overrideAttrs (old: {
           src = ./src;
-          nativeBuildInputs = with pkgs; [ xorg.libX11 imlib2 ];
+          nativeBuildInputs = with pkgs; [xorg.libX11 imlib2];
         });
       })
     ];
-
 
     services = {
       xserver = {
@@ -40,18 +37,20 @@ in
       sxhkd
       xclip
       xsel
-      
     ];
-  fonts.fonts = with pkgs; [
-  (nerdfonts.override { fonts = [ 
-    "FiraCode" 
-    "DroidSansMono" 
-    "Iosevka" 
-    "SourceCodePro" 
-    "Hack" 
-    "Meslo"
-    ]; })
-  ];
+    fonts.fonts = with pkgs; [
+      (nerdfonts.override {
+        fonts = [
+          "FiraCode"
+          "DroidSansMono"
+          "Iosevka"
+          "SourceCodePro"
+          "Hack"
+          "Meslo"
+          "Overpass"
+        ];
+      })
+    ];
     home.configFile."alacritty" = {
       source = "${configDir}/dwm/alacritty";
       recursive = true;
@@ -65,12 +64,5 @@ in
       source = "${configDir}/dwm/dwm";
       recursive = true;
     };
-
   };
-
-
-
 }
-
-
-

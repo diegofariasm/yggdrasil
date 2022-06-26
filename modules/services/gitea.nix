@@ -7,12 +7,16 @@
 # Resources
 #   Config: https://docs.gitea.io/en-us/config-cheat-sheet/
 #   API:    https://docs.gitea.io/en-us/api-usage/
-
-{ options, config, lib, pkgs, ... }:
-
+{
+  options,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.services.gitea;
+with lib.my; let
+  cfg = config.modules.services.gitea;
 in {
   options.modules.services.gitea = {
     enable = mkBoolOpt false;
@@ -27,7 +31,7 @@ in {
       isSystemUser = true;
     };
 
-    user.extraGroups = [ "gitea" ];
+    user.extraGroups = ["gitea"];
 
     services.gitea = {
       enable = true;

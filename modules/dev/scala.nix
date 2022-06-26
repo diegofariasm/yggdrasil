@@ -1,9 +1,15 @@
-{ config, options, lib, pkgs, my, ... }:
-
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  my,
+  ...
+}:
 with lib;
-with lib.my;
-let devCfg = config.modules.dev;
-    cfg = devCfg.scala;
+with lib.my; let
+  devCfg = config.modules.dev;
+  cfg = devCfg.scala;
 in {
   options.modules.dev.scala = {
     enable = mkBoolOpt false;

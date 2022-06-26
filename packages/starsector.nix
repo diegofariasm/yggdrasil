@@ -1,13 +1,13 @@
-{ lib
-, alsa-lib
-, fetchzip
-, libXxf86vm
-, makeWrapper
-, openjdk8
-, stdenv
-, xorg
+{
+  lib,
+  alsa-lib,
+  fetchzip,
+  libXxf86vm,
+  makeWrapper,
+  openjdk8,
+  stdenv,
+  xorg,
 }:
-
 stdenv.mkDerivation rec {
   pname = "starsector";
   version = "0.95.1a-RC6";
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-+0zGJHM+SMonx3sytCQNQA/QBgzdPMEfQvOjrCDSOs8=";
   };
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [makeWrapper];
   buildInputs = with xorg; [
     alsa-lib
     libXxf86vm
@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
     rm starfarer.api.zip
     cp -r ./* $out
     wrapProgram $out/starsector.sh \
-      --prefix PATH : ${lib.makeBinPath [ openjdk8 ]} \
+      --prefix PATH : ${lib.makeBinPath [openjdk8]} \
       --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath buildInputs} \
       --run "mkdir -p \$XDG_DATA_HOME/starsector; cd $out"
     ln -s $out/starsector.sh $out/bin/starsector
@@ -51,6 +51,6 @@ stdenv.mkDerivation rec {
     description = "Open-world single-player space-combat, roleplaying, exploration, and economic game";
     homepage = "https://fractalsoftworks.com";
     license = licenses.unfree;
-    maintainers = with maintainers; [ bbigras ];
+    maintainers = with maintainers; [bbigras];
   };
 }

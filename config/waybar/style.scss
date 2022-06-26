@@ -60,11 +60,26 @@ $bar-border-radius: 0px;
 }
 
 // !! If you add new custom modules, put their class name in here.
-#backlight, #battery, #cpu, #disk, #idle_inhibitor, #keyboard-state,
-#pulseaudio, #clock, #tags, #language, #memory, #network, #sndio,
-#mode, #window, #workspaces, #temperature, #taskbar, #workspaces,
-#custom-treefetch-downloads
-{
+#backlight,
+#battery,
+#cpu,
+#disk,
+#idle_inhibitor,
+#keyboard-state,
+#pulseaudio,
+#clock,
+#tags,
+#language,
+#memory,
+#network,
+#sndio,
+#mode,
+#window,
+#workspaces,
+#temperature,
+#taskbar,
+#workspaces,
+#custom-treefetch-downloads {
   @include single-module;
 }
 
@@ -77,7 +92,9 @@ window#waybar {
   color: colors.$fg;
 }
 
-.modules-left, .modules-center, .modules-right {
+.modules-left,
+.modules-center,
+.modules-right {
   background: transparent;
   margin-top: $top-margin;
   border-radius: $bar-border-radius;
@@ -94,13 +111,15 @@ window#waybar {
   margin-right: $screen-margin;
 }
 
-#mpd, #custom-mpd-song-scroll {
+#mpd,
+#custom-mpd-song-scroll {
   font-size: 14.0px;
   margin-bottom: 3px;
 }
-#pulseaudio{
-font-family: $font-icon;
-font-weight: bold;
+
+#pulseaudio {
+  font-family: $font-icon;
+  font-weight: bold;
 }
 
 
@@ -113,43 +132,49 @@ font-weight: bold;
   color: colors.$fg-no-bg;
   margin-right: 50px;
 }
+
 // Sway worksapces
 
-#workspaces button{
-color: colors.$fg;
-font-family: "Source Han Sans JP";
-font-weight: 700;
-padding: 0 6px;
-margin: 0 4px;
-font-size: 17px;
-border-radius: 0;
-border: none;                     
-min-width: 2rem;
+#workspaces button {
+  color: colors.$fg;
+  font-family: "Source Han Sans JP";
+  font-weight: 700;
+  padding: 0 6px;
+  margin: 0 4px;
+  font-size: 17px;
+  border-radius: 0;
+  border: none;
+  min-width: 2rem;
 
 }
-#workspaces button.occupied{
-color: inherit;
-background: #ffffff;
-}
-#workspaces button:hover{
-color: colors.$fg-hover-color;
-background: colors.$fg-alt;
-box-shadow: none;
-text-shadow: none;
-transition: 0.20s;
-}
-#workspaces button.urgent{
-color: colors.$red;
-}
-#workspaces button.focused{
-//color: colors.$bg;
-color: colors.$fg-focus-color;
 
-background: colors.$fg-alt;
-box-shadow: none;
-text-shadow:none;
-transition:0.20s;
+#workspaces button.occupied {
+  color: inherit;
+  background: #ffffff;
 }
+
+#workspaces button:hover {
+  color: colors.$fg-hover-color;
+  background: colors.$fg-alt;
+  box-shadow: none;
+  text-shadow: none;
+  transition: 0.20s;
+}
+
+#workspaces button.urgent {
+  color: colors.$red;
+}
+
+#workspaces button.focused {
+  //color: colors.$bg;
+  color: colors.$fg-focus-color;
+
+  background: colors.$fg-alt;
+  box-shadow: none;
+  text-shadow: none;
+  transition: 0.20s;
+}
+
 // River tags
 
 #tags button {
@@ -167,7 +192,7 @@ transition:0.20s;
 
 #tags button.occupied {
   color: inherit;
-  
+
 
 }
 
@@ -193,6 +218,7 @@ transition:0.20s;
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

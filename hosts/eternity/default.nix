@@ -1,14 +1,16 @@
-{ pkgs, config, lib, ... }:
 {
+  pkgs,
+  config,
+  lib,
+  ...
+}: {
   imports = [
     ../home.nix
     ./hardware-configuration.nix
   ];
-  
 
   ## Modules
   modules = {
-
     hardware = {
       intel.enable = true;
     };
@@ -19,13 +21,13 @@
       apps = {
         thunar.enable = true;
         flameshot.enable = true;
+        discord.enable = true;
       };
-      
+
       suckless = {
         dmenu.enable = true;
         dwm.enable = true;
         st.enable = true;
-
       };
 
       browsers = {
@@ -38,21 +40,20 @@
         default = "st";
         # st.enable = true;
       };
-
     };
-    
+
     dev = {
       node.enable = true;
       rust.enable = true;
       python.enable = true;
     };
-    
+
     editors = {
       default = "nvim";
       vim.enable = true;
       vs-code.enable = true;
     };
-    
+
     shell = {
       adl.enable = true;
       direnv.enable = true;
@@ -69,7 +70,6 @@
     };
 
     theme.active = "alucard";
-
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -84,16 +84,13 @@
       autoRepeatInterval = 50;
     };
   };
-  
-  
+
   # Enable imwheel
   services.xserver.imwheel.enable = true;
-
 
   ## Local config
   programs.ssh.startAgent = true;
   services.openssh.startWhenNeeded = true;
 
   networking.networkmanager.enable = true;
-
 }

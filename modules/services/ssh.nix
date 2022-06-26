@@ -1,8 +1,12 @@
-{ options, config, lib, ... }:
-
+{
+  options,
+  config,
+  lib,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.services.ssh;
+with lib.my; let
+  cfg = config.modules.services.ssh;
 in {
   options.modules.services.ssh = {
     enable = mkBoolOpt false;
@@ -17,7 +21,7 @@ in {
 
     user.openssh.authorizedKeys.keys =
       if config.user.name == "hlissner"
-      then [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB71rSnjuC06Qq3NLXQJwSz7jazoB+umydddrxL6vg1a hlissner" ]
+      then ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB71rSnjuC06Qq3NLXQJwSz7jazoB+umydddrxL6vg1a hlissner"]
       else [];
   };
 }

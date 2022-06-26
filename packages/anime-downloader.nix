@@ -1,7 +1,11 @@
-{ lib, python3, nodejs, aria2, coloredlogs }:
-
-with python3.pkgs;
-let
+{
+  lib,
+  python3,
+  nodejs,
+  aria2,
+  coloredlogs,
+}:
+with python3.pkgs; let
   pySmartDL = buildPythonPackage rec {
     pname = "pySmartDL";
     version = "1.3.4";
@@ -18,41 +22,42 @@ let
       inherit pname version;
       sha256 = "2VwWsGdxJ9+uPqUp82AdFHTK5+MlJ44dnYmipz7yH6k=";
     };
-    buildInputs = [ requests ];
+    buildInputs = [requests];
     doCheck = false;
   };
-in buildPythonApplication rec {
-  pname   = "anime-downloader";
-  version = "5.0.7";
+in
+  buildPythonApplication rec {
+    pname = "anime-downloader";
+    version = "5.0.7";
 
-  src = fetchPypi {
-    inherit pname version;
-    sha256 = "BP4Wf2efU1RUk6I+82rFcvEdxDSKonTOIZjm3B0x7Eg=";
-  };
+    src = fetchPypi {
+      inherit pname version;
+      sha256 = "BP4Wf2efU1RUk6I+82rFcvEdxDSKonTOIZjm3B0x7Eg=";
+    };
 
-  propagatedBuildInputs = [
-    aria2
-    nodejs
-    beautifulsoup4
-    cfscrape
-    click
-    coloredlogs
-    fuzzywuzzy
-    pySmartDL
-    pycryptodome
-    requests
-    requests-cache
-    setuptools
-    tabulate
-  ];
+    propagatedBuildInputs = [
+      aria2
+      nodejs
+      beautifulsoup4
+      cfscrape
+      click
+      coloredlogs
+      fuzzywuzzy
+      pySmartDL
+      pycryptodome
+      requests
+      requests-cache
+      setuptools
+      tabulate
+    ];
 
-  doCheck = false;
+    doCheck = false;
 
-  meta = {
-    homepage = "https://github.com/anime-dl/anime-downloader";
-    description = "A simple but powerful anime downloader and streamer.";
-    license = lib.licenses.unlicense;
-    platforms = [ "x86_64-linux" ];
-    maintainers = [];
-  };
-}
+    meta = {
+      homepage = "https://github.com/anime-dl/anime-downloader";
+      description = "A simple but powerful anime downloader and streamer.";
+      license = lib.licenses.unlicense;
+      platforms = ["x86_64-linux"];
+      maintainers = [];
+    };
+  }

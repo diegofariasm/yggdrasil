@@ -1,12 +1,16 @@
 # modules/browser/brave.nix --- https://publishers.basicattentiontoken.org
 #
 # A FOSS and privacy-minded browser.
-
-{ options, config, lib, pkgs, ... }:
-
+{
+  options,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.desktop.browsers.brave;
+with lib.my; let
+  cfg = config.modules.desktop.browsers.brave;
 in {
   options.modules.desktop.browsers.brave = {
     enable = mkBoolOpt false;
@@ -21,7 +25,7 @@ in {
         genericName = "Open a private Brave window";
         icon = "brave";
         exec = "${brave}/bin/brave --incognito";
-        categories = [ "Network" ];
+        categories = ["Network"];
       })
     ];
   };

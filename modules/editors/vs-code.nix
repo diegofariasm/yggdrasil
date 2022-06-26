@@ -1,11 +1,15 @@
 # When I'm stuck in the terminal or don't have access to Emacs, (neo)vim is my
 # go-to. I am a vimmer at heart, after all.
-
-{ config, options, lib, pkgs, ... }:
-
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.editors.vs-code;
+with lib.my; let
+  cfg = config.modules.editors.vs-code;
 in {
   options.modules.editors.vs-code = {
     enable = mkBoolOpt false;
@@ -13,10 +17,7 @@ in {
 
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
-    	vscode
-
+      vscode
     ];
-
-
   };
 }

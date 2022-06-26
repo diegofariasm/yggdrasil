@@ -1,8 +1,13 @@
-{ config, options, pkgs, lib, ... }:
-
+{
+  config,
+  options,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.services.syncthing;
+with lib.my; let
+  cfg = config.modules.services.syncthing;
 in {
   options.modules.services.syncthing = {
     enable = mkBoolOpt false;

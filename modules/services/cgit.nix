@@ -1,31 +1,36 @@
-{ options, config, lib, pkgs, ... }:
-
+{
+  options,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.services.cgit;
-    cgitrc = pkgs.writeText "cgitrc" ''
-      css=/static/cgit.css
-      logo=/static/cgit.png
-      favicon=/static/favicon.ico
-      root-title=Repositories
-      root-desc=Browse repositories
-      snapshots=tar.gz zip
+with lib.my; let
+  cfg = config.modules.services.cgit;
+  cgitrc = pkgs.writeText "cgitrc" ''
+    css=/static/cgit.css
+    logo=/static/cgit.png
+    favicon=/static/favicon.ico
+    root-title=Repositories
+    root-desc=Browse repositories
+    snapshots=tar.gz zip
 
-      readme=:README
-      readme=:readme
-      readme=:readme.md
-      readme=:README.md
-      readme=:readme.org
-      readme=:README.org
+    readme=:README
+    readme=:readme
+    readme=:readme.md
+    readme=:README.md
+    readme=:readme.org
+    readme=:README.org
 
-      ${cfg.extraConfig}
+    ${cfg.extraConfig}
 
-      about-filter=${cfg.package}/lib/cgit/filters/about-formatting.sh
-      source-filter=${cfg.package}/lib/cgit/filters/syntax-highlighting.py
-      remove-suffix=1
-      section-from-path=1
-      scan-path=${cfg.reposDirectory}
-    '';
+    about-filter=${cfg.package}/lib/cgit/filters/about-formatting.sh
+    source-filter=${cfg.package}/lib/cgit/filters/syntax-highlighting.py
+    remove-suffix=1
+    section-from-path=1
+    scan-path=${cfg.reposDirectory}
+  '';
 in {
   options.modules.services.cgit = with types; {
     enable = mkBoolOpt false;
@@ -59,7 +64,7 @@ in {
         shell = "${pkgs.git}/bin/git-shell";
       };
     };
-    user.extraGroups = [ cfg.user ];
+    user.extraGroups = [cfg.user];
 
     systemd.tmpfiles.rules = [
       "z ${cfg.directory} 770 ${cfg.user} ${cfg.user} - -"

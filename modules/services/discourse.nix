@@ -1,8 +1,12 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.services.discourse;
+with lib.my; let
+  cfg = config.modules.services.discourse;
 in {
   options.modules.services.discourse = {
     enable = mkBoolOpt false;

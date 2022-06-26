@@ -1,5 +1,9 @@
-{ modulesPath, pkgs, config, ... }:
 {
+  modulesPath,
+  pkgs,
+  config,
+  ...
+}: {
   imports = [
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
   ];
@@ -8,8 +12,8 @@
   nixpkgs.config.allowUnfree = true;
   hardware.enableRedistributableFirmware = true;
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_17';
-  boot.kernelModules = [ "wl" ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
+  boot.kernelModules = ["wl"];
+  boot.extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
 
   environment.systemPackages = with pkgs; [
     nixFlakes
@@ -17,5 +21,5 @@
     git
   ];
 }
-
 # nix-build '<nixpkgs/nixos>' -A config.system.build.isoImage -I nixos-config=./default.nix
+

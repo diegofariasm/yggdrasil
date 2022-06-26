@@ -1,8 +1,13 @@
-{ config, options, lib, pkgs, ... }:
-
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.desktop.apps.skype;
+with lib.my; let
+  cfg = config.modules.desktop.apps.skype;
 in {
   options.modules.desktop.apps.skype = {
     enable = mkBoolOpt false;

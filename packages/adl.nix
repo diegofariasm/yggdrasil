@@ -1,5 +1,10 @@
-{ lib, stdenv, fetchFromGitHub, my, ... }:
-
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  my,
+  ...
+}:
 stdenv.mkDerivation {
   name = "adl";
 
@@ -27,7 +32,7 @@ stdenv.mkDerivation {
     homepage = "https://github.com/RaitaroH/adl";
     description = "popcorn anime-downloader + trackma wrapper";
     license = lib.licenses.gpl3;
-    platforms = [ "x86_64-linux" ];
+    platforms = ["x86_64-linux"];
     maintainers = [];
   };
 }

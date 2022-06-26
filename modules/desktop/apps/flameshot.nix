@@ -1,8 +1,13 @@
-{ config, options, lib, pkgs, ... }:
-
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.desktop.apps.flameshot;
+with lib.my; let
+  cfg = config.modules.desktop.apps.flameshot;
 in {
   options.modules.desktop.apps.flameshot = {
     enable = mkBoolOpt false;
@@ -12,7 +17,5 @@ in {
     user.packages = with pkgs; [
       flameshot
     ];
-
-
   };
 }

@@ -1,8 +1,13 @@
-{ options, config, lib, pkgs, ... }:
-
+{
+  options,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.services.teamviewer;
+with lib.my; let
+  cfg = config.modules.services.teamviewer;
 in {
   options.modules.services.teamviewer = {
     enable = mkBoolOpt false;

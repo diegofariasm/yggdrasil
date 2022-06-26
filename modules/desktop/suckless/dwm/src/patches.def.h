@@ -116,7 +116,7 @@
 #define BAR_TAGGRID_PATCH 0
 
 /* Show status in bar */
-#define BAR_STATUS_PATCH 1
+#define BAR_STATUS_PATCH 0
 
 /* This patch adds a clickable button to the left hand side of the statusbar.
  * https://dwm.suckless.org/patches/statusbutton/
@@ -163,7 +163,7 @@
 /* This patch underlines the selected tag, or optionally all tags.
  * https://dwm.suckless.org/patches/underlinetags/
  */
-#define BAR_UNDERLINETAGS_PATCH 1
+#define BAR_UNDERLINETAGS_PATCH 0
 
 /* This patch adds the window icon next to the window title in the bar.
  *
@@ -207,7 +207,7 @@
  * remaining space. These options allow you explicitly add padding should
  * you need it.
  */
-#define BAR_TITLE_RIGHT_PAD_PATCH 0
+#define BAR_TITLE_RIGHT_PAD_PATCH 1
 #define BAR_TITLE_LEFT_PAD_PATCH 1
 
 /**

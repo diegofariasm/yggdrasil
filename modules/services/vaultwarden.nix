@@ -1,8 +1,13 @@
-{ options, config, lib, pkgs, ... }:
-
+{
+  options,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.modules.services.vaultwarden;
+with lib.my; let
+  cfg = config.modules.services.vaultwarden;
 in {
   options.modules.services.vaultwarden = {
     enable = mkBoolOpt false;
@@ -11,7 +16,7 @@ in {
   config = mkIf cfg.enable {
     services.vaultwarden.enable = true;
 
-    user.extraGroups = [ "vaultwarden" ];
+    user.extraGroups = ["vaultwarden"];
 
     services.fail2ban.jails = {
       vaultwarden = ''

@@ -11,9 +11,25 @@ $bg: #32302F;
 $fg-opposite:  #d4be98;
 $green-dark:   #747E40;
 */
-#backlight, #battery, #cpu, #disk, #idle_inhibitor, #keyboard-state,
-#pulseaudio, #clock, #tags, #language, #memory, #network, #sndio,
-#mode, #window, #workspaces, #temperature, #taskbar, #workspaces,
+#backlight,
+#battery,
+#cpu,
+#disk,
+#idle_inhibitor,
+#keyboard-state,
+#pulseaudio,
+#clock,
+#tags,
+#language,
+#memory,
+#network,
+#sndio,
+#mode,
+#window,
+#workspaces,
+#temperature,
+#taskbar,
+#workspaces,
 #custom-treefetch-downloads {
   box-shadow: 4px 4px 0 #151517;
   margin-bottom: 4px;
@@ -34,7 +50,9 @@ window#waybar {
   color: #8DA3B9;
 }
 
-.modules-left, .modules-center, .modules-right {
+.modules-left,
+.modules-center,
+.modules-right {
   background: transparent;
   margin-top: 4px;
   border-radius: 0px;
@@ -51,7 +69,8 @@ window#waybar {
   margin-right: 6px;
 }
 
-#mpd, #custom-mpd-song-scroll {
+#mpd,
+#custom-mpd-song-scroll {
   font-size: 14px;
   margin-bottom: 3px;
 }
@@ -146,10 +165,12 @@ window#waybar {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
+
 tooltip {
   background: #202023;
   border-radius: 7px;
