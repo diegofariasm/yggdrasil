@@ -375,6 +375,8 @@ static const char *layoutmenu_cmd = "layoutmenu.sh";
 static const char *const autostart[] = {
 	"bash", ".fehbg", NULL,
 	"sxhkd",  NULL,
+	"dwm_statusbar_wrapper",
+
 	NULL /* terminate */
 };
 #endif // COOL_AUTOSTART_PATCH

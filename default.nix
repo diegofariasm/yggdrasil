@@ -84,6 +84,7 @@ with lib.my; {
     gnumake
     unzip
     killall
-    tty-clock
+    alejandra
+    pavucontrol
   ];
 }

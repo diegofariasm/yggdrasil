@@ -1,8 +1,8 @@
 {
-  options,
+  pkgs,
   config,
   lib,
-  pkgs,
+  options,
   ...
 }:
 with lib;
@@ -33,11 +33,14 @@ in {
         windowManager.dwm.enable = true;
       };
     };
+
     user.packages = with pkgs; [
       sxhkd
       xclip
       xsel
+      my.luastatus
     ];
+
     fonts.fonts = with pkgs; [
       (nerdfonts.override {
         fonts = [
