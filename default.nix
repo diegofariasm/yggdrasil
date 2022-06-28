@@ -85,6 +85,5 @@ with lib.my; {
     unzip
     killall
     alejandra
-    pavucontrol
   ];
 }

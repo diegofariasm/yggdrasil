@@ -39,6 +39,9 @@ in {
       xclip
       xsel
       my.luastatus
+      tdrop
+      kitty
+      pavucontrol
     ];
 
     fonts.fonts = with pkgs; [
@@ -65,6 +68,10 @@ in {
     };
     home.configFile."dwm" = {
       source = "${configDir}/dwm/dwm";
+      recursive = true;
+    };
+    home.configFile."sxhkd" = {
+      source = "${configDir}/sxhkd";
       recursive = true;
     };
   };
