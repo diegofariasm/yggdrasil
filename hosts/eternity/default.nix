@@ -31,14 +31,14 @@
       };
 
       browsers = {
-        default = "brave";
-        firefox.enable = true;
+        default = "edge";
         brave.enable = true;
+        edge.enable = true;
       };
 
       term = {
         default = "st";
-        # st.enable = true;
+        #  st.enable = true;
       };
     };
 

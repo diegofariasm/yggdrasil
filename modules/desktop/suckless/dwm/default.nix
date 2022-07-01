@@ -35,13 +35,12 @@ in {
     };
 
     user.packages = with pkgs; [
-      sxhkd
+      pavucontrol # Audio
+      sxhkd # Keybinds
+
       xclip
       xsel
       my.luastatus
-      tdrop
-      kitty
-      pavucontrol
     ];
 
     fonts.fonts = with pkgs; [
@@ -57,21 +56,9 @@ in {
         ];
       })
     ];
-    home.configFile."alacritty" = {
-      source = "${configDir}/dwm/alacritty";
-      recursive = true;
-    };
-
-    home.configFile."dmenu" = {
-      source = "${configDir}/dwm/dmenu";
-      recursive = true;
-    };
+    
     home.configFile."dwm" = {
       source = "${configDir}/dwm/dwm";
-      recursive = true;
-    };
-    home.configFile."sxhkd" = {
-      source = "${configDir}/sxhkd";
       recursive = true;
     };
   };

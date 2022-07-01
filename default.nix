@@ -21,10 +21,29 @@ with lib.my; {
   # Enable ntfs
   boot.supportedFilesystems = ["ntfs"];
 
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
 
+
+  # Pipewire
+
+  # Remove sound.enable or turn it off if you had it set previously, it seems to cause conflicts with pipewire
+  # sound.enable = false;
+
+  # # rtkit is optional but recommended
+  # security.rtkit.enable = true;
+  # services.pipewire = {
+  #   enable = true;
+  #   alsa.enable = true;
+  #   alsa.support32Bit = true;
+  #   pulse.enable = true;
+  #   # If you want to use JACK applications, uncomment this
+  #   jack.enable = true;
+  # };
+  
+  # Pulseaudio
+  
+   sound.enable = true;
+   hardware.pulseaudio.enable = true;
+  
   # Configure nix and nixpkgs
   environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
   nix = let
@@ -84,6 +103,6 @@ with lib.my; {
     gnumake
     unzip
     killall
-    alejandra
+    pulseaudio    
   ];
 }

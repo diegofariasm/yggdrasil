@@ -2,7 +2,7 @@
 
 # Directory
 dwm_dir="$HOME/.config/dwm"
-dmenu_dir="$HOME/.config/dmenu"
+dmenu_dir="$HOME/.config/dwm"
 dwm_luastatus_dir="$HOME/.config/dwm/luastatus/colorscheme"
 alacritty_dir="$HOME/.config/alacritty"
 kitty_dir="$HOME/.config/kitty"
@@ -27,8 +27,8 @@ option="$cancel\n$theme1\n$theme2\n$theme3\n$theme4"
 
 theme_change()
 {
-	cp ${dwm_dir}/theme_xresources/$1 ${dwm_dir}/theme_xresources/theme
-	cp ${dmenu_dir}/theme_xresources/$1 ${dmenu_dir}/theme_xresources/theme
+	cp ${dwm_dir}/dwm_xresources/$1 ${dwm_dir}/dwm_xresources/theme
+	cp ${dmenu_dir}/dmenu_xresources/$1 ${dmenu_dir}/dmenu_xresources/theme
 	cp ${dwm_luastatus_dir}/$1.lua ${dwm_luastatus_dir}/color.lua
 	
 	cp ${alacritty_dir}/colorscheme/$1.yml ${alacritty_dir}/color.yml

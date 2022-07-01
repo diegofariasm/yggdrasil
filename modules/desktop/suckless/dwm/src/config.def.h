@@ -374,7 +374,7 @@ static const char *layoutmenu_cmd = "layoutmenu.sh";
 #if COOL_AUTOSTART_PATCH
 static const char *const autostart[] = {
 	"bash", ".fehbg", NULL,
-	"sxhkd",  NULL,
+	"sxhkd_dwm",  NULL,
 	"dwm_statusbar_wrapper",
 
 	NULL /* terminate */
@@ -478,15 +478,18 @@ static const Rule rules[] = {
 	//  { "Firefox",  NULL,    NULL, 1 << 8,   1,          0,         -1  },
 
 	RULE(.class = "Alacritty", .tags = 1 << 0, .switchtag = 1) // tag-1
-	RULE(.class = "st-256color", .tags = 1 << 0, .switchtag = 1) // tag-1
+	RULE(.class = "St", .tags = 1 << 0, .switchtag = 1) // tag-1
 	RULE(.class = "Emacs", .tags = 1 << 0, .switchtag = 1)
 	RULE(.class = "Geany", .tags = 1 << 0, .switchtag = 1)
 
 	RULE(.class = "Pcmanfm", .tags = 1 << 1, .switchtag = 1) // tag-2
 	RULE(.class = "Thunar", .tags = 1 << 1, .switchtag = 1, .iscentered = 1) // tag-2
+	RULE(.class = "Code", .tags = 1 << 1, .switchtag = 1, .iscentered = 1) // tag-2
 	RULE(.class = "qBittorrent", .tags = 1 << 1, .switchtag = 1)
 
 	RULE(.class = "Chromium", .tags = 1 << 2, .switchtag = 1, .iscentered = 1) // tag-3
+	RULE(.class = "edge", .tags = 1 << 2, .switchtag = 1, .iscentered = 1) // tag-3
+	RULE(.class = "Brave", .tags = 1 << 2, .switchtag = 1, .iscentered = 1) // tag-3
 	RULE(.class = "firefox", .tags = 1 << 2, .switchtag = 1, .iscentered = 1)
 	RULE(.class = "Nyxt", .tags = 1 << 2, .switchtag = 1) // tag-3
 	RULE(.class = "Vieb", .tags = 1 << 2, .switchtag = 1)
