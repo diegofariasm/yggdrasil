@@ -484,6 +484,7 @@ static const Rule rules[] = {
 
 	RULE(.class = "Pcmanfm", .tags = 1 << 1, .switchtag = 1) // tag-2
 	RULE(.class = "Thunar", .tags = 1 << 1, .switchtag = 1, .iscentered = 1) // tag-2
+	RULE(.class = "Nautilus", .tags = 1 << 1, .switchtag = 1, .iscentered = 1) // tag-2
 	RULE(.class = "Code", .tags = 1 << 1, .switchtag = 1, .iscentered = 1) // tag-2
 	RULE(.class = "qBittorrent", .tags = 1 << 1, .switchtag = 1)
 

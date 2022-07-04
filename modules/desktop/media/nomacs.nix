@@ -7,15 +7,15 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.editors.vs-code;
+  cfg = config.modules.desktop.media.nomacs;
 in {
-  options.modules.editors.vs-code = {
+  options.modules.desktop.media.nomacs = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
-      vscode
+      nomacs
     ];
   };
 }

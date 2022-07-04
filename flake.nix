@@ -1,16 +1,21 @@
 # Welcome to ground zero. Where the whole flake gets set up and all its modules
 # are loaded.
 {
-  description = "You shall meet your doom here.";
+  description = "You shall meet your doom here";
 
   inputs = {
     # Core dependencies.
     nixpkgs.url = "nixpkgs/nixos-unstable"; # primary nixpkgs
     nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable"; # for packages on the edge
-    home-manager.url = "github:rycee/home-manager/master";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    agenix.url = "github:ryantm/agenix";
-    agenix.inputs.nixpkgs.follows = "nixpkgs";
+
+    home-manager = {
+      url = "github:rycee/home-manager/master";
+      inputs.nixpkg.follows = "nixpkgs";
+    };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Extras
     emacs-overlay.url = "github:nix-community/emacs-overlay";
@@ -33,6 +38,7 @@
         config.allowUnfree = true; # forgive me Stallman senpai
         overlays = extraOverlays ++ (lib.attrValues self.overlays);
       };
+
     pkgs = mkPkgs nixpkgs [self.overlay];
     pkgs' = mkPkgs nixpkgs-unstable [];
 

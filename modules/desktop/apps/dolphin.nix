@@ -7,25 +7,22 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.desktop.apps.thunar;
+  cfg = config.modules.desktop.apps.dolphin;
 in {
-  options.modules.desktop.apps.thunar = {
+  options.modules.desktop.apps.dolphin = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
-      xfce.thunar
+      dolphin
+      breeze-icons
+      ffmpegthumbs
       imagemagick
     ];
-    programs.thunar.plugins = with pkgs; [
-        xfce.thunar-volman
-        xfce.thunar-archive-plugin
-    ];
-      services = {
+    services = {
       gvfs.enable = true; # Mount, trash, and other functionalities
       tumbler.enable = true; # Thumbnail support for images
       };
     };
-}
-
+  }

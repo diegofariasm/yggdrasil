@@ -17,6 +17,7 @@ in {
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
       microsoft-edge
+      
       (makeDesktopItem {
         name = "edge-private";
         desktopName = "Edge Private";

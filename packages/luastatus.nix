@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
   
   src = fetchzip {
     url = "https://github.com/shdown/luastatus/archive/master.tar.gz";
-    sha256 = "08fr7pibw4pibnpb8ryi0xr6lvklrvcipzrffw1lddzkipqfjfj2";
+    sha256 = "arNwpOKyrv6ebV3Wysul7i7Qag4xEceQhk9SxB/mkQU=";
   };
   
   nativeBuildInputs = [ cmake pkgconfig];

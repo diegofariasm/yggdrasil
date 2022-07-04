@@ -11,17 +11,28 @@
 
   ## Modules
   modules = {
-    hardware = {
+    hardware = 
+    {
       intel.enable = true;
     };
 
-    desktop = {
+    desktop = 
+    {
       sway.enable = true;
-
-      apps = {
+      plasma.enable = true; # This  needs  to be enabled so edge doesn't crash when save as is pressed
+      
+      media = {
+       vlc.enable = true;
+       mpv.enable = true;
+       nomacs.enable = true;
+      };
+      apps = 
+      {
         thunar.enable = true;
         flameshot.enable = true;
         discord.enable = true;
+        nautilus.enable = true;
+        dolphin.enable = true;
       };
 
       suckless = {
@@ -31,9 +42,9 @@
       };
 
       browsers = {
-        default = "edge";
-        brave.enable = true;
+        default = "firefox";
         edge.enable = true;
+        firefox.enable = true;
       };
 
       term = {
@@ -50,8 +61,9 @@
 
     editors = {
       default = "nvim";
-      vim.enable = true;
+      #vim.enable = true;
       vs-code.enable = true;
+      neovim.enable = true;
     };
 
     shell = {
@@ -73,16 +85,19 @@
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
+  
   console = {
     font = "Lat2-Terminus16";
     keyMap = "br-abnt2";
   };
   services = {
+    
     xserver = {
       layout = "br";
-      autoRepeatDelay = 200;
+      autoRepeatDelay = 100;
       autoRepeatInterval = 50;
     };
+  
   };
 
   # Enable imwheel

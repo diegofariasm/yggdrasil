@@ -21,29 +21,27 @@ with lib.my; {
   # Enable ntfs
   boot.supportedFilesystems = ["ntfs"];
 
-
-
   # Pipewire
 
   # Remove sound.enable or turn it off if you had it set previously, it seems to cause conflicts with pipewire
-  # sound.enable = false;
+  sound.enable = false;
 
   # # rtkit is optional but recommended
-  # security.rtkit.enable = true;
-  # services.pipewire = {
-  #   enable = true;
-  #   alsa.enable = true;
-  #   alsa.support32Bit = true;
-  #   pulse.enable = true;
-  #   # If you want to use JACK applications, uncomment this
-  #   jack.enable = true;
-  # };
-  
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    jack.enable = true;
+  };
+
   # Pulseaudio
-  
-   sound.enable = true;
-   hardware.pulseaudio.enable = true;
-  
+
+  #  sound.enable = true;
+  #  hardware.pulseaudio.enable = true;
+
   # Configure nix and nixpkgs
   environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
   nix = let
@@ -85,7 +83,10 @@ with lib.my; {
 
   # Use the latest kernel
   boot = {
-    kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_5_18;
+    # Normal kernel
+    # kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_5_18;
+    # Zen kernel
+    kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
     loader = {
       efi.canTouchEfiVariables = mkDefault true;
       systemd-boot.configurationLimit = 10;
@@ -103,6 +104,6 @@ with lib.my; {
     gnumake
     unzip
     killall
-    pulseaudio    
+    pamixer
   ];
 }

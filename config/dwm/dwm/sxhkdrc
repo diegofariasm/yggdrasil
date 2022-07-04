@@ -61,11 +61,11 @@ super + Print
 	
 # Volume control
 
-F1
-	pactl set-sink-volume 0 -5%
-F2
-	pactl set-sink-volume 0 +5%
-F3
-	pactl set-sink-mute 0 toggle
-F4
+alt + F1
+  pamixer -d 5 --allow-boost #to increase 5%
+alt + F2
+	pamixer -i 5 --allow-boost #to increase 5%
+alt + F3
+  pamixer Master -t
+alt + F4
   pavucontrol

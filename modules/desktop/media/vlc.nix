@@ -7,15 +7,15 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.editors.vs-code;
+  cfg = config.modules.desktop.media.vlc;
 in {
-  options.modules.editors.vs-code = {
+  options.modules.desktop.media.vlc = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
-      vscode
+    vlc
     ];
   };
 }
