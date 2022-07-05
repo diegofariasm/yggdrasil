@@ -58,9 +58,9 @@
 
     editors = {
       default = "nvim";
-      #vim.enable = true;
+      vim.enable = true;
       vs-code.enable = true;
-      neovim.enable = true;
+
     };
 
     shell = {

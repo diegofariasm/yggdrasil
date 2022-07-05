@@ -10,19 +10,34 @@
 with lib;
 with lib.my; let
   cfg = config.modules.editors.vim;
+  configDir = config.dotfiles.configDir;
 in {
   options.modules.editors.vim = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
-      editorconfig-core-c
-      unstable.neovim
+    nixpkgs.overlays = [
+      (import (builtins.fetchTarball {
+        url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+        sha256 = "18zrsgkc68rkxkap261klvkwx7lazzmkkgmm0w00z0cdgsw93i4v";
+      }))
     ];
 
-    # This is for non-neovim, so it loads my nvim config
-    # env.VIMINIT = "let \\$MYVIMRC='\\$XDG_CONFIG_HOME/nvim/init.vim' | source \\$MYVIMRC";
+    user.packages = with pkgs; [
+      neovim
+      editorconfig-core-c
+      tree-sitter
+      fd
+      luarocks
+      lua
+      sumneko-lua-language-server # Lua language server, needed for deugging the config files
+  ];
+
+    home.configFile."nvim" = {
+       source = "${configDir}/nvim";
+       recursive = true;
+     };
 
     environment.shellAliases = {
       vim = "nvim";

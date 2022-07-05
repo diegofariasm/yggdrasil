@@ -18,7 +18,10 @@ in {
     nixpkgs.overlays = [
       (final: prev: {
         dwm = prev.dwm.overrideAttrs (old: {
-          src = ./src;
+          src = pkgs.fetchzip {
+            url = "https://github.com/fushiii/dwm/archive/master.tar.gz";
+            sha256 = "sUm28yHGlj9mtlAh5CIk2Nlo4r7QHaFm//I5GDF0vAA=";
+          };
           nativeBuildInputs = with pkgs; [xorg.libX11 imlib2];
         });
       })
@@ -56,7 +59,7 @@ in {
         ];
       })
     ];
-    
+
     home.configFile."dwm" = {
       source = "${configDir}/dwm/dwm";
       recursive = true;

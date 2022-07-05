@@ -17,7 +17,10 @@ in {
     nixpkgs.overlays = [
       (final: prev: {
         dmenu = prev.dmenu.overrideAttrs (old: {
-          src = ./src;
+          src = pkgs.fetchzip {
+            url = "https://github.com/fushiii/dmenu/archive/master.tar.gz";
+            sha256 = "loZXbHFTsfXI29AiYhb/InudRJONDeoIbc2aSmYqqBM=";
+          };
         });
       })
     ];
