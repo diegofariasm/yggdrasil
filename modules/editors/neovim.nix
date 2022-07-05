@@ -17,17 +17,26 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
-      lua
-      unstable.neovim
-      gcc
-      fd
+    nixpkgs.overlays = [
+      (import (builtins.fetchTarball {
+        url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+        sha256 = "18zrsgkc68rkxkap261klvkwx7lazzmkkgmm0w00z0cdgsw93i4v";
+      }))
     ];
 
-    # home.configFile."nvim" = {
-    #   source = "${configDir}/nvim";
-    #   recursive = true;
-    # };
+    user.packages = with pkgs; [
+      neovim
+      lua
+      gcc
+      fd
+      sumneko-lua-language-server
+    ];
+    
+    home.configFile."nvim" = {
+       source = "${configDir}/nvim";
+       recursive = true;
+     };
+
 
     # This is for non-neovim, so it loads my nvim config
     # env.VIMINIT = "let \\$MYVIMRC='\\$XDG_CONFIG_HOME/nvim/init.vim' | source \\$MYVIMRC";

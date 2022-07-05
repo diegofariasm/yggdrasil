@@ -11,23 +11,20 @@
 
   ## Modules
   modules = {
-    hardware = 
-    {
+    hardware = {
       intel.enable = true;
     };
 
-    desktop = 
-    {
+    desktop = {
       sway.enable = true;
       plasma.enable = true; # This  needs  to be enabled so edge doesn't crash when save as is pressed
-      
+
       media = {
-       vlc.enable = true;
-       mpv.enable = true;
-       nomacs.enable = true;
+        vlc.enable = true;
+        mpv.enable = true;
+        nomacs.enable = true;
       };
-      apps = 
-      {
+      apps = {
         thunar.enable = true;
         flameshot.enable = true;
         discord.enable = true;
@@ -85,19 +82,19 @@
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
-  
   console = {
-    font = "Lat2-Terminus16";
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
+    packages = with pkgs; [terminus_font];
     keyMap = "br-abnt2";
   };
+
   services = {
-    
     xserver = {
       layout = "br";
-      autoRepeatDelay = 100;
-      autoRepeatInterval = 50;
+      autoRepeatDelay = 300;
+      autoRepeatInterval = 20;
     };
-  
   };
 
   # Enable imwheel
