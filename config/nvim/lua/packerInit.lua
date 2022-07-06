@@ -130,7 +130,7 @@ return packer.startup(function(use)
 	})
 
 	use({ "antoinemadec/FixCursorHold.nvim", event = "BufEnter" })
-
+--[[
 	use({
 		"Pocco81/AutoSave.nvim",
 		event = "BufEnter",
@@ -138,7 +138,7 @@ return packer.startup(function(use)
 			require("plugins.configs.autosave")
 		end,
 	})
-
+--]]
 	use({
 		"rcarriga/nvim-notify",
 		config = function()
@@ -161,7 +161,6 @@ return packer.startup(function(use)
 			require("plugins.configs.trueZen")
 		end,
 	})
-
 	use({ "folke/trouble.nvim" })
 
 	use({

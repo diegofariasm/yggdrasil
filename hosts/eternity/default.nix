@@ -13,11 +13,12 @@
   modules = {
     hardware = {
       intel.enable = true;
-    };
+      };
 
     desktop = {
       sway.enable = true;
-      plasma.enable = true; # This  needs  to be enabled so edge doesn't crash when save as is pressed
+      dwm.enable = true;
+      ## plasma.enable = true; # This  needs  to be enabled so edge doesn't crash when save as is pressed
 
       media = {
         vlc.enable = true;
@@ -25,17 +26,9 @@
         nomacs.enable = true;
       };
       apps = {
-        thunar.enable = true;
         flameshot.enable = true;
-        discord.enable = true;
         nautilus.enable = true;
-        dolphin.enable = true;
-      };
-
-      suckless = {
         dmenu.enable = true;
-        dwm.enable = true;
-        st.enable = true;
       };
 
       browsers = {
@@ -46,7 +39,8 @@
 
       term = {
         default = "st";
-        #  st.enable = true;
+        st.enable = true;
+        xst.enable = true;
       };
     };
 

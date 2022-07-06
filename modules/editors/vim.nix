@@ -26,12 +26,17 @@ in {
 
     user.packages = with pkgs; [
       neovim
-      editorconfig-core-c
+
+     # Formatter
+      nodePackages.prettier
+      alejandra
+
       tree-sitter
       fd
-      luarocks
+
       lua
-      sumneko-lua-language-server # Lua language server, needed for deugging the config files
+      luarocks
+      sumneko-lua-language-server
   ];
 
     home.configFile."nvim" = {

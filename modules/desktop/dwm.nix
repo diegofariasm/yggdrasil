@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.desktop.suckless.dwm;
+  cfg = config.modules.desktop.dwm;
   configDir = config.dotfiles.configDir;
 in {
-  options.modules.desktop.suckless.dwm = {
+  options.modules.desktop.dwm = {
     enable = mkBoolOpt false;
   };
 

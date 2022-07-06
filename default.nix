@@ -105,5 +105,6 @@ with lib.my; {
     unzip
     killall
     pamixer
+    btop # pretty good top visualizer
   ];
 }

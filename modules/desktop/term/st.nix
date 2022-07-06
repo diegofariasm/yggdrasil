@@ -1,7 +1,3 @@
-# modules/desktop/term/st.nix
-#
-# I like (x)st. This appears to be a controversial opinion; don't tell anyone,
-# mkay?
 {
   options,
   config,
@@ -18,21 +14,19 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # xst-256color isn't supported over ssh, so revert to a known one
-    modules.shell.zsh.rcInit = ''
-      [ "$TERM" = xst-256color ] && export TERM=xterm-256color
-    '';
-
-    user.packages = with pkgs; [
-      xst # st + nice-to-have extensions
-      (makeDesktopItem {
-        name = "xst";
-        desktopName = "Suckless Terminal";
-        genericName = "Default terminal";
-        icon = "utilities-terminal";
-        exec = "${xst}/bin/xst";
-        categories = ["Development" "System" "Utility"];
+    nixpkgs.overlays = [
+      (final: prev: {
+        st = prev.st.overrideAttrs (oldAttrs: {
+          src = pkgs.fetchzip {
+            url = "https://github.com/fushiii/st/archive/master.tar.gz";
+            sha256 = "NO4ShwfZQD9aTwPYtE8ULBbZ1Hld6oV9Ok9W1MPwQi8=";
+          };
+          buildInputs = oldAttrs.buildInputs ++ [pkgs.harfbuzz];
+        });
       })
+    ];
+    user.packages = with pkgs; [
+      st
     ];
   };
 }

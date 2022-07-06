@@ -7,9 +7,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.desktop.suckless.dmenu;
+  cfg = config.modules.desktop.apps.dmenu;
 in {
-  options.modules.desktop.suckless.dmenu = {
+  options.modules.desktop.apps.dmenu = {
     enable = mkBoolOpt false;
   };
 
