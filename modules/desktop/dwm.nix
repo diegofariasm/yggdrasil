@@ -20,7 +20,7 @@ in {
         dwm = prev.dwm.overrideAttrs (old: {
           src = pkgs.fetchzip {
             url = "https://github.com/fushiii/dwm/archive/master.tar.gz";
-            sha256 = "sUm28yHGlj9mtlAh5CIk2Nlo4r7QHaFm//I5GDF0vAA=";
+            sha256 = "GDFQOuh/Xg+Oz8+rmaPHJYwnCyRC4pXh8RmlHh0IJM4=";
           };
           nativeBuildInputs = with pkgs; [xorg.libX11 imlib2];
         });
