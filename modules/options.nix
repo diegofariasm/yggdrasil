@@ -28,6 +28,7 @@ with lib.my; {
       file = mkOpt' attrs {} "Files to place directly in $HOME";
       configFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
       dataFile = mkOpt' attrs {} "Files to place in $XDG_DATA_HOME";
+      programs = mkOpt' attrs {} "Programs to install";
     };
 
     env = mkOption {
@@ -64,6 +65,7 @@ with lib.my; {
     # nixos-rebuild build-vm to work.
     home-manager = {
       useUserPackages = true;
+      useGlobalPkgs = true;
 
       # I only need a subset of home-manager's capabilities. That is, access to
       # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
@@ -73,7 +75,9 @@ with lib.my; {
       #   home.file        ->  home-manager.users.fushi.home.file
       #   home.configFile  ->  home-manager.users.fushi.home.xdg.configFile
       #   home.dataFile    ->  home-manager.users.fushi.home.xdg.dataFile
+      #   home.programs    ->  home-manager.users.fushi.programs
       users.${config.user.name} = {
+        programs = mkAliasDefinitions options.home.programs;
         home = {
           file = mkAliasDefinitions options.home.file;
           # Necessary for home-manager to work with flakes, otherwise it will

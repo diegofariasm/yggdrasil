@@ -29,7 +29,7 @@ set $term st
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 #
 #output * bg ~/.backgrounds/garden-house.png fill
-output * bg ./backgrounds/gruv-dark.png fill 
+output * bg ./backgrounds/the-technomancer.png fill
 
 # Example configuration:
 #
@@ -63,7 +63,7 @@ output * bg ./backgrounds/gruv-dark.png fill
 #
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
-input "2:8:AlpsPS/2_ALPS_GlidePoint" {  
+input "2:8:AlpsPS/2_ALPS_GlidePoint" {
 	tap enabled
 	dwt enabled
 	natural_scroll disabled
@@ -97,7 +97,7 @@ bindsym F3 exec pamixer -i 5 --allow-boost
 #bindsym F1 exec pamixer -t
 
 bindsym F9 exec light -A 2
-bindsym F6 exec light -U 2 
+bindsym F6 exec light -U 2
 
 bindsym F7  exec mpc toggle
 #bindsym XF86AudioNext exec mpc next
@@ -288,7 +288,7 @@ smart_borders on
 gaps inner	 4
 gaps outer   10
 #hide_edge_borders both
-default_border pixel 1 
+default_border pixel 1
 default_floating_border pixel  2
 
 #### Sway Window Colors ####
@@ -308,7 +308,7 @@ client.background           $unfocused
 # Sway gtk theme
 # Extra's
 include /etc/sway/config.d/*
-    
+
 # Autostart
 
 exec_always "$DOTFILES/config/sway/init/components/bar.sh"

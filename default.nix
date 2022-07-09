@@ -6,7 +6,9 @@
   ...
 }:
 with lib;
-with lib.my; {
+with lib.my; let
+  name = builtins.getEnv "USER";
+in {
   imports =
     # I use home-manager to deploy files to $HOME; little else
     [inputs.home-manager.nixosModules.home-manager]
@@ -17,7 +19,6 @@ with lib.my; {
   # soundly
   environment.variables.DOTFILES = config.dotfiles.dir;
   environment.variables.DOTFILES_BIN = config.dotfiles.binDir;
-
   # Enable ntfs
   boot.supportedFilesystems = ["ntfs"];
 
@@ -82,11 +83,11 @@ with lib.my; {
   networking.useDHCP = mkDefault false;
   # Ram swap
   zramSwap = {
-  enable = true;
-  memoryPercent = 20;
-  algorithm = "zstd";
-  priority = 200;
-    };
+    enable = true;
+    memoryPercent = 20;
+    algorithm = "zstd";
+    priority = 200;
+  };
   # Use the latest kernel
   boot = {
     # Normal kernel
@@ -99,7 +100,6 @@ with lib.my; {
       systemd-boot.enable = mkDefault true;
     };
   };
-
   # Just the bear necessities...
   environment.systemPackages = with pkgs; [
     bind

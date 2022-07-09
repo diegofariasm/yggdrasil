@@ -13,7 +13,7 @@
   modules = {
     hardware = {
       intel.enable = true;
-      };
+    };
 
     desktop = {
       sway.enable = true;
@@ -54,16 +54,12 @@
       default = "nvim";
       vim.enable = true;
       vs-code.enable = true;
-
     };
 
     shell = {
-      adl.enable = true;
       direnv.enable = true;
       git.enable = true;
       gnupg.enable = true;
-      #tmux.enable = true;
-      #zsh.enable = true;
       fish.enable = true;
     };
 
@@ -78,7 +74,7 @@
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     earlySetup = true;
-    font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
     packages = with pkgs; [terminus_font];
     keyMap = "br-abnt2";
   };
