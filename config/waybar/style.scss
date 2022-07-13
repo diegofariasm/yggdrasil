@@ -26,8 +26,8 @@ $module-margin: 3px;
 $module-padding: 10px;
 
 // Font config
-$font: "JetBrains Mono Nerd Font, Font Awesome 5 Free";
-$font-icon: "Font Awesome 5 Free";
+$font: "JetBrains Mono Nerd Font";
+$font-icon: "Font Awesome 6 Free";
 $font-size: 15px;
 $font-weight: 500;
 
@@ -136,7 +136,7 @@ window#waybar {
 // Sway worksapces
 
 #workspaces button {
-  color: colors.$fg;
+  color: colors.$fg-alt;
   font-family: "Source Han Sans JP";
   font-weight: 700;
   padding: 0 6px;
@@ -154,7 +154,7 @@ window#waybar {
 }
 
 #workspaces button:hover {
-  color: colors.$fg-hover-color;
+  color: colors.$bg;
   background: colors.$fg-alt;
   box-shadow: none;
   text-shadow: none;
@@ -166,9 +166,7 @@ window#waybar {
 }
 
 #workspaces button.focused {
-  //color: colors.$bg;
-  color: colors.$fg-focus-color;
-
+  color: colors.$bg;
   background: colors.$fg-alt;
   box-shadow: none;
   text-shadow: none;
@@ -192,8 +190,6 @@ window#waybar {
 
 #tags button.occupied {
   color: inherit;
-
-
 }
 
 #tags button:hover {

@@ -26,17 +26,11 @@ in {
 
     user.packages = with pkgs; [
       neovim
-
-     # Formatter
-      nodePackages.prettier
-      alejandra
-
-      tree-sitter
-      fd
-
-      lua
-      luarocks
-      sumneko-lua-language-server
+      rnix-lsp # Language server for nix
+      fennel
+      fnlfmt
+      parinfer-rust
+      gcc
   ];
 
     home.configFile."nvim" = {

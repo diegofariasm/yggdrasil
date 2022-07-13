@@ -17,9 +17,11 @@ in {
 
   # Common config for all nixos machines; and to ensure the flake operates
   # soundly
-  environment.variables.DOTFILES = config.dotfiles.dir;
-  environment.variables.DOTFILES_BIN = config.dotfiles.binDir;
-  # Enable ntfs
+  environment.variables = {
+  DOTFILES = config.dotfiles.dir;
+  DOTFILES_BIN = config.dotfiles.binDir;
+  };
+ # Enable ntfs
   boot.supportedFilesystems = ["ntfs"];
 
   # Pipewire

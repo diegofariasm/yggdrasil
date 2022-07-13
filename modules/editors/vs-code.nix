@@ -13,12 +13,14 @@ in {
     enable = mkBoolOpt false;
   };
   config = mkIf cfg.enable {
+
     home.programs.vscode =
     {
-      package = pkgs.vscode-with-extensions;
+      enable = true;
+      package = pkgs.vscode;
       extensions = with pkgs.vscode-extensions; [
-          ms-vscode.cpptools
           bbenoist.nix
+          jnoortheen.nix-ide
       ];
     };
   };

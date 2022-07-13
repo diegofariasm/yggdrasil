@@ -29,18 +29,20 @@
         flameshot.enable = true;
         nautilus.enable = true;
         dmenu.enable = true;
+        discord.enable = true;
       };
 
       browsers = {
         default = "firefox";
-        edge.enable = true;
         firefox.enable = true;
+        edge.enable = true;
       };
 
       term = {
         default = "st";
         st.enable = true;
         xst.enable = true;
+        kitty.enable = true;
       };
     };
 
@@ -68,7 +70,7 @@
       mate-polkit.enable = true;
     };
 
-    theme.active = "nordic";
+     theme.active = "nordic";
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -93,6 +95,7 @@
   ## Local config
   programs.ssh.startAgent = true;
   services.openssh.startWhenNeeded = true;
+  virtualisation.docker.enable = true;
 
   networking.networkmanager.enable = true;
 }

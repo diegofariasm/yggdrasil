@@ -8,12 +8,11 @@
       "river/tags"
     ],
     "modules-center": [
+        "tray"
     ],
     "modules-right": [
-        "tray",
-        "pulseaudio",
-        "clock#date",
-        "clock"
+        "clock",
+        "clock#date"
     ],
     "river/tags": {
         "num-tags": 6,

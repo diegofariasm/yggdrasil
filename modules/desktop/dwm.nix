@@ -40,7 +40,8 @@ in {
     user.packages = with pkgs; [
       pavucontrol # Audio
       sxhkd # Keybinds
-
+      tdrop
+      slock
       xclip
       xsel
       my.luastatus
@@ -61,8 +62,16 @@ in {
     ];
 
     home.configFile."dwm" = {
-      source = "${configDir}/dwm/dwm";
+      source = "${configDir}/junnun/dwm";
       recursive = true;
     };
+    home.configFile."alacritty" = {
+      source = "${configDir}/junnun/alacritty";
+      recursive = true;
+    }; 
+    home.configFile."kitty" = {
+      source = "${configDir}/junnun/kitty";
+      recursive = true;
+    }; 
   };
 }

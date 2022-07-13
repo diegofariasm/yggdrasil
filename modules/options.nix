@@ -65,8 +65,6 @@ with lib.my; {
     # nixos-rebuild build-vm to work.
     home-manager = {
       useUserPackages = true;
-      useGlobalPkgs = true;
-
       # I only need a subset of home-manager's capabilities. That is, access to
       # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
       # files easily to my $HOME, but 'home-manager.users.fushi.home.file.*'

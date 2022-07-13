@@ -20,7 +20,7 @@ in {
 
       (makeDesktopItem {
         name = "edge-private";
-        desktopName = "Edge Private";
+        desktopName = "Microsoft Edge (Private)";
         genericName = "Open a private Edge window";
         icon = "microsoft-edge";
         exec = "${microsoft-edge}/bin/microsoft-edge --inprivate";
