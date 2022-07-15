@@ -31,7 +31,7 @@ in
       xserver = {
         enable = true;
         displayManager = {
-          gdm.enable = true;
+          lightdm.enable = true;
         };
         windowManager.dwm.enable = true;
       };
@@ -40,11 +40,7 @@ in
     user.packages = with pkgs; [
       pavucontrol # Audio
       sxhkd # Keybinds
-      tdrop
-      slock
-      xclip
-      xsel
-      my.luastatus
+      my.luastatus # Status bar generator
     ];
 
     fonts.fonts = with pkgs; [
@@ -56,21 +52,12 @@ in
           "SourceCodePro"
           "Hack"
           "Meslo"
-          "Overpass"
         ];
       })
     ];
 
     home.configFile."dwm" = {
       source = "${configDir}/junnun/dwm";
-      recursive = true;
-    };
-    home.configFile."alacritty" = {
-      source = "${configDir}/junnun/alacritty";
-      recursive = true;
-    };
-    home.configFile."kitty" = {
-      source = "${configDir}/junnun/kitty";
       recursive = true;
     };
   };

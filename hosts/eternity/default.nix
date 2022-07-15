@@ -16,9 +16,8 @@
 
     desktop = {
       sway.enable = true;
-      dwm.enable = true;
+      #    dwm.enable = true;
       river.enable = true;
-      ## plasma.enable = true; # This  needs  to be enabled so edge doesn't crash when save a file dialog is opened on x11
 
       media = {
         vlc.enable = true;
