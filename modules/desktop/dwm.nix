@@ -1,15 +1,15 @@
-{
-  pkgs,
-  config,
-  lib,
-  options,
-  ...
+{ pkgs
+, config
+, lib
+, options
+, ...
 }:
 with lib;
 with lib.my; let
   cfg = config.modules.desktop.dwm;
   configDir = config.dotfiles.configDir;
-in {
+in
+{
   options.modules.desktop.dwm = {
     enable = mkBoolOpt false;
   };
@@ -22,7 +22,7 @@ in {
             url = "https://github.com/fushiii/dwm/archive/master.tar.gz";
             sha256 = "GDFQOuh/Xg+Oz8+rmaPHJYwnCyRC4pXh8RmlHh0IJM4=";
           };
-          nativeBuildInputs = with pkgs; [xorg.libX11 imlib2];
+          nativeBuildInputs = with pkgs; [ xorg.libX11 imlib2 ];
         });
       })
     ];
@@ -31,7 +31,7 @@ in {
       xserver = {
         enable = true;
         displayManager = {
-          lightdm.enable = true;
+          gdm.enable = true;
         };
         windowManager.dwm.enable = true;
       };
@@ -68,10 +68,10 @@ in {
     home.configFile."alacritty" = {
       source = "${configDir}/junnun/alacritty";
       recursive = true;
-    }; 
+    };
     home.configFile."kitty" = {
       source = "${configDir}/junnun/kitty";
       recursive = true;
-    }; 
+    };
   };
 }

@@ -17,7 +17,7 @@ in
   config = mkIf cfg.enable {
     services.xserver = {
       enable = true;
-      displayManager.lightdm.enable = true;
+      displayManager.gdm.enable = true;
     };
     programs.sway = {
       enable = true;
@@ -31,6 +31,8 @@ in
       ];
     };
     fonts.fonts = with pkgs; [
+      font-awesome_5
+      font-awesome_6
     ];
 
     systemd.user.services."dunst" = {

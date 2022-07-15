@@ -1,17 +1,17 @@
 # When I'm stuck in the terminal or don't have access to Emacs, (neo)vim is my
 # go-to. I am a vimmer at heart, after all.
-{
-  config,
-  options,
-  lib,
-  pkgs,
-  ...
+{ config
+, options
+, lib
+, pkgs
+, ...
 }:
 with lib;
 with lib.my; let
   cfg = config.modules.editors.vim;
   configDir = config.dotfiles.configDir;
-in {
+in
+{
   options.modules.editors.vim = {
     enable = mkBoolOpt false;
   };
@@ -31,12 +31,13 @@ in {
       fnlfmt
       parinfer-rust
       gcc
-  ];
+      sumneko-lua-language-server
+    ];
 
     home.configFile."nvim" = {
-       source = "${configDir}/nvim";
-       recursive = true;
-     };
+      source = "${configDir}/nvim";
+      recursive = true;
+    };
 
     environment.shellAliases = {
       vim = "nvim";

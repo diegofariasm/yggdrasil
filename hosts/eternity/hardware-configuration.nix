@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
@@ -14,22 +15,25 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/22d4e53c-cf61-4f2f-a953-e5a4c415876a";
+    {
+      device = "/dev/disk/by-uuid/22d4e53c-cf61-4f2f-a953-e5a4c415876a";
       fsType = "ext4";
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/0a25fdef-5d9a-45c2-9e17-982e7f659eae";
+    {
+      device = "/dev/disk/by-uuid/0a25fdef-5d9a-45c2-9e17-982e7f659eae";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/A813-926A";
+    {
+      device = "/dev/disk/by-uuid/A813-926A";
       fsType = "vfat";
     };
 
   swapDevices = [
-  { device = "/var/swap"; size = 4096; }
+    { device = "/var/swap"; size = 4096; }
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
@@ -41,6 +45,6 @@
   # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

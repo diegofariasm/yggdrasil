@@ -132,7 +132,7 @@ window#waybar {
 }
 
 #tags button:hover {
-  color: #F47F79;
+  color: #534035;
   background: #c2362f;
   box-shadow: none;
   text-shadow: none;
@@ -140,7 +140,7 @@ window#waybar {
 }
 
 #tags button.focused {
-  color: #5A20CB;
+  color: #F47F79;
   background-color: #c2362f;
 }
 

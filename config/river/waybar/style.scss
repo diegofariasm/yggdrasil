@@ -193,17 +193,16 @@ window#waybar {
 }
 
 #tags button:hover {
-  color: colors.$bg;
-  background: colors.$fg-alt;
+  color: colors.$fg;
+  background: colors.$accent-color;
   box-shadow: none;
   text-shadow: none;
   transition: 0.20s;
 }
 
 #tags button.focused {
-  //color: colors.$fg;
-  color: #5A20CB;
-  background-color: colors.$accent-color;
+  color: colors.$bg;
+  background-color: colors.$fg-alt;
 }
 
 #tags button.urgent {

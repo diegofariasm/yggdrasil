@@ -1,8 +1,7 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }: {
   imports = [
     ../home.nix
@@ -18,12 +17,14 @@
     desktop = {
       sway.enable = true;
       dwm.enable = true;
-      ## plasma.enable = true; # This  needs  to be enabled so edge doesn't crash when save as is pressed
+      river.enable = true;
+      ## plasma.enable = true; # This  needs  to be enabled so edge doesn't crash when save a file dialog is opened on x11
 
       media = {
         vlc.enable = true;
         mpv.enable = true;
         nomacs.enable = true;
+        graphics.enable = true;
       };
       apps = {
         flameshot.enable = true;
@@ -33,9 +34,9 @@
       };
 
       browsers = {
-        default = "firefox";
-        firefox.enable = true;
+        default = "google-chrome";
         edge.enable = true;
+        chrome.enable = true;
       };
 
       term = {
@@ -50,12 +51,13 @@
       node.enable = true;
       rust.enable = true;
       python.enable = true;
+      go.enable = true;
     };
 
     editors = {
       default = "nvim";
       vim.enable = true;
-      vs-code.enable = true;
+      code.enable = true;
     };
 
     shell = {
@@ -70,14 +72,14 @@
       mate-polkit.enable = true;
     };
 
-     theme.active = "nordic";
+    theme.active = "nordic";
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
-    packages = with pkgs; [terminus_font];
+    packages = with pkgs; [ terminus_font ];
     keyMap = "br-abnt2";
   };
 
@@ -88,7 +90,10 @@
       autoRepeatInterval = 20;
     };
   };
+  environment.variables = {
+    "XKB_DEFAULT_LAYOUT" = "br";
 
+  };
   # Enable imwheel
   services.xserver.imwheel.enable = true;
 

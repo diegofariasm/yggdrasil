@@ -2,27 +2,28 @@
 #
 # JS is one of those "when it's good, it's alright, when it's bad, it's a
 # disaster" languages.
-{
-  config,
-  options,
-  lib,
-  pkgs,
-  ...
+{ config
+, options
+, lib
+, pkgs
+, ...
 }:
 with lib;
 with lib.my; let
   devCfg = config.modules.dev;
   cfg = devCfg.node;
-in {
+in
+{
   options.modules.dev.node = {
     enable = mkBoolOpt false;
     xdg.enable = mkBoolOpt devCfg.xdg.enable;
   };
 
   config = mkMerge [
-    (let
-      node = pkgs.nodejs_latest;
-    in
+    (
+      let
+        node = pkgs.nodejs_latest;
+      in
       mkIf cfg.enable {
         user.packages = [
           node
@@ -35,8 +36,9 @@ in {
           ya = "yarn";
         };
 
-        env.PATH = ["$(${pkgs.yarn}/bin/yarn global bin)"];
-      })
+        env.PATH = [ "$(${pkgs.yarn}/bin/yarn global bin)" ];
+      }
+    )
 
     (mkIf cfg.xdg.enable {
       env.NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/config";
