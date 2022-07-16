@@ -27,7 +27,7 @@ $module-padding: 10px;
 
 // Font config
 $font: "JetBrains Mono Nerd Font";
-$font-icon: "Font Awesome 6 Free, Font Awesome 5 Free";
+$font-icon: "Font Awesome 6 Free";
 $font-size: 15px;
 $font-weight: 500;
 
@@ -54,7 +54,7 @@ $bar-border-radius: 0px;
   margin-left: $module-margin;
   margin-right: $module-margin + $box-shadow-distance;
   padding: 0 $module-padding;
-
+  font-family: $font, $font-icon;
   background: colors.$bg;
   border-radius: $bar-border-radius;
 }

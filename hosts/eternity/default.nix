@@ -15,10 +15,9 @@
     };
 
     desktop = {
-      sway.enable = true;
-      #    dwm.enable = true;
+      dwm.enable = true;
       river.enable = true;
-
+      sway.enable = true;
       media = {
         vlc.enable = true;
         mpv.enable = true;
@@ -93,6 +92,12 @@
     "XKB_DEFAULT_LAYOUT" = "br";
 
   };
+
+  # Pulseaudio
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
+
+
   # Enable imwheel
   services.xserver.imwheel.enable = true;
 

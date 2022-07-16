@@ -1,76 +1,57 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
+{ inputs
+, config
+, lib
+, pkgs
+, ...
 }:
 with lib;
 with lib.my; let
   name = builtins.getEnv "USER";
-in {
+in
+{
   imports =
     # I use home-manager to deploy files to $HOME; little else
-    [inputs.home-manager.nixosModules.home-manager]
+    [ inputs.home-manager.nixosModules.home-manager ]
     # All my personal modules
     ++ (mapModulesRec' (toString ./modules) import);
 
   # Common config for all nixos machines; and to ensure the flake operates
   # soundly
   environment.variables = {
-  DOTFILES = config.dotfiles.dir;
-  DOTFILES_BIN = config.dotfiles.binDir;
+    DOTFILES = config.dotfiles.dir;
+    DOTFILES_BIN = config.dotfiles.binDir;
   };
- # Enable ntfs
-  boot.supportedFilesystems = ["ntfs"];
-
-  # Pipewire
-
-  # Remove sound.enable or turn it off if you had it set previously, it seems to cause conflicts with pipewire
-  sound.enable = false;
-
-  # # rtkit is optional but recommended
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    jack.enable = true;
-  };
-
-  # Pulseaudio
-
-  #  sound.enable = true;
-  #  hardware.pulseaudio.enable = true;
+  # Enable ntfs
+  boot.supportedFilesystems = [ "ntfs" ];
 
   # Configure nix and nixpkgs
   environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
-  nix = let
-    filteredInputs = filterAttrs (n: _: n != "self") inputs;
-    nixPathInputs = mapAttrsToList (n: v: "${n}=${v}") filteredInputs;
-    registryInputs = mapAttrs (_: v: {flake = v;}) filteredInputs;
-  in {
-    package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
-    nixPath =
-      nixPathInputs
-      ++ [
-        "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
-        "dotfiles=${config.dotfiles.dir}"
-      ];
-    registry = registryInputs // {dotfiles.flake = inputs.self;};
-    settings = {
-      substituters = [
-        "https://nix-community.cachix.org"
-      ];
-      trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
-      auto-optimise-store = true;
+  nix =
+    let
+      filteredInputs = filterAttrs (n: _: n != "self") inputs;
+      nixPathInputs = mapAttrsToList (n: v: "${n}=${v}") filteredInputs;
+      registryInputs = mapAttrs (_: v: { flake = v; }) filteredInputs;
+    in
+    {
+      package = pkgs.nixFlakes;
+      extraOptions = "experimental-features = nix-command flakes";
+      nixPath =
+        nixPathInputs
+        ++ [
+          "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
+          "dotfiles=${config.dotfiles.dir}"
+        ];
+      registry = registryInputs // { dotfiles.flake = inputs.self; };
+      settings = {
+        substituters = [
+          "https://nix-community.cachix.org"
+        ];
+        trusted-public-keys = [
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        ];
+        auto-optimise-store = true;
+      };
     };
-  };
   system.configurationRevision = with inputs; mkIf (self ? rev) self.rev;
   system.stateVersion = "21.05";
 
@@ -102,6 +83,13 @@ in {
       systemd-boot.enable = mkDefault true;
     };
   };
+  services.dbus.enable = true;
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = with pkgs; [ xdg-desktop-portal-wlr xdg-desktop-portal-gtk ];
+  };
+
   # Just the bear necessities...
   environment.systemPackages = with pkgs; [
     bind

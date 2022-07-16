@@ -22,7 +22,9 @@ func autorun(mwg *sync.WaitGroup) {
 	cmdList := []*exec.Cmd{
 		// Setting wallpaper (use 'ln -P' to an image here.)
 		// exec.Command("swaybg", "-m", "fill", "-i", config+"/wallpaper"),
-		exec.Command("swaybg", "-c", "#"+rosePine["base"]),
+		//exec.Command("swaybg", "-c", "#"+rosePine["base"]),
+		
+		exec.Command("swaybg", "-m", "fill", "-i", config+"/river/assets/ferris-wall.png"),
 
 		// I really hate this thing. But for now I cannot replace it! :(
 		// exec.Command("tor"),
@@ -101,7 +103,6 @@ func autorun(mwg *sync.WaitGroup) {
 		swg.Add(1)
 		go cmdStart(cmd, &swg)
 	}
-
 	swg.Wait()
 	mwg.Done()
 }

@@ -3,8 +3,8 @@
     "height": 45,
     "spacing": 0,
     "modules-left": [
-      "sway/workspaces",
-      "river/tags"
+        "sway/workspaces",
+        "river/tags"
     ],
     "modules-center": [
         "tray"
@@ -58,7 +58,7 @@
     },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format": " {:%I:%M %p}"
+        "format": " {:%I :%M %p}"
     },
     "clock#date": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -74,12 +74,12 @@
         "on-scroll-down": "xbacklight -dec 5"
     },
     "pulseaudio": {
-        "scroll-step": 5, 
+        "scroll-step": 5,
         "format": "{icon} {volume}% ",
         "format-muted": " Vol: Mute",
         "format-icons": {
             "default": [
-            "Vol:"
+                "Vol:"
             ]
         },
         "on-click": "pamixer -t",

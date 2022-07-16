@@ -22,70 +22,72 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    nixpkgs-unstable,
-    ...
-  }: let
-    inherit (lib.my) mapModules mapModulesRec mapHosts;
+  outputs =
+    inputs @ { self
+    , nixpkgs
+    , nixpkgs-unstable
+    , ...
+    }:
+    let
+      inherit (lib.my) mapModules mapModulesRec mapHosts;
 
-    system = "x86_64-linux";
+      system = "x86_64-linux";
 
-    mkPkgs = pkgs: extraOverlays:
-      import pkgs {
-        inherit system;
-        config.allowUnfree = true; # forgive me Stallman senpai
-        overlays = extraOverlays ++ (lib.attrValues self.overlays);
+      mkPkgs = pkgs: extraOverlays:
+        import pkgs {
+          inherit system;
+          config.allowUnfree = true; # forgive me Stallman senpai
+          overlays = extraOverlays ++ (lib.attrValues self.overlays);
+        };
+
+      pkgs = mkPkgs nixpkgs [ self.overlay ];
+      pkgs' = mkPkgs nixpkgs-unstable [ ];
+
+      lib =
+        nixpkgs.lib.extend
+          (self: super: {
+            my = import ./lib {
+              inherit pkgs inputs;
+              lib = self;
+            };
+          });
+    in
+    {
+      lib = lib.my;
+
+      overlay = final: prev: {
+        unstable = pkgs';
+        my = self.packages."${system}";
       };
 
-    pkgs = mkPkgs nixpkgs [self.overlay];
-    pkgs' = mkPkgs nixpkgs-unstable [];
+      overlays =
+        mapModules ./overlays import;
 
-    lib =
-      nixpkgs.lib.extend
-      (self: super: {
-        my = import ./lib {
-          inherit pkgs inputs;
-          lib = self;
-        };
-      });
-  in {
-    lib = lib.my;
+      packages."${system}" =
+        mapModules ./packages (p: pkgs.callPackage p { });
 
-    overlay = final: prev: {
-      unstable = pkgs';
-      my = self.packages."${system}";
+      nixosModules =
+        { dotfiles = import ./.; } // mapModulesRec ./modules import;
+
+      nixosConfigurations =
+        mapHosts ./hosts { };
+
+      devShell."${system}" =
+        import ./shell.nix { inherit pkgs; };
+
+      templates =
+        {
+          full = {
+            path = ./.;
+            description = "A grossly incandescent nixos config";
+          };
+        }
+        // import ./templates;
+      defaultTemplate = self.templates.full;
+
+      defaultApp."${system}" = {
+        type = "app";
+        program = ./bin/hey;
+      };
     };
-
-    overlays =
-      mapModules ./overlays import;
-
-    packages."${system}" =
-      mapModules ./packages (p: pkgs.callPackage p {});
-
-    nixosModules =
-      {dotfiles = import ./.;} // mapModulesRec ./modules import;
-
-    nixosConfigurations =
-      mapHosts ./hosts {};
-
-    devShell."${system}" =
-      import ./shell.nix {inherit pkgs;};
-
-    templates =
-      {
-        full = {
-          path = ./.;
-          description = "A grossly incandescent nixos config";
-        };
-      }
-      // import ./templates;
-    defaultTemplate = self.templates.full;
-
-    defaultApp."${system}" = {
-      type = "app";
-      program = ./bin/hey;
-    };
-  };
 }
