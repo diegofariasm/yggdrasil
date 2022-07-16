@@ -93,6 +93,18 @@
 
   };
 
+  home.packages = with pkgs; [
+    my.motrix
+    (makeDesktopItem {
+      name = "Motrix";
+      desktopName = "Motrix Download";
+      genericName = "Open the motrix client";
+      icon = "Motrix";
+      exec = "${my.motrix}/bin/Motrix ";
+      categories = [ "Network" ];
+    })
+  ];
+
   # Pulseaudio
   sound.enable = true;
   hardware.pulseaudio.enable = true;

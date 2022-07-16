@@ -41,6 +41,7 @@ in
       pavucontrol # Audio
       sxhkd # Keybinds
       my.luastatus # Status bar generator
+
     ];
 
     fonts.fonts = with pkgs; [

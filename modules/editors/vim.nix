@@ -20,7 +20,7 @@ in
     nixpkgs.overlays = [
       (import (builtins.fetchTarball {
         url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-        sha256 = "1pdkfz0m6i8gmyhkgpfmsf61mlzh5yj861s21zp9gcdd65pf38bk";
+        sha256 = "0kbvzafvm0jhpvm6xx4kz9sjl74dq79qvy3c8lj3vvkqxx6vjhcv";
       }))
     ];
 
