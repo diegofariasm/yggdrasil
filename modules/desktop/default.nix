@@ -30,7 +30,7 @@ in {
       }
     ];
 
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       feh # image viewer
       xclip
       xdotool

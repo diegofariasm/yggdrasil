@@ -232,7 +232,7 @@ in {
               cfg.onReload)}
         '');
       in {
-        user.packages = [reloadTheme];
+        home.packages = [reloadTheme];
         system.userActivationScripts.reloadTheme = ''
           [ -z "$NORELOAD" ] && ${reloadTheme}/bin/reloadTheme
         '';

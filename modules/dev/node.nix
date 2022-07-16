@@ -25,7 +25,7 @@ in
         node = pkgs.nodejs_latest;
       in
       mkIf cfg.enable {
-        user.packages = [
+        home.packages = [
           node
           pkgs.yarn
         ];

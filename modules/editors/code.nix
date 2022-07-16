@@ -23,7 +23,7 @@ in
           jnoortheen.nix-ide
         ];
       };
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       nixpkgs-fmt
     ];
   };

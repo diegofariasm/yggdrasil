@@ -41,7 +41,7 @@ in {
       promptInit = "";
     };
 
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       zsh
       nix-zsh-completions
       bat

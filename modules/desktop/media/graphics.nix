@@ -26,7 +26,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs;
+    home.packages = with pkgs;
       (
         if cfg.tools.enable
         then [

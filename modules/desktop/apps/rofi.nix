@@ -20,7 +20,7 @@ in {
     #   recursive = true;
     # };
 
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       (writeScriptBin "rofi" ''
         #!${stdenv.shell}
         exec ${pkgs.rofi}/bin/rofi -terminal xst -m -1 "$@"

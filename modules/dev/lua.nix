@@ -24,7 +24,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      user.packages = with pkgs; [
+      home.packages = with pkgs; [
         lua
         luaPackages.moonscript
         (mkIf cfg.love2D.enable love2d)

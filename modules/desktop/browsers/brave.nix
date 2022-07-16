@@ -17,7 +17,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       brave
       (makeDesktopItem {
         name = "brave-private";

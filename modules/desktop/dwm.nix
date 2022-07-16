@@ -37,7 +37,7 @@ in
       };
     };
 
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       pavucontrol # Audio
       sxhkd # Keybinds
       my.luastatus # Status bar generator

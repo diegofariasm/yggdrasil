@@ -24,7 +24,7 @@ in {
         });
       })
     ];
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       dmenu
     ];
   };

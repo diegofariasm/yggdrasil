@@ -17,7 +17,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       # spotify-tui is fine for selecting and playing music, but incomplete. We
       # still occasionally need the official client for more sophisticated
       # search and the "made for you" playlists.

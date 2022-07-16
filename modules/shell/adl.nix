@@ -18,7 +18,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       # Dependencies
       my.trackma
       my.anime-downloader

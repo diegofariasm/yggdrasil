@@ -14,6 +14,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = [pkgs.lm_sensors];
+    home.packages = [pkgs.lm_sensors];
   };
 }

@@ -18,7 +18,7 @@ in {
   };
 
   config = {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       (mkIf cfg.psx.enable epsxe)
       (mkIf cfg.ds.enable desmume)
       (mkIf (cfg.gba.enable

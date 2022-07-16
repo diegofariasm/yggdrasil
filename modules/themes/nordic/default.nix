@@ -68,7 +68,7 @@ in {
 
     # Desktop (X11) theming
     (mkIf config.services.xserver.enable {
-      user.packages = with pkgs; [
+      home.packages = with pkgs; [
         unstable.nordic
         tela-icon-theme # for rofi
       ];

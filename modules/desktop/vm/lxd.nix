@@ -17,7 +17,7 @@ in {
   config = mkIf cfg.enable {
     virtualisation.lxd.enable = true;
 
-    user.packages = [
+    home.packages = [
       (pkgs.writeScriptBin "lxc-build-nixos-image" ''
         #!/usr/bin/env nix-shell
         #!nix-shell -i bash -p nixos-generators

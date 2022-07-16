@@ -26,7 +26,7 @@ in {
   config = mkIf cfg.enable {
     nixpkgs.overlays = [inputs.emacs-overlay.overlay];
 
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       ## Emacs itself
       binutils # native-comp needs 'as', provided by this
       # 29 + pgtk + native-comp

@@ -23,7 +23,7 @@ in {
   config = mkIf cfg.enable {
     services.pipewire.jack.enable = true;
 
-    user.packages = with pkgs;
+    home.packages = with pkgs;
     # for recording and remastering audio
       (
         if cfg.audio.enable

@@ -23,7 +23,7 @@ in {
       [ "$TERM" = xst-256color ] && export TERM=xterm-256color
     '';
 
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       xst # st + nice-to-have extensions
       (makeDesktopItem {
         name = "xst";
