@@ -33,7 +33,7 @@ func keyBindings(mwg *sync.WaitGroup) {
 	// Default Apps
 	term := "st"
 	// browser := "vieb --proxy-server=\"localhost:7890\""
-	browser := "firefox"
+	browser := "microsoft-edge"
 	launcher := "rofi -show drun"
 	// launcher := "onagre"
 	netman := "networkmanager_dmenu"
@@ -43,7 +43,7 @@ func keyBindings(mwg *sync.WaitGroup) {
 	favoRofi := `awk '{print $1"|"$2" "$3" "$4" "$5}' ~/notes/bm.md | rofi -dmenu -display-column-separator "\|" -display-columns 2 | awk -F "|" '{print $1}' | wl-copy`
 	// List of Keybinings
 	allCMDs := []*exec.Cmd{
-		exec.Command(RIVERCTL, MAP, NORMAL, "Super", "R", SPAWN, config+"/river/init"),
+		exec.Command(RIVERCTL, MAP, NORMAL, "Super+Shift", "R", SPAWN, config+"/river/init"),
 		exec.Command(RIVERCTL, MAP, NORMAL, "Super", "Return", SPAWN, term),
 		exec.Command(RIVERCTL, MAP, NORMAL, "Super", "W", SPAWN, browser),
 		exec.Command(RIVERCTL, MAP, NORMAL, "Super", "D", SPAWN, launcher),

@@ -18,6 +18,7 @@
       dwm.enable = true;
       river.enable = true;
       sway.enable = true;
+
       media = {
         vlc.enable = true;
         mpv.enable = true;
@@ -29,20 +30,23 @@
         nautilus.enable = true;
         dmenu.enable = true;
         discord.enable = true;
+        thunar.enable = true;
+        dolphin.enable = true;
       };
 
       browsers = {
-        default = "google-chrome";
+        default = "microsoft-edge";
         edge.enable = true;
-        chrome.enable = true;
       };
 
       term = {
         default = "st";
         st.enable = true;
-        xst.enable = true;
-        kitty.enable = true;
       };
+      gaming = {
+        steam.enable = true;
+      };
+
     };
 
     dev = {
@@ -88,9 +92,9 @@
       autoRepeatInterval = 20;
     };
   };
+
   environment.variables = {
     "XKB_DEFAULT_LAYOUT" = "br";
-
   };
 
   home.packages = with pkgs; [
@@ -116,7 +120,6 @@
   ## Local config
   programs.ssh.startAgent = true;
   services.openssh.startWhenNeeded = true;
-  virtualisation.docker.enable = true;
 
   networking.networkmanager.enable = true;
 }

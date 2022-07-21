@@ -21,6 +21,8 @@ in
         extensions = with pkgs.vscode-extensions; [
           bbenoist.nix
           jnoortheen.nix-ide
+
+          ms-vscode.cpptools # For debugging
         ];
       };
     home.packages = with pkgs; [

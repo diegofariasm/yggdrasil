@@ -29,7 +29,6 @@ in
     };
 
     home.packages = with pkgs; [
-
       (river.overrideAttrs (prevAttrs: rec {
         postInstall =
           ''
@@ -38,12 +37,11 @@ in
           '';
         passthru.providedSessions = [ "river" ];
       }))
-
       rofi
       waybar
       wayland
       xwayland
-
+      swaybg
     ];
 
     services.xserver.displayManager.sessionPackages = [
