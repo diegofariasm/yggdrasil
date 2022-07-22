@@ -41,9 +41,6 @@
         default = "st";
         st.enable = true;
       };
-      gaming = {
-        steam.enable = true;
-      };
 
     };
 
@@ -126,6 +123,14 @@
   services.zfs.trim.enable = true;
   services.zfs.autoScrub.enable = true;
   services.zfs.autoScrub.pools = [ "rpool" ];
+
+  # Ram swap
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    priority = 200;
+  };
+
 
 
 }

@@ -64,13 +64,7 @@ in
   # here. Per-interface useDHCP will be mandatory in the future, so we enforce
   # this default behavior here.
   networking.useDHCP = mkDefault false;
-  # Ram swap
-  zramSwap = {
-    enable = true;
-    memoryPercent = 20;
-    algorithm = "zstd";
-    priority = 200;
-  };
+
   # Use the latest kernel
   boot = {
     # Normal kernel

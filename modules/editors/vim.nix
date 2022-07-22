@@ -29,7 +29,6 @@ in
       rnix-lsp # Language server for nix
       fennel
       fnlfmt
-      parinfer-rust
       gcc
       sumneko-lua-language-server
     ];
@@ -40,6 +39,7 @@ in
     };
 
     environment.shellAliases = {
+      vi = "nvim";
       vim = "nvim";
       v = "nvim";
     };

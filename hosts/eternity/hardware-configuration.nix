@@ -37,7 +37,10 @@
       fsType = "vfat";
     };
 
-  swapDevices = [ ];
+swapDevices =
+    [ { device = "/dev/disk/by-uuid/99d378ef-9388-4151-ac6a-1ddd4e370b96"; }
+    ];
+
 
   networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
   networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
