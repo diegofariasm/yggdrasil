@@ -13,37 +13,34 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.zfs.enableUnstable = true; # Required if running a newer kernel
+  boot.kernelParams = [ "nohibernate" ]; # To avoid filesystem corruption on hibernation
 
+  services.udev.extraRules = ''
+    ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
+  ''; # zfs already has its own scheduler. without this my(@Artturin) computer froze for a second when i nix build something.
   fileSystems."/" =
     {
-      device = "/dev/disk/by-uuid/22d4e53c-cf61-4f2f-a953-e5a4c415876a";
-      fsType = "ext4";
+      device = "rpool/root/nixos";
+      fsType = "zfs";
     };
 
   fileSystems."/home" =
     {
-      device = "/dev/disk/by-uuid/0a25fdef-5d9a-45c2-9e17-982e7f659eae";
-      fsType = "ext4";
+      device = "rpool/home";
+      fsType = "zfs";
     };
 
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/A813-926A";
+      device = "/dev/disk/by-uuid/154C-0E15";
       fsType = "vfat";
     };
 
-  swapDevices = [
-    { device = "/var/swap"; size = 8192; }
-  ];
-  boot.kernelParams = [ "nohibernate" ];
+  swapDevices = [ ];
 
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
+  networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
+  networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";

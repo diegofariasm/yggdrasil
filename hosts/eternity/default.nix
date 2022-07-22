@@ -17,13 +17,11 @@
     desktop = {
       dwm.enable = true;
       river.enable = true;
-      sway.enable = true;
 
       media = {
         vlc.enable = true;
         mpv.enable = true;
         nomacs.enable = true;
-        graphics.enable = true;
       };
       apps = {
         flameshot.enable = true;
@@ -122,4 +120,12 @@
   services.openssh.startWhenNeeded = true;
 
   networking.networkmanager.enable = true;
+  networking.hostId = "3c22fa78";
+
+  # ZFS maintenance settings.
+  services.zfs.trim.enable = true;
+  services.zfs.autoScrub.enable = true;
+  services.zfs.autoScrub.pools = [ "rpool" ];
+
+
 }
