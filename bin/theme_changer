@@ -3,11 +3,9 @@
 # Directory
 dwm_dir="$HOME/.config/dwm/dwm_xresources"
 dmenu_dir="$HOME/.config/dwm/dmenu_xresources"
+xresources_dir="$HOME/.config/dwm"
 wallpaper_dir="$HOME/.config/dwm/wallpaper"
 dwm_luastatus_dir="$HOME/.config/dwm/luastatus/colorscheme"
-alacritty_dir="$HOME/.config/alacritty"
-kitty_dir="$HOME/.config/kitty"
-zathura_dir="$HOME/.config/zathura"
 
 prompt="dmenu -l 9"
 
@@ -33,48 +31,14 @@ theme_change()
 	cp ${dmenu_dir}/$1 ${dmenu_dir}/theme
 	cp ${dwm_luastatus_dir}/$1.lua ${dwm_luastatus_dir}/color.lua
 	
-	cp ${alacritty_dir}/colorscheme/$1.yml ${alacritty_dir}/color.yml
-	cp ${kitty_dir}/colorscheme/$1.conf ${kitty_dir}/color.conf
-	cp ${zathura_dir}/theme/$1 ${zathura_dir}/theme.color
 	
-	if [[ "$1" == "cozy-night" ]]; then
-    # vim
-		sed -i "0,/colorscheme/{s/\(colorscheme\)\(.*\)/colorscheme tokyonight/}" .vimrc
-		sed -i "0,/'colorscheme'/{s/\('colorscheme':\)\(.*\)/\ 'colorscheme': 'tokyonight',/}" .vimrc
-
-    # nvim
-		sed -i "0,/colorscheme/{s/\(colorscheme\)\(.*\)/colorscheme tokyonight/}" ~/.config/nvim/lua/colorscheme.lua
-  elif [[ "$1" == "catppuccin_macchiato" ]]; then
-    # vim
-		sed -i "0,/colorscheme/{s/\(colorscheme\)\(.*\)/colorscheme catppuccin_macchiato/}" .vimrc
-		sed -i "0,/'colorscheme'/{s/\('colorscheme':\)\(.*\)/\ 'colorscheme': 'catppuccin_macchiato',/}" .vimrc
-
-    # nvim
-		sed -i "0,/colorscheme/{s/\(colorscheme\)\(.*\)/colorscheme catppuccin/}" ~/.config/nvim/lua/colorscheme.lua
-	else
-    # vim
-		sed -i "0,/colorscheme/{s/\(colorscheme\)\(.*\)/colorscheme $1/}" .vimrc
-		sed -i "s/\('colorscheme':\)\(.*\)/'colorscheme': '$1',/" .vimrc
-
-    # nvim
-		sed -i "0,/colorscheme/{s/\(colorscheme\)\(.*\)/colorscheme $1/}" ~/.config/nvim/lua/colorscheme.lua
-	fi
-
-	#make -s -C ${dwm_dir} clean
-	#bash $HOME/.bin/sudo_passhelper make -s -C ${dwm_dir} install
-	#make -s -C ${dwm_dir} clean
-	
-	xrdb -merge -I$HOME ~/.Xresources # reload Xresources
-	#kill -HUP dwmpid $dwm_pid # restart dwm
+	xrdb -merge -I$HOME ${xresources_dir}/.Xresources # reload Xresources
 
   # calls xrdb function in dwm
   xsetroot -name "fsignal:2"
   # update luastatus
   kill -9 $(pidof luastatus)
 
-	#make -s -C ${dwm_dir}/dmenu clean
-	#bash $HOME/.bin/sudo_passhelper make -s -C ${dmenu_dir} install
-	#make -s -C ${dmenu_dir} clean
 }
 
 select="$(echo -e "$option" | $prompt -p "Choose a theme: " )"

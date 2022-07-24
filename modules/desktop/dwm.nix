@@ -58,7 +58,7 @@ in
     ];
 
     home.configFile."dwm" = {
-      source = "${configDir}/junnun/dwm";
+      source = "${configDir}/dwm";
       recursive = true;
     };
   };

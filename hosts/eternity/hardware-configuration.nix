@@ -33,13 +33,13 @@
 
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/154C-0E15";
+      device = "/dev/disk/by-uuid/AB77-53E3";
       fsType = "vfat";
     };
 
-swapDevices =
-    [ { device = "/dev/disk/by-uuid/99d378ef-9388-4151-ac6a-1ddd4e370b96"; }
-    ];
+  swapDevices =
+    [{ device = "/dev/disk/by-uuid/b5a1f099-fea0-4168-beb1-5ba99b6336b1"; }];
+
 
 
   networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
