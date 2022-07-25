@@ -20,16 +20,12 @@
 
       media = {
         vlc.enable = true;
-        mpv.enable = true;
         nomacs.enable = true;
       };
       apps = {
-        flameshot.enable = true;
-        nautilus.enable = true;
         dmenu.enable = true;
-        discord.enable = true;
-        thunar.enable = true;
-        dolphin.enable = true;
+        qbit.enable = true;
+        nautilus.enable = true;
       };
 
       browsers = {
@@ -69,7 +65,7 @@
       mate-polkit.enable = true;
     };
 
-    theme.active = "nordic";
+    theme.active = "alucard";
   };
 
   i18n.defaultLocale = "en_US.UTF-8";

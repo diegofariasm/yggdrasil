@@ -1,14 +1,14 @@
-{
-  config,
-  options,
-  lib,
-  pkgs,
-  ...
+{ config
+, options
+, lib
+, pkgs
+, ...
 }:
 with lib;
 with lib.my; let
   cfg = config.modules.desktop.apps.nautilus;
-in {
+in
+{
   options.modules.desktop.apps.nautilus = {
     enable = mkBoolOpt false;
   };
@@ -20,8 +20,8 @@ in {
       imagemagick
     ];
     services = {
-    gvfs.enable = true; # Mount, trash, and other functionalities
-    tumbler.enable = true; # Thumbnail support for images
-      };
+      gvfs.enable = true; # Mount, trash, and other functionalities
+      tumbler.enable = true; # Thumbnail support for images
     };
-  }
+  };
+}

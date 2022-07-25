@@ -1,15 +1,15 @@
 # modules/themes/alucard/default.nix --- a regal dracula-inspired theme
-{
-  options,
-  config,
-  lib,
-  pkgs,
-  ...
+{ options
+, config
+, lib
+, pkgs
+, ...
 }:
 with lib;
 with lib.my; let
   cfg = config.modules.theme;
-in {
+in
+{
   config = mkIf (cfg.active == "alucard") (mkMerge [
     # Desktop-agnostic configuration
     {
@@ -49,19 +49,19 @@ in {
           };
         };
 
-        shell.zsh.rcFiles = [./config/zsh/prompt.zsh];
-        shell.tmux.rcFiles = [./config/tmux.conf];
+        shell.zsh.rcFiles = [ ./config/zsh/prompt.zsh ];
+        shell.tmux.rcFiles = [ ./config/tmux.conf ];
         desktop.browsers = {
           firefox.userChrome = concatMapStringsSep "\n" readFile [
             ./config/firefox/userChrome.css
           ];
           qutebrowser.userStyles =
             concatMapStringsSep "\n" readFile
-            (map toCSSFile [
-              ./config/qutebrowser/userstyles/monospace-textareas.scss
-              ./config/qutebrowser/userstyles/stackoverflow.scss
-              ./config/qutebrowser/userstyles/xkcd.scss
-            ]);
+              (map toCSSFile [
+                ./config/qutebrowser/userstyles/monospace-textareas.scss
+                ./config/qutebrowser/userstyles/stackoverflow.scss
+                ./config/qutebrowser/userstyles/xkcd.scss
+              ]);
         };
       };
     }
@@ -87,9 +87,9 @@ in {
       services.picom = {
         fade = true;
         fadeDelta = 1;
-        fadeSteps = [0.01 0.012];
+        fadeSteps = [ 0.01 0.012 ];
         shadow = true;
-        shadowOffsets = [(-10) (-10)];
+        shadowOffsets = [ (-10) (-10) ];
         shadowOpacity = 0.22;
         # activeOpacity = "1.00";
         # inactiveOpacity = "0.92";
