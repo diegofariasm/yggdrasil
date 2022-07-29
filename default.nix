@@ -68,9 +68,9 @@ in
   # Use the latest kernel
   boot = {
     # Normal kernel
-    # kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_5_18;
+    kernelPackages = mkDefault pkgs.linuxPackages_latest;
     # Zen kernel
-    kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
+    # kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
     loader = {
       efi.canTouchEfiVariables = mkDefault true;
       systemd-boot.configurationLimit = 10;

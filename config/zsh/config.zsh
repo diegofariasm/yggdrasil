@@ -5,7 +5,6 @@ if [[ $TERM == dumb || -n $INSIDE_EMACS ]]; then
   whence -w preexec >/dev/null && unfunction preexec
   PS1='$ '
 fi
-
 ## Plugins
 # zgen
 # we handle compinit ourselves...

@@ -1,13 +1,19 @@
+;;                               C A R B O N
+;;      _..._         _..._         _..._         _..._         _..._
+;;    .:::::::.     .::::. `.     .::::  `.     .::'   `.     .'     `.
+;;   :::::::::::   :::::::.  :   ::::::    :   :::       :   :         :
+;;   :::::::::::   ::::::::  :   ::::::    :   :::       :   :         :
+;;   `:::::::::'   `::::::' .'   `:::::   .'   `::.     .'   `.       .'
+;;     `':::''       `'::'-'       `'::.-'       `':..-'       `-...-'
+
+;; Colorscheme name:    IBM Carbon
+;; Description:         Neovim Colorscheme inspired from the IBM Carbon Palette in fennel
+;; Author:              https://github.com/shaunsingh
+;; Losely based off of IBM Carbon Palette (https://www.ibm.com/brand/experience-guides/developer/brand/color/)
+
 (require-macros :macros.highlight-macros)
-(import-macros {: set!} :macros.option-macros)
 (import-macros {: let!} :macros.variable-macros)
 
-;; theme
-(set! termguicolors)
-(set! background :dark)
-(set! guifont "Liga SFMono Nerd Font:h15")
-
-;; Losely based off of IBM Carbon Palette (https://www.ibm.com/brand/experience-guides/developer/brand/color/)
 (local carbon (or (and (= vim.o.background :dark)
                    {:base00 "#161616" ;; The origin color or the Carbon palette
                     :base01 "#262626" ;; A brighter shade color based on base00
@@ -227,8 +233,8 @@
 
 ;; Neovim-specific
 (custom-set-face! NvimInternalError [] {:fg carbon.base00 :bg carbon.base08})
-(custom-set-face! NormalFloat [] {:fg carbon.base05 :bg carbon.base00})
-(custom-set-face! FloatBorder [] {:fg carbon.base05 :bg carbon.base00})
+(custom-set-face! NormalFloat [] {:fg carbon.base05 :bg carbon.blend})
+(custom-set-face! FloatBorder [] {:fg carbon.blend :bg carbon.blend})
 (custom-set-face! NormalNC [] {:fg carbon.base05 :bg carbon.base00})
 (custom-set-face! TermCursor [] {:fg carbon.base00 :bg carbon.base04})
 (custom-set-face! TermCursorNC [] {:fg carbon.base00 :bg carbon.base04})
@@ -316,3 +322,13 @@
 (custom-set-face! GitSignsChange [] {:fg carbon.base09 :bg carbon.none})
 (custom-set-face! GitSignsDelete [] {:fg carbon.base14 :bg carbon.none})
 
+;; parinfer
+(custom-set-face! Trailhighlight [] {:fg carbon.base03 :bg carbon.none})
+
+;; hydra
+(custom-set-face! HydraRed [] {:fg carbon.base12 :bg carbon.none})
+(custom-set-face! HydraBlue [] {:fg carbon.base09 :bg carbon.none})
+(custom-set-face! HydraAmaranth [] {:fg carbon.base10 :bg carbon.none})
+(custom-set-face! HydraTeal [] {:fg carbon.base08 :bg carbon.none})
+(custom-set-face! HydraPink [] {:fg carbon.base14 :bg carbon.none})
+(custom-set-face! HydraHint [] {:fg carbon.none :bg carbon.blend})

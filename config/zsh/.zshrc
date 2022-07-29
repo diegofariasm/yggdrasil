@@ -27,7 +27,6 @@ if ! zgenom saved; then
   zgenom load zsh-users/zsh-completions src
   zgenom load zsh-users/zsh-autosuggestions
   zgenom load zsh-users/zsh-history-substring-search
-  zgenom load romkatv/powerlevel10k powerlevel10k
   zgenom load hlissner/zsh-autopair autopair.zsh
 
   zgenom save

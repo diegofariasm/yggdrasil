@@ -18,9 +18,13 @@ in
     nixpkgs.overlays = [
       (final: prev: {
         dwm = prev.dwm.overrideAttrs (old: {
-          src = pkgs.fetchzip {
-            url = "https://github.com/fushiii/dwm/archive/master.tar.gz";
-            sha256 = "GDFQOuh/Xg+Oz8+rmaPHJYwnCyRC4pXh8RmlHh0IJM4=";
+          preBuild = ''
+            NIX_CFLAGS_COMPILE+="-O3 -march=native"
+          '';
+          src = builtins.fetchTarball {
+            url = "https://github.com/fushiii/dwm/archive/3ee954dc05e122c0c5338e6c4b05af23fd93271d.tar.gz";
+            sha256 = "08n4aaya2dmr186pwyafyy91ch94y8si233y5j27c7nmz6qgbrsv";
+
           };
           nativeBuildInputs = with pkgs; [ xorg.libX11 imlib2 ];
         });

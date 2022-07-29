@@ -17,7 +17,6 @@
     desktop = {
       dwm.enable = true;
       river.enable = true;
-
       media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -57,7 +56,7 @@
       direnv.enable = true;
       git.enable = true;
       gnupg.enable = true;
-      fish.enable = true;
+      zsh.enable = true;
     };
 
     services = {
@@ -119,13 +118,6 @@
   services.zfs.trim.enable = true;
   services.zfs.autoScrub.enable = true;
   services.zfs.autoScrub.pools = [ "rpool" ];
-
-  # Ram swap
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-    priority = 200;
-  };
 
 
 

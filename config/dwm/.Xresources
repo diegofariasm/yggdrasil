@@ -3,12 +3,3 @@
 
 ! source dmenu colorscheme !
 #include ".config/dwm/dmenu_xresources/theme"
-
-! fonts config !
-Xft.dpi: 90
-Xft.antialias:	1
-Xft.hinting:	1
-Xft.autohint:	0
-Xft.hintstyle:	hintslight
-Xft.rgba:	rgb
-Xft.lcdfilter:	lcddefault

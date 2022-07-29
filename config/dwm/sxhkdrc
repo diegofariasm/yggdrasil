@@ -3,18 +3,6 @@
 super + Return
 	st
 
-# TDrop (scratchpad)
-super + shift + Return
-	tdrop -ma -A -w 50% -x 25% -s dropdown kitty
-
-# Lockscreen
-super + l
-	slock
-
-# Reload Keybindings
-super + BackSpace
-	pkill -USR1 -x sxhkd
-
 # change theme
 super + t
 	bash theme_changer
@@ -25,29 +13,22 @@ super + x
 
 # dmenu
 super + d
-	dmenu_run -l 9 -p "﩯" 
+	dmenu_run -l 9 -p "﩯"
 
 ##---------- Other programs or scripts (super + ctrl) ----------##
 
-# Color Picker
-super + ctrl + p
-	gpick
 
 ##---------- Applications (super + alt) ----------##
 
 # File Manager
 super + alt + f
-	thunar
+	nautilus
 
 # Browser
 super + alt + b
-	chromium
-super + alt + e
 	firefox
-
-# Terminal Apps
-super + alt + {v,n,h}
-	alacritty -e {vim,nnn -dHc,btm}
+super + alt + e
+	microsoft-edge
 
 ##---------- System Keys ----------##
 
@@ -58,7 +39,7 @@ Print
 # Take a screenshot with gui selection
 super + Print
 	flameshot gui
-	
+
 # Volume control
 
 alt + F1

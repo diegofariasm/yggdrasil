@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 while true; do
     dwm_statusbar
     echo "Killed, restarting..."

@@ -14,7 +14,12 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
   boot.zfs.enableUnstable = true; # Required if running a newer kernel
-  boot.kernelParams = [ "nohibernate" ]; # To avoid filesystem corruption on hibernation
+  boot.kernelParams = [
+    "nohibernate"
+    #   "zfs.zfs_arc_max=256000000"
+    #   "zfs.zfs.arc_min=128000000"
+
+  ]; # To avoid filesystem corruption on hibernation
 
   services.udev.extraRules = ''
     ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
@@ -33,19 +38,19 @@
 
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/AB77-53E3";
+      device = "/dev/disk/by-label/nixos-boot";
       fsType = "vfat";
     };
-
   swapDevices =
-    [{ device = "/dev/disk/by-uuid/b5a1f099-fea0-4168-beb1-5ba99b6336b1"; }];
-
-
+    [
+      { device = "/dev/disk/by-uuid/61c7010a-a0ba-466e-abab-9edfb5a16135"; }
+    ];
 
   networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
   networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
+  nixpkgs.hostPlatform = lib.mkDefault " x86_64-linux ";
+  powerManagement.cpuFreqGovernor = lib.mkDefault "performance ";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
+

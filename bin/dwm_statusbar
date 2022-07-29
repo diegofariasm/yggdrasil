@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+xrdb  -I$HOME $HOME/.config/dwm/.Xresources
+xsetroot -name "fsignal:2"
 
 luastatus -b dwm -B separator= \
     ~/.config/dwm/luastatus/module/alsa.lua \

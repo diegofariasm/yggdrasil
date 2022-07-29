@@ -1,5 +1,3 @@
-(local {: lazy-require!} (require :utils.lazy-require))
-
 (local {: insert} table)
 (local {: setup
         : mapping
@@ -7,13 +5,15 @@
         : complete
         :config {: compare : disable}
         :ItemField {:Kind kind :Abbr abbr :Menu menu}
-        :SelectBehavior {:Insert insert-behavior :Select select-behavior}
-        : event} (lazy-require! :cmp))
+        :SelectBehavior {:Insert insert-behavior :Select select-behavior}} (require :cmp))
 
-(local types (lazy-require! :cmp.types))
-(local under-compare (lazy-require! :cmp-under-comparator))
-
-(local {: lsp_expand : expand_or_jump : expand_or_jumpable : jump : jumpable} (lazy-require! :luasnip))
+(local types (require :cmp.types))
+(local under-compare (require :cmp-under-comparator))
+(local {: lsp_expand 
+        : expand_or_jump 
+        : expand_or_jumpable 
+        : jump 
+        : jumpable} (require :luasnip))
 
 ;; default icons (lspkind)
 (local icons {:Text ""
@@ -86,7 +86,7 @@
                   {:name :path}
                   {:name :buffer :option {:keyword_pattern "\\k\\+"}}
                   {:name :conjure}
-                  {:name :copilot}]
+                  {:name :crates}]
         :sorting {:comparators [compare.offset
                                 compare.exact
                                 compare.score

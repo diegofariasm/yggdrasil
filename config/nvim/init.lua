@@ -4,7 +4,6 @@
 local function fprint(string, ...)
     print(string.format(string, ...))
 end
-
 -- A function that verifies if the plugin passed as a parameter is installed,
 -- if it isn't it will be installed
 ---@param plugin string #the plugin, must follow the format `username/repository`
@@ -39,7 +38,6 @@ local function assert_installed_plugin(plugin, branch)
 end
 
 -- Install essential plugins
-assert_installed_plugin("folke/which-key.nvim")
 assert_installed_plugin("wbthomason/packer.nvim")
 assert_installed_plugin("rktjmp/hotpot.nvim", "nightly")
 
