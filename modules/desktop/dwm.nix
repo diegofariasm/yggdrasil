@@ -46,7 +46,8 @@ in
       sxhkd # Keybinds
       my.luastatus # Status bar generator
       picom
-
+      # uptime -p
+      procps
     ];
 
     fonts.fonts = with pkgs; [

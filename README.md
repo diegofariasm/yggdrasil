@@ -69,7 +69,7 @@ dotfiles over there.
    
    # Create a host config in `hosts/` and add it to the repo:
    mkdir -p hosts/$HOST
-   nixos-generate-config --root /mnt --dir /etc/dotfiles/hosts/$HOST
+   nixos-generate-config --root /mnt --dir hosts/$HOST
    rm -f hosts/$HOST/configuration.nix
    cp hosts/kuro/default.nix hosts/$HOST/default.nix
    vim hosts/$HOST/default.nix  # configure this for your system; don't use it verbatim!

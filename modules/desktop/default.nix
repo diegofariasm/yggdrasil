@@ -1,14 +1,14 @@
-{
-  config,
-  options,
-  lib,
-  pkgs,
-  ...
+{ config
+, options
+, lib
+, pkgs
+, ...
 }:
 with lib;
 with lib.my; let
   cfg = config.modules.desktop;
-in {
+in
+{
   config = mkIf config.services.xserver.enable {
     assertions = [
       {
@@ -16,9 +16,10 @@ in {
         message = "Can't have more than one desktop environment enabled at a time";
       }
       {
-        assertion = let
-          srv = config.services;
-        in
+        assertion =
+          let
+            srv = config.services;
+          in
           srv.xserver.enable
           || srv.sway.enable
           || !(anyAttrs
@@ -41,7 +42,7 @@ in {
         desktopName = "Calculator";
         icon = "calc";
         exec = ''scratch "${tmux}/bin/tmux new-session -s calc -n calc qalc"'';
-        categories = ["Development"];
+        categories = [ "Development" ];
       })
       qgnomeplatform # QPlatformTheme for a better Qt application inclusion in GNOME
       libsForQt5.qtstyleplugin-kvantum # SVG-based Qt5 theme engine plus a config tool and extra theme
@@ -110,7 +111,7 @@ in {
     };
 
     # Try really hard to get QT to respect my GTK theme.
-    env.GTK_DATA_PREFIX = ["${config.system.path}"];
+    env.GTK_DATA_PREFIX = [ "${config.system.path}" ];
     env.QT_QPA_PLATFORMTHEME = "gnome";
     env.QT_STYLE_OVERRIDE = "kvantum";
 
@@ -122,9 +123,9 @@ in {
     # Clean up leftovers, as much as we can
     system.userActivationScripts.cleanupHome = ''
       pushd "${config.user.home}"
-      rm -rf .compose-cache .nv .pki .dbus .fehbg
+      rm -rf .compose-cache .nv .pki .dbus
       [ -s .xsession-errors ] || rm -f .xsession-errors*
       popd
-    '';
+    ''; # .fehbg ^
   };
 }

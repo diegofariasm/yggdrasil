@@ -30,7 +30,10 @@ in
         ripgrep
         sumneko-lua-language-server
         luarocks
-      ];
+        # Needed for install
+        gcc
+        zig
+    ];
 
     home.configFile."nvim" = {
       source = "${configDir}/nvim";
