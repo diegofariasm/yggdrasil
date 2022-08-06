@@ -16,7 +16,6 @@
 
     desktop = {
       dwm.enable = true;
-      river.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -56,7 +55,7 @@
       direnv.enable = true;
       git.enable = true;
       gnupg.enable = true;
-      zsh.enable = true;
+      fish.enable = true;
     };
 
     services = {
@@ -87,17 +86,6 @@
     "XKB_DEFAULT_LAYOUT" = "br";
   };
 
-  home.packages = with pkgs; [
-    my.motrix
-    (makeDesktopItem {
-      name = "Motrix";
-      desktopName = "Motrix Download";
-      genericName = "Open the motrix client";
-      icon = "Motrix";
-      exec = "${my.motrix}/bin/Motrix ";
-      categories = [ "Network" ];
-    })
-  ];
 
   # Pulseaudio
   sound.enable = true;

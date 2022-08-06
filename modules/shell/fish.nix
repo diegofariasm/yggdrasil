@@ -17,7 +17,6 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       fasd # Necessary for plugin
-
     ];
 
     home.programs.exa = {
@@ -33,37 +32,10 @@ in
     programs.fish.enable = true;
     home.programs.fish = {
       enable = true;
-      plugins = [
-        # oh-my-fish plugins are stored in their own repositories, which
-        # makes them simple to import into home-manager.
-        {
-          name = "fasd";
-          src = pkgs.fetchFromGitHub {
-            owner = "oh-my-fish";
-            repo = "plugin-fasd";
-            rev = "38a5b6b6011106092009549e52249c6d6f501fba";
-            sha256 = "06v37hqy5yrv5a6ssd1p3cjd9y3hnp19d3ab7dag56fs1qmgyhbs";
-          };
-        }
-        {
-          name = "replay";
-          src = pkgs.fetchzip {
-            url = "https://github.com/jorgebucaran/replay.fish/archive/master.tar.gz";
-            sha256 = "bM6+oAd/HXaVgpJMut8bwqO54Le33hwO9qet9paK1kY=";
+    functions = {
+            fish_greeting = "";
 
-          };
-
-        }
-        {
-          name = "upto";
-          src = pkgs.fetchzip {
-            url = "https://github.com/Markcial/upto/archive/master.tar.gz";
-            sha256 = "bM6+oAd/HXaVgpJMut8bwqO54Le33hwO9qet9paK1kY=";
-          };
-        }
-
-
-      ];
+        };
     };
 
     users.defaultUserShell = pkgs.fish;

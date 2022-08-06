@@ -38,13 +38,13 @@
 
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-label/nixos-boot";
+      device = "/dev/disk/by-uuid/4369-3A37";
       fsType = "vfat";
     };
+
   swapDevices =
-    [
-      { device = "/dev/disk/by-uuid/61c7010a-a0ba-466e-abab-9edfb5a16135"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/4df8f461-b83a-4fbe-ab1b-de089ece2f0b"; }];
+
 
   networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
   networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
