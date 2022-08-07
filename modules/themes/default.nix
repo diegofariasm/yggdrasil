@@ -53,6 +53,7 @@ in {
   config = mkIf (cfg.active != null) (mkMerge [
 
     {
+      programs.dconf.enable = true;
       home.configFile = {
 
         # GTK

@@ -13,7 +13,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  boot.zfs.enableUnstable = true; # Required if running a newer kernel
+  # boot.zfs.enableUnstable = true; # Required if running a newer kernel
   boot.kernelParams = [
     "nohibernate"
     #   "zfs.zfs_arc_max=256000000"

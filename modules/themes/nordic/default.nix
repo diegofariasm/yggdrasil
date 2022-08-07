@@ -13,8 +13,8 @@ in {
         theme = {
           gtk = {
             theme = "Dracula";
-            iconTheme = "Paper";
-            cursorTheme = "Paper";
+            iconTheme = "Whitesur";
+            cursorTheme = "Whitesur";
           };
           fonts = {
             sans.name = "Fira Sans";
@@ -31,10 +31,24 @@ in {
 
     # Desktop (X11) theming
     (mkIf config.services.xserver.enable {
+      houseKeeper =
+        {
+          # Cursor configuration
+          home.pointerCursor = { package = pkgs.breeze-icons; gtk.enable = true; name = "breeze_cursors"; size = 24; };
+          # GTK configuration
+          gtk.enable = true;
+          gtk.iconTheme = { package = pkgs.breeze-icons; name = "Breeze"; };
+          gtk.theme = { package = pkgs.breeze-gtk; name = "Breeze"; };
+
+          xsession = { enable = true; };
+
+        };
 
       user.packages = with pkgs; [
         unstable.dracula-theme
-        paper-icon-theme # for rofi
+        whitesur-gtk-theme
+        whitesur-icon-theme
+
       ];
 
       fonts = {

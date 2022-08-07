@@ -68,7 +68,7 @@ in
   # Use the latest kernel
   boot = {
     # Normal kernel
-    kernelPackages = mkDefault pkgs.linuxPackages_latest;
+    # kernelPackages = mkDefault pkgs.linuxPackages_latest;
     # Zen kernel
     # kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
     loader = {

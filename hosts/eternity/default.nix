@@ -23,12 +23,13 @@
       apps = {
         dmenu.enable = true;
         qbit.enable = true;
-        nautilus.enable = true;
+        dolphin.enable = true;
       };
 
       browsers = {
         default = "microsoft-edge";
         edge.enable = true;
+        firefox.enable = true;
       };
 
       term = {
@@ -43,6 +44,7 @@
       rust.enable = true;
       python.enable = true;
       go.enable = true;
+    bun.enable = true;
     };
 
     editors = {
@@ -63,7 +65,7 @@
       mate-polkit.enable = true;
     };
 
-    theme.active = "alucard";
+    theme.active = "nordic";
   };
 
   i18n.defaultLocale = "en_US.UTF-8";

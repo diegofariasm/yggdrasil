@@ -31,14 +31,10 @@ in
       })
     ];
 
-    services = {
-      xserver = {
-        enable = true;
-        displayManager = {
-          lightdm.enable = true;
-        };
-        windowManager.dwm.enable = true;
-      };
+    services.xserver = {
+      enable = true;
+      displayManager.lightdm.enable = true;
+      windowManager.dwm.enable = true;
     };
 
     home.packages = with pkgs; [
