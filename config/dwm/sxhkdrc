@@ -5,11 +5,11 @@ super + Return
 
 # change theme
 super + t
-	bash theme_changer
+	bash dwm_theme_changer
 
 # powermenu
 super + x
-	bash powermenu
+	bash dwm_powermenu
 
 # dmenu
 super + d

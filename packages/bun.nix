@@ -1,12 +1,39 @@
 { stdenvNoCC, callPackage, fetchurl, autoPatchelfHook, unzip, openssl, lib }:
+let
+  dists = {
+    aarch64-darwin = {
+      arch = "aarch64";
+      shortName = "darwin";
+      sha256 = "c82547d96125bf93ae76dafe203cae5f7cd50d041bfb1cf972f9f0232a0d1cc1";
+    };
+
+    aarch64-linux = {
+      arch = "aarch64";
+      shortName = "linux";
+      sha256 = "3430f3ff456ee86ddb607a46ee937c9c1a02b8e4d2546de52b4493878f66afb8";
+    };
+
+    x86_64-darwin = {
+      arch = "x64";
+      shortName = "darwin";
+      sha256 = "51fb5f29b5f00207ede11c892ccf5bb3ab437b77e7420e1c18b7fc91e02e2494";
+    };
+
+    x86_64-linux = {
+      arch = "x64";
+      shortName = "linux";
+      sha256 = "00yyq7yjjkg8f3yblbhgvhaa10lda16k22x17gqj1yf2cnfrbj7c";
+    };
+  };
+  dist = dists.${stdenvNoCC.hostPlatform.system} or (throw "Unsupported system: ${stdenvNoCC.hostPlatform.system}");
+in
 stdenvNoCC.mkDerivation rec {
   version = "0.1.7";
   pname = "bun";
 
   src = fetchurl {
-    url = "https://github.com/Jarred-Sumner/bun-releases-for-updater/releases/download/bun-v${version}/bun-linux-x64.zip";
-    #url = "https://github.com/Jarred-Sumner/bun-releases-for-updater/releases/download/bun-v0.1.7/bun-linux-x64.zip";
-    sha256 = "00yyq7yjjkg8f3yblbhgvhaa10lda16k22x17gqj1yf2cnfrbj7c";
+    url = "https://github.com/Jarred-Sumner/bun-releases-for-updater/releases/download/bun-v${version}/bun-${dist.shortName}-${dist.arch}.zip";
+    sha256 = dist.sha256;
   };
 
   strictDeps = true;
@@ -38,3 +65,4 @@ stdenvNoCC.mkDerivation rec {
     platforms = builtins.attrNames dists;
   };
 }
+
