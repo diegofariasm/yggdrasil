@@ -31,18 +31,6 @@ in {
 
     # Desktop (X11) theming
     (mkIf config.services.xserver.enable {
-      houseKeeper =
-        {
-          # Cursor configuration
-          home.pointerCursor = { package = pkgs.breeze-icons; gtk.enable = true; name = "breeze_cursors"; size = 24; };
-          # GTK configuration
-          gtk.enable = true;
-          gtk.iconTheme = { package = pkgs.breeze-icons; name = "Breeze"; };
-          gtk.theme = { package = pkgs.breeze-gtk; name = "Breeze"; };
-
-          xsession = { enable = true; };
-
-        };
 
       user.packages = with pkgs; [
         unstable.dracula-theme
@@ -80,18 +68,6 @@ in {
           blur-kern = "7x7box";
           blur-strength = 900;
         };
-      };
-      home.configFile = {
-        "Dracula-purple-solid-kvantum" = {
-          recursive = true;
-          source = "${pkgs.unstable.dracula-theme}/share/themes/Dracula/kde/kvantum/Dracula-purple-solid";
-          target = "Kvantum/Dracula-purple-solid";
-        };
-        "kvantum.kvconfig" = {
-          text = "theme=Dracula-purple-solid";
-          target = "Kvantum/kvantum.kvconfig";
-        };
-
       };
 
     })

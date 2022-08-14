@@ -35,10 +35,10 @@ in
         zig
     ];
 
-    home.configFile."nvim" = {
-      source = "${configDir}/nvim";
-      recursive = true;
-    };
+#    home.configFile."nvim" = {
+#      source = "${configDir}/nvim";
+#      recursive = true;
+#    };
 
     environment.shellAliases = {
       vi = "nvim";

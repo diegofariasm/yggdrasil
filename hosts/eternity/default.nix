@@ -16,20 +16,23 @@
 
     desktop = {
       dwm.enable = true;
-      media = {
+      plasma.enable = true;
+     media = {
         vlc.enable = true;
         nomacs.enable = true;
       };
       apps = {
         dmenu.enable = true;
         qbit.enable = true;
-        dolphin.enable = true;
+         motrix.enable = true;
+        nautilus.enable = true;
       };
 
       browsers = {
         default = "microsoft-edge";
         edge.enable = true;
         firefox.enable = true;
+        brave.enable = true;
       };
 
       term = {
@@ -41,10 +44,10 @@
 
     dev = {
       node.enable = true;
+      bun.enable = true;
       rust.enable = true;
       python.enable = true;
       go.enable = true;
-    bun.enable = true;
     };
 
     editors = {

@@ -17,9 +17,9 @@ in {
     nixpkgs.overlays = [
       (final: prev: {
         st = prev.st.overrideAttrs (oldAttrs: {
-          src = pkgs.fetchzip {
-            url = "https://github.com/fushiii/st/archive/master.tar.gz";
-            sha256 = "NO4ShwfZQD9aTwPYtE8ULBbZ1Hld6oV9Ok9W1MPwQi8=";
+          src = builtins.fetchTarball {
+            url = "https://github.com/fushiii/st/archive/21345f72bc9a0a09b9f92da9061b36ce4cb5fd45.tar.gz";
+            sha256 = "11as4ph8dwfdnfg1kq9sc03rw4l86bz3gridm3dz3nf2v9kg57hg";
           };
           buildInputs = oldAttrs.buildInputs ++ [pkgs.harfbuzz];
         });
