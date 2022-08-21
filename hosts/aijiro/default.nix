@@ -30,7 +30,8 @@
       browsers = {
         default = "microsoft-edge";
         edge.enable = true;
-      };
+	surf.enable = true;
+};
 
       term = {
         default = "st";
@@ -44,6 +45,7 @@
       rust.enable = true;
       python.enable = true;
       go.enable = true;
+      bun.enable = true;
     };
 
     editors = {

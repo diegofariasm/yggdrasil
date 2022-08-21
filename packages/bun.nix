@@ -22,19 +22,24 @@ let
     x86_64-linux = {
       arch = "x64";
       shortName = "linux";
-      sha256 = "00yyq7yjjkg8f3yblbhgvhaa10lda16k22x17gqj1yf2cnfrbj7c";
+      sha256 = "XizlVCD1wZIh4YuKd/METxWMPGF134H/dUNspfRhaBI=";
     };
   };
   dist = dists.${stdenvNoCC.hostPlatform.system} or (throw "Unsupported system: ${stdenvNoCC.hostPlatform.system}");
 in
 stdenvNoCC.mkDerivation rec {
-  version = "0.1.7";
+  version = "0.1.9";
   pname = "bun";
 
   src = fetchurl {
     url = "https://github.com/Jarred-Sumner/bun-releases-for-updater/releases/download/bun-v${version}/bun-${dist.shortName}-${dist.arch}.zip";
     sha256 = dist.sha256;
   };
+  # For use with update-nix-fetchgit || Version bump
+  #  src = builtins.fetchTarball {
+  #	url = "https://github.com/Jarred-Sumner/bun-releases-for-updater/releases/download/bun-v0.1.9/bun-linux-x64.zip";
+  #	sha256 = "A4Z1BATIZON9xetl97bAuEp3xhmg18uslPTabd9Xr9g=";
+  #  };
 
   strictDeps = true;
   nativeBuildInputs = [ unzip ] ++ lib.optionals stdenvNoCC.isLinux [ autoPatchelfHook ];

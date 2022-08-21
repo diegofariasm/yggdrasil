@@ -5,8 +5,7 @@
 
 {
   imports =
-    [
-      (modulesPath + "/installer/scan/not-detected.nix")
+    [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
@@ -15,29 +14,23 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/cd6a22f2-7e86-4f14-a2e3-144d23b5f64a";
-      fsType = "ext4";
-    };
-
-  fileSystems."/home" =
-    {
-      device = "/dev/disk/by-uuid/2029d772-81ff-491d-8fbc-3a8452d8ab27";
+    { device = "/dev/disk/by-uuid/2a3192fb-e5f6-4f0f-9c32-6021e69b7fed";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/4369-3A37";
+    { device = "/dev/disk/by-uuid/5D63-C617";
       fsType = "vfat";
     };
 
-  swapDevices = [
-    {
-      device = "/var/swap";
-      size = 16392;
-    }
-  ];
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/e45c2cd4-6e9c-4fda-a198-f599e5528b7a";
+      fsType = "ext4";
+    };
+
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/3cfc62cc-5007-429d-9ad0-2dcfa75d8f43"; }
+    ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -51,4 +44,3 @@
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
-
