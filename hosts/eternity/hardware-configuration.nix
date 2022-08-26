@@ -13,37 +13,32 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  # boot.zfs.enableUnstable = true; # Required if running a newer kernel
   boot.kernelParams = [
     "nohibernate"
-    #   "zfs.zfs_arc_max=256000000"
-    #   "zfs.zfs.arc_min=128000000"
 
   ]; # To avoid filesystem corruption on hibernation
+  fileSystems = {
 
-  services.udev.extraRules = ''
-    ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
-  ''; # zfs already has its own scheduler. without this my(@Artturin) computer froze for a second when i nix build something.
-  fileSystems."/" =
+  "/" =
     {
-      device = "rpool/root/nixos";
-      fsType = "zfs";
+      device = "/dev/disk/by-label/nixos-root";
+      fsType = "ext4";
     };
 
-  fileSystems."/home" =
+  "/home" =
     {
-      device = "rpool/home";
-      fsType = "zfs";
+      device = "/dev/disk/by-label/nixos-home";
+      fsType = "ext4";
     };
 
-  fileSystems."/boot" =
+  "/boot" =
     {
-      device = "/dev/disk/by-uuid/4369-3A37";
+      device = "/dev/disk/by-label/nixos-boot";
       fsType = "vfat";
     };
-
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/4df8f461-b83a-4fbe-ab1b-de089ece2f0b"; }];
+  };
+   swapDevices =
+    [{ device = "/dev/disk/by-label/nixos-swap"; }];
 
 
   networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
