@@ -16,7 +16,7 @@
 
     desktop = {
       dwm.enable = true;
-      plasma.enable = true;
+      river.enable = true;
      media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -24,8 +24,9 @@
       apps = {
         dmenu.enable = true;
         qbit.enable = true;
-         motrix.enable = true;
-        nautilus.enable = true;
+        motrix.enable = true;
+        dolphin.enable = true;
+
       };
 
       browsers = {

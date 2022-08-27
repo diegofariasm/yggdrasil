@@ -36,14 +36,8 @@ in
       xclip
       xdotool
       xorg.xwininfo
-      libqalculate # calculator cli w/ currency conversion
-      (makeDesktopItem {
-        name = "scratch-calc";
-        desktopName = "Calculator";
-        icon = "calc";
-        exec = ''scratch "${tmux}/bin/tmux new-session -s calc -n calc qalc"'';
-        categories = [ "Development" ];
-      })
+
+      qt5ct
       qgnomeplatform # QPlatformTheme for a better Qt application inclusion in GNOME
       libsForQt5.qtstyleplugin-kvantum # SVG-based Qt5 theme engine plus a config tool and extra theme
     ];
@@ -112,7 +106,8 @@ in
 
     # Try really hard to get QT to respect my GTK theme.
     env.GTK_DATA_PREFIX = [ "${config.system.path}" ];
-    env.QT_QPA_PLATFORMTHEME = "gnome";
+    #env.QT_QPA_PLATFORMTHEME = "gnome";
+    env.QT_QPA_PLATFORMTHEME = "qt5ct";
     env.QT_STYLE_OVERRIDE = "kvantum";
 
     services.xserver.displayManager.sessionCommands = ''
