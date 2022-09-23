@@ -10,7 +10,7 @@
 
     home-manager = {
       url = "github:rycee/home-manager/master";
-      inputs.nixpkg.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix = {
       url = "github:ryantm/agenix";
