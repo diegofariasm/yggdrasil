@@ -27,9 +27,9 @@ option="$cancel\n$theme1\n$theme2\n$theme3\n$theme4\n$theme5\n$theme6"
 
 theme_change()
 {
-	cp ${dwm_dir}/$1 ${dwm_dir}/theme
-	cp ${dmenu_dir}/$1 ${dmenu_dir}/theme
-	cp ${dwm_luastatus_dir}/$1.lua ${dwm_luastatus_dir}/color.lua
+	cp -f ${dwm_dir}/$1 ${dwm_dir}/theme
+	cp -f ${dmenu_dir}/$1 ${dmenu_dir}/theme
+	cp -f ${dwm_luastatus_dir}/$1.lua ${dwm_luastatus_dir}/color.lua
 	
 	
 	xrdb -merge -I$HOME ${xresources_dir}/.Xresources # reload Xresources
