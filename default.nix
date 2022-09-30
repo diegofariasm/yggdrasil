@@ -33,7 +33,7 @@ in
       registryInputs = mapAttrs (_: v: { flake = v; }) filteredInputs;
     in
     {
-      package = pkgs.nixFlakes;
+      package = pkgs.nixVersions.stable;
       extraOptions = "experimental-features = nix-command flakes";
       nixPath =
         nixPathInputs
@@ -70,7 +70,7 @@ in
     # Normal kernel
     # kernelPackages = mkDefault pkgs.linuxPackages_latest;
     # Zen kernel
-    # kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
+    kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
     loader = {
       efi.canTouchEfiVariables = mkDefault true;
       systemd-boot.configurationLimit = 10;

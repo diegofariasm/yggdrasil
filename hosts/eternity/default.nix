@@ -17,14 +17,13 @@
     desktop = {
       dwm.enable = true;
       river.enable = true;
-     media = {
+      media = {
         vlc.enable = true;
         nomacs.enable = true;
       };
       apps = {
         dmenu.enable = true;
         qbit.enable = true;
-        motrix.enable = true;
         dolphin.enable = true;
 
       };
