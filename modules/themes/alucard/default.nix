@@ -67,18 +67,7 @@ in {
           blur-strength = 900;
         };
       };
-      home.configFile = {
-        "Dracula-purple-solid-kvantum" = {
-          recursive = true;
-          source = "${pkgs.unstable.dracula-theme}/share/themes/Dracula/kde/kvantum/Dracula-purple-solid";
-          target = "Kvantum/Dracula-purple-solid";
-        };
-        "kvantum.kvconfig" = {
-          text = "theme=Dracula-purple-solid";
-          target = "Kvantum/kvantum.kvconfig";
-        };
-
-      };
+    
 
     })
   ]);
