@@ -44,7 +44,6 @@
 
     dev = {
       node.enable = true;
-      bun.enable = true;
       rust.enable = true;
       python.enable = true;
       go.enable = true;
