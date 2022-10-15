@@ -46,9 +46,11 @@ in
     #    };
     
     home.configFile."nvim" = {
-      source = pkgs.fetchzip {
+      source = pkgs.fetchgit {
         url = "https://github.com/shaunsingh/nyoom.nvim";
-        sha256 = "1xfax18y4ddafzmwqp8qfs6k34nh163bwjxb7llvls5hxr79vr9s";
+        rev = "4ce896218dca6624d507bba3d37609877276b168";
+	sha256 = "TCgIiCeyu4yZEpjp/D+qLdBdLlU9qtlpCQpOKANsT+E=";
+	leaveDotGit = true;
       };
       recursive = true;
     };
