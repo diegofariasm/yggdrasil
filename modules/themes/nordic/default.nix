@@ -13,8 +13,8 @@ in {
         theme = {
           gtk = {
             theme = "Dracula";
-            iconTheme = "Whitesur";
-            cursorTheme = "Whitesur";
+            iconTheme = "Paper";
+            cursorTheme = "Paper";
           };
           fonts = {
             sans.name = "Fira Sans";
@@ -34,9 +34,7 @@ in {
 
       user.packages = with pkgs; [
         unstable.dracula-theme
-        whitesur-gtk-theme
-        whitesur-icon-theme
-
+        paper-icon-theme # for rofi
       ];
 
       fonts = {
@@ -68,6 +66,18 @@ in {
           blur-kern = "7x7box";
           blur-strength = 900;
         };
+      };
+        home.configFile = {
+        "Dracula-purple-solid-kvantum" = {
+          recursive = true;
+          source = "${pkgs.unstable.dracula-theme}/share/themes/Dracula/kde/kvantum/Dracula-purple-solid";
+          target = "Kvantum/Dracula-purple-solid";
+        };
+        "kvantum.kvconfig" = {
+          text = "theme=Dracula-purple-solid";
+          target = "Kvantum/kvantum.kvconfig";
+        };
+
       };
 
     })

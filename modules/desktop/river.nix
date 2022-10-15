@@ -10,8 +10,8 @@ with lib.my; let
   configDir = config.dotfiles.configDir;
   riverSession = ''
     [Desktop Entry]
-    Name=River
-    Comment=Dynamic Wayland compositor
+    Name=none+river
+    Comment=Dynamic wayland compositor
     Exec=river
     Type=Application
   '';

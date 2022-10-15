@@ -36,15 +36,26 @@ in
       ];
 
     #    home.configFile."nvim" = {
-    #      source = "${configDir}/nvim";
+    #      source = pkgs.fetchFromGitHub {
+    #        owner = "yrashk";
+    #        repo = "calendar";
+    #        sha256 = "1xfax18y4ddafzmwqp8qfs6k34nh163bwjxb7llvls5hxr79vr9s";
+    #        rev = "1ed19a3";
+    #      };
     #      recursive = true;
     #    };
-
+    
+    home.configFile."nvim" = {
+      source = pkgs.fetchzip {
+        url = "https://github.com/shaunsingh/nyoom.nvim";
+        sha256 = "1xfax18y4ddafzmwqp8qfs6k34nh163bwjxb7llvls5hxr79vr9s";
+      };
+      recursive = true;
+    };
     environment.shellAliases = {
       vi = "nvim";
       vim = "nvim";
       v = "nvim";
     };
-
   };
 }

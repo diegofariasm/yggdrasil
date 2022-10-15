@@ -1,14 +1,9 @@
-{ config
-, options
-, lib
-, pkgs
-, ...
-}:
+{ config, options, lib, pkgs, ... }:
+
 with lib;
-with lib.my; let
-  cfg = config.modules.desktop;
-in
-{
+with lib.my;
+let cfg = config.modules.desktop;
+in {
   config = mkIf config.services.xserver.enable {
     assertions = [
       {
@@ -17,28 +12,24 @@ in
       }
       {
         assertion =
-          let
-            srv = config.services;
-          in
-          srv.xserver.enable
-          || srv.sway.enable
-          || !(anyAttrs
-            (n: v:
-              isAttrs v
-              && anyAttrs (n: v: isAttrs v && v.enable))
-            cfg);
+          let srv = config.services;
+          in srv.xserver.enable ||
+             srv.sway.enable ||
+             !(anyAttrs
+               (n: v: isAttrs v &&
+                      anyAttrs (n: v: isAttrs v && v.enable))
+               cfg);
         message = "Can't enable a desktop app without a desktop environment";
       }
     ];
 
-    home.packages = with pkgs; [
-      feh # image viewer
+    user.packages = with pkgs; [
+      feh       # image viewer
       xclip
       xdotool
       xorg.xwininfo
-
-      qt5ct
-      qgnomeplatform # QPlatformTheme for a better Qt application inclusion in GNOME
+      qgnomeplatform        # QPlatformTheme for a better Qt application inclusion in GNOME
+      libsForQt5.qtstyleplugin-kvantum # SVG-based Qt5 theme engine plus a config tool and extra theme
     ];
 
     fonts = {
@@ -105,7 +96,8 @@ in
 
     # Try really hard to get QT to respect my GTK theme.
     env.GTK_DATA_PREFIX = [ "${config.system.path}" ];
-    env.QT_QPA_PLATFORMTHEME = "qt5ct";
+    env.QT_QPA_PLATFORMTHEME = "gnome";
+    env.QT_STYLE_OVERRIDE = "kvantum";
 
     services.xserver.displayManager.sessionCommands = ''
       # GTK2_RC_FILES must be available to the display manager.
@@ -119,5 +111,6 @@ in
       [ -s .xsession-errors ] || rm -f .xsession-errors*
       popd
     ''; # .fehbg ^
+    
   };
 }

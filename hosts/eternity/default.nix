@@ -17,22 +17,21 @@
     desktop = {
       dwm.enable = true;
       river.enable = true;
-      media = {
+
+media = {
         vlc.enable = true;
         nomacs.enable = true;
       };
       apps = {
         dmenu.enable = true;
         qbit.enable = true;
-        dolphin.enable = true;
-
+	thunar.enable = true;
       };
 
       browsers = {
-        default = "microsoft-edge";
-        edge.enable = true;
+        default = "firefox";
         firefox.enable = true;
-        brave.enable = true;
+        chromium.enable = true;
       };
 
       term = {
