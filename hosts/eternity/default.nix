@@ -18,14 +18,15 @@
       dwm.enable = true;
       river.enable = true;
 
-media = {
+      media = {
         vlc.enable = true;
         nomacs.enable = true;
       };
       apps = {
+        droidcam.enable = true;
         dmenu.enable = true;
         qbit.enable = true;
-	thunar.enable = true;
+        thunar.enable = true;
       };
 
       browsers = {
@@ -37,11 +38,13 @@ media = {
       term = {
         default = "st";
         st.enable = true;
+        kitty.enable = true;
       };
 
     };
 
     dev = {
+      cc.enable = true;
       node.enable = true;
       rust.enable = true;
       python.enable = true;

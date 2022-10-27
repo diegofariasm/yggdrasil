@@ -24,36 +24,23 @@ in
     home.packages = with pkgs;
       [
         neovim-unwrapped
-        rnix-lsp # Language server for nix
-        fennel
-        fnlfmt
-        ripgrep
-        sumneko-lua-language-server
-        luarocks
-        # Needed for install
-        gcc
-        zig
+        # Language servers
+        rnix-lsp # Nix
+        sumneko-lua-language-server # Lua
+        nodePackages.bash-language-server # Bash
       ];
 
-    #    home.configFile."nvim" = {
-    #      source = pkgs.fetchFromGitHub {
-    #        owner = "yrashk";
-    #        repo = "calendar";
-    #        sha256 = "1xfax18y4ddafzmwqp8qfs6k34nh163bwjxb7llvls5hxr79vr9s";
-    #        rev = "1ed19a3";
-    #      };
-    #      recursive = true;
-    #    };
-    
     home.configFile."nvim" = {
       source = pkgs.fetchgit {
         url = "https://github.com/shaunsingh/nyoom.nvim";
         rev = "4ce896218dca6624d507bba3d37609877276b168";
-	sha256 = "TCgIiCeyu4yZEpjp/D+qLdBdLlU9qtlpCQpOKANsT+E=";
-	leaveDotGit = true;
+        sha256 = "TCgIiCeyu4yZEpjp/D+qLdBdLlU9qtlpCQpOKANsT+E=";
+        leaveDotGit = true;
+        fetchSubmodules = false;
       };
       recursive = true;
     };
+    env.PATH = [ "$HOME/.config/nvim/bin" ];
     environment.shellAliases = {
       vi = "nvim";
       vim = "nvim";

@@ -1,7 +1,7 @@
 ##---------- System (super / super + shift) ----------##
 # Terminal
 super + Return
-	st
+	kitty --single-instance
 
 # change theme
 super + t
@@ -20,15 +20,12 @@ super + d
 
 ##---------- Applications (super + alt) ----------##
 
-# File Manager
 super + alt + f
-	nautilus
+	thunar
 
 # Browser
 super + alt + b
 	firefox
-super + alt + e
-	microsoft-edge
 
 ##---------- System Keys ----------##
 
