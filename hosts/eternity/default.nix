@@ -25,14 +25,13 @@
       apps = {
         droidcam.enable = true;
         dmenu.enable = true;
-        qbit.enable = true;
         thunar.enable = true;
+        neofetch.enable = true;
       };
 
       browsers = {
-        default = "firefox";
-        firefox.enable = true;
-        chromium.enable = true;
+        default = "microsoft-edge";
+        edge.enable = true;
       };
 
       term = {
