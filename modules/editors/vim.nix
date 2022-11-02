@@ -24,12 +24,16 @@ in
     home.packages = with pkgs;
       [
         neovim-unwrapped
+
+        # -- Language Servers  -- #
+        rnix-lsp
+
       ];
 
     home.configFile."nvim" = {
       source = builtins.fetchTarball {
-        url = "https://github.com/fushiii/nyoom.nvim/archive/823b0971ebbee5cb9a65a75fa05373ef80aa6052.tar.gz";
-        sha256 = "1hkqkpghpg6c8qx5zhpjp1zwd02zgx0wdw8k8n0n4wni6zy23qay";
+        url = "https://github.com/fushiii/nyoom.nvim/archive/3cf0e44a42e9f5f0e96b0f65ee6056cba02d37ec.tar.gz";
+        sha256 = "05xn2mv7r7pv00gc8v6bm8y0dz959j2jrkncx5gdyqxvxfxx8zhv";
       };
       recursive = true;
     };
