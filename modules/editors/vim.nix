@@ -24,22 +24,16 @@ in
     home.packages = with pkgs;
       [
         neovim-unwrapped
-        # Language servers
-        rnix-lsp # Nix
-        sumneko-lua-language-server # Lua
-        nodePackages.bash-language-server # Bash
       ];
 
     home.configFile."nvim" = {
-      source = pkgs.fetchgit {
-        url = "https://github.com/shaunsingh/nyoom.nvim";
-        rev = "4ce896218dca6624d507bba3d37609877276b168";
-        sha256 = "TCgIiCeyu4yZEpjp/D+qLdBdLlU9qtlpCQpOKANsT+E=";
-        leaveDotGit = true;
-        fetchSubmodules = false;
+      source = builtins.fetchTarball {
+        url = "https://github.com/fushiii/nyoom.nvim/archive/823b0971ebbee5cb9a65a75fa05373ef80aa6052.tar.gz";
+        sha256 = "1hkqkpghpg6c8qx5zhpjp1zwd02zgx0wdw8k8n0n4wni6zy23qay";
       };
       recursive = true;
     };
+
     env.PATH = [ "$HOME/.config/nvim/bin" ];
     environment.shellAliases = {
       vi = "nvim";
