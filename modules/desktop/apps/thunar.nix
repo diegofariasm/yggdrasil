@@ -15,9 +15,13 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-	xfce.thunar
-	ffmpegthumbnailer
-	];
+      xfce.thunar
+      # For open terminal here, open with...
+      xfce.exo
+      # For thumbnails
+      ffmpegthumbnailer
+
+    ];
     services = {
       gvfs.enable = true; # Mount, trash, and other functionalities
       tumbler.enable = true;

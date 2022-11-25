@@ -24,14 +24,13 @@
       apps = {
         dmenu.enable = true;
         qbit.enable = true;
-        nautilus.enable = true;
       };
 
       browsers = {
         default = "microsoft-edge";
         edge.enable = true;
-	surf.enable = true;
-};
+        surf.enable = true;
+      };
 
       term = {
         default = "st";

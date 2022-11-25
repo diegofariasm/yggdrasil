@@ -30,7 +30,11 @@ in
         python310Packages.black
         python310Packages.setuptools
         python310Packages.pylint
+        python310Packages.wheel
         python310Packages.poetry
+        # Language server
+        nodePackages.pyright
+
       ];
 
       environment.shellAliases = {

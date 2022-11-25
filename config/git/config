@@ -3,7 +3,7 @@
 	name = fushiii
 	email = fushitheimortal@gmail.com
 
-[includeIf "gitdir:~/code/personal/"]
+[includeIf "gitdir:~/personal/"]
   path = ./gitconfig-personal
-[includeIf "gitdir:~/code/work/"]
+[includeIf "gitdir:~/work/"]
   path = ./gitconfig-work

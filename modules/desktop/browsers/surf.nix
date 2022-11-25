@@ -1,4 +1,3 @@
-# modules/browser/brave.nix --- https://publishers.basicattentiontoken.org
 { options
 , config
 , lib
@@ -16,8 +15,8 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-	surf
-	];
+      surf
+    ];
 
   };
 }

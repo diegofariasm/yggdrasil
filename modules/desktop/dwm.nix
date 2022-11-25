@@ -22,8 +22,8 @@ in
             NIX_CFLAGS_COMPILE+="-O3 -march=native"
           '';
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dwm/archive/9191551f1f4abdf95dd14178a3ba68d0e8a3339a.tar.gz";
-            sha256 = "0v32z2s4rpxnyy60mmdimrcvcz9r0fwllwhbi6c96hwwhfdyyphh";
+            url = "https://github.com/fushiii/dwm/archive/37e273fd1bbb6439f5dfd712ee17c553821989e6.tar.gz";
+            sha256 = "0ibijh925c5463iviln3ijap7ffvpp9r9qf7nd9i3h3s11qps3iz";
 
           };
           nativeBuildInputs = with pkgs; [ xorg.libX11 imlib2 ];
@@ -38,12 +38,10 @@ in
     };
 
     home.packages = with pkgs; [
-      pavucontrol # Audio
-      sxhkd # Keybinds
       my.luastatus # Status bar generator
-      picom
-      # uptime -p
-      procps
+      sxhkd # Keybinds
+      picom # Pretty visual effects
+      procps # dmenu uptime
     ];
 
     fonts.fonts = with pkgs; [
@@ -59,9 +57,14 @@ in
       })
     ];
 
-    home.configFile."dwm" = {
-      source = "${configDir}/dwm";
-      recursive = true;
+    home.configFile = {
+
+      "dwm" = {
+        source = "${configDir}/dwm";
+        recursive = true;
+      };
+      "picom.conf".source = "${configDir}/dwm/picom.conf";
     };
+
   };
 }

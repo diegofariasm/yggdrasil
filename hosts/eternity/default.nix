@@ -12,16 +12,17 @@
   modules = {
     hardware = {
       intel.enable = true;
+      audio.enable = true;
     };
 
     desktop = {
       dwm.enable = true;
-      river.enable = true;
 
       media = {
         vlc.enable = true;
         nomacs.enable = true;
       };
+
       apps = {
         droidcam.enable = true;
         dmenu.enable = true;
@@ -32,12 +33,14 @@
       browsers = {
         default = "microsoft-edge";
         edge.enable = true;
+        chromium.enable = true;
+        firefox.enable = true;
+        brave.enable = true;
       };
 
       term = {
         default = "st";
         st.enable = true;
-        kitty.enable = true;
       };
 
     };
@@ -66,11 +69,13 @@
     services = {
       ssh.enable = true;
       mate-polkit.enable = true;
+      teamviewer.enable = true;
     };
 
     theme.active = "nordic";
   };
 
+  # TTY config
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     earlySetup = true;
@@ -91,12 +96,6 @@
     "XKB_DEFAULT_LAYOUT" = "br";
   };
 
-
-  # Pulseaudio
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-
-
   # Enable imwheel
   services.xserver.imwheel.enable = true;
 
@@ -105,12 +104,7 @@
   services.openssh.startWhenNeeded = true;
 
   networking.networkmanager.enable = true;
-  networking.hostId = "3c22fa78";
 
-  # ZFS maintenance settings.
-  services.zfs.trim.enable = true;
-  services.zfs.autoScrub.enable = true;
-  services.zfs.autoScrub.pools = [ "rpool" ];
 
 
 

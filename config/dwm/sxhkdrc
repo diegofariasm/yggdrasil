@@ -1,8 +1,7 @@
 ##---------- System (super / super + shift) ----------##
 # Terminal
 super + Return
-	kitty --single-instance
-
+    st
 # change theme
 super + t
 	bash dwm_theme_changer

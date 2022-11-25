@@ -32,8 +32,8 @@ in
 
     home.configFile."nvim" = {
       source = builtins.fetchTarball {
-        url = "https://github.com/fushiii/nyoom.nvim/archive/3cf0e44a42e9f5f0e96b0f65ee6056cba02d37ec.tar.gz";
-        sha256 = "05xn2mv7r7pv00gc8v6bm8y0dz959j2jrkncx5gdyqxvxfxx8zhv";
+        url = "https://github.com/shaunsingh/nyoom.nvim/archive/ec3faaacb52207e99c54a66e04f5425adb772faa.tar.gz";
+        sha256 = "0r3xwrjw07f8n35fb3s9w4kkavsciqwsw408bfi7vdfyax5fxc5x";
       };
       recursive = true;
     };

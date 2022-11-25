@@ -71,7 +71,6 @@ in
     # kernelPackages = mkDefault pkgs.linuxPackages_latest;
     # Zen kernel
     kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
-
     loader = {
       efi.canTouchEfiVariables = mkDefault true;
       systemd-boot.configurationLimit = 5;

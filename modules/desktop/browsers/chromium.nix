@@ -1,4 +1,3 @@
-# modules/browser/chrome.nix --- https://publishers.basicattentiontoken.org
 { options
 , config
 , lib
@@ -16,7 +15,7 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-    	chromium
+      chromium
     ];
 
   };
