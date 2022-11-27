@@ -13,6 +13,7 @@
     hardware = {
       intel.enable = true;
       audio.enable = true;
+      fs.enable = true;
     };
 
     desktop = {
@@ -24,23 +25,21 @@
       };
 
       apps = {
-        droidcam.enable = true;
         dmenu.enable = true;
         thunar.enable = true;
         neofetch.enable = true;
       };
 
       browsers = {
-        default = "microsoft-edge";
+        default = "firefox";
         edge.enable = true;
-        chromium.enable = true;
         firefox.enable = true;
-        brave.enable = true;
       };
 
       term = {
-        default = "st";
+        default = "kitty";
         st.enable = true;
+        kitty.enable = true;
       };
 
     };

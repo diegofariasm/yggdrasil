@@ -19,25 +19,25 @@
   ]; # To avoid filesystem corruption on hibernation
   fileSystems = {
 
-  "/" =
-    {
-      device = "/dev/disk/by-label/nixos-root";
-      fsType = "ext4";
-    };
+    "/" =
+      {
+        device = "/dev/disk/by-label/nixos-root";
+        fsType = "ext4";
+      };
 
-  "/home" =
-    {
-      device = "/dev/disk/by-label/nixos-home";
-      fsType = "ext4";
-    };
+    "/home" =
+      {
+        device = "/dev/disk/by-label/nixos-home";
+        fsType = "ext4";
+      };
 
-  "/boot" =
-    {
-      device = "/dev/disk/by-label/nixos-boot";
-      fsType = "vfat";
-    };
+    "/boot" =
+      {
+        device = "/dev/disk/by-label/nixos-boot";
+        fsType = "vfat";
+      };
   };
-   swapDevices =
+  swapDevices =
     [{ device = "/dev/disk/by-label/nixos-swap"; }];
 
 
@@ -45,7 +45,7 @@
   networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault " x86_64-linux ";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "performance ";
+  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
 

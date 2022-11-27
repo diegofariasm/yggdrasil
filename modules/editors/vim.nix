@@ -19,30 +19,44 @@ in
   };
 
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [ inputs.neovim-nightly-overlay.overlay ];
+    nixpkgs.overlays = [
+      inputs.neovim-nightly-overlay.overlay
+    ];
 
-    home.packages = with pkgs;
-      [
-        neovim-unwrapped
+    home.programs.neovim = {
 
-        # -- Language Servers  -- #
+      enable = true;
+      package = pkgs.neovim-unwrapped;
+
+      # Setting the aliases
+      viAlias = true;
+      vimAlias = true;
+      vimdiffAlias = true;
+
+      extraPackages = with pkgs; [
         rnix-lsp
-
+        nodePackages.bash-language-server
+        sumneko-lua-language-server
       ];
 
+
+      plugins = with pkgs.vimPlugins; [
+        hydra-nvim
+        gitsigns-nvim
+      ];
+
+
+    };
     home.configFile."nvim" = {
       source = builtins.fetchTarball {
-        url = "https://github.com/shaunsingh/nyoom.nvim/archive/ec3faaacb52207e99c54a66e04f5425adb772faa.tar.gz";
-        sha256 = "0r3xwrjw07f8n35fb3s9w4kkavsciqwsw408bfi7vdfyax5fxc5x";
+        url = "https://github.com/fushiii/nyoom.nvim/archive/4dd5fea32a6394098d2e479624b8118871b7cf91.tar.gz";
+        sha256 = "092n8cwh7zwyrpmqridpa3xc3aan9bid18wqpz3bhyii34gvc4dg";
       };
       recursive = true;
     };
 
+    # adds the nyom bin to the shell path
     env.PATH = [ "$HOME/.config/nvim/bin" ];
-    environment.shellAliases = {
-      vi = "nvim";
-      vim = "nvim";
-      v = "nvim";
-    };
+
   };
 }

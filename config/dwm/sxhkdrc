@@ -1,48 +1,23 @@
-##---------- System (super / super + shift) ----------##
 # Terminal
 super + Return
-    st
+    kitty --single-instance
 # change theme
 super + t
-	bash dwm_theme_changer
-
+    bash dwm_theme_changer
 # powermenu
 super + x
-	bash dwm_powermenu
-
+    bash dwm_powermenu
 # dmenu
 super + d
-	dmenu_run -l 9 -p "﩯"
-
-##---------- Other programs or scripts (super + ctrl) ----------##
-
-
-##---------- Applications (super + alt) ----------##
-
-super + alt + f
-	thunar
-
-# Browser
-super + alt + b
-	firefox
-
-##---------- System Keys ----------##
-
-# Take a screenshot
-Print
-	flameshot full -p $HOME/Pictures/SS/
-
-# Take a screenshot with gui selection
-super + Print
-	flameshot gui
+    dmenu_run -l 9 -p "﩯"
 
 # Volume control
 
 alt + F1
-  pamixer -d 5 --allow-boost #to increase 5%
+    pamixer -d 5 --allow-boost #to increase 5%
 alt + F2
-	pamixer -i 5 --allow-boost #to increase 5%
+    pamixer -i 5 --allow-boost #to increase 5%
 alt + F3
-  pamixer Master -t
+    pamixer Master -t
 alt + F4
-  pavucontrol
+    pavucontrol

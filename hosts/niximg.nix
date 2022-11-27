@@ -1,8 +1,7 @@
-{
-  modulesPath,
-  pkgs,
-  config,
-  ...
+{ modulesPath
+, pkgs
+, config
+, ...
 }: {
   imports = [
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
@@ -11,9 +10,9 @@
   # In case of proprietary wireless drivers
   nixpkgs.config.allowUnfree = true;
   hardware.enableRedistributableFirmware = true;
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_18;
-  boot.kernelModules = ["wl"];
-  boot.extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_0;
+  boot.kernelModules = [ "wl" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
 
   environment.systemPackages = with pkgs; [
     nixFlakes

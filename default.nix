@@ -21,8 +21,6 @@ in
     DOTFILES = config.dotfiles.dir;
     DOTFILES_BIN = config.dotfiles.binDir;
   };
-  #  NTFS support
-  boot.supportedFilesystems = [ "ntfs" ];
 
   # Configure nix and nixpkgs
   environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
