@@ -7,11 +7,15 @@
 with lib;
 with lib.my; let
   name = builtins.getEnv "USER";
+
 in
 {
   imports =
     # I use home-manager to deploy files to $HOME; little else
-    [ inputs.home-manager.nixosModules.home-manager ]
+    [
+      inputs.home-manager.nixosModules.home-manager
+      inputs.nur.nixosModules.nur
+    ]
     # All my personal modules
     ++ (mapModulesRec' (toString ./modules) import);
 

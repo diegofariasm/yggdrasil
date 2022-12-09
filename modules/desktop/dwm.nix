@@ -1,5 +1,6 @@
 { pkgs
 , config
+, inputs
 , lib
 , options
 , ...
@@ -15,6 +16,7 @@ in
   };
 
   config = mkIf cfg.enable {
+
     nixpkgs.overlays = [
       (final: prev: {
         dwm = prev.dwm.overrideAttrs (old: {
@@ -227,6 +229,7 @@ in
       procps # dmenu uptime
       picom
       pamixer
+      config.nur.repos.mic92.hello-nur
     ];
 
     fonts.fonts = with pkgs; [
