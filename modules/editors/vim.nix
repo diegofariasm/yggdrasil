@@ -37,6 +37,7 @@ in
         rnix-lsp
         nodePackages.bash-language-server
         sumneko-lua-language-server
+        vimPlugins.nvim-treesitter
       ];
 
 
@@ -47,13 +48,16 @@ in
 
 
     };
-    home.configFile."nvim" = {
-      source = builtins.fetchTarball {
-        url = "https://github.com/fushiii/nyoom.nvim/archive/4dd5fea32a6394098d2e479624b8118871b7cf91.tar.gz";
-        sha256 = "092n8cwh7zwyrpmqridpa3xc3aan9bid18wqpz3bhyii34gvc4dg";
-      };
-      recursive = true;
-    };
+    home.packages = with pkgs; [
+      neovide
+    ];
+    #home.configFile."nvim" = {
+    # source = builtins.fetchTarball {
+    #    url = "https://github.com/fushiii/nyoom.nvim/archive/4dd5fea32a6394098d2e479624b8118871b7cf91.tar.gz";
+    #    sha256 = "092n8cwh7zwyrpmqridpa3xc3aan9bid18wqpz3bhyii34gvc4dg";
+    #  };
+    #  recursive = true;
+    #};
 
     # adds the nyom bin to the shell path
     env.PATH = [ "$HOME/.config/nvim/bin" ];

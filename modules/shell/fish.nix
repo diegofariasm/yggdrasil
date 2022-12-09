@@ -19,6 +19,7 @@ in
       fasd # Necessary for plugin
       my.icomoon # Font for starship config
       curl # For the gitignore command
+      grc # Tex colourizer
     ];
 
     home.programs = {

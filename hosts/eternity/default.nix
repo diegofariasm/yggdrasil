@@ -18,7 +18,6 @@
 
     desktop = {
       dwm.enable = true;
-
       media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -28,6 +27,7 @@
         dmenu.enable = true;
         thunar.enable = true;
         neofetch.enable = true;
+        qbit.enable = true;
       };
 
       browsers = {
@@ -71,7 +71,7 @@
       teamviewer.enable = true;
     };
 
-    theme.active = "nordic";
+    theme.active = "alucard";
   };
 
   # TTY config

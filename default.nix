@@ -63,11 +63,7 @@ in
   # this default behavior here.
   networking.useDHCP = mkDefault false;
 
-  # Use the latest kernel
   boot = {
-    # Normal kernel
-    # kernelPackages = mkDefault pkgs.linuxPackages_latest;
-    # Zen kernel
     kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
     loader = {
       efi.canTouchEfiVariables = mkDefault true;
@@ -78,16 +74,13 @@ in
 
   # Just the bear necessities...
   environment.systemPackages = with pkgs; [
-    bind
-    cached-nix-shell
-    update-nix-fetchgit # For updating the sha256/commit number on a nix flake
     git
     vim
+    btop
     wget
-    gnumake
     unzip
     killall
-    pamixer
-    btop # pretty good top visualizer
+    cached-nix-shell
+    update-nix-fetchgit # For updating the sha256/commit number on a nix flake
   ];
 }

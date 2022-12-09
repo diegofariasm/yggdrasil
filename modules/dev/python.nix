@@ -25,13 +25,13 @@ in
     (mkIf cfg.enable {
       home.packages = with pkgs; [
         python310
+        poetry
         python310Packages.pip
         python310Packages.ipython
         python310Packages.black
         python310Packages.setuptools
         python310Packages.pylint
         python310Packages.wheel
-        python310Packages.poetry
         # Language server
         nodePackages.pyright
 

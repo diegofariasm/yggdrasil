@@ -10,7 +10,7 @@
   # In case of proprietary wireless drivers
   nixpkgs.config.allowUnfree = true;
   hardware.enableRedistributableFirmware = true;
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_0;
+  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   boot.kernelModules = [ "wl" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
 
