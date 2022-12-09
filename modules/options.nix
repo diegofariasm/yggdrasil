@@ -22,7 +22,6 @@ with lib.my; {
       modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
       themesDir = mkOpt path "${config.dotfiles.modulesDir}/themes";
     };
-    houseKeeper = mkOpt' attrs { } "House manager alias";
 
     home = {
       file = mkOpt' attrs { } "Files to place directly in $HOME";
@@ -64,7 +63,6 @@ with lib.my; {
         group = "users";
         uid = 1000;
       };
-
     # Install user packages to /etc/profiles instead. Necessary for
     # nixos-rebuild build-vm to work.
     home-manager = {
@@ -78,15 +76,10 @@ with lib.my; {
       #   home.configFile  ->  home-manager.users.fushi.home.xdg.configFile
       #   home.dataFile    ->  home-manager.users.fushi.home.xdg.dataFile
       #   home.programs    ->  home-manager.users.fushi.programs
-      users.${config.user.name} = mkAliasDefinitions options.houseKeeper;
+      users.${config.user.name} = {
 
-    };
-
-    houseKeeper =
-      {
         programs = mkAliasDefinitions options.home.programs;
         home = {
-
           file = mkAliasDefinitions options.home.file;
           packages = mkAliasDefinitions options.home.packages;
 
@@ -94,11 +87,13 @@ with lib.my; {
           # look for a nixpkgs channel.
           stateVersion = config.system.stateVersion;
         };
+
         xdg = {
           configFile = mkAliasDefinitions options.home.configFile;
           dataFile = mkAliasDefinitions options.home.dataFile;
         };
       };
+    };
 
 
     users.users.${config.user.name} = mkAliasDefinitions options.user;
