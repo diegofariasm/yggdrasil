@@ -1,32 +1,7 @@
-[![Made with Doom Emacs](https://img.shields.io/badge/Made_with-Doom_Emacs-blueviolet.svg?style=flat-square&logo=GNU%20Emacs&logoColor=white)](https://github.com/hlissner/doom-emacs)
-[![NixOS Unstable](https://img.shields.io/badge/NixOS-unstable-blue.svg?style=flat-square&logo=NixOS&logoColor=white)](https://nixos.org)
+*Never should have come here!*
 
-**Hey,** you. You're finally awake. You were trying to configure your OS
-declaratively, right? Walked right into that NixOS ambush, same as us, and those
-dotfiles over there.
+Really. You shouldn't be here. Go to hlissner instead.
 
-> **Disclaimer:** _This is not a community framework or distribution._ It's a
-> private configuration and an ongoing experiment to feel out NixOS. I make no
-> guarantees that it will work out of the box for anyone but myself. It may also
-> change drastically and without warning.
->
-> Until I can bend spoons with my nix-fu, please don't treat me like an
-> authority or expert in the NixOS space. Seek help on [the NixOS
-> discourse](https://discourse.nixos.org) instead.
-
-------
-|                |                                                          |
-|----------------|----------------------------------------------------------|
-| **Shell:**     | zsh + zgenom                                             |
-| **DM:**        | lightdm + lightdm-mini-greeter                           |
-| **WM:**        | bspwm + polybar                                          |
-| **Editor:**    | [Doom Emacs][doom-emacs]                                 |
-| **Terminal:**  | st                                                       |
-| **Launcher:**  | rofi                                                     |
-| **Browser:**   | firefox                                                  |
-| **GTK Theme:** | [Ant Dracula](https://github.com/EliverLara/Ant-Dracula) |
-
------
 
 ## Quick start
 
@@ -113,65 +88,6 @@ Options:
     -h, --help                       Display this help, or help for a specific command
     -i, -A, -q, -e, -p               Forward to nix-env
 ```
-
-## Frequently asked questions
-
-+ **Why NixOS?**
-
-  Because managing hundreds of servers is the tenth circle of hell without a
-  declarative, generational, and immutable single-source-of-truth configuration
-  framework like NixOS.
-
-  Sure beats the nightmare of capistrano/chef/puppet/ansible + brittle shell
-  scripts I left behind.
-
-+ **Should I use NixOS?**
-
-  **Short answer:** no.
-
-  **Long answer:** no really. Don't.
-
-  **Long long answer:** I'm not kidding. Don't.
-
-  **Unsigned long long answer:** Alright alright. Here's why not:
-
-  - Its learning curve is steep.
-  - You _will_ trial and error your way to enlightenment, if you survive long
-    enough.
-  - NixOS is unlike other Linux distros. Your issues will be unique and
-    difficult to google.
-  - If the words "declarative", "generational", and "immutable" don't make you
-    _fully_ erect, you're considering NixOS for the wrong reasons.
-  - The overhead of managing a NixOS config will rarely pay for itself with
-    fewer than 3 systems (perhaps another distro with nix on top would suit you
-    better?).
-  - Official documentation for Nix(OS) is vast, but shallow.
-  - Unofficial resources and example configs are sparse and tend to be either
-    too simple or too complex (or outdated).
-  - The Nix language is obtuse and its toolchain is unintuitive. This is made
-    infinitely worse if you've never touched the shell or a functional language
-    before, but you'll _need_ to learn it to do even a fraction of what makes
-    NixOS worth all the trouble.
-  - A decent grasp of Linux and its ecosystem is a must, if only to distinguish
-    Nix(OS) issues from Linux (or upstream) issues -- as well as to debug them
-    or report them to the correct authority (and coherently).
-  - If you need somebody else to tell you whether or not you need NixOS, you
-    don't need NixOS.
-
-  If none of this has deterred you, then you didn't need my advice in the first
-  place. Stop procrastinating and try NixOS!
-
-+ **How do you manage secrets?**
-
-  With [agenix].
-
-+ **Why did you write bin/hey?**
-
-  I envy Guix's CLI and want similar for NixOS, whose toolchain is spread across
-  many commands, none of which are as intuitive: `nix`, `nix-collect-garbage`,
-  `nixos-rebuild`, `nix-env`, `nix-shell`.
-
-  I don't claim `hey` is the answer, but everybody likes their own brew.
 
 + **How 2 flakes?**
 
