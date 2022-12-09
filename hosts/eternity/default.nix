@@ -21,6 +21,7 @@
       media = {
         vlc.enable = true;
         nomacs.enable = true;
+        mpv.enable = true;
       };
 
       apps = {
