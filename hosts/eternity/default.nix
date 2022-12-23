@@ -25,7 +25,6 @@
       };
 
       apps = {
-        dmenu.enable = true;
         thunar.enable = true;
         qbit.enable = true;
         droidcam.enable = true;

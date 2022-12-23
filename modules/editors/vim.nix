@@ -38,12 +38,15 @@ in
       #  ];
 
       extraPackages = with pkgs; [
+        # Utils needed by nyoom
+        tree-sitter
         # Formatters for the nvim config
         fnlfmt
         # Utils needed by plugins 
         fzf
         # Language servers 
         rnix-lsp
+
       ];
 
     };
