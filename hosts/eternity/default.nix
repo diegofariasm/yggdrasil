@@ -27,8 +27,8 @@
       apps = {
         dmenu.enable = true;
         thunar.enable = true;
-        neofetch.enable = true;
         qbit.enable = true;
+        droidcam.enable = true;
       };
 
       browsers = {
@@ -38,9 +38,8 @@
       };
 
       term = {
-        default = "kitty";
+        default = "st";
         st.enable = true;
-        kitty.enable = true;
       };
 
     };
@@ -63,7 +62,7 @@
       direnv.enable = true;
       git.enable = true;
       gnupg.enable = true;
-      fish.enable = true;
+      zsh.enable = true;
     };
 
     services = {
@@ -84,12 +83,10 @@
     keyMap = "br-abnt2";
   };
 
-  services = {
-    xserver = {
-      layout = "br";
-      autoRepeatDelay = 300;
-      autoRepeatInterval = 20;
-    };
+  services.xserver = {
+    layout = "br";
+    autoRepeatDelay = 300;
+    autoRepeatInterval = 20;
   };
 
   environment.variables = {

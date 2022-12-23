@@ -1,19 +1,19 @@
 # modules/dev/clojure.nix --- https://clojure.org/
 #
 # I don't use clojure... yet.
-{
-  config,
-  options,
-  lib,
-  pkgs,
-  my,
-  ...
+{ config
+, options
+, lib
+, pkgs
+, my
+, ...
 }:
 with lib;
 with lib.my; let
   devCfg = config.modules.dev;
   cfg = devCfg.clojure;
-in {
+in
+{
   options.modules.dev.clojure = {
     enable = mkBoolOpt false;
     xdg.enable = mkBoolOpt devCfg.xdg.enable;
@@ -22,8 +22,9 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home.packages = with pkgs; [
-        clojure
         joker
+        zprint
+        clojure
         leiningen
       ];
     })

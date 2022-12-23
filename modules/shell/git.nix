@@ -33,6 +33,5 @@ in
       "git/gitconfig-personal".source = "${configDir}/git/gitconfig-personal";
     };
 
-    modules.shell.zsh.rcFiles = [ "${configDir}/git/aliases.zsh" ];
   };
 }

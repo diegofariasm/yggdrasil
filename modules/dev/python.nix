@@ -24,8 +24,9 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home.packages = with pkgs; [
-        python310
+        isort
         poetry
+        python310
         python310Packages.pip
         python310Packages.ipython
         python310Packages.black
@@ -37,7 +38,7 @@ in
 
       ];
 
-      environment.shellAliases = {
+      home.programs.fish.shellAliases = {
         py = "python";
         py2 = "python2";
         py3 = "python3";

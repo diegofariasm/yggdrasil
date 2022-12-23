@@ -24,7 +24,6 @@ in
     ];
 
     home.programs.neovim = {
-
       enable = true;
       package = pkgs.neovim-unwrapped;
 
@@ -33,33 +32,23 @@ in
       vimAlias = true;
       vimdiffAlias = true;
 
+      #  plugins = with pkgs; [
+      #    # TODO find way of only installing the needed grammars
+      #    (vimPlugins.nvim-treesitter.withPlugins (plugins: tree-sitter.allGrammars))
+      #  ];
+
       extraPackages = with pkgs; [
+        # Formatters for the nvim config
+        fnlfmt
+        # Utils needed by plugins 
+        fzf
+        # Language servers 
         rnix-lsp
-        nodePackages.bash-language-server
-        sumneko-lua-language-server
-        vimPlugins.nvim-treesitter
       ];
-
-
-      plugins = with pkgs.vimPlugins; [
-        hydra-nvim
-        gitsigns-nvim
-      ];
-
 
     };
-    home.packages = with pkgs; [
-      neovide
-    ];
-    #home.configFile."nvim" = {
-    # source = builtins.fetchTarball {
-    #    url = "https://github.com/fushiii/nyoom.nvim/archive/4dd5fea32a6394098d2e479624b8118871b7cf91.tar.gz";
-    #    sha256 = "092n8cwh7zwyrpmqridpa3xc3aan9bid18wqpz3bhyii34gvc4dg";
-    #  };
-    #  recursive = true;
-    #};
 
-    # adds the nyom bin to the shell path
+    # adds the nyoom bin to the shell path
     env.PATH = [ "$HOME/.config/nvim/bin" ];
 
   };

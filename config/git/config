@@ -1,8 +1,3 @@
-# Default in case i am not in any of the directories specified
-[user]
-	name = fushiii
-	email = fushitheimortal@gmail.com
-
 [includeIf "gitdir:~/personal/"]
   path = ./gitconfig-personal
 [includeIf "gitdir:~/work/"]

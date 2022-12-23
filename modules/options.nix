@@ -29,7 +29,7 @@ with lib.my; {
       dataFile = mkOpt' attrs { } "Files to place in $XDG_DATA_HOME";
       programs = mkOpt' attrs { } "Programs to install";
       packages = mkOpt' attrs { } "Packages to install";
-
+      services = mkOpt' attrs { } "Services to install";
     };
 
     env = mkOption {
@@ -77,7 +77,7 @@ with lib.my; {
       #   home.dataFile    ->  home-manager.users.fushi.home.xdg.dataFile
       #   home.programs    ->  home-manager.users.fushi.programs
       users.${config.user.name} = {
-
+        services = mkAliasDefinitions options.home.services;
         programs = mkAliasDefinitions options.home.programs;
         home = {
           file = mkAliasDefinitions options.home.file;

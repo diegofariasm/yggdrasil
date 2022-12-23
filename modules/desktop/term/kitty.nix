@@ -17,9 +17,10 @@ in
 
       font = {
         name = "Jetbrains Mono";
-        size = 12;
+        size = 14;
         package = pkgs.jetbrains-mono;
       };
+
       keybindings =
         let
           kitty_mod = "alt";

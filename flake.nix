@@ -7,7 +7,6 @@
     # Core dependencies.
     nixpkgs.url = "nixpkgs/nixos-unstable"; # primary nixpkgs
     nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable"; # for packages on the edge
-    nur.url = github:nix-community/NUR;
 
     home-manager = {
       url = "github:rycee/home-manager/master";

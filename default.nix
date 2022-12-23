@@ -14,7 +14,6 @@ in
     # I use home-manager to deploy files to $HOME; little else
     [
       inputs.home-manager.nixosModules.home-manager
-      inputs.nur.nixosModules.nur
     ]
     # All my personal modules
     ++ (mapModulesRec' (toString ./modules) import);
@@ -68,7 +67,7 @@ in
   networking.useDHCP = mkDefault false;
 
   boot = {
-    kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
+    kernelPackages = mkDefault pkgs.linuxPackages_latest;
     loader = {
       efi.canTouchEfiVariables = mkDefault true;
       systemd-boot.configurationLimit = 5;
