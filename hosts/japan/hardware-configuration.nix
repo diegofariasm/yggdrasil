@@ -9,11 +9,16 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
- 
+ boot = {
+    initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" "nvme" ];
+    initrd.kernelModules = [ "dm-snapshot" ];
+    kernelModules = [ "kvm-intel" "wl" ];
+    extraModulePackages = [ ];
+
+    # Refuse ICMP echo requests on my desktop/laptop; nobody has any business
+    # pinging them, unlike my servers.
+    kernel.sysctl."net.ipv4.icmp_echo_ignore_broadcasts" = 1;
+  };
   fileSystems = {
 
     "/" =
@@ -49,7 +54,7 @@
 
 
   nixpkgs.hostPlatform = lib.mkDefault " x86_64-linux ";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
 
