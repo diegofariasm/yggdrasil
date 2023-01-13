@@ -44,6 +44,13 @@
   networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
   networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
+  # Hopefully makes snapiness better
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+  };
+
+
   nixpkgs.hostPlatform = lib.mkDefault " x86_64-linux ";
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

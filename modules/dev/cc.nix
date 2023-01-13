@@ -21,14 +21,9 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       user.packages = with pkgs; [
+        gcc
         clang
         clang-tools
-        gcc
-        bear
-        gdb
-        cmake
-        gnumake
-        llvmPackages.libcxx
       ];
     })
 

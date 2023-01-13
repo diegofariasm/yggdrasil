@@ -30,6 +30,8 @@ with lib.my; {
       programs = mkOpt' attrs { } "Programs to install";
       packages = mkOpt' attrs { } "Packages to install";
       services = mkOpt' attrs { } "Services to install";
+      gtk = mkOpt' attrs { } "Gtk configs";
+
     };
 
     env = mkOption {
@@ -79,6 +81,7 @@ with lib.my; {
       users.${config.user.name} = {
         services = mkAliasDefinitions options.home.services;
         programs = mkAliasDefinitions options.home.programs;
+        gtk = mkAliasDefinitions options.home.gtk;
         home = {
           file = mkAliasDefinitions options.home.file;
           packages = mkAliasDefinitions options.home.packages;

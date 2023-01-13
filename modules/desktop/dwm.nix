@@ -24,8 +24,8 @@ in
             NIX_CFLAGS_COMPILE+="-O3 -march=native"
           '';
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dwm/archive/7801c03280435c45d2e7c72bbe8a3146c229760b.tar.gz";
-            sha256 = "0hjvwcagpdvngm1x7ja9xbsw8wv0293dcd8jsmg2z71fn0mvnry8";
+            url = "https://github.com/fushiii/dwm/archive/1d9fd566d1a599b2b9e558447197db9737cdb819.tar.gz";
+            sha256 = "1g2hjzayd5ydpbvw6y5rf04cfsd1nb6m0dikl1lbz9ay1f9y3rws";
           };
           buildInputs = with pkgs; oldAttrs.buildInputs ++ [
             imlib2
@@ -34,14 +34,6 @@ in
         });
       })
 
-      (final: prev: {
-        dmenu = prev.dmenu.overrideAttrs (oldAttrs: {
-          src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dmenu/archive/1049c793127fc0eef15a530513c2fe4bcc82eedd.tar.gz";
-            sha256 = "04x859k4m6nddl4fl3cdjd29syr2zwb648nhvg4gbcakf5n5g1ln";
-          };
-        });
-      })
       (final: prev: {
         slock = prev.slock.overrideAttrs (oldAttrs: {
           src = builtins.fetchTarball {
@@ -51,12 +43,17 @@ in
           buildInputs = with pkgs; oldAttrs.buildInputs ++ [
             imlib2
           ];
-
         });
       })
+      (final: prev: {
+        dmenu = prev.dmenu.overrideAttrs (oldAttrs: {
+          src = builtins.fetchTarball {
+            url = "https://github.com/fushiii/dmenu/archive/1049c793127fc0eef15a530513c2fe4bcc82eedd.tar.gz";
+            sha256 = "04x859k4m6nddl4fl3cdjd29syr2zwb648nhvg4gbcakf5n5g1ln";
+          };
+        });
 
-
-
+      })
     ];
 
     services.xserver = {
@@ -71,14 +68,47 @@ in
     # Screen lock
     programs.slock.enable = true;
 
+    home.services.picom = {
+      enable = false;
+      backend = "glx";
+
+      fade = true;
+      fadeDelta = 5;
+      inactiveOpacity = 0.95;
+
+      settings = {
+        blur = {
+          method = "dual_kawase";
+          strenght = 10;
+        };
+        corner-radius = 5;
+        detect-rounded-corners = true;
+        rounded-corners-exclue = [
+          "window_type = 'menu'"
+          "window_type = 'dock'"
+          "window_type = 'dropdown_menu'"
+          "window_type = 'popup_menu'"
+          "window_type = 'desktop'"
+          "class_g = 'Polybar'"
+          "class_g = 'Rofi'"
+          "class_g = 'Dunst'"
+        ];
+      };
+
+    };
     home.packages = with pkgs; [
       feh # Wallpaper setter
-      procps # dmenu uptime
-
-      my.luastatus # Status bar generator
+      picom
+      pamixer
       dmenu # Launcher
-      slock # Screen locker
+      procps # dmenu uptime
+      my.luastatus # Status bar generator
     ];
+
+    home.configFile."dwm" = {
+      source = "${configDir}/dwm";
+      recursive = true;
+    };
 
     fonts.fonts = with pkgs; [
       (nerdfonts.override {
@@ -88,10 +118,6 @@ in
       })
     ];
 
-    home.configFile."dwm" = {
-      source = "${configDir}/dwm";
-      recursive = true;
-    };
 
   };
 }

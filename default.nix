@@ -83,6 +83,7 @@ in
     wget
     unzip
     killall
+    nix-index
     cached-nix-shell
     update-nix-fetchgit # For updating the sha256/commit number on a nix flake
   ];

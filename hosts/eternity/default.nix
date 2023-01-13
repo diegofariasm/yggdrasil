@@ -11,11 +11,9 @@
   ## Modules
   modules = {
     hardware = {
-      intel.enable = true;
       audio.enable = true;
       fs.enable = true;
     };
-
     desktop = {
       dwm.enable = true;
       media = {
@@ -23,53 +21,46 @@
         nomacs.enable = true;
         mpv.enable = true;
       };
-
       apps = {
         thunar.enable = true;
-        qbit.enable = true;
-        droidcam.enable = true;
       };
-
       browsers = {
         default = "firefox";
         edge.enable = true;
         firefox.enable = true;
       };
-
+      gaming = {
+        emulators = {
+          psx.enable = true;
+        };
+      };
       term = {
         default = "st";
         st.enable = true;
       };
-
     };
-
     dev = {
+      shell.enable = true;
       cc.enable = true;
+      go.enable = true;
       node.enable = true;
       rust.enable = true;
       python.enable = true;
-      go.enable = true;
     };
-
     editors = {
-      default = "nvim";
+      default = "code";
       vim.enable = true;
       code.enable = true;
     };
-
     shell = {
-      direnv.enable = true;
       git.enable = true;
-      gnupg.enable = true;
-      zsh.enable = true;
+      elvish.enable = true;
     };
-
     services = {
       ssh.enable = true;
       mate-polkit.enable = true;
       teamviewer.enable = true;
     };
-
     theme.active = "alucard";
   };
 
@@ -81,27 +72,19 @@
     packages = with pkgs; [ terminus_font ];
     keyMap = "br-abnt2";
   };
-
   services.xserver = {
     layout = "br";
     autoRepeatDelay = 300;
     autoRepeatInterval = 20;
   };
-
   environment.variables = {
     "XKB_DEFAULT_LAYOUT" = "br";
   };
-
   # Enable imwheel
   services.xserver.imwheel.enable = true;
-
-  ## Local config
+  # Local config
   programs.ssh.startAgent = true;
   services.openssh.startWhenNeeded = true;
-
   networking.networkmanager.enable = true;
-
-
-
 
 }

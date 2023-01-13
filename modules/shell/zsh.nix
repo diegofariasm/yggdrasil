@@ -15,12 +15,10 @@ in
     users.defaultUserShell = pkgs.zsh;
     home.packages = with pkgs; [
       my.icomoon
-      zsh-completions
       # Rsync  module
       rsync
     ];
-    # Completions
-    environment.pathsToLink = [ "/share/zsh" ];
+    programs.zsh.enable = true;
     home.programs = {
       exa = {
         enable = true;
@@ -30,7 +28,6 @@ in
         enable = true;
         enableZshIntegration = true;
       };
-      # TODO get a better config for zsh (FASTEEER)
       zsh = {
         enable = true;
         # History config
@@ -41,6 +38,7 @@ in
         };
         # Config location
         dotDir = ".config/zsh";
+
         # Prezto config
         prezto = {
           enable = true;
@@ -49,7 +47,11 @@ in
           # Autoconvert .... to ../..
           editor.dotExpansion = true;
           # Prezto modules to load
+
           pmodules = [
+            "rsync"
+            "archive"
+            "completion"
             "syntax-highlighting"
             "history-substring-search"
             "autosuggestions"
@@ -62,6 +64,7 @@ in
             file = "autopair.zsh";
             src = "${pkgs.zsh-autopair}/share/zsh/zsh-autopair/";
           }
+
         ];
       };
     };
@@ -69,11 +72,6 @@ in
     home.configFile = {
       "starship.toml".text = ''
         format = """
-        [  $username ]\
-        (bold bg:#202023 fg:white) \
-        $nix_shell\
-        $fill\
-        $line_break\
         (bold bg:white fg:yellow)\
         [バカ](bold bg:none white)\
         $singularity\
