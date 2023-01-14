@@ -19,7 +19,6 @@
 
     # Extras
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
   };
 
@@ -27,7 +26,6 @@
     inputs @ { self
     , nixpkgs
     , nixpkgs-unstable
-    , nur
     , ...
     }:
     let
