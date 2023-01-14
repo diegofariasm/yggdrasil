@@ -24,8 +24,8 @@ in
             NIX_CFLAGS_COMPILE+="-O3 -march=native"
           '';
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dwm/archive/1d9fd566d1a599b2b9e558447197db9737cdb819.tar.gz";
-            sha256 = "1g2hjzayd5ydpbvw6y5rf04cfsd1nb6m0dikl1lbz9ay1f9y3rws";
+            url = "https://github.com/fushiii/dwm/archive/8028d210d360fa22347db29d84408e9908ddd1df.tar.gz";
+            sha256 = "0vd5zly1myrm1hn7ir34rk4v2vnf642razm9krvaf992z4vswky2";
           };
           buildInputs = with pkgs; oldAttrs.buildInputs ++ [
             imlib2
@@ -98,11 +98,12 @@ in
     };
     home.packages = with pkgs; [
       feh # Wallpaper setter
-      picom
-      pamixer
+      pamixer # Audi controller
       dmenu # Launcher
       procps # dmenu uptime
       my.luastatus # Status bar generator
+      brightnessctl # Brightness controller
+      networkmanager_dmenu # Network controller     
     ];
 
     home.configFile."dwm" = {

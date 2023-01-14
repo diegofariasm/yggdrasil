@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-xrdb  -I$HOME $HOME/.config/dwm/.Xresources
-xsetroot -name "fsignal:2"
 
 luastatus -b dwm -B separator= \
-    ~/.config/dwm/luastatus/module/alsa.lua \
-    ~/.config/dwm/luastatus/module/time-date.lua
+	~/.config/dwm/luastatus/module/backlight.lua \
+	~/.config/dwm/luastatus/module/alsa.lua \
+	~/.config/dwm/luastatus/module/wifi.lua \
+	~/.config/dwm/luastatus/module/time-date.lua

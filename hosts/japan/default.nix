@@ -12,6 +12,7 @@
   modules = {
     hardware = {
       audio.enable = true;
+      intel.enable = true;
       fs.enable = true;
     };
     desktop = {
@@ -19,7 +20,6 @@
       media = {
         vlc.enable = true;
         nomacs.enable = true;
-        mpv.enable = true;
       };
       apps = {
         thunar.enable = true;
@@ -28,7 +28,7 @@
         default = "firefox";
         firefox.enable = true;
       };
-      
+
       term = {
         default = "st";
         st.enable = true;
@@ -80,5 +80,9 @@
   programs.ssh.startAgent = true;
   services.openssh.startWhenNeeded = true;
   networking.networkmanager.enable = true;
-
+  # Touchpad config
+  services.xserver.libinput.touchpad.naturalScrolling = true;
+  services.xserver.libinput.touchpad.middleEmulation = true;
+  services.xserver.libinput.touchpad.tapping = true;
+  services.xserver.libinput.enable = true;
 }
