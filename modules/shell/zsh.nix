@@ -20,6 +20,11 @@ in
     ];
     programs.zsh.enable = true;
     home.programs = {
+      direnv = {
+        enable = true;
+        nix-direnv.enable = true;
+        enableZshIntegration = true;
+      };
       exa = {
         enable = true;
         enableAliases = true;

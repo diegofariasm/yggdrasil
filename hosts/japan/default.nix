@@ -16,7 +16,7 @@
       fs.enable = true;
     };
     desktop = {
-      dwm.enable = true;
+      plasma.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -49,9 +49,10 @@
     };
     shell = {
       git.enable = true;
-      elvish.enable = true;
+      zsh.enable = true;
     };
     services = {
+      mysql.enable = true;
       ssh.enable = true;
       mate-polkit.enable = true;
     };
