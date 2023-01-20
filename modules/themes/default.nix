@@ -7,7 +7,8 @@
 with lib;
 with lib.my;
 let cfg = config.modules.theme;
-in {
+in
+{
   options.modules.theme = with types; {
     active = mkOption {
       type = nullOr str;
@@ -20,7 +21,6 @@ in {
         variable. Themes can also be hot-swapped with 'hey theme $THEME'.
       '';
     };
-
 
     gtk = {
       theme = mkOpt str "";
@@ -45,17 +45,65 @@ in {
   };
 
   config = mkIf (cfg.active != null) (mkMerge [
-
     {
-      programs.dconf.enable = true;
-     
+      home.configFile = {
+        # GTK
+        "gtk-3.0/settings.ini".text = ''
+          [Settings]
+          ${optionalString (cfg.gtk.theme != "")
+            ''gtk-theme-name=${cfg.gtk.theme}''}
+          ${optionalString (cfg.gtk.iconTheme != "")
+            ''gtk-icon-theme-name=${cfg.gtk.iconTheme}''}
+          ${optionalString (cfg.gtk.cursorTheme != "")
+            ''gtk-cursor-theme-name=${cfg.gtk.cursorTheme}''}
+          gtk-fallback-icon-theme=gnome
+          gtk-application-prefer-dark-theme=true
+          gtk-xft-hinting=1
+          gtk-xft-hintstyle=hintfull
+          gtk-xft-rgba=none
+        '';
+        # GTK2 global theme (widget and icon theme)
+        "gtk-2.0/gtkrc".text = ''
+          ${optionalString (cfg.gtk.theme != "")
+            ''gtk-theme-name="${cfg.gtk.theme}"''}
+          ${optionalString (cfg.gtk.iconTheme != "")
+            ''gtk-icon-theme-name="${cfg.gtk.iconTheme}"''}
+          gtk-font-name="Sans ${toString(cfg.fonts.sans.size)}"
+        '';
+        # QT4/5 global theme
+        "Trolltech.conf".text = ''
+          [Qt]
+          ${optionalString (cfg.gtk.theme != "")
+            ''style=${cfg.gtk.theme}''}
+        '';
+      };
+
       fonts.fontconfig.defaultFonts = {
         sansSerif = [ cfg.fonts.sans.name ];
         monospace = [ cfg.fonts.mono.name ];
       };
     }
 
-
-
+    (mkIf (cfg.onReload != { })
+      (
+        let reloadTheme =
+          with pkgs; (writeScriptBin "reloadTheme" ''
+            #!${stdenv.shell}
+            echo "Reloading current theme: ${cfg.active}"
+            ${concatStringsSep "\n"
+              (mapAttrsToList (name: script: ''
+                echo "[${name}]"
+                ${script}
+              '') cfg.onReload)}
+          '');
+        in
+        {
+          user.packages = [ reloadTheme ];
+          system.userActivationScripts.reloadTheme = ''
+            [ -z "$NORELOAD" ] && ${reloadTheme}/bin/reloadTheme
+          '';
+        }
+      ))
   ]);
 }
+

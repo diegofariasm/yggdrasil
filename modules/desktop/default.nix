@@ -26,6 +26,7 @@ in
     ];
 
     user.packages = with pkgs; [
+      feh # image viewer
       xclip
       xdotool
       xorg.xwininfo
@@ -43,9 +44,13 @@ in
       ];
     };
 
+    ## Apps/Services
+    services.xserver.displayManager.lightdm.greeters.mini.user = config.user.name;
 
     # Try really hard to get QT to respect my GTK theme.
     env.GTK_DATA_PREFIX = [ "${config.system.path}" ];
+    env.QT_QPA_PLATFORMTHEME = "gnome";
+    env.QT_STYLE_OVERRIDE = "kvantum";
 
     services.xserver.displayManager.sessionCommands = ''
       # GTK2_RC_FILES must be available to the display manager.
@@ -55,10 +60,10 @@ in
     # Clean up leftovers, as much as we can
     system.userActivationScripts.cleanupHome = ''
       pushd "${config.user.home}"
-      rm -rf .compose-cache .nv .pki .dbus
+      rm -rf .compose-cache .nv .pki .dbus .fehbg
       [ -s .xsession-errors ] || rm -f .xsession-errors*
       popd
-    ''; # .fehbg ^
-
+    '';
   };
 }
+

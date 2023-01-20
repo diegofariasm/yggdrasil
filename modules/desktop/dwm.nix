@@ -24,8 +24,8 @@ in
             NIX_CFLAGS_COMPILE+="-O3 -march=native"
           '';
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dwm/archive/8028d210d360fa22347db29d84408e9908ddd1df.tar.gz";
-            sha256 = "0vd5zly1myrm1hn7ir34rk4v2vnf642razm9krvaf992z4vswky2";
+            url = "https://github.com/fushiii/dwm/archive/868501afa22cd94af5fe15256b1f25863e83030d.tar.gz";
+            sha256 = "1w2s704sblmdi27y9dp0i8n1lz9s87lz3ni8315kmq4w749pa7ys";
           };
           buildInputs = with pkgs; oldAttrs.buildInputs ++ [
             imlib2
@@ -61,6 +61,7 @@ in
       displayManager = {
         defaultSession = "none+dwm";
         lightdm.enable = true;
+        lightdm.greeters.mini.enable = true;
       };
       windowManager.dwm.enable = true;
     };

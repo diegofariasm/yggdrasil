@@ -13,10 +13,11 @@
     hardware = {
       audio.enable = true;
       intel.enable = true;
+      bluetooth.enable = true;
       fs.enable = true;
     };
     desktop = {
-      plasma.enable = true;
+      dwm.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -36,7 +37,6 @@
     };
     dev = {
       shell.enable = true;
-      cc.enable = true;
       go.enable = true;
       node.enable = true;
       rust.enable = true;
