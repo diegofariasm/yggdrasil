@@ -52,7 +52,6 @@
       zsh.enable = true;
     };
     services = {
-      mysql.enable = true;
       ssh.enable = true;
       mate-polkit.enable = true;
     };
