@@ -15,9 +15,7 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      gimp-with-plugins
-      # Plugins
-      gimpPlugins.gmic
+      gimp
     ];
   };
 }

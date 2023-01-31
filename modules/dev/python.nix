@@ -25,7 +25,6 @@ in
     (mkIf cfg.enable {
       home.packages = with pkgs; [
         isort
-        poetry
         python310
         python310Packages.pip
         python310Packages.ipython

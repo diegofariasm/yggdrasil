@@ -43,7 +43,8 @@ in
         fzf
         # Language servers 
         rnix-lsp
-
+        selene
+        sumneko-lua-language-server
       ];
 
     };

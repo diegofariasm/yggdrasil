@@ -9,7 +9,7 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
- boot = {
+  boot = {
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" "nvme" ];
     initrd.kernelModules = [ "dm-snapshot" ];
     kernelModules = [ "kvm-intel" "wl" ];
@@ -45,13 +45,6 @@
 
   networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
   networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
-
-  # Hopefully makes snapiness better
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-  };
-
 
   nixpkgs.hostPlatform = lib.mkDefault " x86_64-linux ";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";

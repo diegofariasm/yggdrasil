@@ -19,6 +19,7 @@
     desktop = {
       dwm.enable = true;
       media = {
+        editing.enable = true;
         vlc.enable = true;
         nomacs.enable = true;
       };
@@ -28,8 +29,8 @@
       browsers = {
         default = "firefox";
         firefox.enable = true;
+        edge.enable = true;
       };
-
       term = {
         default = "st";
         st.enable = true;
@@ -37,6 +38,7 @@
     };
     dev = {
       shell.enable = true;
+      cc.enable = true;
       go.enable = true;
       node.enable = true;
       rust.enable = true;
@@ -48,12 +50,13 @@
       code.enable = true;
     };
     shell = {
+      starship.enable = true;
       git.enable = true;
-      zsh.enable = true;
+      fish.enable = true;
     };
     services = {
-      ssh.enable = true;
       mate-polkit.enable = true;
+      ssh.enable = true;
     };
     theme.active = "alucard";
   };
@@ -74,8 +77,7 @@
   environment.variables = {
     "XKB_DEFAULT_LAYOUT" = "br";
   };
-  # Enable imwheel
-  services.xserver.imwheel.enable = true;
+
   # Local config
   programs.ssh.startAgent = true;
   services.openssh.startWhenNeeded = true;

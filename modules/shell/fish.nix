@@ -75,56 +75,7 @@ in
         enableAliases = true;
       };
 
-      # Shell independent prompt
-      starship = {
-        enable = true;
-        enableFishIntegration = true;
-      };
     };
-    home.configFile = {
-      "starship.toml".text = ''
-        format = """
-        (bold bg:white fg:yellow)\
-        [バカ](bold bg:none white)\
-        $singularity\
-        $kubernetes\
-        $directory\
-        $status\
-        $character\
-        """
-
-        # So commands don't time out. Duh?
-        command_timeout = 100000
-        [fill]
-        symbol = ""
-
-        [username]
-        show_always = true
-        style_user = "bold bg:#202023 fg:white"
-        style_root = "bold bg:#202023 fg:white"
-        format = "[$user]($style)"
-
-
-        [directory]
-        read_only = ""
-        truncation_length = 3
-        truncation_symbol = "./"
-        style = "bold bg:none yellow"
-
-        [status]
-        disabled = false
-
-        [line_break]
-        disabled = false
-
-        [character]
-        success_symbol = "[  ](bold white)"
-        error_symbol = "[  ](bold red)"
-        vicmd_symbol = "[  ](bold yellow)"
-
-      '';
-    };
-
 
     # Set the fish shell as default
     users.defaultUserShell = pkgs.fish;
