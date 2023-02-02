@@ -20,11 +20,12 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home.packages = with pkgs; [
+      user.packages = with pkgs; [
         # Build tools
         cmake
         ninja
         # Compiler and tools
+        gcc
         clang
         clang-tools
         # C++ Standard library

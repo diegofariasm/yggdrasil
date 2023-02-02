@@ -1,7 +1,6 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }: {
   ## System security tweaks
   # sets hidepid=2 on /proc (make process info visible only to owning user)
@@ -12,7 +11,7 @@
 
   # tmpfs = /tmp is mounted in ram. Doing so makes temp file management speedy
   # on ssd systems, and volatile! Because it's wiped on reboot.
-  boot.tmpOnTmpfs = lib.mkDefault true;
+  boot.tmpOnTmpfs = lib.mkDefault false;
   # If not using tmpfs, which is naturally purged on reboot, we must clean it
   # /tmp ourselves. /tmp should be volatile storage!
   boot.cleanTmpDir = lib.mkDefault (!config.boot.tmpOnTmpfs);
@@ -61,7 +60,7 @@
     "net.ipv4.tcp_congestion_control" = "bbr";
     "net.core.default_qdisc" = "cake";
   };
-  boot.kernelModules = ["tcp_bbr"];
+  boot.kernelModules = [ "tcp_bbr" ];
 
   # Change me later!
   user.initialPassword = "nixos";

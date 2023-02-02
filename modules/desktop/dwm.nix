@@ -115,11 +115,14 @@ in
     fonts.fonts = with pkgs; [
       (nerdfonts.override {
         fonts = [
+          "FiraCode"
+          "DroidSansMono"
           "Iosevka"
+          "SourceCodePro"
+          "Hack"
+          "Meslo"
         ];
       })
     ];
-
-
   };
 }

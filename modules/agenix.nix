@@ -15,8 +15,7 @@ with lib.my; let
 in
 {
   imports = [ agenix.nixosModules.age ];
-  environment.systemPackages = [ agenix.defaultPackage.x86_64-linux ];
-
+  environment.systemPackages = [ agenix.packages.x86_64-linux.default ];
   age = {
     secrets =
       if pathExists secretsFile
@@ -33,7 +32,7 @@ in
       options.age.identityPaths.default
       ++ (filter pathExists [
         "${config.user.home}/.ssh/diegofariasm"
-        "${config.user.home}/.ssh/fushiiij"
+        "${config.user.home}/.ssh/fushiii"
       ]);
   };
 }

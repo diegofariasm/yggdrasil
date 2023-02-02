@@ -19,7 +19,6 @@
       media = {
         vlc.enable = true;
         nomacs.enable = true;
-        mpv.enable = true;
       };
       apps = {
         thunar.enable = true;
@@ -42,6 +41,7 @@
     dev = {
       shell.enable = true;
       go.enable = true;
+      cc.enable = true;
       node.enable = true;
       rust.enable = true;
       python.enable = true;
@@ -58,7 +58,6 @@
     services = {
       ssh.enable = true;
       mate-polkit.enable = true;
-      teamviewer.enable = true;
     };
     theme.active = "alucard";
   };
