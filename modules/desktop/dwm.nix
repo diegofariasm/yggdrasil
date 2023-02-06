@@ -11,9 +11,7 @@ with lib.my; let
   configDir = config.dotfiles.configDir;
 in
 {
-  options.modules.desktop.dwm = {
-    enable = mkBoolOpt false;
-  };
+  options.modules.desktop.dwm = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
 
@@ -45,6 +43,7 @@ in
           ];
         });
       })
+
       (final: prev: {
         dmenu = prev.dmenu.overrideAttrs (oldAttrs: {
           src = builtins.fetchTarball {
@@ -52,7 +51,6 @@ in
             sha256 = "04x859k4m6nddl4fl3cdjd29syr2zwb648nhvg4gbcakf5n5g1ln";
           };
         });
-
       })
     ];
 
@@ -60,8 +58,9 @@ in
       enable = true;
       displayManager = {
         defaultSession = "none+dwm";
-        lightdm.enable = true;
-        lightdm.greeters.mini.enable = true;
+        sddm = {
+          enable = true;
+        };
       };
       windowManager.dwm.enable = true;
     };
@@ -70,7 +69,7 @@ in
     programs.slock.enable = true;
 
     home.services.picom = {
-      enable = false;
+      enable = true;
       backend = "glx";
 
       fade = true;

@@ -19,22 +19,18 @@ in
   };
 
   config = mkIf cfg.enable {
-    #    nixpkgs.overlays = [
-    #      inputs.neovim-nightly-overlay.overlay
-    #    ];
+    nixpkgs.overlays = [
+      inputs.neovim-nightly-overlay.overlay
+    ];
+
     home.programs.neovim = {
       enable = true;
-      package = pkgs.neovim-unwrapped;
+      package = pkgs.neovim-nightly;
 
       # Setting the aliases
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
-
-      #  plugins = with pkgs; [
-      #    # TODO find way of only installing the needed grammars
-      #    (vimPlugins.nvim-treesitter.withPlugins (plugins: tree-sitter.allGrammars))
-      #  ];
 
       extraPackages = with pkgs; [
         # Utils needed by nyoom
@@ -49,6 +45,14 @@ in
         sumneko-lua-language-server
       ];
 
+      plugins = with pkgs; [
+        # TODO find way of only installing the needed grammars
+        #(vimPlugins.nvim-treesitter.withPlugins (plugins: tree-sitter.allGrammars))
+        vimPlugins.clangd_extensions-nvim
+        vimPlugins.nvim-fzf
+        vimPlugins.packer-nvim
+        vimPlugins.hotpot-nvim
+      ];
     };
 
     # adds the nyoom bin to the shell path
