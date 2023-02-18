@@ -2,6 +2,8 @@
   path = ./gitconfig-personal
 [includeIf "gitdir:~/work/"]
   path = ./gitconfig-work
+[includeIf "gitdir:/etc/dotfiles/"]
+  path = ./gitconfig-personal
 
 # Global config
 [alias]

@@ -24,6 +24,7 @@
         nomacs.enable = true;
       };
       apps = {
+        element.enable = true;
         thunar.enable = true;
       };
       browsers = {
@@ -50,9 +51,9 @@
       code.enable = true;
     };
     shell = {
-      starship.enable = true;
+      # WIP starship.enable = true;
       git.enable = true;
-      fish.enable = true;
+      elvish.enable = true;
     };
     services = {
       mate-polkit.enable = true;
@@ -61,7 +62,7 @@
     theme.active = "alucard";
   };
 
-  # TTY config
+  # Tty config
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     earlySetup = true;
@@ -69,22 +70,40 @@
     packages = with pkgs; [ terminus_font ];
     keyMap = "br-abnt2";
   };
-  services.xserver = {
-    layout = "br";
-    autoRepeatDelay = 300;
-    autoRepeatInterval = 20;
-  };
+
   environment.variables = {
     "XKB_DEFAULT_LAYOUT" = "br";
   };
 
+  networking = {
+    networkmanager.enable = true;
+    # wireless = {
+    #   enable = true;
+    #   userControlled.enable = true;
+    # };
+  };
+
   # Local config
   programs.ssh.startAgent = true;
-  services.openssh.startWhenNeeded = true;
-  networking.networkmanager.enable = true;
-  # Touchpad config
-  services.xserver.libinput.touchpad.naturalScrolling = true;
-  services.xserver.libinput.touchpad.middleEmulation = true;
-  services.xserver.libinput.touchpad.tapping = true;
-  services.xserver.libinput.enable = true;
+  services = {
+    openssh.startWhenNeeded = true;
+    xserver = {
+      # Mouse configuration
+      imwheel.enable = true;
+      # Keyboard configuration
+      layout = "br";
+      autoRepeatDelay = 300;
+      autoRepeatInterval = 20;
+      # Touchpad configuration
+      libinput = {
+        enable = true;
+        touchpad = {
+          naturalScrolling = true;
+          middleEmulation = true;
+          tapping = true;
+        };
+      };
+    };
+  };
+
 }

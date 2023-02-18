@@ -22,8 +22,8 @@ in
             NIX_CFLAGS_COMPILE+="-O3 -march=native"
           '';
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dwm/archive/868501afa22cd94af5fe15256b1f25863e83030d.tar.gz";
-            sha256 = "1w2s704sblmdi27y9dp0i8n1lz9s87lz3ni8315kmq4w749pa7ys";
+            url = "https://github.com/fushiii/dwm/archive/ee206ed3f2a03e722b4e33cf20b3d8899fc438a9.tar.gz";
+            sha256 = "1kmvm3dmc49lh2zdmm989gbd04q02yx11p65p20drjwqp4rccdqq";
           };
           buildInputs = with pkgs; oldAttrs.buildInputs ++ [
             imlib2
@@ -67,35 +67,6 @@ in
 
     # Screen lock
     programs.slock.enable = true;
-
-    home.services.picom = {
-      enable = true;
-      backend = "glx";
-
-      fade = true;
-      fadeDelta = 5;
-      inactiveOpacity = 0.95;
-
-      settings = {
-        blur = {
-          method = "dual_kawase";
-          strenght = 10;
-        };
-        corner-radius = 5;
-        detect-rounded-corners = true;
-        rounded-corners-exclue = [
-          "window_type = 'menu'"
-          "window_type = 'dock'"
-          "window_type = 'dropdown_menu'"
-          "window_type = 'popup_menu'"
-          "window_type = 'desktop'"
-          "class_g = 'Polybar'"
-          "class_g = 'Rofi'"
-          "class_g = 'Dunst'"
-        ];
-      };
-
-    };
     home.packages = with pkgs; [
       feh # Wallpaper setter
       pamixer # Audi controller
