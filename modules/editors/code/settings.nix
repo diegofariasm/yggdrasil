@@ -60,7 +60,7 @@
   workbench.editor.tabCloseButton = "right";
   workbench.editor.tabSizing = "shrink";
   workbench.enableExperiments = false;
-  workbench.panel.defaultLocation = "right";
+  workbench.panel.defaultLocation = "bottom";
   workbench.settings.enableNaturalLanguageSearch = false;
   workbench.statusBar.feedback.visible = false;
   workbench.sideBar.location = "right";
