@@ -29,6 +29,7 @@ with lib.my; {
       dataFile = mkOpt' attrs { } "Files to place in $XDG_DATA_HOME";
       programs = mkOpt' attrs { } "Programs to install";
       packages = mkOpt' attrs { } "Packages to install";
+      activation = mkOpt' attrs { } "Activation command";
       services = mkOpt' attrs { } "Services to install";
       gtk = mkOpt' attrs { } "Gtk configs";
 
@@ -85,6 +86,7 @@ with lib.my; {
         home = {
           file = mkAliasDefinitions options.home.file;
           packages = mkAliasDefinitions options.home.packages;
+          activation = mkAliasDefinitions options.home.activation;
 
           # Necessary for home-manager to work with flakes, otherwise it will
           # look for a nixpkgs channel.
