@@ -67,7 +67,8 @@ in
   networking.useDHCP = mkDefault false;
 
   boot = {
-    kernelPackages = mkDefault pkgs.linuxPackages_latest;
+    # kernelPackages = mkDefault pkgs.linuxPackages_latest;
+    kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
     loader = {
       efi.canTouchEfiVariables = mkDefault true;
       systemd-boot.configurationLimit = 5;
@@ -79,12 +80,10 @@ in
   environment.systemPackages = with pkgs; [
     git
     vim
-    btop
     wget
     unzip
     killall
-    nix-index
     cached-nix-shell
-    update-nix-fetchgit # For updating the sha256/commit number on a nix flake
+    update-nix-fetchgit
   ];
 }

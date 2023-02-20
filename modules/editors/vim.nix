@@ -31,29 +31,25 @@ in
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
-
-      extraPackages = with pkgs; [
-        # Utils needed by nyoom
-        tree-sitter
-        # Formatters for the nvim config
-        fnlfmt
-        # Utils needed by plugins 
-        fzf
-        # Language servers 
-        rnix-lsp
-        selene
-        sumneko-lua-language-server
-      ];
-
-      plugins = with pkgs; [
-        # TODO find way of only installing the needed grammars
-        #(vimPlugins.nvim-treesitter.withPlugins (plugins: tree-sitter.allGrammars))
-        vimPlugins.clangd_extensions-nvim
-        vimPlugins.nvim-fzf
-        vimPlugins.packer-nvim
-        vimPlugins.hotpot-nvim
-      ];
     };
+
+    home.packages = with pkgs; [
+      # Utils needed by nyoom
+      tree-sitter
+      # Formatters for the nvim config
+      fnlfmt
+      # Utils needed by plugins 
+      ripgrep
+      fzf
+      # Languages
+      lua
+      # Language servers 
+      rnix-lsp
+      sumneko-lua-language-server
+      # Linters
+      selene
+    ];
+
 
     # adds the nyoom bin to the shell path
     env.PATH = [ "$HOME/.config/nvim/bin" ];

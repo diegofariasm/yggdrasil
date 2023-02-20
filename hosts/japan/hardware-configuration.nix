@@ -8,19 +8,14 @@
     [
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
-
   boot = {
-    initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" "nvme" ];
-    initrd.kernelModules = [ "dm-snapshot" ];
-    kernelModules = [ "kvm-intel" "wl" ];
+    initrd.availableKernelModules = [ "xhci_pci" "ahci" "sd_mod" "rtsx_pci_sdmmc" ];
+    initrd.kernelModules = [ ];
+    kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
-
-    # Refuse ICMP echo requests on my desktop/laptop; nobody has any business
-    # pinging them, unlike my servers.
-    kernel.sysctl."net.ipv4.icmp_echo_ignore_broadcasts" = 1;
   };
-  fileSystems = {
 
+  fileSystems = {
     "/" =
       {
         device = "/dev/disk/by-label/nixos-root";
@@ -39,16 +34,19 @@
         fsType = "vfat";
       };
   };
-  swapDevices =
-    [{ device = "/dev/disk/by-label/nixos-swap"; }];
+  swapDevices = [
+    { device = "/dev/disk/by-label/nixos-swap"; }
+  ];
 
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp1s0f1.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
-  networking.interfaces = {
-    enp1s0.useDHCP = lib.mkDefault true;
-    wlp2s0.useDHCP = lib.mkDefault true;
-  };
-
-  nixpkgs.hostPlatform = lib.mkDefault " x86_64-linux ";
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

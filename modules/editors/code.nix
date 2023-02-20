@@ -17,10 +17,13 @@ in
     home.programs.vscode = {
       enable = true;
       package = pkgs.vscode;
-      # extensions = with pkgs.vscode-extensions; [
-      #   jnoortheen.nix-ide # Duh
-      #   pkief.material-icon-theme # Icons for the folders
-      # ];
+      extensions = with pkgs.vscode-extensions; [
+        jnoortheen.nix-ide # Duh
+        pkief.material-icon-theme # Icons for the folders
+
+        # Remote development
+        ms-vscode-remote.remote-ssh
+      ];
     };
 
     fonts.fonts = with pkgs; [

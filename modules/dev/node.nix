@@ -21,23 +21,18 @@ in
 
   config = mkMerge [
     (
-      let
-        node = pkgs.nodejs_latest;
-      in
       mkIf cfg.enable {
-        home.packages = [
-          node
-          pkgs.bun
-          pkgs.yarn
+
+        home.packages = with pkgs; with nodePackages; [
+          # Package manager
+          bun
+          npm
+          yarn
+          pnpm
+          # Framework
+          nodejs
         ];
 
-        # Run locally installed bin-script, e.g. n coffee file.coffee
-        environment.shellAliases = {
-          n = "PATH=\"$(${node}/bin/npm bin):$PATH\"";
-          ya = "yarn";
-        };
-
-        env.PATH = [ "$(${pkgs.yarn}/bin/yarn global bin)" ];
       }
     )
 
