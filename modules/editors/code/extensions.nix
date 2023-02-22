@@ -5,7 +5,6 @@ with pkgs.vscode-extensions; [
   ms-vscode-remote.remote-ssh
 
   # Utils
-  eamodio.gitlens
   # Formatters / Lsp
   jnoortheen.nix-ide
 
@@ -29,11 +28,5 @@ with pkgs.vscode-extensions; [
     publisher = "EliverLara";
     version = "1.7.2";
     sha256 = "sha256-IFi+rSEb+Am5Sepav/31D+U2hYHwBrQoB40gfVSNFpM=";
-  }
-  {
-    name = "vscode-todo-highlight";
-    publisher = "wayou";
-    version = "1.0.5";
-    sha256 = "sha256-CQVtMdt/fZcNIbH/KybJixnLqCsz5iF1U0k+GfL65Ok=";
   }
 ]

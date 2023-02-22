@@ -51,7 +51,8 @@
     shell = {
       # WIP starship.enable = true;
       git.enable = true;
-      fish.enable = true;
+      elvish.enable = true;
+
     };
     services = {
       mate-polkit.enable = true;

@@ -46,16 +46,6 @@ in
 
   config = mkIf (cfg.active != null) (mkMerge [
     {
-      home.packages = with pkgs; [
-        qgnomeplatform # QPlatformTheme for a better Qt application inclusion in GNOME
-        libsForQt5.qtstyleplugin-kvantum # SVG-based Qt5 theme engine plus a config tool and extra theme
-      ];
-
-      # Try really hard to get QT to respect my GTK theme.
-      env.GTK_DATA_PREFIX = [ "${config.system.path}" ];
-      env.QT_QPA_PLATFORMTHEME = "gnome";
-      env.QT_STYLE_OVERRIDE = "kvantum";
-
       home.configFile = {
         # GTK
         "gtk-3.0/settings.ini".text = ''
@@ -79,12 +69,6 @@ in
           ${optionalString (cfg.gtk.iconTheme != "")
             ''gtk-icon-theme-name="${cfg.gtk.iconTheme}"''}
           gtk-font-name="Sans ${toString(cfg.fonts.sans.size)}"
-        '';
-        # QT4/5 global theme
-        "Trolltech.conf".text = ''
-          [Qt]
-          ${optionalString (cfg.gtk.theme != "")
-            ''style=${cfg.gtk.theme}''}
         '';
       };
 
