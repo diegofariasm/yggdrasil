@@ -51,7 +51,7 @@ in
       enable = true;
       package = pkgs.vscode;
       userSettings = import ./settings.nix;
-      extensions = import ./extensions.nix { inherit pkgs; };
+      #extensions = import ./extensions.nix { inherit pkgs; };
     };
 
     fonts.fonts = with pkgs; [

@@ -18,8 +18,8 @@
     };
     desktop = {
       dwm.enable = true;
+      plasma.enable = true;
       media = {
-        editing.enable = true;
         vlc.enable = true;
         nomacs.enable = true;
       };
@@ -40,9 +40,7 @@
     dev = {
       shell.enable = true;
       cc.enable = true;
-      go.enable = true;
       node.enable = true;
-      rust.enable = true;
       python.enable = true;
     };
     editors = {
@@ -53,7 +51,7 @@
     shell = {
       # WIP starship.enable = true;
       git.enable = true;
-      elvish.enable = true;
+      fish.enable = true;
     };
     services = {
       mate-polkit.enable = true;

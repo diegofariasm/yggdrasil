@@ -1,25 +1,39 @@
 { pkgs }:
 
 with pkgs.vscode-extensions; [
-  # Looks
-  pkief.material-icon-theme
-
   # Remote development
   ms-vscode-remote.remote-ssh
 
   # Utils
-  gruntfuggly.todo-tree
-  christian-kohler.path-intellisense
-
-  # Formatters / Language servers
+  eamodio.gitlens
+  # Formatters / Lsp
   jnoortheen.nix-ide
-  esbenp.prettier-vscode
 
 ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
   {
-    name = "better-comments";
-    publisher = "aaron-bond";
-    version = "3.0.2";
-    sha256 = "15w1ixvp6vn9ng6mmcmv9ch0ngx8m85i1yabxdfn6zx3ypq802c5";
+    # Show errors and etc inline.
+    name = "errorlens";
+    publisher = "usernamehw";
+    version = "3.7.0";
+    sha256 = "sha256-/+bkVFI5dJo8shmJlRu+Ms3SVGsWi5g1T1V86p3Mk1U=";
+  }
+  {
+    # What is a developer without pretty icons?
+    name = "vscode-icons";
+    publisher = "vscode-icons-team";
+    version = "12.2.0";
+    sha256 = "sha256-PxM+20mkj7DpcdFuExUFN5wldfs7Qmas3CnZpEFeRYs=";
+  }
+  {
+    name = "andromeda";
+    publisher = "EliverLara";
+    version = "1.7.2";
+    sha256 = "sha256-IFi+rSEb+Am5Sepav/31D+U2hYHwBrQoB40gfVSNFpM=";
+  }
+  {
+    name = "vscode-todo-highlight";
+    publisher = "wayou";
+    version = "1.0.5";
+    sha256 = "sha256-CQVtMdt/fZcNIbH/KybJixnLqCsz5iF1U0k+GfL65Ok=";
   }
 ]

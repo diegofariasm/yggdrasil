@@ -25,10 +25,7 @@ in
 
         home.packages = with pkgs; with nodePackages; [
           # Package manager
-          bun
           npm
-          yarn
-          pnpm
           # Framework
           nodejs
         ];

@@ -46,6 +46,16 @@ in
 
   config = mkIf (cfg.active != null) (mkMerge [
     {
+      home.packages = with pkgs; [
+        qgnomeplatform # QPlatformTheme for a better Qt application inclusion in GNOME
+        libsForQt5.qtstyleplugin-kvantum # SVG-based Qt5 theme engine plus a config tool and extra theme
+      ];
+
+      # Try really hard to get QT to respect my GTK theme.
+      env.GTK_DATA_PREFIX = [ "${config.system.path}" ];
+      env.QT_QPA_PLATFORMTHEME = "gnome";
+      env.QT_STYLE_OVERRIDE = "kvantum";
+
       home.configFile = {
         # GTK
         "gtk-3.0/settings.ini".text = ''
@@ -86,16 +96,17 @@ in
 
     (mkIf (cfg.onReload != { })
       (
-        let reloadTheme =
-          with pkgs; (writeScriptBin "reloadTheme" ''
-            #!${stdenv.shell}
-            echo "Reloading current theme: ${cfg.active}"
-            ${concatStringsSep "\n"
-              (mapAttrsToList (name: script: ''
-                echo "[${name}]"
-                ${script}
-              '') cfg.onReload)}
-          '');
+        let
+          reloadTheme =
+            with pkgs; (writeScriptBin "reloadTheme" ''
+              #!${stdenv.shell}
+              echo "Reloading current theme: ${cfg.active}"
+              ${concatStringsSep "\n"
+                (mapAttrsToList (name: script: ''
+                  echo "[${name}]"
+                  ${script}
+                '') cfg.onReload)}
+            '');
         in
         {
           user.packages = [ reloadTheme ];

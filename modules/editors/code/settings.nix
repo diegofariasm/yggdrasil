@@ -1,5 +1,6 @@
 {
   breadcrumbs.enabled = true;
+
   remote.SSH.useLocalServer = false;
 
   editor.accessibilitySupport = "off";
@@ -15,6 +16,8 @@
   editor.linkedEditing = true;
   editor.minimap.enabled = false;
   editor.tabSize = 2;
+  editor.formatOnSave = true;
+  editor.formatOnPaste = true;
 
   explorer.autoReveal = true;
   explorer.confirmDragAndDrop = false;
@@ -23,8 +26,6 @@
   extensions.autoCheckUpdates = false;
   update.mode = "none";
 
-  files.autoSave = "afterDelay";
-  files.autoSaveDelay = 100;
   files.insertFinalNewline = true;
   files.trimTrailingWhitespace = true;
 
@@ -52,18 +53,17 @@
   telemetry.enableTelemetry = false;
 
   window.title = "\${activeEditorMedium}\${separator}\${rootName}";
-  window.zoomLevel = 1;
-  workbench.colorTheme = "Dracula";
 
   workbench.editor.enablePreview = false;
   workbench.editor.highlightModifiedTabs = true;
   workbench.editor.tabCloseButton = "right";
   workbench.editor.tabSizing = "shrink";
+  workbench.colorTheme = "Andromeda Bordered";
+  workbench.iconTheme = "vscode-icons";
   workbench.enableExperiments = false;
   workbench.panel.defaultLocation = "bottom";
   workbench.settings.enableNaturalLanguageSearch = false;
   workbench.statusBar.feedback.visible = false;
   workbench.sideBar.location = "right";
-
 
 }
