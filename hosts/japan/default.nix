@@ -40,6 +40,7 @@
     dev = {
       shell.enable = true;
       cc.enable = true;
+      rust.enable = true;
       node.enable = true;
       python.enable = true;
     };
