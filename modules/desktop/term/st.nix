@@ -1,14 +1,14 @@
-{
-  options,
-  config,
-  lib,
-  pkgs,
-  ...
+{ options
+, config
+, lib
+, pkgs
+, ...
 }:
 with lib;
 with lib.my; let
   cfg = config.modules.desktop.term.st;
-in {
+in
+{
   options.modules.desktop.term.st = {
     enable = mkBoolOpt false;
   };
@@ -18,10 +18,13 @@ in {
       (final: prev: {
         st = prev.st.overrideAttrs (oldAttrs: {
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/st/archive/e3c502ac2c969591fd196313e1b7ab4bd8102ba5.tar.gz";
-            sha256 = "199y5xrhrngp1sri4ys9gqvpwl3ap4q2xqx2mcdylf1fsfys62hv";
+            url = "https://github.com/fushiii/st/archive/d47a8e6b16b02dd44a3bdce393b7b3255314c2e6.tar.gz";
+            sha256 = "1yd47y4hqg3xrrbm7x9lkqqfnc6c9q25cvmil8l78vi4q9j8lcrk";
           };
-          buildInputs = oldAttrs.buildInputs ++ [pkgs.harfbuzz];
+          buildInputs = with pkgs; with xorg; oldAttrs.buildInputs ++ [
+            harfbuzz
+            libXcursor
+          ];
         });
       })
     ];

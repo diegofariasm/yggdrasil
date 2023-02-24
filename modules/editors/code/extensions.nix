@@ -5,6 +5,7 @@ with pkgs.vscode-extensions; [
   ms-vscode-remote.remote-ssh
 
   # Utils
+  gruntfuggly.todo-tree
   # Formatters / Lsp
   jnoortheen.nix-ide
 
@@ -24,6 +25,7 @@ with pkgs.vscode-extensions; [
     sha256 = "sha256-PxM+20mkj7DpcdFuExUFN5wldfs7Qmas3CnZpEFeRYs=";
   }
   {
+    # What is a developer without a pretty theme?
     name = "andromeda";
     publisher = "EliverLara";
     version = "1.7.2";

@@ -22,8 +22,8 @@ in
             NIX_CFLAGS_COMPILE+="-O3 -march=native"
           '';
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dwm/archive/ee206ed3f2a03e722b4e33cf20b3d8899fc438a9.tar.gz";
-            sha256 = "1kmvm3dmc49lh2zdmm989gbd04q02yx11p65p20drjwqp4rccdqq";
+            url = "https://github.com/fushiii/dwm/archive/a6a7c6857cbf741f610b1ac0ca0bf2bd16753bfc.tar.gz";
+            sha256 = "199hya41sfhkszm3m98myyfwdvkknp346b6qayjrhpf1g77p1lq6";
           };
           buildInputs = with pkgs; oldAttrs.buildInputs ++ [
             imlib2
@@ -67,19 +67,21 @@ in
 
     # Screen lock
     programs.slock.enable = true;
-    home.packages = with pkgs; [
-      feh # Wallpaper setter
-      pamixer # Audi controller
-      dmenu # Launcher
-      procps # dmenu uptime
-      my.luastatus # Status bar generator
-      brightnessctl # Brightness controller
-      networkmanager_dmenu # Network controller     
-    ];
-
-    home.configFile."dwm" = {
-      source = "${configDir}/dwm";
-      recursive = true;
+    home = {
+      packages = with pkgs; [
+        feh # Wallpaper setter
+        pamixer # Audi controller
+        dmenu # Launcher
+        procps # dmenu uptime
+        my.luastatus # Status bar generator
+        brightnessctl # Brightness controller
+        networkmanager_dmenu # Network controller     
+      ];
+      file.".Xresources".source = "${configDir}/dwm/.Xresources";
+      configFile."dwm" = {
+        source = "${configDir}/dwm";
+        recursive = true;
+      };
     };
 
     fonts.fonts = with pkgs; [
