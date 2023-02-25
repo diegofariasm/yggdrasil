@@ -6,7 +6,15 @@ with pkgs.vscode-extensions; [
 
   # Utils
   gruntfuggly.todo-tree
-  # Formatters / Lsp
+
+  # Web development
+
+  wix.vscode-import-cost
+  bradlc.vscode-tailwindcss
+  formulahendry.auto-close-tag
+  formulahendry.auto-rename-tag
+
+  # Language support
   jnoortheen.nix-ide
 
 ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
