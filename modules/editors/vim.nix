@@ -19,9 +19,6 @@ in
   };
 
   config = mkIf cfg.enable {
-   # nixpkgs.overlays = [
-   #   inputs.neovim-nightly-overlay.overlay
-   # ];
 
     home.programs.neovim = {
       enable = true;
