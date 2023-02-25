@@ -22,6 +22,7 @@
       media = {
         vlc.enable = true;
         nomacs.enable = true;
+        editing.enable = true;
       };
       apps = {
         element.enable = true;

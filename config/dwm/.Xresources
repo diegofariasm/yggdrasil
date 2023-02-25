@@ -5,39 +5,92 @@
 #include "/home/fushi/.config/dwm/dmenu_xresources/theme"
 
 
-! st theming for now
-! vim: set filetype=xdefaults :
-st.foreground: #D7D0C7
-st.background: #151515
+! ! st theming for now
 
-!black
-! st.color0:     #AF875F
-! st.color8:     #AF875F
-st.color0:     #101010
-st.color8:     #404040
-!red
-st.color1:     #E84F4F
-st.color9:     #D23D3D
-!green
-st.color2:     #B8D68C
-st.color10:    #A0CF5D
-!yellow
-st.color3:     #E1AA5D
-st.color11:    #F39D21
-!blue
-st.color4:     #7DC1CF
-st.color12:    #4E9FB1
-!magenta
-st.color5:     #9B64FB
-st.color13:    #8542FF
-!cyan
-st.color6:     #6D878D
-st.color14:    #42717B
-!white
-st.color7:     #dddddd
-st.color15:    #dddddd
+! ! Oxocarbon
 
-st.borderColor:        #151515
-st.colorBD:            #ffffff
-st.cursorColor:        #ff8939
-st.cursorColor2:       #151515
+! scheme: "Oxocarbon Dark"
+! author: "shaunsingh/IBM"
+
+#define base00 #161616
+#define base01 #262626
+#define base02 #393939
+#define base03 #525252
+#define base04 #dde1e6
+#define base05 #f2f4f8
+#define base06 #ffffff
+#define base07 #08bdba
+#define base08 #3ddbd9
+#define base09 #78a9ff
+#define base0A #ee5396
+#define base0B #33b1ff
+#define base0C #ff7eb6
+#define base0D #42be65
+#define base0E #be95ff
+#define base0F #82cfff
+
+*.foreground:   base05
+#ifdef background_opacity
+*.background:   [background_opacity]base00
+#else
+*.background:   base00
+#endif
+*.cursorColor:  base05
+
+*.color0:       base00
+*.color1:       base08
+*.color2:       base0B
+*.color3:       base0A
+*.color4:       base0D
+*.color5:       base0E
+*.color6:       base0C
+*.color7:       base05
+
+*.color8:       base03
+*.color9:       base09
+*.color10:      base01
+*.color11:      base02
+*.color12:      base04
+*.color13:      base06
+*.color14:      base0F
+*.color15:      base07
+
+
+
+! Other pretty theme
+
+! ! vim: set filetype=xdefaults :
+! st.foreground: #D7D0C7
+! st.background: #151515
+! 
+! !black
+! ! st.color0:     #AF875F
+! ! st.color8:     #AF875F
+! st.color0:     #101010
+! st.color8:     #404040
+! !red
+! st.color1:     #E84F4F
+! st.color9:     #D23D3D
+! !green
+! st.color2:     #B8D68C
+! st.color10:    #A0CF5D
+! !yellow
+! st.color3:     #E1AA5D
+! st.color11:    #F39D21
+! !blue
+! st.color4:     #7DC1CF
+! st.color12:    #4E9FB1
+! !magenta
+! st.color5:     #9B64FB
+! st.color13:    #8542FF
+! !cyan
+! st.color6:     #6D878D
+! st.color14:    #42717B
+! !white
+! st.color7:     #dddddd
+! st.color15:    #dddddd
+! 
+! st.borderColor:        #151515
+! st.colorBD:            #ffffff
+! st.cursorColor:        #ff8939
+! st.cursorColor2:       #151515

@@ -31,4 +31,10 @@ with pkgs.vscode-extensions; [
     version = "1.7.2";
     sha256 = "sha256-IFi+rSEb+Am5Sepav/31D+U2hYHwBrQoB40gfVSNFpM=";
   }
+  {
+    name = "vscode-highlight";
+    publisher = "fabiospampinato";
+    version = "1.7.2";
+    sha256 = "sha256-tlxZrdZ3rbGO6SmuCkP4VHn4FGKJq8tC02XrjEbE5k0=";
+  }
 ]
