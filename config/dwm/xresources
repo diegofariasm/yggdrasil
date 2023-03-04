@@ -1,10 +1,6 @@
 ! source dwm colorscheme !
 #include "/home/fushi/.config/dwm/dwm_xresources/theme"
 
-! source dmenu colorscheme !
-#include "/home/fushi/.config/dwm/dmenu_xresources/theme"
-
-
 ! ! st theming for now
 
 ! ! Oxocarbon
