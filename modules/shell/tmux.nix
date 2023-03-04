@@ -16,8 +16,8 @@ in
     home.packages = with pkgs; [
       tmux
     ];
-
-    modules.theme.onReload.tmux = "${pkgs.tmux}/bin/tmux source-file $TMUX_HOME/extraInit";
+    # There are errors because the module can't find $TMUX_HOME/extraInit
+    # modules.theme.onReload.tmux = "${pkgs.tmux}/bin/tmux source-file $TMUX_HOME/extraInit";
     modules.shell.zsh = {
       rcInit = "_cache tmuxifier init -";
       rcFiles = [ "${configDir}/tmux/aliases.zsh" ];
