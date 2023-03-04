@@ -1,39 +1,82 @@
 #!/usr/bin/env bash
 
-prompt="dmenu -l 7 "
+prompt="rofi -dmenu -i -theme ~/.config/rofi/script_menu.rasi"
 
-uptime=$(uptime -p | sed -e 's/up //g')
+# variables
+uptime="$(uptime -p | sed -e 's/up //g')"
+host=$(cat /proc/sys/kernel/hostname)
 dwm_pid="$(pidof dwm)"
 
-hibernate=" Hibernate"
-shutdown=" Shutdown"
-reboot="ﰇ Reboot"
-suspend="鈴 Suspend"
-lock=" Lock"
-logout="﫼 Logout"
-cancel="窱 Cancel"
+# options
+shutdown=' Shutdown'
+reboot=' Reboot'
+lock=' Lock'
+suspend='鈴 Suspend'
+logout='󰗽 Logout'
+hibernate=' Hibernate'
+yes='Yes'
+no='No'
 
-option="$cancel\n$hibernate\n$shutdown\n$reboot\n$suspend\n$lock\n$logout"
+option="$lock\n$hibernate\n$suspend\n$logout\n$reboot\n$shutdown"
 
-select="$(echo -e "$option" | $prompt -p "Uptime - $uptime")"
+show_options() {
+	echo -e "$option" | $prompt -p "$host" -mesg "Uptime: $uptime"
+}
+confirmation() {
+	echo -e "$yes\n$no" | $prompt -p "Confirmation" -mesg "Are you sure?"
+}
+execute() {
+	confirm="$(confirmation)"
+	wm="$(wmctrl -m | grep "Name: " | awk '{print $2}')"
+
+	if [[ "$confirm" == "$yes" ]]; then
+		if [[ $1 == 'shutdown' ]]; then
+			systemctl poweroff
+		elif [[ $1 == 'hibernate' ]]; then
+			systemctl hibernate
+		elif [[ $1 == 'reboot' ]]; then
+			systemctl reboot
+		elif [[ $1 == 'suspend' ]]; then
+			systemctl suspend
+		elif [[ $1 == 'logout' ]]; then
+			if [[ $wm == 'dwm' ]]; then
+				kill -TERM "$dwm_pid"
+			elif [[ $wm == 'awesome' ]]; then
+				awesome-client 'awesome.quit()'
+			elif [[ $wm == 'openbox' ]]; then
+				openbox --exit
+			elif [[ $wm == 'bspwm' ]]; then
+				bspc quit
+			elif [[ $wm == 'i3' ]]; then
+				i3-msg exit
+			elif [[ $wm == 'plasma' ]]; then
+				qdbus org.kde.ksmserver /KSMServer logout 0 0 0
+			fi
+		fi
+	else
+		exit 0
+	fi
+}
+
+select="$(show_options)"
 
 case $select in
-$hibernate)
-	systemctl hibernate
-	;;
-$shutdown)
-	systemctl poweroff
-	;;
-$reboot)
-	systemctl reboot
-	;;
-$suspend)
-	systemctl suspend
-	;;
 $lock)
 	slock
 	;;
+$hibernate)
+	execute hibernate
+	;;
+$suspend)
+	execute suspend
+	;;
 $logout)
-	kill -TERM dwmpid $dwm_pid
+	execute logout
+	;;
+$reboot)
+	execute reboot
+	;;
+$shutdown)
+	execute shutdown
 	;;
 esac

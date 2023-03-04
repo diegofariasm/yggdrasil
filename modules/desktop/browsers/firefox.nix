@@ -120,8 +120,8 @@ in
         # Disable the "new tab page" feature and show a blank tab instead
         # https://wiki.mozilla.org/Privacy/Reviews/New_Tab
         # https://support.mozilla.org/en-US/kb/new-tab-page-show-hide-and-customize-top-sites#w_how-do-i-turn-the-new-tab-page-off
-        "browser.newtabpage.enabled" = false;
-        "browser.newtab.url" = "about:blank";
+        # "browser.newtabpage.enabled" = false;
+        # "browser.newtab.url" = "about:blank";
         # Disable Activity Stream
         # https://wiki.mozilla.org/Firefox/Activity_Stream
         "browser.newtabpage.activity-stream.enabled" = false;

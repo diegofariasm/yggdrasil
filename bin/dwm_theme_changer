@@ -1,70 +1,90 @@
 #!/usr/bin/env bash
 
 # Directory
-dwm_dir="$HOME/.config/dwm/dwm_xresources"
-dmenu_dir="$HOME/.config/dwm/dmenu_xresources"
-xresources_dir="$HOME/.config/dwm"
-wallpaper_dir="$HOME/.config/dwm/wallpaper"
+dwm_dir="$HOME/.config/dwm"
 dwm_luastatus_dir="$HOME/.config/dwm/luastatus/colorscheme"
+wallpaper_dir="$dwm_dir/wallpaper"
+rofi_dir="$HOME/.config/rofi"
 
-prompt="dmenu -l 9"
+# launcher
+prompt="rofi -dmenu -i -theme $HOME/.config/rofi/script_menu.rasi"
 
 # for restarting dwm
 dwm_pid="$(pidof dwm)"
 
+change_theme() {
+	cp -r ${dwm_dir}/dwm_xresources/$1 ${dwm_dir}/dwm_xresources/theme
+	#cp -r ${dmenu_dir}/dwm_xresources/$1 ${dmenu_dir}/dwm_xresources/theme
+	cp -r ${dwm_luastatus_dir}/$1.lua ${dwm_luastatus_dir}/color.lua
+
+	cp -r ${rofi_dir}/colors/$1.rasi ${rofi_dir}/colors/colors.rasi
+	xrdb -merge -I$HOME ~/.Xresources # reload Xresources
+
+	# calls xrdb function in dwm
+	xsetroot -name "fsignal:2"
+	# update luastatus
+	kill -9 $(pidof luastatus)
+}
+change_gtk_theme() {
+	sed -e "s/^gtk-theme-name=.*/gtk-theme-name="$@"/" -i ~/.config/gtk-3.0/settings.ini
+	sed -e "s/^gtk-theme-name=.*/gtk-theme-name=\""$@"\"/" -i ~/.gtkrc-2.0
+}
+change_wzterm_colorscheme() {
+	sed -i "/color_scheme/s/ = ".*"/ = \"$1\",/" -i $HOME/.config/wezterm/wezterm.lua
+}
+change_rofi_theme() {
+	sed "s/\.config\/rofi\/colors.*.rasi/\.config\/rofi\/colors\/$1.rasi/" -i ~/.config/rofi/launcher.rasi
+	sed "s/\.config\/rofi\/colors.*.rasi/\.config\/rofi\/colors\/$1.rasi/" -i ~/.config/rofi/script_menu.rasi
+	sed "s/\.config\/rofi\/colors.*.rasi/\.config\/rofi\/colors\/$1.rasi/" -i ~/.config/rofi/script_menu_1.rasi
+}
+change_nvim_theme() {
+	sed "/change_colorscheme(\"/s/(".*")/(\"$1\")/" -i $HOME/.config/nvim/lua/core/colorscheme.lua
+}
+change_btop_theme() {
+	sed -e "s@color_theme = .*@color_theme = \"$HOME/.config/btop/themes/$1.theme\"@" -i $HOME/.config/btop/btop.conf
+}
+change_helix_theme() {
+	sed -i "/theme/s/ = ".*"/ = \"$1\"/" -i $HOME/.config/helix/config.toml
+}
+
 # Theme
+theme_icon="󱠓"
 cancel="窱 Cancel"
-theme1=" Catppuccin (Macchiato)"
-theme2=" Cozy-Night"
-theme3=" Cozy-Night Warm"
-theme4=" Dracula"
-theme5=" Gruvbox"
-theme6=" Nord"
+theme1="${theme_icon} Catppuccin (Macchiato)"
+theme2="${theme_icon} Cozy-Night"
+theme3="${theme_icon} Dracula"
+theme4="${theme_icon} Gruvbox"
+theme5="${theme_icon} Nord"
+theme6="${theme_icon} Rosé Pine"
 
 # Variable to pass to dmenu or rofi
 option="$cancel\n$theme1\n$theme2\n$theme3\n$theme4\n$theme5\n$theme6"
 
+select="$(echo -e "$option" | $prompt -p "Choose a theme")"
 
-theme_change()
-{
-	cp -f ${dwm_dir}/$1 ${dwm_dir}/theme
-	cp -f ${dmenu_dir}/$1 ${dmenu_dir}/theme
-	cp -f ${dwm_luastatus_dir}/$1.lua ${dwm_luastatus_dir}/color.lua
-	
-	
-	xrdb -merge -I$HOME ${xresources_dir}/.Xresources # reload Xresources
-
-  # calls xrdb function in dwm
-  xsetroot -name "fsignal:2"
-  # update luastatus
-  kill -9 $(pidof luastatus)
-
-}
-
-select="$(echo -e "$option" | $prompt -p "Choose a theme: " )"
 case $select in
-  $theme1)
-		feh --bg-fill ${wallpaper_dir}/pixelart_night_stars_clouds_trees_cozy.png
-		theme_change catppuccin_macchiato
-		;;
-	$theme2)
-		feh --bg-fill ${wallpaper_dir}/pixelart_night_train_cozy_gas.png
-		theme_change cozy-night
-		;;
-	$theme3)
-		feh --bg-fill ${wallpaper_dir}/pixelart_night_train_cozy_gas_warm-color.png
-		theme_change cozy-night_warm
-		;;
-    $theme4)
-		feh --bg-fill ${wallpaper_dir}/pixelart_arabian_palace_princess.png
-		theme_change dracula
-		;;
-	$theme5)
-		feh --bg-fill ${wallpaper_dir}/pixelart_house_chibi_person_game.png
-		theme_change gruvbox
-		;;
-	$theme6)
-		feh --bg-fill ${wallpaper_dir}/pixelart_medicine_flower_reminder_nord.png
-		theme_change nord
-		;;
-	esac
+$theme1)
+	feh --bg-fill --randomize "${wallpaper_dir}/pixelart_night_stars_clouds_trees_cozy_PixelArtJourney.png" "${wallpaper_dir}/pixelart_evening_trees_pole_wires_makrustic.png" "${wallpaper_dir}/pixelart_pokemon_rayquaza_forest.png"
+	change_theme catppuccin_macchiato
+	;;
+$theme2)
+	feh --bg-fill "${wallpaper_dir}/pixelart_night_train_cozy_gas_RoyalNaym.png"
+	change_theme cozy-night
+	;;
+$theme3)
+	feh --bg-fill --randomize "${wallpaper_dir}/pixelart_arabian_palace_princess_snakepixel.png" "${wallpaper_dir}/pixelart_winter_hut_deer_man_dog_hunt_PixelArtJourney.png"
+	change_theme dracula
+	;;
+$theme4)
+	feh --bg-fill --randomize "${wallpaper_dir}/pixelart_house_inside_girl_book_dog_jmw327.png" "${wallpaper_dir}/pixelart_forest_camp_children_maolow-paoPao.jpg" "${wallpaper_dir}/pixelart_house_chibi_person_game_jmw327.png" "${wallpaper_dir}/pixelart_house_girl_string_cozy.png"
+	change_theme gruvbox
+	;;
+$theme5)
+	feh --bg-fill --randomize "${wallpaper_dir}/.config/wallpaper/pixelart_medicine_flower_reminder_nord_Ansitru.png" "${wallpaper_dir}/pixelart_night_train_cozy_gas_nord_RoyalNaym.png" "${wallpaper_dir}/pixelart_mountain" "${wallpaper_dir}/mist_forest_nord.jpg"
+	change_theme nord
+	;;
+$theme6)
+	feh --bg-fill --randomize "${wallpaper_dir}/pixelart_night_stars_clouds_trees_cozy_PixelArtJourney.png" "${wallpaper_dir}/pixelart_evening_trees_pole_wires_makrustic.png"
+	change_theme rose_pine
+	;;
+esac

@@ -18,7 +18,6 @@
     };
     desktop = {
       dwm.enable = true;
-      plasma.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -31,6 +30,7 @@
       browsers = {
         default = "firefox";
         firefox.enable = true;
+        chrome.enable = true;
         edge.enable = true;
       };
       term = {
@@ -51,10 +51,8 @@
       code.enable = true;
     };
     shell = {
-      # WIP starship.enable = true;
       git.enable = true;
-      elvish.enable = true;
-
+      zsh.enable = true;
     };
     services = {
       mate-polkit.enable = true;

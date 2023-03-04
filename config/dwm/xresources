@@ -12,49 +12,48 @@
 ! scheme: "Oxocarbon Dark"
 ! author: "shaunsingh/IBM"
 
-#define base00 #161616
-#define base01 #262626
-#define base02 #393939
-#define base03 #525252
-#define base04 #dde1e6
-#define base05 #f2f4f8
-#define base06 #ffffff
-#define base07 #08bdba
-#define base08 #3ddbd9
-#define base09 #78a9ff
-#define base0A #ee5396
-#define base0B #33b1ff
-#define base0C #ff7eb6
-#define base0D #42be65
-#define base0E #be95ff
-#define base0F #82cfff
+#define st00 #161616
+#define st01 #262626
+#define st02 #393939
+#define st03 #525252
+#define st04 #dde1e6
+#define st05 #f2f4f8
+#define st06 #ffffff
+#define st07 #08bdba
+#define st08 #3ddbd9
+#define st09 #78a9ff
+#define st0A #ee5396
+#define st0B #33b1ff
+#define st0C #ff7eb6
+#define st0D #42be65
+#define st0E #be95ff
+#define st0F #82cfff
 
-*.foreground:   base05
+st.foreground:   st05
 #ifdef background_opacity
-*.background:   [background_opacity]base00
+st.background:   [background_opacity]st00
 #else
-*.background:   base00
+st.background:   st00
 #endif
-*.cursorColor:  base05
+st.cursorColor:  st05
 
-*.color0:       base00
-*.color1:       base08
-*.color2:       base0B
-*.color3:       base0A
-*.color4:       base0D
-*.color5:       base0E
-*.color6:       base0C
-*.color7:       base05
+st.color0:       st00
+st.color1:       st08
+st.color2:       st0B
+st.color3:       st0A
+st.color4:       st0D
+st.color5:       st0E
+st.color6:       st0C
+st.color7:       st05
 
-*.color8:       base03
-*.color9:       base09
-*.color10:      base01
-*.color11:      base02
-*.color12:      base04
-*.color13:      base06
-*.color14:      base0F
-*.color15:      base07
-
+st.color8:       st03
+st.color9:       st09
+st.color10:      st01
+st.color11:      st02
+st.color12:      st04
+st.color13:      st06
+st.color14:      st0F
+st.color15:      st07
 
 
 ! Other pretty theme

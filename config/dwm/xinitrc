@@ -1,0 +1,10 @@
+#!/usrbin/env bash
+
+# Load theming
+[[ -f ~/.Xresources ]] && xrdb -merge -I"$HOME" ~/.Xresources
+
+# Start bar
+dwm_statusbar_wrapper &
+
+# Run the window manager
+exec dwm
