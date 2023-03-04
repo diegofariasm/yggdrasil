@@ -24,8 +24,8 @@ in
 
         };
 
-        # shell.zsh.rcFiles = [ ./config/zsh/prompt.zsh ];
-        # shell.tmux.rcFiles = [ ./config/tmux.conf ];
+        shell.zsh.rcFiles = [ ./config/zsh/prompt.zsh ];
+        shell.tmux.rcFiles = [ ./config/tmux.conf ];
 
       };
     }

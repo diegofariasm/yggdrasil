@@ -51,8 +51,14 @@
       code.enable = true;
     };
     shell = {
-      git.enable = true;
       zsh.enable = true;
+      git.enable = true;
+      tmux.enable = true;
+      pass.enable = true;
+      gnupg.enable = true;
+      direnv.enable = true;
+      starship.enable = true;
+      vaultwarden.enable = true;
     };
     services = {
       mate-polkit.enable = true;
