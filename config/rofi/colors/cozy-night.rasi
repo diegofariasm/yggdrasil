@@ -1,0 +1,18 @@
+* {
+
+  midnight: #232341;
+  dusk: #484d7f;
+  darkLavender: #8b6d9c;
+  pinkishGrey: #c69fa5;
+  lightPeach: #f2d3ab;
+  lightPink: #fbf5ef;
+
+  background: var(midnight);
+  background-1: var(dusk);
+  foreground: var(lightPink);
+  foreground-1: var(lightPink);
+  selected: var(pinkishGrey);
+  selected-1: var(midnight);
+  active: var(pinkishGrey);
+  urgent: var(pinkishGrey);
+}
