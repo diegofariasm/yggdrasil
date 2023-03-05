@@ -14,17 +14,15 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      xfce.thunar
-      # For open terminal here, open with...
-      xfce.exo
-      # For thumbnails
-      ffmpegthumbnailer
-
-    ];
-    services = {
-      gvfs.enable = true; # Mount, trash, and other functionalities
-      tumbler.enable = true;
+    services.tumbler.enable = true;
+    programs.thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [
+        thunar-volman
+        thunar-dropbox-plugin
+        thunar-archive-plugin
+        thunar-media-tags-plugin
+      ];
     };
   };
 }
