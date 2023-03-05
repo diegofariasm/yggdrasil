@@ -15,6 +15,7 @@ in
 
   config = mkIf cfg.enable {
     services.tumbler.enable = true;
+    services.gvfs.enable = true;
     programs.thunar = {
       enable = true;
       plugins = with pkgs.xfce; [
@@ -24,5 +25,6 @@ in
         thunar-media-tags-plugin
       ];
     };
+    home.packages = with pkgs; [ xfce.exo ];
   };
 }
