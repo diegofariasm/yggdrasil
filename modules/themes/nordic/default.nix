@@ -7,15 +7,15 @@ with lib.my;
 let cfg = config.modules.theme;
 in
 {
-  config = mkIf (cfg.active == "alucard") (mkMerge [
+  config = mkIf (cfg.active == "nordic") (mkMerge [
     # Desktop-agnostic configuration
     {
       modules = {
         theme = {
           gtk = {
-            theme = "Dracula";
-            iconTheme = "Paper";
-            cursorTheme = "Dracula-cursors";
+            theme = "Nordic-darker";
+            iconTheme = "Nordzy-dark";
+            cursorTheme = "Nordzy-cursors";
           };
           fonts = {
             sans.name = "Fira Sans";
@@ -34,8 +34,9 @@ in
     (mkIf config.services.xserver.enable {
 
       home.packages = with pkgs; [
-        dracula-theme
-        paper-icon-theme # for rofi
+        nordic
+        nordzy-icon-theme
+        nordzy-cursor-theme
       ];
 
       fonts = {

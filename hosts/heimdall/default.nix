@@ -61,7 +61,7 @@
       vaultwarden.enable = true;
     };
     services = {
-      mate-polkit.enable = true;
+      polkit.enable = true;
       ssh.enable = true;
     };
     theme.active = "alucard";

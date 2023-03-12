@@ -25,11 +25,14 @@ in
       }
     ];
 
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       feh # image viewer
       xclip
       xdotool
       xorg.xwininfo
+      # Qt theming
+      qgnomeplatform # QPlatformTheme for a better Qt application inclusion in GNOME
+      libsForQt5.qtstyleplugin-kvantum # SVG-based Qt5 theme engine plus a config tool and extra theme
 
     ];
 
@@ -42,6 +45,12 @@ in
         symbola
       ];
     };
+    # Try really hard to get QT to respect my GTK theme.
+    # env = {
+    #   GTK_DATA_PREFIX = [ "${config.system.path}" ];
+    #   QT_QPA_PLATFORMTHEME = "gnome";
+    #   QT_STYLE_OVERRIDE = "kvantum";
+    # };
 
     services.xserver.displayManager.sessionCommands = ''
       # GTK2_RC_FILES must be available to the display manager.

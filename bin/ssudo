@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ $# -le 1 ]; then # Test number of arguments to script (always a good idea).
+	echo "Usage: $(basename "$0") 'command'"
+	exit
+fi
+
+# Run as root
+pkexec "$@"

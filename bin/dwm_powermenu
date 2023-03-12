@@ -1,82 +1,56 @@
-#!/usr/bin/env bash
+#!/usr/bin/env cached-nix-shell
+#! nix-shell -p ruby -i "ruby -S" --quiet
+require 'socket'
 
-prompt="rofi -dmenu -i -theme ~/.config/rofi/script_menu.rasi"
+def get_system_uptime()
+  uptime_seconds = File.read('/proc/uptime').split(' ')[0].to_i
+  seconds = uptime_seconds % 60
+  minutes = (uptime_seconds / 60) % 60
+  hours = (uptime_seconds / 3600) % 24
+  days = uptime_seconds / 86400
 
-# variables
-uptime="$(uptime -p | sed -e 's/up //g')"
-host=$(cat /proc/sys/kernel/hostname)
-dwm_pid="$(pidof dwm)"
+  return "#{days} days, #{hours} hours, #{minutes} minutes, #{seconds} seconds"
+end
 
-# options
-shutdown=' Shutdown'
-reboot=' Reboot'
-lock=' Lock'
-suspend='鈴 Suspend'
-logout='󰗽 Logout'
-hibernate=' Hibernate'
-yes='Yes'
-no='No'
+def show_options(options, runner, uptime, hostname) 
+    options = options.join("\n")
+    chosen_option = `echo -e '#{options}' | #{runner} -p '#{hostname}' -mesg 'Uptime: #{uptime}'`
 
-option="$lock\n$hibernate\n$suspend\n$logout\n$reboot\n$shutdown"
+    return chosen_option
+end
 
-show_options() {
-	echo -e "$option" | $prompt -p "$host" -mesg "Uptime: $uptime"
-}
-confirmation() {
-	echo -e "$yes\n$no" | $prompt -p "Confirmation" -mesg "Are you sure?"
-}
-execute() {
-	confirm="$(confirmation)"
-	wm="$(wmctrl -m | grep "Name: " | awk '{print $2}')"
+def treat_rofi_output(rofi_output)
+    rofi_output = rofi_output.gsub("\n", "") 
 
-	if [[ "$confirm" == "$yes" ]]; then
-		if [[ $1 == 'shutdown' ]]; then
-			systemctl poweroff
-		elif [[ $1 == 'hibernate' ]]; then
-			systemctl hibernate
-		elif [[ $1 == 'reboot' ]]; then
-			systemctl reboot
-		elif [[ $1 == 'suspend' ]]; then
-			systemctl suspend
-		elif [[ $1 == 'logout' ]]; then
-			if [[ $wm == 'dwm' ]]; then
-				kill -TERM "$dwm_pid"
-			elif [[ $wm == 'awesome' ]]; then
-				awesome-client 'awesome.quit()'
-			elif [[ $wm == 'openbox' ]]; then
-				openbox --exit
-			elif [[ $wm == 'bspwm' ]]; then
-				bspc quit
-			elif [[ $wm == 'i3' ]]; then
-				i3-msg exit
-			elif [[ $wm == 'plasma' ]]; then
-				qdbus org.kde.ksmserver /KSMServer logout 0 0 0
-			fi
-		fi
-	else
-		exit 0
-	fi
-}
+    return rofi_output
+end
 
-select="$(show_options)"
+hostname = Socket.gethostname
+uptime = get_system_uptime()
+lock_app = "slock"
+rofi_runner = "rofi -dmenu -i -theme ~/.config/rofi/script_menu.rasi"
 
-case $select in
-$lock)
-	slock
-	;;
-$hibernate)
-	execute hibernate
-	;;
-$suspend)
-	execute suspend
-	;;
-$logout)
-	execute logout
-	;;
-$reboot)
-	execute reboot
-	;;
-$shutdown)
-	execute shutdown
-	;;
-esac
+available_options = [
+    ' Shutdown',
+    ' Reboot',
+    ' Lock',
+    '鈴 Suspend',
+    '󰗽 Logout',
+    ' Hibernate'
+]
+
+chosen_command = treat_rofi_output(show_options(available_options, rofi_runner, uptime, hostname))
+case chosen_command
+    when available_options[0]
+        system("systemctl poweroff")
+    when available_options[1]
+        system("systemctl reboot")
+    when available_options[2]
+        system(lock_app)
+    when available_options[3]
+        system("systemctl suspend")
+    when available_options[4]
+        system("dwmc quit")
+    when available_options[5]
+        system("systemctl hibernate")
+end

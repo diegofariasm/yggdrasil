@@ -1,90 +1,136 @@
-#!/usr/bin/env bash
+#!/usr/bin/env cached-nix-shell
+#! nix-shell -p ruby -i "ruby -S" --quiet
 
-# Directory
-dwm_dir="$HOME/.config/dwm"
-dwm_luastatus_dir="$HOME/.config/dwm/luastatus/colorscheme"
-wallpaper_dir="$dwm_dir/wallpaper"
-rofi_dir="$HOME/.config/rofi"
+require 'fcntl'
 
-# launcher
-prompt="rofi -dmenu -i -theme $HOME/.config/rofi/script_menu.rasi"
+# Get the users home directory
+home_dir = ENV['HOME']
+config_dir = "#{home_dir}/.config"
+# Set the name of the lockfile
+lockfile = "#{home_dir}/theme_changer.lock"
 
-# for restarting dwm
-dwm_pid="$(pidof dwm)"
+# File locations
+dwm_dir = "#{config_dir}/dwm"
+rofi_dir = "#{config_dir}/rofi"
+wallpaper_dir = "#{dwm_dir}/wallpaper"
+xresources_file = "#{home_dir}/.Xresources"
+luastatus_dir = "#{dwm_dir}/luastatus"
 
-change_theme() {
-	cp -r ${dwm_dir}/dwm_xresources/$1 ${dwm_dir}/dwm_xresources/theme
-	#cp -r ${dmenu_dir}/dwm_xresources/$1 ${dmenu_dir}/dwm_xresources/theme
-	cp -r ${dwm_luastatus_dir}/$1.lua ${dwm_luastatus_dir}/color.lua
+available_themes = Dir.glob("#{rofi_dir}/colors/*").map { |f| File.basename(f, ".*") }.reject { |t| t == "colors" }
 
-	cp -r ${rofi_dir}/colors/$1.rasi ${rofi_dir}/colors/colors.rasi
-	xrdb -merge -I$HOME ~/.Xresources # reload Xresources
+# Configure rofi options
+theme_icon = "󱠓"
+rofi_theme_option = []
+for theme in available_themes do
+  # Change all "_" to a space
+  rofi_option = theme.gsub("_", " ")
+  # Uppercase every first letter of word
+  rofi_option = rofi_option.gsub(/\b\w/) { |match| match.upcase }
+  # Put the theme icon in the beginning of all options
+  rofi_option = "#{theme_icon} #{rofi_option}"
+  rofi_theme_option.push(rofi_option)
+end
+# Scripts
+rofi_runner = "rofi -dmenu -i -theme #{config_dir}/rofi/script_menu.rasi"
 
-	# calls xrdb function in dwm
-	xsetroot -name "fsignal:2"
-	# update luastatus
-	kill -9 $(pidof luastatus)
-}
-change_gtk_theme() {
-	sed -e "s/^gtk-theme-name=.*/gtk-theme-name="$@"/" -i ~/.config/gtk-3.0/settings.ini
-	sed -e "s/^gtk-theme-name=.*/gtk-theme-name=\""$@"\"/" -i ~/.gtkrc-2.0
-}
-change_wzterm_colorscheme() {
-	sed -i "/color_scheme/s/ = ".*"/ = \"$1\",/" -i $HOME/.config/wezterm/wezterm.lua
-}
-change_rofi_theme() {
-	sed "s/\.config\/rofi\/colors.*.rasi/\.config\/rofi\/colors\/$1.rasi/" -i ~/.config/rofi/launcher.rasi
-	sed "s/\.config\/rofi\/colors.*.rasi/\.config\/rofi\/colors\/$1.rasi/" -i ~/.config/rofi/script_menu.rasi
-	sed "s/\.config\/rofi\/colors.*.rasi/\.config\/rofi\/colors\/$1.rasi/" -i ~/.config/rofi/script_menu_1.rasi
-}
-change_nvim_theme() {
-	sed "/change_colorscheme(\"/s/(".*")/(\"$1\")/" -i $HOME/.config/nvim/lua/core/colorscheme.lua
-}
-change_btop_theme() {
-	sed -e "s@color_theme = .*@color_theme = \"$HOME/.config/btop/themes/$1.theme\"@" -i $HOME/.config/btop/btop.conf
-}
-change_helix_theme() {
-	sed -i "/theme/s/ = ".*"/ = \"$1\"/" -i $HOME/.config/helix/config.toml
-}
+# TODO fix remove all '\n' from theme
 
-# Theme
-theme_icon="󱠓"
-cancel="窱 Cancel"
-theme1="${theme_icon} Catppuccin (Macchiato)"
-theme2="${theme_icon} Cozy-Night"
-theme3="${theme_icon} Dracula"
-theme4="${theme_icon} Gruvbox"
-theme5="${theme_icon} Nord"
-theme6="${theme_icon} Rosé Pine"
+# TODO use sed to modify only the file that loads the colors
+def change_rofi_theme(theme_name, rofi_dir)
+    new_theme = "#{rofi_dir}/colors/#{theme_name}.rasi"
+    active_theme = "#{rofi_dir}/colors/colors.rasi"
+    # Replace the files
+    system("cp -r #{new_theme} #{active_theme}")
+end
 
-# Variable to pass to dmenu or rofi
-option="$cancel\n$theme1\n$theme2\n$theme3\n$theme4\n$theme5\n$theme6"
+def change_dwm_theme(theme_name, dwm_dir, xresources_file)
+    new_theme = "#{dwm_dir}/dwm_xresources/#{theme_name}"
+    active_theme = "#{dwm_dir}/dwm_xresources/colors"
+    
+    # Replace the files 
+    system("cp -r #{new_theme} #{active_theme}")
+    # Reload xresources   
+    system("xrdb -merge #{xresources_file}") 
+    # Call xrdb function in dwm
+    system("dwmc xrdb")
+end
 
-select="$(echo -e "$option" | $prompt -p "Choose a theme")"
+def change_luastatus_theme(theme_name, luastatus_dir) 
+  new_theme = "#{luastatus_dir}/colorscheme/#{theme_name}.lua"
+  active_theme = "#{luastatus_dir}/colorscheme/color.lua"
+  # Replace the files 
+  system("cp -r #{new_theme} #{active_theme}")
+  # Update luastatus
+  system("kill -9 $(pidof luastatus)")
 
-case $select in
-$theme1)
-	feh --bg-fill --randomize "${wallpaper_dir}/pixelart_night_stars_clouds_trees_cozy_PixelArtJourney.png" "${wallpaper_dir}/pixelart_evening_trees_pole_wires_makrustic.png" "${wallpaper_dir}/pixelart_pokemon_rayquaza_forest.png"
-	change_theme catppuccin_macchiato
-	;;
-$theme2)
-	feh --bg-fill "${wallpaper_dir}/pixelart_night_train_cozy_gas_RoyalNaym.png"
-	change_theme cozy-night
-	;;
-$theme3)
-	feh --bg-fill --randomize "${wallpaper_dir}/pixelart_arabian_palace_princess_snakepixel.png" "${wallpaper_dir}/pixelart_winter_hut_deer_man_dog_hunt_PixelArtJourney.png"
-	change_theme dracula
-	;;
-$theme4)
-	feh --bg-fill --randomize "${wallpaper_dir}/pixelart_house_inside_girl_book_dog_jmw327.png" "${wallpaper_dir}/pixelart_forest_camp_children_maolow-paoPao.jpg" "${wallpaper_dir}/pixelart_house_chibi_person_game_jmw327.png" "${wallpaper_dir}/pixelart_house_girl_string_cozy.png"
-	change_theme gruvbox
-	;;
-$theme5)
-	feh --bg-fill --randomize "${wallpaper_dir}/.config/wallpaper/pixelart_medicine_flower_reminder_nord_Ansitru.png" "${wallpaper_dir}/pixelart_night_train_cozy_gas_nord_RoyalNaym.png" "${wallpaper_dir}/pixelart_mountain" "${wallpaper_dir}/mist_forest_nord.jpg"
-	change_theme nord
-	;;
-$theme6)
-	feh --bg-fill --randomize "${wallpaper_dir}/pixelart_night_stars_clouds_trees_cozy_PixelArtJourney.png" "${wallpaper_dir}/pixelart_evening_trees_pole_wires_makrustic.png"
-	change_theme rose_pine
-	;;
-esac
+end
+
+def change_wallpaper(theme_name, wallpaper_dir)
+    wallpapers = Dir.glob("#{wallpaper_dir}/#{theme_name}_*")
+    if wallpapers.instance_of?(Array)
+        random_wallpaper = wallpapers.sample
+        system("feh --bg-scale #{random_wallpaper}")
+    elsif wallpapers.instance_of?(String)
+        system("feh --bg-fill #{wallpapers}")
+    end
+end
+def convert_rofi_option_to_theme(rofi_option, theme_icon)
+  # Delete theme icon
+  rofi_option = rofi_option.delete(theme_icon)
+  # Delete trailing space
+  rofi_option = rofi_option.sub(" ", "")
+  # Change space to "_"
+  rofi_option = rofi_option.gsub(" ", "_")
+  # Delete new line ascii
+  rofi_option = rofi_option.gsub("\n", "")
+
+  return rofi_option.downcase
+end
+
+# Open the lockfile with exclusive write access
+lockfile_fd = File.open(lockfile, File::RDWR|File::CREAT, 0644)
+if !lockfile_fd.flock(File::LOCK_EX|File::LOCK_NB)
+  # Lock is held by another process, check if it's still running
+  old_pid = lockfile_fd.read.chomp.to_i
+  if Process.kill(0, old_pid)
+    puts "Lockfile exists, exiting..."
+    exit 1
+  else
+    # Stale lock, remove it and acquire the lock
+    lockfile_fd.flock(File::LOCK_UN)
+    lockfile_fd.close
+    File.unlink(lockfile)
+    lockfile_fd = File.open(lockfile, File::RDWR|File::CREAT, 0644)
+    lockfile_fd.flock(File::LOCK_EX)
+  end
+end
+
+# Write the PID to the lockfile
+lockfile_fd.truncate(0)
+lockfile_fd.write("#{Process.pid}\n")
+lockfile_fd.flush
+
+# Create colors file if doesn't exist
+if File.exist?("#{rofi_dir}/colors/colors.rasi")
+    ;
+else
+    puts "No active theme, bootstrapping"
+    system("cp -r #{rofi_dir}/colors/#{available_themes[0]}.rasi #{rofi_dir}/colors/colors.rasi")
+    system("cp -r #{dwm_dir}/dwm_xresources/#{available_themes[0]} colors")
+    system("fehbg #{wallpaper_dir}/pixelart_house_chibi_person_game_jmw327.png")
+end
+# Get wanted theme
+rofi_prompt_lines = rofi_theme_option.join("\n")
+chosen_option = `echo -e '#{rofi_prompt_lines}' | #{rofi_runner} -p 'Choose theme'`
+if $?.success? # Check if the rofi prompt ran sucessfuly
+    chosen_theme = convert_rofi_option_to_theme(chosen_option, theme_icon)
+    # Change the themes
+    change_rofi_theme(chosen_theme, rofi_dir)
+    change_dwm_theme(chosen_theme, dwm_dir, xresources_file)
+    change_luastatus_theme(chosen_theme, luastatus_dir)
+    change_wallpaper(chosen_theme, wallpaper_dir)
+end
+
+lockfile_fd.flock(File::LOCK_UN)
+lockfile_fd.close
+File.unlink(lockfile)

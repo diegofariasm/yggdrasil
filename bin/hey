@@ -289,7 +289,7 @@ module Hey
           end
         end
       else
-        command = "nix run github:fushiii/dotfiles -- #{command}"
+        command = "nix run github:hlissner/dotfiles -- #{command}"
         puts "Running '#{command}' on #{target}"
         sh ["ssh", "-t", target, command]
       end
@@ -407,3 +407,4 @@ module Hey
 end
 
 Hey.run ARGV.dup
+

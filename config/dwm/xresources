@@ -1,5 +1,5 @@
 ! source dwm colorscheme !
-#include "/home/fushi/.config/dwm/dwm_xresources/theme"
+#include "/home/fushi/.config/dwm/dwm_xresources/colors"
 
 ! ! st theming for now
 

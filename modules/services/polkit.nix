@@ -1,31 +1,29 @@
-{
-  config,
-  options,
-  pkgs,
-  lib,
-  ...
+{ config
+, options
+, pkgs
+, lib
+, ...
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.services.mate-polkit;
-in {
-  options.modules.services.mate-polkit = {
+  cfg = config.modules.services.polkit;
+in
+{
+  options.modules.services.polkit = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
+    security.polkit.enable = true;
     home.packages = with pkgs; [
-      mate.mate-polkit
-      polkit
       polkit_gnome
     ];
-
     systemd.user.services.auth-agent = {
       script = ''
-        "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1";
+        "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
       '';
-      wantedBy = ["graphical-session.target"];
-      partOf = ["graphical-session.target"];
+      wantedBy = [ "graphical-session.target" ];
+      partOf = [ "graphical-session.target" ];
     };
   };
 }
