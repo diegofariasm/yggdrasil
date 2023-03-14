@@ -1,7 +1,24 @@
 #!/usr/bin/env cached-nix-shell
 #! nix-shell -p ruby -i "ruby -S" --quiet
 
-lockfile = "/run/user/#{Process.uid}/dwm_statusbar_wrapper.lock"
+def load_wallpaper(wallpaper)
+  system("#{wallpaper}")
+end
+
+def load_xresources(xresources_file)
+  # Load xresources
+  system("xrdb -merge #{xresources_file}")
+  # Relaod xresources on dwm
+  system('dwmc xrdb')
+end
+
+home_dir = ENV['HOME']
+runtime_dir = ENV['XDG_RUNTIME_DIR']
+lockfile = "#{runtime_dir}/dwm_autostart.lock"|| "/run/user/#{Process.uid}/dwm_autostart.lock"
+config_dir = ENV['XDG_CONFIG_HOME'] || "#{home_dir}/.config"
+
+xresources_file = "#{config_dir}/dwm/xresources"
+wallpaper = "#{home_dir}/.fehbg"
 
 # Open the lockfile with exclusive write access
 lockfile_fd = File.open(lockfile, File::RDWR | File::CREAT, 0o644)
@@ -20,16 +37,12 @@ unless lockfile_fd.flock(File::LOCK_EX | File::LOCK_NB)
     lockfile_fd.flock(File::LOCK_EX)
   end
 end
-
-
-loop do
-  pid = spawn("dwm_statusbar")
-  Process.wait(pid)
-  puts "Status bar killed, restarting..."
-  sleep 5
-end
+#
+# Load the things
+load_wallpaper(wallpaper)
+load_xresources(xresources_file)
+system("dwm_statusbar_wrapper")
 
 lockfile_fd.flock(File::LOCK_UN)
 lockfile_fd.close
 File.unlink(lockfile)
-
