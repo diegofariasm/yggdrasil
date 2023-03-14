@@ -26,7 +26,7 @@ loop do
   pid = spawn("dwm_statusbar")
   Process.wait(pid)
   puts "Status bar killed, restarting..."
-  sleep 5
+  sleep 0.1
 end
 
 lockfile_fd.flock(File::LOCK_UN)

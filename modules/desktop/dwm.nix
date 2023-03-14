@@ -43,11 +43,9 @@ in
       })
     ];
 
-    services.xserver = {
-      enable = true;
-      windowManager.dwm.enable = true;
-      displayManager.lightdm.enable = true;
-    };
+    services.xserver.enable = true;
+    services.xserver.windowManager.dwm.enable = true;
+    services.xserver.displayManager.startx.enable = true;
 
     programs.slock.enable = true;
     fonts.fonts = with pkgs; [

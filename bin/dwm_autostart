@@ -9,7 +9,7 @@ def load_xresources(xresources_file)
   # Load xresources
   system("xrdb -merge #{xresources_file}")
   # Relaod xresources on dwm
-  system('dwmc xrdb')
+ # system('dwmc xrdb')
 end
 
 home_dir = ENV['HOME']
@@ -41,7 +41,6 @@ end
 # Load the things
 load_wallpaper(wallpaper)
 load_xresources(xresources_file)
-system("dwm_statusbar_wrapper")
 
 lockfile_fd.flock(File::LOCK_UN)
 lockfile_fd.close
