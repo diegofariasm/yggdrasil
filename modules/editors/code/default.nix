@@ -7,7 +7,7 @@
 with lib;
 with lib.my; let
   cfg = config.modules.editors.code;
-  vscodePname = config.home.programs.vscode.package.pname;
+  vscodePname = config.home-manager.users.${config.user.name}.programs.vscode.package.pname;
   configDir = {
     "vscode" = "Code";
     "vscode-insiders" = "Code - Insiders";
@@ -37,7 +37,7 @@ in
 
         overwriteVSCodeSymlink =
           let
-            userSettings = config.home.programs.vscode.userSettings;
+            userSettings = config.home-manager.users.${config.user.name}.programs.vscode.userSettings;
             jsonSettings = pkgs.writeText "tmp_vscode_settings" (builtins.toJSON userSettings);
           in
           lib.hm.dag.entryAfter [ "linkGeneration" ] ''
@@ -47,7 +47,7 @@ in
       };
     };
 
-    home.programs.vscode = {
+    maiden.programs.vscode = {
       enable = true;
       package = pkgs.vscode;
       userSettings = import ./settings.nix;

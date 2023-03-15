@@ -37,7 +37,7 @@ in
 
       ];
 
-      home.programs.fish.shellAliases = {
+      maiden.programs.fish.shellAliases = {
         py = "python";
         py2 = "python2";
         py3 = "python3";

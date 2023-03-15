@@ -20,7 +20,7 @@ in
 
   config = mkIf cfg.enable {
 
-    home.programs.neovim = {
+    maiden.programs.neovim = {
       enable = true;
       package = pkgs.neovim-unwrapped;
 

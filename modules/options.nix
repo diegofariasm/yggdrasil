@@ -23,13 +23,12 @@ with lib.my; {
       themesDir = mkOpt path "${config.dotfiles.modulesDir}/themes";
     };
 
+    maiden = mkOpt' attrs { } "House manager alias";
     home = {
       file = mkOpt' attrs { } "Files to place directly in $HOME";
       configFile = mkOpt' attrs { } "Files to place in $XDG_CONFIG_HOME";
       dataFile = mkOpt' attrs { } "Files to place in $XDG_DATA_HOME";
-      programs = mkOpt' attrs { } "Programs to install";
       packages = mkOpt' attrs { } "Packages to install";
-
     };
 
     env = mkOption {
@@ -63,6 +62,7 @@ with lib.my; {
         group = "users";
         uid = 1000;
       };
+
     # Install user packages to /etc/profiles instead. Necessary for
     # nixos-rebuild build-vm to work.
     home-manager = {
@@ -75,24 +75,23 @@ with lib.my; {
       #   home.file        ->  home-manager.users.fushi.home.file
       #   home.configFile  ->  home-manager.users.fushi.home.xdg.configFile
       #   home.dataFile    ->  home-manager.users.fushi.home.xdg.dataFile
-      #   home.programs    ->  home-manager.users.fushi.programs
-      users.${config.user.name} = {
-        programs = mkAliasDefinitions options.home.programs;
-        home = {
-          file = mkAliasDefinitions options.home.file;
-          packages = mkAliasDefinitions options.home.packages;
-          # Necessary for home-manager to work with flakes, otherwise it will
-          # look for a nixpkgs channel.
-          stateVersion = config.system.stateVersion;
-        };
-
-        xdg = {
-          configFile = mkAliasDefinitions options.home.configFile;
-          dataFile = mkAliasDefinitions options.home.dataFile;
-        };
-      };
+      #   maiden.programs    ->  home-manager.users.fushi.programs
+      users.${config.user.name} = mkAliasDefinitions options.maiden;
     };
 
+    maiden = {
+      home = {
+        file = mkAliasDefinitions options.home.file;
+        packages = mkAliasDefinitions options.home.packages;
+        # Necessary for home-manager to work with flakes, otherwise it will
+        # look for a nixpkgs channel.
+        stateVersion = config.system.stateVersion;
+      };
+      xdg = {
+        configFile = mkAliasDefinitions options.home.configFile;
+        dataFile = mkAliasDefinitions options.home.dataFile;
+      };
+    };
 
     users.users.${config.user.name} = mkAliasDefinitions options.user;
 

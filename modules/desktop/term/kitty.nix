@@ -12,7 +12,7 @@ in
   options.modules.desktop.term.kitty = { enable = mkBoolOpt false; };
   config = mkIf cfg.enable {
 
-    home.programs.kitty = {
+    maiden.programs.kitty = {
       enable = true;
 
       font = {
