@@ -16,11 +16,11 @@ in
   config = mkIf cfg.enable {
     security.polkit.enable = true;
     home.packages = with pkgs; [
-      polkit_gnome
+      mate.mate-polkit
     ];
     systemd.user.services.auth-agent = {
       script = ''
-        "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+        "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1";
       '';
       wantedBy = [ "graphical-session.target" ];
       partOf = [ "graphical-session.target" ];

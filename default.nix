@@ -13,6 +13,7 @@ in
     # I use home-manager to deploy files to $HOME; little else
     [
       inputs.home-manager.nixosModules.home-manager
+      inputs.base16.hmModule
     ]
     # All my personal modules
     ++ (mapModulesRec' (toString ./modules) import);
@@ -80,6 +81,7 @@ in
     wget
     unzip
     killall
+    brightnessctl
     cached-nix-shell
     update-nix-fetchgit
   ];

@@ -43,11 +43,13 @@ in
       })
     ];
 
-    services.xserver.enable = true;
-    services.xserver.windowManager.dwm.enable = true;
-    services.xserver.displayManager.startx.enable = true;
-
     programs.slock.enable = true;
+    services.xserver = {
+      enable = true;
+      windowManager.dwm.enable = true;
+      displayManager.lightdm.enable = true;
+    };
+
     fonts.fonts = with pkgs; [
       (nerdfonts.override {
         fonts = [
@@ -63,30 +65,22 @@ in
     home = {
       packages = with pkgs; [
         rofi
-        pamixer
         my.luastatus
-        brightnessctl
         networkmanager_dmenu
       ];
-
-      file.".Xresources".source = "${configDir}/dwm/xresources";
       file.".xinitrc".source = "${configDir}/dwm/xinitrc";
-
       configFile."rofi" = {
         source = "${configDir}/rofi";
         recursive = true;
       };
-
       configFile."dwm" = {
         source = "${configDir}/dwm";
         recursive = true;
       };
-
       configFile."networkmanager-dmenu" = {
         source = "${configDir}/networkmanager-dmenu";
         recursive = true;
       };
-
     };
   };
 }

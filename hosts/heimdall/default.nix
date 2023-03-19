@@ -17,21 +17,23 @@
       fs.enable = true;
     };
     desktop = {
-      dwm.enable = true;
+      sway.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
         editing.enable = true;
       };
       apps = {
+        editors = {
+          code.enable = true;
+        };
         element.enable = true;
         thunar.enable = true;
       };
       browsers = {
         default = "firefox";
         firefox.enable = true;
-        chrome.enable = true;
-        edge.enable = true;
+        nyxt.enable = true;
       };
       term = {
         default = "st";
@@ -46,19 +48,14 @@
       python.enable = true;
     };
     editors = {
-      default = "code";
+      default = "nvim";
       vim.enable = true;
-      code.enable = true;
     };
     shell = {
       zsh.enable = true;
       git.enable = true;
       tmux.enable = true;
-      pass.enable = true;
-      gnupg.enable = true;
-      direnv.enable = true;
       starship.enable = true;
-      vaultwarden.enable = true;
     };
     services = {
       polkit.enable = true;
@@ -76,18 +73,9 @@
     keyMap = "br-abnt2";
   };
 
-  environment.variables = {
-    "XKB_DEFAULT_LAYOUT" = "br";
-  };
+  environment.variables."XKB_DEFAULT_LAYOUT" = "br";
 
-  networking = {
-    networkmanager.enable = true;
-    # wireless = {
-    #   enable = true;
-    #   userControlled.enable = true;
-    # };
-  };
-
+  networking.networkmanager.enable = true;
   # Local config
   programs.ssh.startAgent = true;
   services = {

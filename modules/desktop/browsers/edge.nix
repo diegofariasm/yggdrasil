@@ -20,11 +20,11 @@ in
     ];
     # To solve edge crashing on X11
     services.dbus.enable = true;
-    xdg.portal = {
-      enable = true;
-      wlr.enable = true;
-      extraPortals = with pkgs; [ xdg-desktop-portal-wlr xdg-desktop-portal-gtk ];
-    };
+    #    xdg.portal = {
+    #      enable = true;
+    #      wlr.enable = true;
+    #      extraPortals = with pkgs; [ xdg-desktop-portal-wlr xdg-desktop-portal-gtk ];
+    #    };
 
   };
 }

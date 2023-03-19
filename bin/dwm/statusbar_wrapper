@@ -1,0 +1,35 @@
+#!/usr/bin/env cached-nix-shell
+#! nix-shell -p ruby -i "ruby -S" --quiet
+
+lockfile = "/run/user/#{Process.uid}/dwm_statusbar_wrapper.lock"
+
+# Open the lockfile with exclusive write access
+lockfile_fd = File.open(lockfile, File::RDWR | File::CREAT, 0o644)
+unless lockfile_fd.flock(File::LOCK_EX | File::LOCK_NB)
+  # Lock is held by another process, check if it's still running
+  old_pid = lockfile_fd.read.chomp.to_i
+  if Process.kill(0, old_pid)
+    puts 'Lockfile exists, exiting...'
+    exit 1
+  else
+    # Stale lock, remove it and acquire the lock
+    lockfile_fd.flock(File::LOCK_UN)
+    lockfile_fd.close
+    File.unlink(lockfile)
+    lockfile_fd = File.open(lockfile, File::RDWR | File::CREAT, 0o644)
+    lockfile_fd.flock(File::LOCK_EX)
+  end
+end
+
+
+loop do
+  pid = spawn("dwm_statusbar")
+  Process.wait(pid)
+  puts "Status bar killed, restarting..."
+  sleep 0.1
+end
+
+lockfile_fd.flock(File::LOCK_UN)
+lockfile_fd.close
+File.unlink(lockfile)
+

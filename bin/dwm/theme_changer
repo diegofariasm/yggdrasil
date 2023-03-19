@@ -1,0 +1,136 @@
+#!/usr/bin/env cached-nix-shell
+#! nix-shell -p ruby -i "ruby -S" --quiet
+# frozen_string_literal: true
+
+require 'English'
+
+def themes_to_rofi_option(theme_icon, themes)
+  rofi_options = []
+  themes.each do |theme|
+    # Change all "_" to a space
+    rofi_option = theme.gsub('_', ' ')
+    # Uppercase every first letter of word
+    rofi_option = rofi_option.gsub(/\b\w/, &:upcase)
+    # Put the theme icon in the beginning of all options
+    rofi_option = "#{theme_icon} #{rofi_option}"
+    rofi_options.push(rofi_option)
+  end
+  rofi_options.join("\n")
+end
+
+def change_rofi_theme(theme_name, rofi_dir)
+  new_theme = "#{rofi_dir}/colors/#{theme_name}.rasi"
+  active_theme = "#{rofi_dir}/colors/colors.rasi"
+  # Replace the files
+  system("cp -r #{new_theme} #{active_theme}")
+end
+
+def change_dwm_theme(theme_name, dwm_dir, xresources_file) new_theme = "#{dwm_dir}/dwm_xresources/#{theme_name}"
+  active_theme = "#{dwm_dir}/dwm_xresources/colors"
+
+  # Replace the files
+  system("cp -r #{new_theme} #{active_theme}")
+  # Reload xresources
+  system("xrdb -merge #{xresources_file}")
+  # Call xrdb function in dwm
+  system('dwmc xrdb')
+end
+
+def change_luastatus_theme(theme_name, luastatus_dir)
+  new_theme = "#{luastatus_dir}/colorscheme/#{theme_name}.lua"
+  active_theme = "#{luastatus_dir}/colorscheme/color.lua"
+  # Replace the files
+  system("cp -r #{new_theme} #{active_theme}")
+  # Update luastatus
+  system('kill -9 $(pidof luastatus)')
+end
+
+def change_wallpaper(theme_name, wallpapers)
+  theme_wallpapers = wallpapers.select { |s| s.include?("#{theme_name}") }
+  if theme_wallpapers.instance_of?(Array)
+    random_wallpaper = theme_wallpapers.sample
+    system("feh --bg-scale #{random_wallpaper}")
+  elsif theme_wallpapers.instance_of?(String)
+    system("feh --bg-fill #{theme_wallpapers}")
+  end
+end
+
+def change_theme(theme, wallpapers, rofi_dir, dwm_dir, luastatus_dir, xresources_file)
+  change_rofi_theme(theme, rofi_dir)
+  change_wallpaper(theme, wallpapers)
+  change_luastatus_theme(theme, luastatus_dir)
+  change_dwm_theme(theme, dwm_dir, xresources_file)
+end
+
+def treat_rofi_output(rofi_option, theme_icon)
+  rofi_option.delete!(theme_icon)
+  rofi_option.strip! # Delete trailing whitespace
+  rofi_option.gsub!(' ', '_') # Change space to "_"
+  rofi_option.gsub!("\n", '') # Delete new line ascii
+
+  rofi_option.downcase
+end
+# Get the users home directory
+home_dir = ENV['HOME']
+config_dir = ENV['XDG_CONFIG_HOME'] || "#{home_dir}/.config"
+cache_dir = ENV['XDG_CACHE_HOME'] || "#{home_dir}/.cachd"
+runtime_dir = ENV['XDG_RUNTIME_DIR'] || '/run/user/#{Process.uid}'
+
+# Set the name of the lockfile
+lockfile = "#{runtime_dir}/theme_changer.lock"
+
+# File locations
+dwm_dir = "#{config_dir}/dwm"
+rofi_dir = "#{config_dir}/rofi"
+wallpaper_dir = "#{dwm_dir}/wallpaper"
+xresources_file = "#{home_dir}/.Xresources"
+luastatus_dir = "#{dwm_dir}/luastatus"
+
+# Icons
+theme_icon = '󱠓'
+available_themes = Dir.glob("#{rofi_dir}/colors/*").map { |f| File.basename(f, '.*') }.reject { |t| t == 'colors' }
+available_wallpapers = Dir.glob("#{wallpaper_dir}/*")
+
+# Scripts
+rofi_runner = "rofi -dmenu -i -theme #{config_dir}/rofi/script_menu.rasi"
+
+# Open the lockfile with exclusive write access
+lockfile_fd = File.open(lockfile, File::RDWR | File::CREAT, 0o644)
+unless lockfile_fd.flock(File::LOCK_EX | File::LOCK_NB)
+  # Lock is held by another process, check if it's still running
+  old_pid = lockfile_fd.read.chomp.to_i
+  if Process.kill(0, old_pid)
+    puts 'Lockfile exists, exiting...'
+    exit 1
+  else
+    # Stale lock, remove it and acquire the lock
+    lockfile_fd.flock(File::LOCK_UN)
+    lockfile_fd.close
+    File.unlink(lockfile)
+    lockfile_fd = File.open(lockfile, File::RDWR | File::CREAT, 0o644)
+    lockfile_fd.flock(File::LOCK_EX)
+  end
+end
+
+# Write the PID to the lockfile
+lockfile_fd.truncate(0)
+lockfile_fd.write("#{Process.pid}\n")
+lockfile_fd.flush
+
+# Bootstrap themes
+unless File.exist?("#{rofi_dir}/colors/colors.rasi")
+  change_theme('gruvbox', available_wallpapers, rofi_dir, dwm_dir, luastatus_dir, xresources_file)
+end
+#
+# Get wanted theme
+rofi_options = themes_to_rofi_option(theme_icon, available_themes)
+chosen_option = `echo -e '#{rofi_options}' | #{rofi_runner} -p 'Choose theme'`
+
+if $CHILD_STATUS.success? # Check if the rofi prompt ran sucessfuly
+  chosen_theme = treat_rofi_output(chosen_option, theme_icon)
+  change_theme(chosen_theme, available_wallpapers, rofi_dir, dwm_dir, luastatus_dir, xresources_file)
+end
+
+lockfile_fd.flock(File::LOCK_UN)
+lockfile_fd.close
+File.unlink(lockfile)

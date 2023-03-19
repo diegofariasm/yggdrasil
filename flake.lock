@@ -21,6 +21,42 @@
         "type": "github"
       }
     },
+    "base16": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1643595475,
+        "narHash": "sha256-jWCp0r5BC7U3rKy7RmL6YPhtUrQmfsZoFH5+xb+wDZ8=",
+        "owner": "shaunsingh",
+        "repo": "base16.nix",
+        "rev": "3d21c5c21cc2de27b0f29d6d5aa2693505508d9e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "shaunsingh",
+        "repo": "base16.nix",
+        "type": "github"
+      }
+    },
+    "base16-oxocarbon": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1678827893,
+        "narHash": "sha256-AU7Yb9/RpK8IYJCeln4mvTEj9meaCeMe9eGHMRqVh9A=",
+        "owner": "shaunsingh",
+        "repo": "base16-oxocarbon",
+        "rev": "1145d41d0d17d31ae97c59173bd4793c869afcd4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "shaunsingh",
+        "repo": "base16-oxocarbon",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -110,13 +146,97 @@
         "type": "indirect"
       }
     },
+    "nur": {
+      "locked": {
+        "lastModified": 1679003164,
+        "narHash": "sha256-l2yHrwsBrvMqmVEJBgU4nzBVpmj1os9Vxedv0tboc90=",
+        "path": "/nix/store/cxmbj57cxkqyblr7ha9k1zryv94nkbpp-source",
+        "rev": "5a1b6ac5774abca67908c44245d653cde64d65d2",
+        "type": "path"
+      },
+      "original": {
+        "id": "nur",
+        "type": "indirect"
+      }
+    },
+    "nx-dark-reader-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1660161944,
+        "narHash": "sha256-ydNt27chashzNSK6q56Aaf4C4WQgJM6fUqV/qvYH0UU=",
+        "owner": "aartaka",
+        "repo": "nx-dark-reader",
+        "rev": "d9b7cb1cf1f343e775c71d4cb140b630b0123da7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aartaka",
+        "repo": "nx-dark-reader",
+        "type": "github"
+      }
+    },
+    "nx-kaomoji-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1674052597,
+        "narHash": "sha256-PQTWQ4KRD9uaIXtSJyBAaknsk+xx5n5+LYoFnED3dAI=",
+        "owner": "aartaka",
+        "repo": "nx-kaomoji",
+        "rev": "28534eb5ee161501570ee4b5c72e4c8d005c0d25",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aartaka",
+        "repo": "nx-kaomoji",
+        "type": "github"
+      }
+    },
+    "nx-notmuch-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1631409193,
+        "narHash": "sha256-q0JQT6kD6txDBvlvWUwzYFiNfmxZIZFB7ztMlr208Pw=",
+        "owner": "igoralmeida",
+        "repo": "nx-notmuch",
+        "rev": "cef9ba31e180d57c80983978c940a03765afb9fe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "igoralmeida",
+        "repo": "nx-notmuch",
+        "type": "github"
+      }
+    },
+    "nx-search-engines-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1666168085,
+        "narHash": "sha256-ldmM56SOuCofmXy4LBwirFBqu80trTzpni9fKpJSsOE=",
+        "owner": "aartaka",
+        "repo": "nx-search-engines",
+        "rev": "887780bcd98506064e987f78762b12ab07bff297",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aartaka",
+        "repo": "nx-search-engines",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "base16": "base16",
+        "base16-oxocarbon": "base16-oxocarbon",
         "home-manager": "home-manager",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "nur": "nur",
+        "nx-dark-reader-src": "nx-dark-reader-src",
+        "nx-kaomoji-src": "nx-kaomoji-src",
+        "nx-notmuch-src": "nx-notmuch-src",
+        "nx-search-engines-src": "nx-search-engines-src"
       }
     },
     "utils": {
