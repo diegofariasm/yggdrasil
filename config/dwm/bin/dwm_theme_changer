@@ -81,7 +81,7 @@ lockfile = "#{runtime_dir}/theme_changer.lock"
 
 # File locations
 dwm_dir = "#{config_dir}/dwm"
-rofi_dir = "#{config_dir}/rofi"
+rofi_dir = "#{dwm_dir}/rofi"
 wallpaper_dir = "#{dwm_dir}/wallpaper"
 xresources_file = "#{home_dir}/.Xresources"
 luastatus_dir = "#{dwm_dir}/luastatus"
@@ -92,7 +92,7 @@ available_themes = Dir.glob("#{rofi_dir}/colors/*").map { |f| File.basename(f, '
 available_wallpapers = Dir.glob("#{wallpaper_dir}/*")
 
 # Scripts
-rofi_runner = "rofi -dmenu -i -theme #{config_dir}/rofi/script_menu.rasi"
+rofi_runner = "rofi -dmenu -i -theme #{rofi_dir}/launcher.rasi"
 
 # Open the lockfile with exclusive write access
 lockfile_fd = File.open(lockfile, File::RDWR | File::CREAT, 0o644)

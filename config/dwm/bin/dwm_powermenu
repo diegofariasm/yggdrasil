@@ -1,6 +1,7 @@
 #!/usr/bin/env cached-nix-shell
 #! nix-shell -p ruby -i "ruby -S" --quiet
 require 'socket'
+require 'English'
 
 def treat_rofi_output(rofi_output)
     rofi_output = rofi_output.gsub("\n", "") 
@@ -8,7 +9,7 @@ def treat_rofi_output(rofi_output)
     return rofi_output
 end
 
-def get_system_uptime()
+def system_uptime
   uptime_seconds = File.read('/proc/uptime').split(' ')[0].to_i
   seconds = uptime_seconds % 60
   minutes = (uptime_seconds / 60) % 60
@@ -30,11 +31,14 @@ def get_confirmation(rofi_runner, hostname)
     return treat_rofi_output(do_confirm.downcase)
 end
 
+# Get used variables
 hostname = Socket.gethostname
-uptime = get_system_uptime()
-lock_app = "slock"
-rofi_runner = "rofi -dmenu -i -theme ~/.config/rofi/script_menu.rasi"
+uptime = system_uptime()
 
+lock_app = "slock"
+rofi_runner = "rofi -dmenu -i -theme ~/.config/dwm/rofi/powermenu.rasi"
+
+# The commands shown on the prompt
 available_options = [
     ' Shutdown',
     ' Reboot',
@@ -44,12 +48,16 @@ available_options = [
     ' Hibernate'
 ]
 
+# Show options and get the chosen one
 chosen_command = show_options(available_options, rofi_runner, uptime, hostname)
 
-do_continue = get_confirmation(rofi_runner, hostname)
-puts do_continue
+# Only ask for confirmation if the user didn't cancel the prompt
+if $CHILD_STATUS.success?
+    do_continue = get_confirmation(rofi_runner, hostname)
+end
 
 if do_continue == "yes"
+    # TODO Find better way of doing this
     case chosen_command
         when available_options[0]
             system("systemctl poweroff")
@@ -64,6 +72,7 @@ if do_continue == "yes"
         when available_options[5]
             system("systemctl hibernate")
     end
+
     else
         puts "Operation canceled."
 end

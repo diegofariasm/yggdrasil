@@ -12,8 +12,8 @@ with lib.my; let
 
   # Sway scripts
   swayPath = "${config.user.home}/.config/sway";
-  swayScriptPath = "${config.user.home}/.config/sway/scripts";
-  swayc = "exec ${pkgs.ruby}/bin/ruby ${swayPath}/scripts/main.rb";
+  swayBinPath = "${config.user.home}/.config/sway/bin";
+  swayc = "exec ${pkgs.ruby}/bin/ruby ${swayPath}/bin/main.rb";
 in
 {
   options.modules.desktop.sway = {
@@ -28,6 +28,8 @@ in
       package = pkgs.sway;
       # Adds sway-session.target
       systemdIntegration = true;
+      # Proper GTK apps
+      wrapperFeatures.gtk = true;
       config = {
         startup = [
           {
@@ -90,7 +92,7 @@ in
           tagBinds
           // {
             "${modifier}+Return" = "exec ${pkgs.foot}/bin/foot";
-            "${modifier}+d" = "exec ${swayScriptPath}/runner";
+            "${modifier}+d" = "exec ${swayBinPath}/runner";
 
             # Brightness
             "XF86MonBrightnessDown" = "${swayc} --decrease-brightness 5";
@@ -198,7 +200,6 @@ in
         foot
         swaybg
         eww-wayland
-        wl-clipboard-x11 # Clipboard manager
       ];
       configFile = {
         "eww/eww.yuck".text = ''
@@ -261,7 +262,7 @@ in
           (defwidget current-tag []
             (button :class "current-tag"
                     :orientation "v"
-                    :onclick "${swayScriptPath}/runner & disown"
+                    :onclick "${swayBinPath}/runner & disown"
               "''${active-tag}"))
 
           (defvar active-tag "1")

@@ -18,6 +18,7 @@
     };
     desktop = {
       sway.enable = true;
+      dwm.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;

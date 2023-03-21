@@ -21,8 +21,8 @@ in
             NIX_CFLAGS_COMPILE+="-O3 -march=native"
           '';
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dwm/archive/b0fbe15ca4e33e7b26196c00c7dc4b78d672ee72.tar.gz";
-            sha256 = "1czidhc1dqfjs970nc3cn56p21d0vk3ka9wl7z0wsd7khwmcmvmh";
+            url = "https://github.com/fushiii/dwm/archive/8d77e96021bb4707aa3a8423782c43552b84547c.tar.gz";
+            sha256 = "02lvbka0lhbpq8jk0j9xvbgb8b1bhqq2fanzf3d5chl2jd05fmvg";
           };
           buildInputs = with pkgs; oldAttrs.buildInputs ++ [
             imlib2
@@ -47,7 +47,7 @@ in
     services.xserver = {
       enable = true;
       windowManager.dwm.enable = true;
-      displayManager.lightdm.enable = true;
+      displayManager.startx.enable = true;
     };
 
     fonts.fonts = with pkgs; [
@@ -61,26 +61,34 @@ in
         ];
       })
     ];
+    # Add the needed binaries to PATH
+    env.PATH = [
+        "$HOME/.config/dwm/bin"
+    ];
 
     home = {
-      packages = with pkgs; [
+      packages = with pkgs; with my; [
         rofi
-        my.luastatus
+        luastatus
         networkmanager_dmenu
       ];
       file.".xinitrc".source = "${configDir}/dwm/xinitrc";
-      configFile."rofi" = {
-        source = "${configDir}/rofi";
-        recursive = true;
-      };
-      configFile."dwm" = {
+
+      configFile = {
+
+      "dwm" = {
         source = "${configDir}/dwm";
         recursive = true;
       };
-      configFile."networkmanager-dmenu" = {
+
+      "networkmanager-dmenu" = {
         source = "${configDir}/networkmanager-dmenu";
         recursive = true;
       };
+
     };
+
+   };
+
   };
 }
