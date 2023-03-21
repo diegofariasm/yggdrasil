@@ -17,7 +17,6 @@
       fs.enable = true;
     };
     desktop = {
-      sway.enable = true;
       dwm.enable = true;
       media = {
         vlc.enable = true;
