@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-# Test number of arguments to script, to check if it is being used correctly.
-if [ $# -lt 1 ]; then
-	echo "Usage: $(basename "$0") 'command'"
-	exit
-fi
-
-# Run as root
-pkexec "$@"

@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.desktop.sway;
   configDir = config.dotfiles.configDir;
-
+  theme = config.modules.theme;
   # Sway scripts
   swayPath = "${config.user.home}/.config/sway";
   swayBinPath = "${config.user.home}/.config/sway/bin";
@@ -28,7 +28,7 @@ in
       package = pkgs.sway;
       # Adds sway-session.target
       systemdIntegration = true;
-      # Proper GTK apps
+      # Proper GTK 
       wrapperFeatures.gtk = true;
       config = {
         startup = [
@@ -156,16 +156,17 @@ in
         };
       };
       extraConfig = ''
-        # Remove text on decorations
-        # for_window [title="."] title_format " "
-        # default_border normal 0
-        # default_floating_border normal 0
+        # Use proper gtk theming
+        set $schema "org.gnome.desktop.interface"
+        exec_always {
+            gsettings set $schema gtk-theme ${theme.gtk.theme}
+            gsettings set $schema icon-theme ${theme.gtk.iconTheme}
+            gsettings set $schema cursor-theme ${theme.gtk.cursorTheme}
+        }
+       
         default_border none
         default_floating_border none
-        # swayfx
-        # shadows on
-        # shadow_blur_radius 27
-        # corner_radius 3
+      
         # gestures
         bindgesture swipe:3:right workspace prev
         bindgesture swipe:3:left workspace next
@@ -200,7 +201,9 @@ in
         foot
         swaybg
         eww-wayland
+        glib
       ];
+
       configFile = {
         "eww/eww.yuck".text = ''
           (defwidget bar []
@@ -209,8 +212,7 @@ in
               (box :class "segment-top"
                    :valign "start"
                    :orientation "v"
-                (tags))
-              (box :class "segment-center"
+                (tags)) (box :class "segment-center"
                    :valign "center"
                    :orientation "v"
                 (time)
