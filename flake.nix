@@ -21,24 +21,6 @@
     # Extras
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
-    # Nyxt extensions
-    nx-kaomoji-src = {
-      url = "github:aartaka/nx-kaomoji";
-      flake = false;
-    };
-    nx-dark-reader-src = {
-      url = "github:aartaka/nx-dark-reader";
-      flake = false;
-    };
-    nx-search-engines-src = {
-      url = "github:aartaka/nx-search-engines";
-      flake = false;
-    };
-    nx-notmuch-src = {
-      url = "github:igoralmeida/nx-notmuch";
-      flake = false;
-    };
-
     # Theme
     base16 = {
       url = "github:shaunsingh/base16.nix";
@@ -55,7 +37,6 @@
     inputs @ { self
     , nixpkgs
     , nixpkgs-unstable
-    , nur
     , ...
     }:
     let
