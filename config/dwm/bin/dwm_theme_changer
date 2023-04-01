@@ -25,8 +25,9 @@ def change_rofi_theme(theme_name, rofi_dir)
   system("cp -r #{new_theme} #{active_theme}")
 end
 
-def change_dwm_theme(theme_name, dwm_dir, xresources_file) new_theme = "#{dwm_dir}/dwm_xresources/#{theme_name}"
-  active_theme = "#{dwm_dir}/dwm_xresources/colors"
+def change_dwm_theme(theme_name, dwm_dir, xresources_file) 
+  new_theme = "#{dwm_dir}/xresources/#{theme_name}"
+  active_theme = "#{dwm_dir}/xresources/colors"
 
   # Replace the files
   system("cp -r #{new_theme} #{active_theme}")
@@ -82,7 +83,7 @@ lockfile = "#{runtime_dir}/theme_changer.lock"
 # File locations
 dwm_dir = "#{config_dir}/dwm"
 rofi_dir = "#{dwm_dir}/rofi"
-wallpaper_dir = "#{dwm_dir}/wallpaper"
+wallpaper_dir = "#{dwm_dir}/assets/wallpaper"
 xresources_file = "#{home_dir}/.Xresources"
 luastatus_dir = "#{dwm_dir}/luastatus"
 
@@ -121,7 +122,7 @@ lockfile_fd.flush
 unless File.exist?("#{rofi_dir}/colors/colors.rasi")
   change_theme('gruvbox', available_wallpapers, rofi_dir, dwm_dir, luastatus_dir, xresources_file)
 end
-#
+
 # Get wanted theme
 rofi_options = themes_to_rofi_option(theme_icon, available_themes)
 chosen_option = `echo -e '#{rofi_options}' | #{rofi_runner} -p 'Choose theme'`

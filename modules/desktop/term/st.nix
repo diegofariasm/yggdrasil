@@ -18,8 +18,8 @@ in
       (final: prev: {
         st = prev.st.overrideAttrs (oldAttrs: {
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/st/archive/d47a8e6b16b02dd44a3bdce393b7b3255314c2e6.tar.gz";
-            sha256 = "1yd47y4hqg3xrrbm7x9lkqqfnc6c9q25cvmil8l78vi4q9j8lcrk";
+            url = "https://github.com/fushiii/st/archive/ff637e2faf9e2a57d2969ecdfc7d0d47a3ed2060.tar.gz";
+            sha256 = "0rfs5gafrx41c9pp0gpy2lyj7vs5c61prnpdjzpyala8b5l6jv0r";
           };
           buildInputs = with pkgs; with xorg; oldAttrs.buildInputs ++ [
             harfbuzz

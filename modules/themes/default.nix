@@ -102,7 +102,7 @@ in
             st.color15:      st07
 
             ! ! Theme other apps
-            #include "${config.user.home}/.config/dwm/dwm_xresources/colors"
+            #include "${config.user.home}/.config/dwm/xresources/colors"
           '';
         };
         configFile = {
