@@ -3,68 +3,86 @@
 
   remote.SSH.useLocalServer = false;
 
-  editor.accessibilitySupport = "off";
-  editor.bracketPairColorization.enabled = true;
-  editor.cursorBlinking = "phase";
-  editor.cursorStyle = "line";
-  editor.dragAndDrop = false;
-  editor.fontFamily = "'Jetbrains Mono', Consolas, 'Courier New', monospace";
-  editor.fontLigatures = true;
-  editor.fontSize = 14;
-  editor.glyphMargin = false;
-  editor.lineHeight = 20;
-  editor.linkedEditing = true;
-  editor.minimap.enabled = false;
-  editor.tabSize = 2;
-  editor.formatOnSave = true;
-  editor.formatOnPaste = true;
+  editors = {
+    accessibilitySupport = "off";
+    bracketPairColorization.enabled = true;
+    cursorBlinking = "phase";
+    cursorStyle = "line";
+    dragAndDrop = false;
+    fontFamily = "'Jetbrains Mono', Consolas, 'Courier New', monospace";
+    fontLigatures = true;
+    fontSize = 14;
+    glyphMargin = false;
+    lineHeight = 20;
+    linkedEditing = true;
+    minimap.enabled = false;
+    tabSize = 2;
+    formatOnSave = true;
+    formatOnPaste = true;
+  };
+  explorer = {
+    autoReveal = true;
+    confirmDragAndDrop = false;
+    confirmDelete = false;
+  };
 
-  explorer.autoReveal = true;
-  explorer.confirmDragAndDrop = false;
-  explorer.confirmDelete = false;
-  extensions.autoUpdate = false;
-  extensions.autoCheckUpdates = false;
   update.mode = "none";
+  extensions = {
+    autoUpdate = false;
+    autoCheckUpdates = false;
+  };
 
-  files.insertFinalNewline = true;
-  files.trimTrailingWhitespace = true;
+  files = {
+    insertFinalNewline = true;
+    trimTrailingWhitespace = true;
+  };
+  git = {
+    autofetch = false;
+    inputValidationSubjectLength = 72;
+    confirmSync = false;
+  };
+  html.format = {
+    enable = true;
+    endWithNewline = false;
 
-  git.autofetch = false;
-  git.inputValidationSubjectLength = 72;
-  git.confirmSync = false;
-
-  html.format.enable = true;
-  html.format.endWithNewline = false;
-
-  markdown.preview.scrollEditorWithPreview = true;
-  markdown.preview.scrollPreviewWithEditor = true;
-
-  sync.askGistName = false;
-  sync.autoDownload = false;
-  sync.autoUpload = false;
-  sync.forceDownload = false;
-  sync.gist = "";
-  sync.host = "";
-  sync.pathPrefix = "";
-  sync.quietSync = false;
-  sync.removeExtensions = true;
-
-  telemetry.enableCrashReporter = false;
-  telemetry.enableTelemetry = false;
+  };
+  markdown.preview = {
+    scrollEditorWithPreview = true;
+    scrollPreviewWithEditor = true;
+  };
+  sync = {
+    askGistName = false;
+    autoDownload = false;
+    autoUpload = false;
+    forceDownload = false;
+    gist = "";
+    host = "";
+    pathPrefix = "";
+    quietSync = false;
+    removeExtensions = true;
+  };
+  telemetry = {
+    enableCrashReporter = false;
+    enableTelemetry = false;
+  };
 
   window.title = "\${activeEditorMedium}\${separator}\${rootName}";
+  workbench = {
+    colorTheme = "Andromeda Bordered";
+    iconTheme = "vscode-icons";
+    enableExperiments = false;
+    panel.defaultLocation = "bottom";
+    settings.enableNaturalLanguageSearch = false;
+    statusBar.feedback.visible = false;
+    sideBar.location = "left";
 
-  workbench.editor.enablePreview = false;
-  workbench.editor.highlightModifiedTabs = true;
-  workbench.editor.tabCloseButton = "right";
-  workbench.editor.tabSizing = "shrink";
-  workbench.colorTheme = "Andromeda Bordered";
-  workbench.iconTheme = "vscode-icons";
-  workbench.enableExperiments = false;
-  workbench.panel.defaultLocation = "bottom";
-  workbench.settings.enableNaturalLanguageSearch = false;
-  workbench.statusBar.feedback.visible = false;
-  workbench.sideBar.location = "right";
+    editor = {
+      enablePreview = false;
+      highlightModifiedTabs = true;
+      tabCloseButton = "right";
+      tabSizing = "shrink";
+    };
+  };
 
   todo-tree.highlights.enabled = false;
   highlight.regexes = {

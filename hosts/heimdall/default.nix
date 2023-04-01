@@ -7,7 +7,6 @@
     ../home.nix
     ./hardware-configuration.nix
   ];
-
   ## Modules
   modules = {
     hardware = {
@@ -27,13 +26,11 @@
         editors = {
           code.enable = true;
         };
-        element.enable = true;
         thunar.enable = true;
       };
       browsers = {
         default = "firefox";
         firefox.enable = true;
-        nyxt.enable = true;
       };
       term = {
         default = "st";
@@ -58,6 +55,7 @@
       starship.enable = true;
     };
     services = {
+      podman.enable = true;
       polkit.enable = true;
       ssh.enable = true;
     };

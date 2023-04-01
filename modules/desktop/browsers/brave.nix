@@ -1,4 +1,3 @@
-# modules/browser/chrome.nix
 { options
 , config
 , lib
@@ -7,16 +6,16 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.desktop.browsers.chrome;
+  cfg = config.modules.desktop.browsers.brave;
 in
 {
-  options.modules.desktop.browsers.chrome = {
+  options.modules.desktop.browsers.brave = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      google-chrome
+      brave
     ];
   };
 }

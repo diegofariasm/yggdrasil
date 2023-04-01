@@ -2,10 +2,9 @@
 #
 # Set up and enforce XDG compliance. Other modules will take care of their own,
 # but this takes care of the general cases.
-{
-  config,
-  home-manager,
-  ...
+{ config
+, home-manager
+, ...
 }: {
   ### A tidy $HOME is a tidy mind
   home-manager.users.${config.user.name}.xdg.enable = true;
@@ -19,6 +18,7 @@
       XDG_CONFIG_HOME = "$HOME/.config";
       XDG_DATA_HOME = "$HOME/.local/share";
       XDG_BIN_HOME = "$HOME/.local/bin";
+      XDG_RUNTIME_DIR = "/run/user/$UID";
     };
     variables = {
       # Conform more programs to XDG conventions. The rest are handled by their

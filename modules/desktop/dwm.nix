@@ -47,7 +47,7 @@ in
     services.xserver = {
       enable = true;
       windowManager.dwm.enable = true;
-      displayManager.startx.enable = true;
+      displayManager.lightdm.enable = true;
     };
 
     fonts.fonts = with pkgs; [
@@ -63,7 +63,7 @@ in
     ];
     # Add the needed binaries to PATH
     env.PATH = [
-        "$HOME/.config/dwm/bin"
+      "$HOME/.config/dwm/bin"
     ];
 
     home = {
@@ -76,19 +76,19 @@ in
 
       configFile = {
 
-      "dwm" = {
-        source = "${configDir}/dwm";
-        recursive = true;
-      };
+        "dwm" = {
+          source = "${configDir}/dwm";
+          recursive = true;
+        };
 
-      "networkmanager-dmenu" = {
-        source = "${configDir}/networkmanager-dmenu";
-        recursive = true;
+        "networkmanager-dmenu" = {
+          source = "${configDir}/networkmanager-dmenu";
+          recursive = true;
+        };
+
       };
 
     };
-
-   };
 
   };
 }

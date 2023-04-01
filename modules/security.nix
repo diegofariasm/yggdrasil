@@ -3,12 +3,15 @@
 , ...
 }: {
   ## System security tweaks
-  # sets hidepid=2 on /proc (make process info visible only to owning user)
-  # NOTE Was removed on nixpkgs-unstable because it doesn't do anything
-  # security.hideProcessInformation = true;
-  # Prevent replacing the running kernel w/o reboot
-  security.protectKernelImage = true;
-
+  security = {
+    # Prevent replacing the running kernel w/o reboot
+    protectKernelImage = true;
+    # A sudo clone
+    # please = {
+    #   enable = true;
+    #   wheelNeedsPassword = true;
+    # };
+  };
   # tmpfs = /tmp is mounted in ram. Doing so makes temp file management speedy
   # on ssd systems, and volatile! Because it's wiped on reboot.
   boot.tmpOnTmpfs = lib.mkDefault false;

@@ -30,24 +30,6 @@ in
       vimdiffAlias = true;
     };
 
-    home.packages = with pkgs; [
-      # Utils needed by nyoom
-      tree-sitter
-      # Formatters for the nvim config
-      fnlfmt
-      # Utils needed by plugins 
-      ripgrep
-      fzf
-      # Languages
-      lua
-      # Language servers 
-      rnix-lsp
-      sumneko-lua-language-server
-      # Linters
-      selene
-    ];
-
-
     # adds the nyoom bin to the shell path
     env.PATH = [ "$HOME/.config/nvim/bin" ];
 
