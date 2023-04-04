@@ -81,6 +81,8 @@
       highlightModifiedTabs = true;
       tabCloseButton = "right";
       tabSizing = "shrink";
+      formatOnPaste = true;
+      formatOnSave = true;
     };
   };
 
