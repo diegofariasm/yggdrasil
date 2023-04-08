@@ -9,23 +9,48 @@ with lib;
 with lib.my; let
   cfg = config.modules.desktop.hypr;
   configDir = config.dotfiles.configDir;
+  binDir = config.dotfiles.binDir;
 in
 {
   options.modules.desktop.hypr = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
 
-    nixpkgs.overlays = [
-      (final: prev: {
-        hyprland = prev.hyprland.overrideAttrs (oldAttrs: {
-          name = "hyprland";
-        });
-      })
-    ];
+    # Display manager
+    services.xserver = {
+      enable = true;
+      displayManager.lightdm = {
+        enable = true;
+      };
+    };
 
-    home.packages = with pkgs; [
-      eww
-      hyprland
-    ];
+    xdg.portal = {
+      enable = true;
+      wlr.enable = true;
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gtk
+      ];
+    };
+
+    programs.dconf.enable = true;
+    programs.hyprland.enable = true;
+
+    home = {
+      packages = with pkgs; [
+        foot
+        hyprland
+        hyprpaper
+        eww-wayland
+      ];
+      configFile = {
+        "hypr" = {
+          source = "${configDir}/hypr";
+          recursive = true;
+        };
+        "hypr/scripts" = {
+          source = "${binDir}/hypr";
+        };
+      };
+    };
   };
 }

@@ -11,12 +11,12 @@
   modules = {
     hardware = {
       audio.enable = true;
-      intel.enable = true;
       bluetooth.enable = true;
       fs.enable = true;
     };
     desktop = {
       dwm.enable = true;
+      hypr.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -29,8 +29,8 @@
         thunar.enable = true;
       };
       browsers = {
-        default = "chromium";
-        chromium.enable = true;
+        default = "microsoft-edge";
+        edge.enable = true;
       };
       term = {
         default = "st";
@@ -59,7 +59,7 @@
       polkit.enable = true;
       ssh.enable = true;
     };
-    theme.active = "alucard";
+    theme.active = "nordic";
   };
 
   # Tty config

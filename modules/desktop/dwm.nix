@@ -9,6 +9,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.desktop.dwm;
   configDir = config.dotfiles.configDir;
+  binDir = config.dotfiles.binDir;
 in
 {
   options.modules.desktop.dwm = { enable = mkBoolOpt false; };
@@ -22,8 +23,8 @@ in
             NIX_CFLAGS_COMPILE+="-O3 -march=native"
           '';
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dwm/archive/370fff6deae19c3be36201f376ddaae2d9c337e4.tar.gz";
-            sha256 = "1h5hfjlyw6nfw5vnrdq6vzryypi3w1bpnidiyg2ywv9n477gph0d";
+            url = "https://github.com/fushiii/dwm/archive/96f6915398e3bfc81fbe37ae588dc7d286985300.tar.gz";
+            sha256 = "095dr9hqqq1g8z63nyxpan5dl7f9f6qd9d0f69sly0bfhykgrp6i";
           };
           buildInputs = with pkgs; oldAttrs.buildInputs ++ [
             imlib2
@@ -31,12 +32,6 @@ in
         });
       })
     ];
-
-    services.xserver = {
-      enable = true;
-      windowManager.dwm.enable = true;
-      displayManager.lightdm.enable = true;
-    };
 
     fonts.fonts = with pkgs; [
       (nerdfonts.override {
@@ -46,9 +41,18 @@ in
       })
     ];
 
-    # Add the needed binaries to PATH
+    # Display manager
+    services.xserver = {
+      enable = true;
+      windowManager.dwm.enable = true;
+      displayManager.lightdm = {
+        enable = true;
+      };
+    };
+
+    # Needed scripts for dwm to work
     env.PATH = [
-      "$HOME/.config/dwm/bin"
+      "$HOME/.config/dwm/scripts"
     ];
 
     home = {
@@ -59,6 +63,10 @@ in
       configFile = {
         "dwm" = {
           source = "${configDir}/dwm";
+          recursive = true;
+        };
+        "dwm/scripts" = {
+          source = "${binDir}/dwm";
           recursive = true;
         };
       };

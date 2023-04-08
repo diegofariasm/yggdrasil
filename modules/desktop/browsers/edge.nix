@@ -6,16 +6,16 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.desktop.browsers.chromium;
+  cfg = config.modules.desktop.browsers.edge;
 in
 {
-  options.modules.desktop.browsers.chromium = {
+  options.modules.desktop.browsers.edge = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ 
-        chromium
+    home.packages = with pkgs; [
+      microsoft-edge
     ];
   };
 }

@@ -29,6 +29,11 @@ in
     # Pretty boot splash
     boot.plymouth.enable = true;
 
+
+
+
+
+
     home.packages = with pkgs; [
       feh
       xclip

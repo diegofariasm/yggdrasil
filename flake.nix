@@ -19,6 +19,7 @@
 
 
     # Extras
+    hyprland.url = "github:hyprwm/Hyprland";
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     # Theme

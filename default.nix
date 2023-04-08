@@ -12,8 +12,9 @@ in
   imports =
     # I use home-manager to deploy files to $HOME; little else
     [
-      inputs.home-manager.nixosModules.home-manager
       inputs.base16.hmModule
+      inputs.hyprland.nixosModules.default
+      inputs.home-manager.nixosModules.home-manager
     ]
     # All my personal modules
     ++ (mapModulesRec' (toString ./modules) import);

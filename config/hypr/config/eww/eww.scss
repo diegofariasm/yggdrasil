@@ -1,0 +1,89 @@
+// Colors
+$font-color: white;
+$font-color-active: white;
+
+$color-background: #202023;
+$color-background-active: #202023;
+
+// Styling
+$common-margin: 5px;
+$common-margin-bottom: 2.5px;
+
+$common-radius: 5px;
+
+// 20 in here is the size of the bar
+$common-padding: 20 - $common-margin;
+
+* {
+  all: unset;
+}
+
+window {
+  background: linear-gradient(to bottom, #7B36D8, #DB3AA7);
+  border-radius: 5px;
+}
+
+.tags {
+  color: $font-color;
+  background-color: $color-background;
+
+  font-weight: bolder;
+  font-size: 12px;
+
+
+  border-radius: $common-radius;
+
+  margin-left: $common-margin;
+  margin-right: $common-margin;
+  padding: $common-padding;
+}
+
+.active {
+  color: $font-color-active;
+  background-color: $color-background-active;
+  padding: 6px 9px 6px 6px;
+  border-left: 3px solid;
+  border-image: linear-gradient(to right, #7B36D8, #DB3AA7) 1;
+}
+
+.segment-center {
+  margin-top: 18px;
+  padding: 9px;
+}
+
+.time, .date {
+  color: $font-color;
+  background: $color-background;
+  border-radius: $common-radius;
+
+  font-weight: bolder;
+  font-size: 16px;
+  padding: $common-padding - 5;
+  margin-bottom: 5px;
+}
+
+.icon {
+  color: $font-color;
+  background-color: $color-background;
+
+  font-size: 16px;
+  font-weight: bolder;
+
+  padding: 9px;
+  border-radius: $common-radius;
+  
+  margin-left: $common-margin;
+  margin-right: $common-margin;
+  margin-bottom: $common-margin-bottom;
+}
+
+.current-tag {
+  color: $font-color;
+  background-color: $color-background;
+
+  font-weight: bolder;
+  font-size: 18px;
+
+  margin-left: $common-margin;
+  margin-right: $common-margin;
+}
