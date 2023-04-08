@@ -9,38 +9,40 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
   boot = {
-    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-    initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+    initrd.availableKernelModules = [ "xhci_pci" "ahci" "sd_mod" "rtsx_pci_sdmmc" ];
     initrd.kernelModules = [ ];
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
-
   };
 
-  fileSystems."/" =
-    {
-      device = "rpool/root/nixos";
-      fsType = "zfs";
-    };
+  fileSystems = {
+    "/" =
+      {
+        device = "/dev/disk/by-label/nixos-root";
+        fsType = "ext4";
+      };
 
-  fileSystems."/home" =
-    {
-      device = "rpool/home";
-      fsType = "zfs";
-    };
+    "/home" =
+      {
+        device = "/dev/disk/by-label/nixos-home";
+        fsType = "ext4";
+      };
 
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-label/nixos-boot";
-      fsType = "vfat";
-    };
+    "/boot" =
+      {
+        device = "/dev/disk/by-label/nixos-boot";
+        fsType = "vfat";
+      };
+  };
+  swapDevices = [
+    { device = "/dev/disk/by-label/nixos-swap"; }
+  ];
 
-  swapDevices = [ ];
-
-  networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
+  networking.interfaces.enp1s0f1.useDHCP = lib.mkDefault true;
   networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
+
