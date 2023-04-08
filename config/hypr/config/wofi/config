@@ -1,0 +1,12 @@
+# Geometry
+width=40%
+height=50%
+
+# Prompt, images
+image_size=30
+allow_images=true
+prompt=Applications
+
+# Search params
+insensitive=true
+hide_scroll=true
