@@ -29,7 +29,8 @@
         thunar.enable = true;
       };
       browsers = {
-        default = "microsoft-edge";
+        default = "firefox";
+        firefox.enable = true;
         edge.enable = true;
       };
       term = {
