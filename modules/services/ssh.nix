@@ -16,11 +16,14 @@ in
   config = mkIf cfg.enable {
     services.openssh = {
       enable = true;
-      settings = {
-        KbdInteractiveAuthentication = false;
-        PasswordAuthentication = false;
-      };
-    };
+# Unstable nixpkgs
+#      settings = {
+#        KbdInteractiveAuthentication = false;
+#        PasswordAuthentication = false;
+#      };
+     kbdInteractiveAuthentication = false;
+     passwordAuthentication = false;          
+     };
 
     user.openssh.authorizedKeys.keys =
       if config.user.name == "fushi"

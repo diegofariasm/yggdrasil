@@ -5,7 +5,7 @@
 
   inputs = {
     # Core dependencies.
-    nixpkgs.url = "nixpkgs/nixos-unstable"; # primary nixpkgs
+    nixpkgs.url = "nixpkgs/nixos-22.11"; # primary nixpkgs
     nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable"; # for packages on the edge
 
     home-manager = {
