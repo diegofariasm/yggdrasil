@@ -17,8 +17,6 @@
     linkedEditing = true;
     minimap.enabled = false;
     tabSize = 2;
-    formatOnSave = true;
-    formatOnPaste = true;
   };
   explorer = {
     autoReveal = true;

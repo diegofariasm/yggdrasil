@@ -1,11 +1,14 @@
 { config
 , options
+, inputs
 , lib
 , pkgs
 , ...
 }:
+with builtins;
 with lib;
 with lib.my; let
+  inherit (inputs) vscode-server;
   cfg = config.modules.desktop.apps.editors.code;
   vscodePname = config.home-manager.users.${config.user.name}.programs.vscode.package.pname;
   configDir = {
@@ -27,9 +30,14 @@ in
     enable = mkBoolOpt false;
     mutable = mkBoolOpt true;
   };
+  # NOTE: imports need to be done outside the cfg.enable scope
+  imports = [ vscode-server.nixosModule ];
   config = mkIf cfg.enable {
+    services.vscode-server = {
+      enable = true;
+      installPath = "~/.vscode-server";
+    };
     home-manager.users.${config.user.name} = { lib, ... }: {
-
       home.activation = mkIf cfg.mutable {
         removeExistingVSCodeSettings = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
           rm -rf "${userFilePath}"
@@ -52,7 +60,6 @@ in
       package = pkgs.vscode;
       userSettings = import ./settings.nix;
       extensions = import ./extensions.nix { inherit pkgs; };
-
     };
 
     fonts.fonts = with pkgs; [

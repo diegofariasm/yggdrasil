@@ -20,6 +20,7 @@
 
     # Extras
     hyprland.url = "github:hyprwm/Hyprland";
+    vscode-server.url = "github:msteen/nixos-vscode-server";
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     # Theme

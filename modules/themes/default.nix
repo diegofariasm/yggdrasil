@@ -5,6 +5,7 @@
 with lib;
 with lib.my;
 let cfg = config.modules.theme;
+inherit(inputs) base16;
 in
 {
   options.modules.theme = with types; {
@@ -41,7 +42,9 @@ in
     };
 
   };
-
+  imports = [
+      base16.hmModule
+  ];
   config = mkIf (cfg.active != null) (mkMerge [
     {
       themes.base16 = {
@@ -52,12 +55,12 @@ in
       home = {
         file = {
           ".Xresources".text = ''
-            ! ! Automatically generated. Do not edit.                                                                    
+            ! ! Automatically generated. Do not edit.
             ! ! Oxocarbon
-                                                                    
+
             ! scheme: "Oxocarbon Dark"
             ! author: "shaunsingh/IBM"
-                                                                    
+
             #define st00 #161616
             #define st01 #262626
             #define st02 #393939
@@ -74,7 +77,7 @@ in
             #define st0D #42be65
             #define st0E #be95ff
             #define st0F #82cfff
-                                                                    
+
             st.foreground:   st05
             #ifdef background_opacity
             st.background:   [background_opacity]st00
@@ -82,7 +85,7 @@ in
             st.background:   st00
             #endif
             st.cursorColor:  st05
-                                                                    
+
             st.color0:       st00
             st.color1:       st08
             st.color2:       st0B
@@ -91,7 +94,7 @@ in
             st.color5:       st0E
             st.color6:       st0C
             st.color7:       st05
-                                                                    
+
             st.color8:       st03
             st.color9:       st09
             st.color10:      st01

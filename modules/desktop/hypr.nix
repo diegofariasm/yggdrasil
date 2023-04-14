@@ -10,10 +10,13 @@ with lib.my; let
   cfg = config.modules.desktop.hypr;
   configDir = config.dotfiles.configDir;
   binDir = config.dotfiles.binDir;
+  inherit(inputs) hyprland;
 in
 {
   options.modules.desktop.hypr = { enable = mkBoolOpt false; };
-
+  imports = [
+        hyprland.nixosModules.default
+  ];
   config = mkIf cfg.enable {
 
     # Display manager

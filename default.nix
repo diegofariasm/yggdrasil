@@ -12,8 +12,6 @@ in
   imports =
     # I use home-manager to deploy files to $HOME; little else
     [
-      inputs.base16.hmModule
-      inputs.hyprland.nixosModules.default
       inputs.home-manager.nixosModules.home-manager
     ]
     # All my personal modules
