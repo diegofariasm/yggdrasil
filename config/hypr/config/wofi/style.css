@@ -4,9 +4,9 @@
 
     outline: unset;
     border: unset;
+    background-color: unset;
 }
 #window {
-    padding: 10px;
     background-color: #202023;
     border: double 2px transparent;
     border-radius: 5px;

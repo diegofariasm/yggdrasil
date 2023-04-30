@@ -71,6 +71,7 @@ in
         autoSuspend = true;
       };
     };
+
     programs.hyprland.enable = true;
     home.packages = with pkgs; [
       foot
@@ -81,14 +82,15 @@ in
       configure-gtk
     ];
 
-    # home.configFile = {
-    #   "hypr" = {
-    #     source = "${configDir}/hypr";
-    #     recursive = true;
-    #   };
-    #   "hypr/scripts" = {
-    #     source = "${binDir}/hypr";
-    #   };
-    # };
+    # The main config for hypr
+    home.configFile = {
+      "hypr" = {
+        source = "${configDir}/hypr";
+        recursive = true;
+      };
+      "hypr/scripts" = {
+        source = "${binDir}/hypr";
+      };
+    };
   };
 }
