@@ -29,16 +29,11 @@ in
     # Pretty boot splash
     boot.plymouth.enable = true;
 
-
-
-
-
-
     home.packages = with pkgs; [
       feh
-      xclip
       xdotool
       xorg.xwininfo
+      wl-clipboard-x11
     ];
 
     fonts = {
@@ -48,6 +43,12 @@ in
         ubuntu_font_family
         dejavu_fonts
         symbola
+        (nerdfonts.override {
+          fonts = [
+            "Iosevka"
+          ];
+        })
+
       ];
     };
 

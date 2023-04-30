@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-while [ -z "$current_brightness" ] || [ -z "$current_volume" ]; do
-	current_brightness=$(get-brightness)
-	current_volume=$(pamixer --get-volume)
-done
-
-eww --config ~/.config/hypr/config/eww update brightness-level="$current_brightness"
-eww --config ~/.config/hypr/config/eww update volume-level="$current_volume"

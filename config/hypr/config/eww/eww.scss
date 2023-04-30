@@ -51,7 +51,8 @@ window {
   padding: 9px;
 }
 
-.time, .date {
+.time,
+.date {
   color: $font-color;
   background: $color-background;
   border-radius: $common-radius;
@@ -71,7 +72,7 @@ window {
 
   padding: 9px;
   border-radius: $common-radius;
-  
+
   margin-left: $common-margin;
   margin-right: $common-margin;
   margin-bottom: $common-margin-bottom;

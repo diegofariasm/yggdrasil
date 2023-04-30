@@ -80,6 +80,7 @@ in
     wget
     unzip
     killall
+    rnix-lsp
     brightnessctl
     cached-nix-shell
     update-nix-fetchgit

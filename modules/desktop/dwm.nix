@@ -33,13 +33,13 @@ in
       })
     ];
 
-    fonts.fonts = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "Iosevka"
-        ];
-      })
-    ];
+
+
+
+
+
+
+
 
     # Display manager
     services.xserver = {

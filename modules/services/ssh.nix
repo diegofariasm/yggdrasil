@@ -16,13 +16,10 @@ in
   config = mkIf cfg.enable {
     services.openssh = {
       enable = true;
-# Unstable nixpkgs
-#      settings = {
-#        KbdInteractiveAuthentication = false;
-#        PasswordAuthentication = false;
-#      };
-     kbdInteractiveAuthentication = false;
-     passwordAuthentication = false;          
+      settings = {
+        KbdInteractiveAuthentication = false;
+        PasswordAuthentication = false;
+      };
      };
 
     user.openssh.authorizedKeys.keys =

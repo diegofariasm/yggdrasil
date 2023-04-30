@@ -65,6 +65,9 @@
   };
 
   window.title = "\${activeEditorMedium}\${separator}\${rootName}";
+  editor = {
+formatOnPaste = true;
+formatOnSave = true;   };
   workbench = {
     colorTheme = "Andromeda Bordered";
     iconTheme = "vscode-icons";
@@ -79,8 +82,8 @@
       highlightModifiedTabs = true;
       tabCloseButton = "right";
       tabSizing = "shrink";
-      formatOnPaste = true;
-      formatOnSave = true;
+      
+      
     };
   };
 

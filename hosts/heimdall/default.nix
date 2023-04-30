@@ -15,7 +15,6 @@
       fs.enable = true;
     };
     desktop = {
-      dwm.enable = true;
       hypr.enable = true;
       media = {
         vlc.enable = true;
@@ -31,7 +30,6 @@
       browsers = {
         default = "firefox";
         firefox.enable = true;
-        edge.enable = true;
       };
       term = {
         default = "st";
@@ -56,7 +54,6 @@
       starship.enable = true;
     };
     services = {
-      podman.enable = true;
       polkit.enable = true;
       ssh.enable = true;
     };
