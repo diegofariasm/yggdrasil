@@ -84,6 +84,6 @@
     :x "1%"
     :height "95%"
     :width "5%"
-  :anchor "left center")
+  :anchor "right center")
   :exclusive true
   (bar))

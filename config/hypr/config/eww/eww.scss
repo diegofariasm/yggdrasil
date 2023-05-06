@@ -2,8 +2,12 @@
 $font-color: white;
 $font-color-active: white;
 
-$color-background: #202023;
-$color-background-active: #202023;
+$primary-color: #2A33FF;
+$secondary-color: #FF3B99;
+
+$color-background: #161616;
+$color-background-alt: #161616;
+
 
 // Styling
 $common-margin: 5px;
@@ -20,7 +24,7 @@ $common-padding: 20 - $common-margin;
 
 window {
   border-radius: 5px;
-  background: linear-gradient(to bottom, #2A33FF, #FF3B99);
+  background: linear-gradient(to bottom, $primary-color, $secondary-color);
 }
 
 .tags {
@@ -40,10 +44,9 @@ window {
 
 .active {
   color: $font-color-active;
-  background-color: $color-background-active;
   padding: 6px 9px 6px 6px;
-  border-left: 3px solid;
-  border-image: linear-gradient(to right, #7B36D8, #DB3AA7) 1;
+  border-left: 1px solid;
+  border-image: linear-gradient(to bottom, $primary-color, $secondary-color) 1;
 }
 
 .segment-center {

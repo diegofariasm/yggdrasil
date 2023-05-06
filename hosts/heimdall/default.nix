@@ -30,6 +30,7 @@
       browsers = {
         default = "firefox";
         firefox.enable = true;
+        edge.enable = true;
       };
       term = {
         default = "st";

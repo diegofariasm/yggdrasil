@@ -9,8 +9,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.desktop.hypr;
   configDir = config.dotfiles.configDir;
-  binDir = config.dotfiles.binDir;
-  inherit (inputs) hyprland;
+  binDir = config.dotfiles.binDir; inherit (inputs) hyprland;
 
   # Needed for making gtk work properly on wayland
   configure-gtk = pkgs.writeTextFile {
@@ -73,16 +72,25 @@ in
     };
 
     programs.hyprland.enable = true;
+    home.programs = {
+      rofi = {
+        enable = true;
+        package = pkgs.rofi-wayland;
+        plugins = with pkgs; [
+          rofi-calc
+        ];
+      };
+
+    };
     home.packages = with pkgs; [
       foot
-      wofi
+      mako
       hyprpaper
       hyprpicker
       eww-wayland
       configure-gtk
     ];
 
-    # The main config for hypr
     home.configFile = {
       "hypr" = {
         source = "${configDir}/hypr";

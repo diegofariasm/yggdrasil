@@ -79,6 +79,7 @@ in
     vim
     wget
     unzip
+    procps
     killall
     rnix-lsp
     brightnessctl

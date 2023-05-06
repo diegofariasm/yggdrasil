@@ -29,6 +29,7 @@ with lib.my; {
       configFile = mkOpt' attrs { } "Files to place in $XDG_CONFIG_HOME";
       dataFile = mkOpt' attrs { } "Files to place in $XDG_DATA_HOME";
       packages = mkOpt' attrs { } "Packages to install";
+      programs = mkOpt' attrs { } "Programs to install";
     };
 
     env = mkOption {
@@ -80,6 +81,7 @@ with lib.my; {
     };
 
     maiden = {
+      programs = mkAliasDefinitions options.home.programs;
       home = {
         file = mkAliasDefinitions options.home.file;
         packages = mkAliasDefinitions options.home.packages;

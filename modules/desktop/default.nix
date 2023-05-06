@@ -33,6 +33,7 @@ in
       feh
       xdotool
       xorg.xwininfo
+      wl-clipboard
       wl-clipboard-x11
     ];
 

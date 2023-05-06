@@ -1,0 +1,142 @@
+/*****----- Configuration -----*****/
+configuration {
+    show-icons:                 false;
+}
+
+/*****----- Global Properties -----*****/
+* {
+    font:                        "JetBrains Mono Nerd Font 10";
+    background-alt:              #202023;
+    background:                  #161616;
+    foreground:                  #fff;
+    selected:                    linear-gradient(to left, #2A33FF, #FF3B99);
+    active:                      #faf4ed;
+    urgent:                      green;
+}
+
+/*
+USE_BUTTONS=YES
+*/
+
+/*****----- Main Window -----*****/
+window {
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       600px;
+    x-offset:                    0px;
+    y-offset:                    0px;
+    border:                      3px;
+    border-color:                @background-alt;
+    border-radius:               5px;
+
+    padding:                     0px;
+    cursor:                      "default";
+    background-color:            @background;
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    background-color:            transparent;
+    orientation:                 horizontal;
+    children:                    [ "imagebox"];
+}
+
+/*****----- Imagebox -----*****/
+imagebox {
+    spacing:                     0px;
+    padding:                     30px;
+    background-color:            @background;
+    children:                    [ "inputbar", "listview", "message" ];
+}
+
+/*****----- User -----*****/
+userimage {
+    margin:                      0px 0px;
+    border:                      10px;
+    border-color:                @background-alt;
+    background-color:            transparent;
+    background-image:            url("~/.config/rofi/images/e.jpg", height);
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    padding:                     5px;
+    border:                      3px;
+    border-color:                @background-alt;
+    border-radius:               5px;
+    background-image:            @selected;
+    text-color:                  @background;
+    children:                    [ "dummy", "prompt", "dummy"];
+}
+
+dummy {
+    background-color:            transparent;
+}
+
+prompt {
+    padding:                     5px 20px;
+    border-radius:               5px;
+    color:                       @foreground;
+    background-color:            @background-alt;
+}
+
+/*****----- Message -----*****/
+message {
+    enabled:                     true;
+    color:                       @foreground;
+    border:                      3px;
+    border-color:                @background-alt;
+    background-color:            @background-alt;
+    padding:                     5px;
+    border-radius: 5px;
+}
+textbox {
+    background-color:            inherit;
+    text-color:                  inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+}
+
+/*****----- Listview -----*****/
+listview {
+    enabled:                     true;
+    columns:                     3;
+    lines:                       2;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+
+    spacing:                     30px;
+    margin:                      30px 0;
+    background-color:            transparent;
+    cursor:                      "default";
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    padding:                     18px 0;
+    border:                      3px;
+    border-color:                @background-alt;
+    background-color:            @background-alt;
+    text-color:                  @foreground;
+    cursor:                      pointer;
+}
+element-text {
+    font:                        "feather bold 32";
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+}
+element selected.normal {
+    background-image:            @selected;
+    text-color:                  @background-alt;
+}
