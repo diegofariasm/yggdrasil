@@ -24,11 +24,13 @@ in
       mkIf cfg.enable {
 
         home.packages = with pkgs; with nodePackages; [
-          # Package manager
           yarn
-          # Framework
           nodejs
         ];
+        networking.firewall = {
+          allowedTCPPorts = [ 3000 ];
+          allowedUDPPorts = [ 3000 ];
+        };
 
       }
     )

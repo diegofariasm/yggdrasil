@@ -23,15 +23,15 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home.packages = with pkgs; [
+      home.packages = with pkgs; with python310Packages; [
         isort
         python310
-        python310Packages.pip
-        python310Packages.ipython
-        python310Packages.black
-        python310Packages.setuptools
-        python310Packages.pylint
-        python310Packages.wheel
+        pip
+        ipython
+        black
+        setuptools
+        pylint
+        wheel
         # Language server
         nodePackages.pyright
 
