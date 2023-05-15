@@ -1,12 +1,14 @@
 // Colors
-$font-color: white;
-$font-color-active: white;
 
-$primary-color: #2A33FF;
-$secondary-color: #FF3B99;
+$primary-color: #DFC5FE;
+$secondary-color: #967bb6;
+
+$font-color: white;
+$font-color-active: $primary-color;
+$font-color-occupied: $secondary-color;
 
 $color-background: #161616;
-$color-background-alt: #161616;
+$color-background-alt: lighten($color-background, 5);
 
 
 // Styling
@@ -23,71 +25,140 @@ $common-padding: 20 - $common-margin;
 }
 
 window {
-  border-radius: 5px;
-  background: linear-gradient(to bottom, $primary-color, $secondary-color);
+  color: $font-color;
+  border-radius: 10px;
+  background-color: $color-background;
+}
+
+.workspace-btn {
+  font-size: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+  color: $font-color;
+  border-radius: 999;
+  background-color: inherit;
+
+  & :first-child {
+    margin-top: 0px;
+  }
+
+  &:last-child {
+    margin-bottom: 5px;
+  }
+
+
+  &__occupied {
+    color: $font-color-occupied;
+  }
+
+  &__empty {
+    color: darken($font-color, 50);
+  }
+
+  &__active {
+    color: $font-color-active;
+  }
+
+}
+
+
+
+
+.segment {
+  border-radius: 10px;
+  padding: 10px;
+
+  color: $font-color;
+  background-color: $color-background;
+
+  margin-bottom: 5px;
+  margin-top: 10px;
+
+  &__top {
+    @extend .segment;
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  &__center {
+    @extend .segment;
+  }
+
+  &__bottom {
+    @extend .segment;
+    background-color: #967bb6;
+
+    padding-top: 0px;
+    padding-bottom: 0px;
+
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
 }
 
 .tags {
-  color: $font-color;
-  background-color: $color-background;
-
-  font-weight: bolder;
-  font-size: 12px;
-
-
+  padding: 20px;
   border-radius: $common-radius;
-
-  margin-left: $common-margin;
-  margin-right: $common-margin;
-  padding: $common-padding;
+  background-color: $color-background-alt;
 }
 
-.active {
-  color: $font-color-active;
-  padding: 6px 9px 6px 6px;
-  border-left: 1px solid;
-  border-image: linear-gradient(to bottom, $primary-color, $secondary-color) 1;
-}
-
-.segment-center {
-  margin-top: 18px;
-  padding: 9px;
-}
-
-.time,
-.date {
+.card {
   color: $font-color;
-  background: $color-background;
-  border-radius: $common-radius;
-
-  font-weight: bolder;
-  font-size: 16px;
-  padding: $common-padding - 5;
-  margin-bottom: 5px;
-}
-
-.icon {
-  color: $font-color;
-  background-color: $color-background;
+  background-color: $color-background-alt;
 
   font-size: 16px;
   font-weight: bolder;
 
-  padding: 9px;
-  border-radius: $common-radius;
+  padding: 10px;
+  border-radius: 5px;
 
-  margin-left: $common-margin;
-  margin-right: $common-margin;
-  margin-bottom: $common-margin-bottom;
-}
+  margin-top: 2px;
+  margin-bottom: 2px;
 
-.current-tag {
-  color: $font-color;
-  background-color: $color-background;
+  &__launcher {
+    margin-top: 10px;
+    margin-bottom: 10px;
 
-  font-weight: bolder;
-  font-size: 18px;
+    &__icon {
+      font-size: 16px;
+      font-weight: bolder;
 
-  margin-left: $common-margin;
-  margin-right: $common-margin;
+      color: $primary-color;
+
+      border-radius: 999px;
+      border: 2px solid $secondary-color;
+    }
+  }
+
+  &__time {
+    @extend .card;
+  }
+
+  &__date {
+    @extend .card;
+  }
+
+  &__icon {
+    @extend .card;
+
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border: 0px;
+    border-radius: 0px;
+
+    &:first-child {
+      border-top-left-radius: $common-radius;
+      border-top-right-radius: $common-radius;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: $common-radius;
+      border-bottom-right-radius: $common-radius;
+    }
+  }
+
 }

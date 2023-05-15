@@ -4,19 +4,8 @@ configuration {
 }
 
 /*****----- Global Properties -----*****/
-* {
-    font:                        "JetBrains Mono Nerd Font 10";
-    background-alt:              #202023;
-    background:                  #161616;
-    foreground:                  #fff;
-    selected:                    linear-gradient(to left, #2A33FF, #FF3B99);
-    active:                      #faf4ed;
-    urgent:                      green;
-}
 
-/*
-USE_BUTTONS=YES
-*/
+@import "../colors.rasi"
 
 /*****----- Main Window -----*****/
 window {
@@ -51,14 +40,6 @@ imagebox {
     children:                    [ "inputbar", "listview", "message" ];
 }
 
-/*****----- User -----*****/
-userimage {
-    margin:                      0px 0px;
-    border:                      10px;
-    border-color:                @background-alt;
-    background-color:            transparent;
-    background-image:            url("~/.config/rofi/images/e.jpg", height);
-}
 
 /*****----- Inputbar -----*****/
 inputbar {
@@ -66,8 +47,8 @@ inputbar {
     border:                      3px;
     border-color:                @background-alt;
     border-radius:               5px;
-    background-image:            @selected;
-    text-color:                  @background;
+    background-color:            @background-selected;
+    text-color:                  @foreground-selected;
     children:                    [ "dummy", "prompt", "dummy"];
 }
 
@@ -137,6 +118,6 @@ element-text {
     horizontal-align:            0.5;
 }
 element selected.normal {
-    background-image:            @selected;
-    text-color:                  @background-alt;
+    background-color:            @background-selected;
+    text-color:                  @foreground-selected;
 }

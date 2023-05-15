@@ -27,8 +27,6 @@ in
     (mkIf cfg.enable {
       home.packages = with pkgs; [
         rustup
-        rust-analyzer
-        rust-code-analysis
       ];
       env.PATH = [ "$(${pkgs.yarn}/bin/yarn global bin)" ];
       environment.shellAliases = {

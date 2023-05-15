@@ -92,13 +92,10 @@ in
     ];
 
     home.configFile = {
-      "hypr" = {
-        source = "${configDir}/hypr";
-        recursive = true;
-      };
-      "hypr/scripts" = {
-        source = "${binDir}/hypr";
-      };
+#      "hypr" = {
+#        source = "${configDir}/hypr";
+#        recursive = true;
+#      };
     };
   };
 }

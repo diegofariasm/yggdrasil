@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
 
-# Current Theme
-dir="$HOME/.config/hypr/config/rofi/powermenu"
-theme='powermenu'
+config_dir="$HOME/.config/hypr/config/rofi/powermenu"
 
 # CMDs
-lastlogin="$(last $USER | head -n1 | tr -s ' ' | cut -d' ' -f5,6,7)"
-uptime="$(uptime -p | sed -e 's/up //g')"
 host=$(hostname)
+uptime="$(uptime -p | sed -e 's/up //g')"
 
 # Options
 hibernate=''
@@ -24,7 +21,7 @@ rofi_cmd() {
 	rofi -dmenu \
 		-p "$USER@$host" \
 		-mesg " Uptime: $uptime" \
-		-theme ${dir}/${theme}.rasi
+		-theme ${config_dir}/powermenu.rasi
 }
 
 # Confirmation CMD
@@ -37,7 +34,7 @@ confirm_cmd() {
 		-dmenu \
 		-p 'Confirmation' \
 		-mesg 'Are you Sure?' \
-		-theme ${dir}/${theme}.rasi
+		-theme ${config_dir}/powermenu.rasi
 }
 
 # Ask for confirmation

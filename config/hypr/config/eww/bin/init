@@ -1,0 +1,7 @@
+#/usr/bin/env bash
+
+# Config location
+eww_config=~/.config/hypr/config/eww
+
+# Open the bar
+eww open bar --config $eww_config
