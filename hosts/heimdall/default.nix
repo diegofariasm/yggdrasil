@@ -15,7 +15,8 @@
       fs.enable = true;
     };
     desktop = {
-      hypr.enable = true;
+      # hypr.enable = true;
+      dwm.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;

@@ -1,0 +1,60 @@
+#!/usr/bin/env cached-nix-shell
+#! nix-shell -p ruby -i "ruby -S" --quiet
+
+
+require "~/.config/dwm/assets/scripts/src/environment.rb"
+require "~/.config/dwm/assets/scripts/src/theme_changer.rb"
+
+def check_theme(theme_dir, theme_files)
+  has_valid_theme = true
+  for theme_file in theme_files
+    if not File.exists?("#{theme_dir}/${theme_file}")
+      has_valid_theme = false
+    end
+  end
+
+  # Initialize the theme
+  if (!has_valid_theme)
+    puts "Invalid or unitialized theme; Initializing with gruvbox theme."
+  end
+end
+
+home_dir = ENV["HOME"]
+runtime_dir = ENV["XDG_RUNTIME_DIR"]
+lockfile = "#{runtime_dir}/dwm_autostart.lock" || "/run/user/#{Process.uid}/dwm_autostart.lock"
+config_dir = ENV["XDG_CONFIG_HOME"] || "#{home_dir}/.config"
+
+dwm_dir = "#{config_dir}/dwm"
+rofi_dir = "#{dwm_dir}/config/rofi"
+luastatus_dir = "#{dwm_dir}/config/luastatus"
+
+wallpaper = "#{home_dir}/.fehbg"
+xresources_file = "#{config_dir}/dwm/xresources"
+
+# Open the lockfile with exclusive write access
+lockfile_fd = File.open(lockfile, File::RDWR | File::CREAT, 0o644)
+unless lockfile_fd.flock(File::LOCK_EX | File::LOCK_NB)
+  # Lock is held by another process, check if it's still running
+  old_pid = lockfile_fd.read.chomp.to_i
+  if Process.kill(0, old_pid)
+    puts "Lockfile exists, exiting..."
+    exit 1
+  else
+    # Stale lock, remove it and acquire the lock
+    lockfile_fd.flock(File::LOCK_UN)
+    lockfile_fd.close
+    File.unlink(lockfile)
+    lockfile_fd = File.open(lockfile, File::RDWR | File::CREAT, 0o644)
+    lockfile_fd.flock(File::LOCK_EX)
+  end
+end
+
+# Code to run
+check_theme(
+  "#{dwm_dir}/themes",
+  [ "theme, theme.lua, theme.rasi" ]
+)
+
+lockfile_fd.flock(File::LOCK_UN)
+lockfile_fd.close
+File.unlink(lockfile)

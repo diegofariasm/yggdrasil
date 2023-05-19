@@ -37,15 +37,10 @@ in
     services.xserver = {
       enable = true;
       windowManager.dwm.enable = true;
-      displayManager.gdm = {
+      displayManager.lightdm = {
         enable = true;
       };
     };
-
-    # Needed scripts for dwm to work
-    env.PATH = [
-      "$HOME/.config/dwm/scripts"
-    ];
 
     home = {
       packages = with pkgs; with my; [
@@ -55,10 +50,6 @@ in
       configFile = {
         "dwm" = {
           source = "${configDir}/dwm";
-          recursive = true;
-        };
-        "dwm/scripts" = {
-          source = "${binDir}/dwm";
           recursive = true;
         };
       };

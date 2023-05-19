@@ -1,0 +1,43 @@
+#!/usr/bin/env cached-nix-shell
+#! nix-shell -p ruby -i "ruby -S" --quiet
+
+require '~/.config/dwm/assets/scripts/src/theme_changer.rb'
+require '~/.config/dwm/assets/scripts/src/environment.rb'
+
+available_wallpapers = ThemeChanger::get_available_wallpapers(
+  Environment::WALLPAPER_DIR
+)
+available_themes = ThemeChanger::get_available_themes(
+  Environment::THEME_DIR
+)
+
+available_options = ThemeChanger::themes_to_rofi_option(
+  Environment::THEME_ICON, available_themes
+)
+
+# Script for running rofi
+rofi_runner = "rofi -dmenu -i -theme #{Environment::ROFI_DIR}/launcher.rasi"
+# Run the script above and get what the user chose
+chosen_option = `echo -e '#{available_options}' | #{rofi_runner} -p 'Choose theme'`
+
+chosen_theme = ThemeChanger::treat_rofi_output(
+  chosen_option, Environment::THEME_ICON
+)
+
+if $CHILD_STATUS.success?
+  # Change all the themes
+  ThemeChanger::change_dwm_theme(
+    chosen_theme, Environment::THEME_DIR, Environment::XRESOURCES_FILE
+  )
+  ThemeChanger::change_luastatus_theme(
+    chosen_theme, Environment::THEME_DIR
+  )
+  ThemeChanger::change_rofi_theme(
+    chosen_theme, Environment::THEME_DIR
+  )
+  ThemeChanger::change_wallpaper(
+    chosen_theme, available_wallpapers
+  )
+else
+  puts "Theme change cancelled."
+end

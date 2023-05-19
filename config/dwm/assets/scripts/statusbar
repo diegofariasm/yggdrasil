@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+luastatus -b dwm -B separator= \
+	~/.config/dwm/config/luastatus/backlight.lua \
+	~/.config/dwm/config/luastatus/alsa.lua \
+	~/.config/dwm/config/luastatus/wifi.lua \
+	~/.config/dwm/config/luastatus/time-date.lua

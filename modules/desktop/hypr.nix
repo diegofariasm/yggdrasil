@@ -65,9 +65,8 @@ in
     services.xserver = {
       enable = true;
       # This will work properly with wayland, but not Xorg.
-      displayManager.gdm = {
+      displayManager.lightdm = {
         enable = true;
-        autoSuspend = true;
       };
     };
 
