@@ -24,9 +24,6 @@ module ThemeChanger
   end
 
   def self.get_available_themes(theme_dir)
-    # TODO check for themes in all apps; luastatus, rofi and dwm
-    # NOTE: This would be for makign sure that everything matches
-
     rofi_themes = Dir.glob("#{theme_dir}/rofi/*")
       .map { |f| File.basename(f, ".*") }
 
@@ -77,14 +74,50 @@ module ThemeChanger
     system("kill -9 $(pidof luastatus)")
   end
 
-  def self.change_wallpaper(theme_name, wallpapers)
-    theme_wallpapers = wallpapers.select { |s| s.include?("#{theme_name}") }
-    if theme_wallpapers.instance_of?(Array)
-      random_wallpaper = theme_wallpapers.sample
-      system("feh --bg-scale #{random_wallpaper}")
+  def self.change_wallpaper(theme_name, wallpaper_dir)
+    # All the available wallpapers
+    available_wallpapers = self.get_available_wallpapers(
+      wallpaper_dir
+    ) 
+    # All the wallpapers that match the theme
+    theme_wallpaper = available_wallpapers.select { 
+      |s| s.include?("#{theme_name}") 
+    }
+    
+    # If multiple wallpapers, pick a random
+    if theme_wallpaper.instance_of?(Array)
+      random_wallpaper = theme_wallpaper.sample
+      system(
+        "feh --bg-scale #{random_wallpaper}"
+      )
+      # So i know which wallpaper is currently used
+      theme_wallpaper = random_wallpaper
     elsif theme_wallpapers.instance_of?(String)
-      system("feh --bg-fill #{theme_wallpapers}")
+      system(
+        "feh --bg-scale #{theme_wallpaper}"
+      )
     end
+    # Note: currently moving .fehbg manually to #{wallpaper_dir},
+    # but there probably is a better way of doing this
+    system(
+      "mv ~/.fehbg #{wallpaper_dir}/fehbg"
+    )
+  end
+
+  def self.change_theme(theme_name, theme_dir, dwm_dir, rofi_dir, luastatus_dir, wallpaper_dir, xresources_file)
+    ThemeChanger::change_dwm_theme(
+      theme_name, theme_dir, xresources_file
+    )
+    ThemeChanger::change_luastatus_theme(
+      theme_name, theme_dir
+    )
+    ThemeChanger::change_rofi_theme(
+      theme_name, theme_dir
+    )
+
+    ThemeChanger::change_wallpaper(
+      theme_name, wallpaper_dir
+    )
   end
 
   def self.treat_rofi_output(rofi_option, theme_icon)

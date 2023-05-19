@@ -4,9 +4,6 @@
 require '~/.config/dwm/assets/scripts/src/theme_changer.rb'
 require '~/.config/dwm/assets/scripts/src/environment.rb'
 
-available_wallpapers = ThemeChanger::get_available_wallpapers(
-  Environment::WALLPAPER_DIR
-)
 available_themes = ThemeChanger::get_available_themes(
   Environment::THEME_DIR
 )
@@ -26,17 +23,14 @@ chosen_theme = ThemeChanger::treat_rofi_output(
 
 if $CHILD_STATUS.success?
   # Change all the themes
-  ThemeChanger::change_dwm_theme(
-    chosen_theme, Environment::THEME_DIR, Environment::XRESOURCES_FILE
-  )
-  ThemeChanger::change_luastatus_theme(
-    chosen_theme, Environment::THEME_DIR
-  )
-  ThemeChanger::change_rofi_theme(
-    chosen_theme, Environment::THEME_DIR
-  )
-  ThemeChanger::change_wallpaper(
-    chosen_theme, available_wallpapers
+  ThemeChanger::change_theme( 
+    chosen_theme, 
+    Environment::THEME_DIR, 
+    Environment::DWM_DIR, 
+    Environment::ROFI_DIR, 
+    Environment::LUASTATUS_DIR, 
+    Environment::WALLPAPER_DIR, 
+    Environment::XRESOURCES_FILE
   )
 else
   puts "Theme change cancelled."
