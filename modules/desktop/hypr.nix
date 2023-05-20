@@ -71,23 +71,15 @@ in
     };
 
     programs.hyprland.enable = true;
-    home.programs = {
-      rofi = {
-        enable = true;
-        package = pkgs.rofi-wayland;
-        plugins = with pkgs; [
-          rofi-calc
-        ];
-      };
-
-    };
     home.packages = with pkgs; [
       foot
       mako
+      socat
       hyprpaper
       hyprpicker
       eww-wayland
       configure-gtk
+      rofi
     ];
 
     home.configFile = {

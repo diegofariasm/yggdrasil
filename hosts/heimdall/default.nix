@@ -15,7 +15,7 @@
       fs.enable = true;
     };
     desktop = {
-      # hypr.enable = true;
+      hypr.enable = true;
       dwm.enable = true;
       media = {
         vlc.enable = true;
@@ -26,6 +26,7 @@
         editors = {
           code.enable = true;
         };
+        teamviewer.enable = true;
         thunar.enable = true;
       };
       browsers = {

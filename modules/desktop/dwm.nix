@@ -23,8 +23,19 @@ in
             NIX_CFLAGS_COMPILE+="-O3 -march=native"
           '';
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dwm/archive/96f6915398e3bfc81fbe37ae588dc7d286985300.tar.gz";
-            sha256 = "095dr9hqqq1g8z63nyxpan5dl7f9f6qd9d0f69sly0bfhykgrp6i";
+            url = "https://github.com/fushiii/dwm/archive/800a5fe823ba7959f4c14a95c0e24f727fab7cf5.tar.gz";
+            sha256 = "11fpj6lhfcym9kxssa2dxzlng5xvxjlxlpfwmvwq9ac0kfx4qmbg";
+          };
+          buildInputs = with pkgs; oldAttrs.buildInputs ++ [
+            imlib2
+          ];
+        });
+      })
+     (final: prev: {
+        slock = prev.slock.overrideAttrs (oldAttrs: {
+          src = builtins.fetchTarball {
+            url = "https://github.com/fushiii/slock/archive/31e20a16fc977745d7279c637a4377650c303112.tar.gz";
+            sha256 = "075yl91v9sypnpwsr6kyvzql8k3apjwpzvvjwai69xmpn255433x";
           };
           buildInputs = with pkgs; oldAttrs.buildInputs ++ [
             imlib2
@@ -42,7 +53,10 @@ in
       };
     };
 
+    # Screen slocker
+    programs.slock.enable = true;
     home = {
+    # Some other apps
       packages = with pkgs; with my; [
         rofi
         luastatus

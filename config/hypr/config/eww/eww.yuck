@@ -7,8 +7,8 @@
 (defpoll month :interval "1h"  "date +%m")
 (defpoll year  :interval "1h"  "date +%y")
 
-(deflisten brightness-level :initial "20" "bin/brightness get")
 (deflisten volume-level :initial "20" "bin/volume get")
+(deflisten brightness-level :initial "20" "bin/brightness get")
 
 (defvar active-workspace 1)
 

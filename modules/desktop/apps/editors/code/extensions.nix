@@ -11,8 +11,6 @@ with pkgs.vscode-extensions; [
 
   wix.vscode-import-cost
   bradlc.vscode-tailwindcss
-  formulahendry.auto-close-tag
-  formulahendry.auto-rename-tag
 
   # Language support
   jnoortheen.nix-ide
@@ -31,13 +29,6 @@ with pkgs.vscode-extensions; [
     publisher = "vscode-icons-team";
     version = "12.2.0";
     sha256 = "sha256-PxM+20mkj7DpcdFuExUFN5wldfs7Qmas3CnZpEFeRYs=";
-  }
-  {
-    # What is a developer without a pretty theme?
-    name = "andromeda";
-    publisher = "EliverLara";
-    version = "1.7.2";
-    sha256 = "sha256-IFi+rSEb+Am5Sepav/31D+U2hYHwBrQoB40gfVSNFpM=";
   }
   {
     name = "vscode-highlight";

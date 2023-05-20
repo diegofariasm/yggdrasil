@@ -1,157 +1,67 @@
 {
   breadcrumbs.enabled = true;
-
   remote.SSH.useLocalServer = false;
 
-  editors = {
-    accessibilitySupport = "off";
-    bracketPairColorization.enabled = true;
-    cursorBlinking = "phase";
-    cursorStyle = "line";
-    dragAndDrop = false;
-    fontFamily = "'Jetbrains Mono', Consolas, 'Courier New', monospace";
-    fontLigatures = true;
-    fontSize = 14;
-    glyphMargin = false;
-    lineHeight = 20;
-    linkedEditing = true;
-    minimap.enabled = false;
-    tabSize = 2;
-  };
-  explorer = {
-    autoReveal = true;
-    confirmDragAndDrop = false;
-    confirmDelete = false;
-  };
+  editors.accessibilitySupport = "off";
+  editors.bracketPairColorization.enabled = true;
+  editors.cursorBlinking = "phase";
+  editors.cursorStyle = "line";
+  editors.dragAndDrop = false;
+  editors.fontFamily = "'Jetbrains Mono', Consolas, 'Courier New', monospace";
+  editors.fontLigatures = true;
+  editors.fontSize = 14;
+  editors.glyphMargin = false;
+  editors.lineHeight = 20;
+  editors.linkedEditing = true;
+  editors.minimap.enabled = false;
+  editors.tabSize = 2;
+
+  explorer.autoReveal = true;
+  explorer.confirmDragAndDrop = false;
+  explorer.confirmDelete = false;
 
   update.mode = "none";
-  extensions = {
-    autoUpdate = false;
-    autoCheckUpdates = false;
-  };
+  extensions.autoUpdate = false;
+  extensions.autoCheckUpdates = false;
 
-  files = {
-    insertFinalNewline = true;
-    trimTrailingWhitespace = true;
-  };
-  git = {
-    autofetch = false;
-    inputValidationSubjectLength = 72;
-    confirmSync = false;
-  };
-  html.format = {
-    enable = true;
-    endWithNewline = false;
+  files.insertFinalNewline = true;
+  files.trimTrailingWhitespace = true;
 
-  };
-  markdown.preview = {
-    scrollEditorWithPreview = true;
-    scrollPreviewWithEditor = true;
-  };
-  sync = {
-    askGistName = false;
-    autoDownload = false;
-    autoUpload = false;
-    forceDownload = false;
-    gist = "";
-    host = "";
-    pathPrefix = "";
-    quietSync = false;
-    removeExtensions = true;
-  };
-  telemetry = {
-    enableCrashReporter = false;
-    enableTelemetry = false;
-  };
+  git.autofetch = false;
+  git.inputValidationSubjectLength = 72;
+  git.confirmSync = false;
+
+  markdown.preview.scrollEditorWithPreview = true;
+  markdown.preview.scrollPreviewWithEditor = true;
+
+  sync.askGistName = false;
+  sync.autoDownload = false;
+  sync.autoUpload = false;
+  sync.forceDownload = false;
+  sync.gist = "";
+  sync.host = "";
+  sync.pathPrefix = "";
+  sync.quietSync = false;
+  sync.removeExtensions = true;
+
+  telemetry.enableCrashReporter = false;
+  telemetry.enableTelemetry = false;
 
   window.title = "\${activeEditorMedium}\${separator}\${rootName}";
-  editor = {
-formatOnPaste = true;
-formatOnSave = true;   };
-  workbench = {
-    colorTheme = "Andromeda Bordered";
-    iconTheme = "vscode-icons";
-    enableExperiments = false;
-    panel.defaultLocation = "bottom";
-    settings.enableNaturalLanguageSearch = false;
-    statusBar.feedback.visible = false;
-    sideBar.location = "left";
+  editor.formatOnPaste = true;
+  editor.formatOnSave = true;
 
-    editor = {
-      enablePreview = false;
-      highlightModifiedTabs = true;
-      tabCloseButton = "right";
-      tabSizing = "shrink";
-      
-      
-    };
-  };
+  workbench.colorTheme = "Andromeda Bordered";
+  workbench.iconTheme = "vscode-icons";
+  workbench.enableExperiments = false;
+  workbench.panel.defaultLocation = "bottom";
+  workbench.settings.enableNaturalLanguageSearch = false;
+  workbench.statusBar.feedback.visible = false;
+  workbench.sideBar.location = "left";
 
-  todo-tree.highlights.enabled = false;
-  highlight.regexes = {
-    "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *TODO(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))" =
-      {
-        filterFileRegex = ".*(?<!CHANGELOG.md)$";
-        decorations = [
-          {
-            overviewRulerColor = "#ffcc00";
-            backgroundColor = "#ffcc00";
-            color = "#1f1f1f";
-            fontWeight = "bold";
-          }
-          {
-            backgroundColor = "#ffcc00";
-            color = "#1f1f1f";
-          }
-        ];
-      };
-    "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *(?:FIXME|FIX|BUG|UGLY|DEBUG|HACK)(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))" =
-      {
-        filterFileRegex = ".*(?<!CHANGELOG.md)$";
-        decorations = [
-          {
-            overviewRulerColor = "#cc0000";
-            backgroundColor = "#cc0000";
-            color = "#1f1f1f";
-            fontWeight = "bold";
-          }
-          {
-            backgroundColor = "#cc0000";
-            color = "#1f1f1f";
-          }
-        ];
-      };
-    "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *(?:REVIEW|OPTIMIZE|NOTE|TSC)(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))" =
-      {
-        filterFileRegex = ".*(?<!CHANGELOG.md)$";
-        decorations = [
-          {
-            overviewRulerColor = "#00ccff";
-            backgroundColor = "#00ccff";
-            color = "#1f1f1f";
-            fontWeight = "bold";
-          }
-          {
-            backgroundColor = "#00ccff";
-            color = "#1f1f1f";
-          }
-        ];
-      };
-    "((?:<!-- *)?(?:#|// @|//|./\\*+|<!--|--|\\* @|{!|{{!--|{{!) *(?:IDEA)(?:\\s*\\([^)]+\\))?:?)((?!\\w)(?: *-->| *\\*/| *!}| *--}}| *}}|(?= *(?:[^:]//|/\\*+|<!--|@|--|{!|{{!--|{{!))|(?: +[^\\n@]*?)(?= *(?:[^:]//|/\\*+|<!--|@|--(?!>)|{!|{{!--|{{!))|(?: +[^@\\n]+)?))" = {
-      filterFileRegex = ".*(?<!CHANGELOG.md)$";
-      decorations = [
-        {
-          overviewRulerColor = "#cc00cc";
-          backgroundColor = "#cc00cc";
-          color = "#1f1f1f";
-          fontWeight = "bold";
-        }
-        {
-          backgroundColor = "#cc00cc";
-          color = "#1f1f1f";
-        }
-      ];
-    };
-  };
+  workbench.editor.enablePreview = false;
+  workbench.editor.highlightModifiedTabs = true;
+  workbench.editor.tabCloseButton = "right";
+  workbench.editor.tabSizing = "shrink";
 
 }
