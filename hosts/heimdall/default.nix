@@ -16,7 +16,6 @@
     };
     desktop = {
       hypr.enable = true;
-      dwm.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -30,9 +29,9 @@
         thunar.enable = true;
       };
       browsers = {
-        default = "firefox";
-        firefox.enable = true;
-        edge.enable = true;
+        default = "google-chrome";
+	chrome.enable = true;
+	firefox.enable = true;
       };
       term = {
         default = "st";

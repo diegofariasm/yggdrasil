@@ -11,6 +11,13 @@ alias reboot='sudo reboot'
 alias y='xclip -selection clipboard -in'
 alias p='xclip -selection clipboard -out'
 
+if (( $+commands[nvim] )); then
+  alias v="nvim";
+  alias vi="nvim";
+  alias vim="nvim";
+  alias nv="nvim";
+fi
+
 if (( $+commands[exa] )); then
   alias exa="exa --group-directories-first --git";
   alias l="exa -blF";

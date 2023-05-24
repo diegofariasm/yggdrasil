@@ -59,6 +59,7 @@ in
     # Some other apps
       packages = with pkgs; with my; [
         rofi
+        xclip
         luastatus
       ];
       configFile = {

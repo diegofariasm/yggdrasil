@@ -3,10 +3,8 @@
 with lib;
 with lib.my;
 let cfg = config.modules.desktop;
-in
-{
+in {
   config = mkIf config.services.xserver.enable {
-
     assertions = [
       {
         assertion = (countAttrs (n: v: n == "enable" && value) cfg) < 2;
@@ -15,43 +13,41 @@ in
       {
         assertion =
           let srv = config.services;
-          in
-          srv.xserver.enable ||
-          srv.sway.enable ||
-          !(anyAttrs
-            (n: v: isAttrs v &&
-            anyAttrs (n: v: isAttrs v && v.enable))
-            cfg);
+          in srv.xserver.enable ||
+             srv.sway.enable ||
+             !(anyAttrs
+               (n: v: isAttrs v &&
+                      anyAttrs (n: v: isAttrs v && v.enable))
+               cfg);
         message = "Can't enable a desktop app without a desktop environment";
       }
     ];
 
-    # Pretty boot splash
-    boot.plymouth.enable = true;
-
-    home.packages = with pkgs; [
-      feh
+    user.packages = with pkgs; [
+      feh       # image viewer
+      xclip
       xdotool
       xorg.xwininfo
-      wl-clipboard
-      wl-clipboard-x11
+      libqalculate  # calculator cli w/ currency conversion
+      qgnomeplatform        # QPlatformTheme for a better Qt application inclusion in GNOME
+      libsForQt5.qtstyleplugin-kvantum # SVG-based Qt5 theme engine plus a config tool and extra theme
     ];
 
     fonts = {
       fontDir.enable = true;
       enableGhostscriptFonts = true;
       fonts = with pkgs; [
+	nerdfonts
         ubuntu_font_family
         dejavu_fonts
         symbola
-        (nerdfonts.override {
-          fonts = [
-            "Iosevka"
-          ];
-        })
-
       ];
     };
+
+    # Try really hard to get QT to respect my GTK theme.
+    env.GTK_DATA_PREFIX = [ "${config.system.path}" ];
+    env.QT_QPA_PLATFORMTHEME = "gnome";
+    env.QT_STYLE_OVERRIDE = "kvantum";
 
     services.xserver.displayManager.sessionCommands = ''
       # GTK2_RC_FILES must be available to the display manager.
@@ -61,10 +57,9 @@ in
     # Clean up leftovers, as much as we can
     system.userActivationScripts.cleanupHome = ''
       pushd "${config.user.home}"
-      rm -rf .compose-cache .nv .pki .dbus
+      rm -rf .compose-cache .nv .pki .dbus .fehbg
       [ -s .xsession-errors ] || rm -f .xsession-errors*
       popd
     '';
   };
 }
-

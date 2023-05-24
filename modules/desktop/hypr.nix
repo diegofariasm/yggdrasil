@@ -64,7 +64,6 @@ in
     # Display manager
     services.xserver = {
       enable = true;
-      # This will work properly with wayland, but not Xorg.
       displayManager.lightdm = {
         enable = true;
       };
@@ -78,8 +77,10 @@ in
       hyprpaper
       hyprpicker
       eww-wayland
+      rofi-wayland
+      wl-clipboard
+      wl-clipboard-x11
       configure-gtk
-      rofi
     ];
 
     home.configFile = {

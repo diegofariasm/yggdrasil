@@ -26,20 +26,28 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home.packages = with pkgs; [
+        bacon
         rustup
       ];
-      env.PATH = [ "$(${pkgs.yarn}/bin/yarn global bin)" ];
+
+      env.PATH = [ 
+      "$(${pkgs.yarn}/bin/yarn global bin)" 
+      ];
+
       environment.shellAliases = {
         rs = "rustc";
         rsp = "rustup";
         ca = "cargo";
       };
+
     })
 
     (mkIf cfg.xdg.enable {
-      env.RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
-      env.CARGO_HOME = "$XDG_DATA_HOME/cargo";
-      env.PATH = [ "$CARGO_HOME/bin" ];
+      env = {
+         RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
+         CARGO_HOME = "$XDG_DATA_HOME/cargo";
+         PATH = [ "$CARGO_HOME/bin" ];
+      };
     })
   ];
 }

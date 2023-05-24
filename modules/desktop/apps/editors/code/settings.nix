@@ -51,7 +51,7 @@
   editor.formatOnPaste = true;
   editor.formatOnSave = true;
 
-  workbench.colorTheme = "Andromeda Bordered";
+  workbench.colorTheme = "Dark Modern";
   workbench.iconTheme = "vscode-icons";
   workbench.enableExperiments = false;
   workbench.panel.defaultLocation = "bottom";

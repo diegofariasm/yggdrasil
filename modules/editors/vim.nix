@@ -4,8 +4,7 @@
 , options
 , lib
 , pkgs
-, inputs
-, ...
+, inputs , ...
 }:
 with lib;
 with lib.my; let
@@ -20,18 +19,16 @@ in
 
   config = mkIf cfg.enable {
 
-    maiden.programs.neovim = {
-      enable = true;
-      package = pkgs.neovim-unwrapped;
-
-      # Setting the aliases
-      viAlias = true;
-      vimAlias = true;
-      vimdiffAlias = true;
-    };
+    home.packages = with pkgs; [
+        neovim
+        selene
+        lua-language-server
+    ];
 
     # adds the nyoom bin to the shell path
-    env.PATH = [ "$HOME/.config/nvim/bin" ];
+    env.PATH = [ 
+        "$HOME/.config/nvim/bin" 
+    ];
 
   };
 }
