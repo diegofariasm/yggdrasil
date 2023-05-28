@@ -52,6 +52,13 @@ in
         enable = true;
       };
     };
+ fonts.fonts = with pkgs; [
+      (nerdfonts.override {
+        fonts = [
+          "Iosevka"
+        ];
+      })
+    ];
 
     # Screen slocker
     programs.slock.enable = true;

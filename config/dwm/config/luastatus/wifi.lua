@@ -44,6 +44,6 @@ widget = {
 								--r[#r + 1] = '---'
             end
         end
-				return { string.format(theme.sep .. theme.wifi_ic_fg .. theme.wifi_ic_bg .. ' 直 ' .. theme.wifi_fg .. theme.wifi_bg .. ' %s ', r[1]), }
+				return { string.format(theme.sep .. theme.wifi_ic_fg .. theme.wifi_ic_bg .. '  ' .. theme.wifi_fg .. theme.wifi_bg .. ' %s ', r[1]), }
     end,
 }
