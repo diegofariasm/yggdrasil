@@ -52,10 +52,13 @@ in
         enable = true;
       };
     };
- fonts.fonts = with pkgs; [
+    # Needed font/fonts by dwm 
+    # Else the icons on the bar will glitch
+    fonts.fonts = with pkgs; [
       (nerdfonts.override {
         fonts = [
           "Iosevka"
+          "Meslo"
         ];
       })
     ];

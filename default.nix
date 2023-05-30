@@ -66,6 +66,8 @@ in
   networking.useDHCP = mkDefault false;
 
   boot = {
+     # kernelPackages = mkDefault pkgs.linuxPackages_latest;
+    kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
     loader = {
       efi.canTouchEfiVariables = mkDefault true;
       systemd-boot.configurationLimit = 5;

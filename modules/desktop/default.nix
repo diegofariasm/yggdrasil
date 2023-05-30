@@ -28,7 +28,6 @@ in {
       xclip
       xdotool
       xorg.xwininfo
-      libqalculate  # calculator cli w/ currency conversion
       qgnomeplatform        # QPlatformTheme for a better Qt application inclusion in GNOME
       libsForQt5.qtstyleplugin-kvantum # SVG-based Qt5 theme engine plus a config tool and extra theme
     ];
@@ -37,7 +36,6 @@ in {
       fontDir.enable = true;
       enableGhostscriptFonts = true;
       fonts = with pkgs; [
-	nerdfonts
         ubuntu_font_family
         dejavu_fonts
         symbola

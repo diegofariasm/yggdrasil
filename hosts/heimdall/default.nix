@@ -25,7 +25,7 @@
         editors = {
           code.enable = true;
         };
-        teamviewer.enable = true;
+        # teamviewer.enable = true;
         thunar.enable = true;
       };
       browsers = {
