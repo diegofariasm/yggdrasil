@@ -84,10 +84,10 @@ in
     ];
 
     home.configFile = {
-#      "hypr" = {
-#        source = "${configDir}/hypr";
-#        recursive = true;
-#      };
+      "hypr" = {
+        source = "${configDir}/hypr";
+        recursive = true;
+      };
     };
   };
 }
