@@ -23,8 +23,8 @@ in
             NIX_CFLAGS_COMPILE+="-O3 -march=native"
           '';
           src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/dwm/archive/bbd980b73d12959410f61c246ea40349d58e67f9.tar.gz";
-            sha256 = "080kh7wki0f4mlkdj83xlrggh33q22f05lcyx8b5v6xp28glpm94";
+            url = "https://github.com/fushiii/dwm/archive/8a179562ca0b8f8560a720d78abb1a5a1638f5cd.tar.gz";
+            sha256 = "1d3i9fd3gbcnmx8xi0253fb10yw98ga1ja15r2585c3x5zd7f98m";
           };
           buildInputs = with pkgs; oldAttrs.buildInputs ++ [
             imlib2
