@@ -32,23 +32,12 @@ in
 
     # Desktop (X11) theming
     (mkIf config.services.xserver.enable {
-
       home.packages = with pkgs; [
         nordic
         nordzy-icon-theme
         nordzy-cursor-theme
       ];
 
-      fonts = {
-        fonts = with pkgs; [
-          fira-code
-          fira-code-symbols
-          open-sans
-          jetbrains-mono
-          siji
-          font-awesome
-        ];
-      };
     })
   ]);
 }

@@ -35,19 +35,9 @@ in
 
       home.packages = with pkgs; [
         dracula-theme
-        paper-icon-theme # for rofi
+        paper-icon-theme
       ];
 
-      fonts = {
-        fonts = with pkgs; [
-          fira-code
-          fira-code-symbols
-          open-sans
-          jetbrains-mono
-          siji
-          font-awesome
-        ];
-      };
     })
   ]);
 }

@@ -42,72 +42,10 @@ in
     };
 
   };
-  imports = [
-      base16.hmModule
-  ];
+
   config = mkIf (cfg.active != null) (mkMerge [
     {
-      themes.base16 = {
-        enable = true;
-        path = "${inputs.base16-oxocarbon}/base16-oxocarbon-dark.yaml";
-      };
-
       home = {
-        file = {
-          ".Xresources".text = ''
-            ! ! Automatically generated. Do not edit.
-            ! ! Oxocarbon
-
-            ! scheme: "Oxocarbon Dark"
-            ! author: "shaunsingh/IBM"
-
-            #define st00 #161616
-            #define st01 #262626
-            #define st02 #393939
-            #define st03 #525252
-            #define st04 #dde1e6
-            #define st05 #f2f4f8
-            #define st06 #ffffff
-            #define st07 #08bdba
-            #define st08 #3ddbd9
-            #define st09 #78a9ff
-            #define st0A #ee5396
-            #define st0B #33b1ff
-            #define st0C #ff7eb6
-            #define st0D #42be65
-            #define st0E #be95ff
-            #define st0F #82cfff
-
-            st.foreground:   st05
-            #ifdef background_opacity
-            st.background:   [background_opacity]st00
-            #else
-            st.background:   st00
-            #endif
-            st.cursorColor:  st05
-
-            st.color0:       st00
-            st.color1:       st08
-            st.color2:       st0B
-            st.color3:       st0A
-            st.color4:       st0D
-            st.color5:       st0E
-            st.color6:       st0C
-            st.color7:       st05
-
-            st.color8:       st03
-            st.color9:       st09
-            st.color10:      st01
-            st.color11:      st02
-            st.color12:      st04
-            st.color13:      st06
-            st.color14:      st0F
-            st.color15:      st07
-
-            ! ! Theme other apps
-            #include "${config.user.home}/.config/dwm/xresources/colors"
-          '';
-        };
         configFile = {
           "gtk-4.0/settings.ini".text = ''
             [Settings]
@@ -149,6 +87,12 @@ in
           '';
         };
       };
+      	# For use in other scripts
+	environment.variables = {
+	   THEME = cfg.gtk.theme;
+	   CURSOR_THEME = cfg.gtk.cursorTheme;
+	   ICON_THEME = cfg.gtk.iconTheme;
+	};
 
       fonts.fontconfig.defaultFonts = {
         sansSerif = [ cfg.fonts.sans.name ];

@@ -3,7 +3,8 @@
 with lib;
 with lib.my;
 let cfg = config.modules.desktop;
-in {
+in
+{
   config = mkIf config.services.xserver.enable {
     assertions = [
       {
@@ -13,22 +14,23 @@ in {
       {
         assertion =
           let srv = config.services;
-          in srv.xserver.enable ||
-             srv.sway.enable ||
-             !(anyAttrs
-               (n: v: isAttrs v &&
-                      anyAttrs (n: v: isAttrs v && v.enable))
-               cfg);
+          in
+          srv.xserver.enable ||
+          srv.sway.enable ||
+          !(anyAttrs
+            (n: v: isAttrs v &&
+            anyAttrs (n: v: isAttrs v && v.enable))
+            cfg);
         message = "Can't enable a desktop app without a desktop environment";
       }
     ];
 
     user.packages = with pkgs; [
-      feh       # image viewer
+      feh # image viewer
       xclip
       xdotool
       xorg.xwininfo
-      qgnomeplatform        # QPlatformTheme for a better Qt application inclusion in GNOME
+      qgnomeplatform # QPlatformTheme for a better Qt application inclusion in GNOME
       libsForQt5.qtstyleplugin-kvantum # SVG-based Qt5 theme engine plus a config tool and extra theme
     ];
 
@@ -39,6 +41,12 @@ in {
         ubuntu_font_family
         dejavu_fonts
         symbola
+        (nerdfonts.override {
+          fonts = [
+            "Iosevka"
+            "Meslo"
+          ];
+        })
       ];
     };
 

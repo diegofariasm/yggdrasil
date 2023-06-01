@@ -52,19 +52,10 @@ in
         enable = true;
       };
     };
-    # Needed font/fonts by dwm 
-    # Else the icons on the bar will glitch
-    fonts.fonts = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "Iosevka"
-          "Meslo"
-        ];
-      })
-    ];
 
     # Screen slocker
     programs.slock.enable = true;
+
     home = {
     # Some other apps
       packages = with pkgs; with my; [

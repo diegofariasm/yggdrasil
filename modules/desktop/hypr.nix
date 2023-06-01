@@ -64,8 +64,9 @@ in
     # Display manager
     services.xserver = {
       enable = true;
-      displayManager.lightdm = {
+      displayManager.gdm = {
         enable = true;
+	autoSuspend = true;
       };
     };
 
@@ -83,11 +84,12 @@ in
       configure-gtk
     ];
 
-    home.configFile = {
-      "hypr" = {
-        source = "${configDir}/hypr";
-        recursive = true;
-      };
-    };
+   # This is still in progress, so linking is not really a good idea
+   # home.configFile = {
+   #   "hypr" = {
+   #     source = "${configDir}/hypr";
+   #     recursive = true;
+   #   };
+   # };
   };
 }

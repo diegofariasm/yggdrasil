@@ -12,5 +12,5 @@
 
 (defvar active-workspace 1)
 
-// (deflisten workspaces "bin/hyprland workspaces")
-// (deflisten window "bin/hyprland window")
+(deflisten window "bin/hyprland window")
+(deflisten workspaces "bin/hyprland workspaces")
