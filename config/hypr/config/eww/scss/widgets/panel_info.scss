@@ -1,0 +1,17 @@
+.panel_info {
+    @include panel;
+
+    color: $foreground-primary;
+    background-color: transparent;
+
+    &__card {
+        font-size: 18px;
+        font-weight: bolder;
+
+        color: $foreground-primary;
+        background-color: $background-secondary;
+
+        padding: 10px;
+        border-radius: $theme-radius;
+    }
+}

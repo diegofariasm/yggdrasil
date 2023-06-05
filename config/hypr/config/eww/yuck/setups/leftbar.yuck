@@ -1,6 +1,4 @@
-(include "./src/yuck/widgets.yuck")
-
-(defwindow bar
+(defwindow sidebar
   :monitor 0
   :stacking "bottom"
   :geometry (geometry
@@ -9,4 +7,5 @@
     :width "5%"
   :anchor "left center")
   :exclusive true
-  (bar))
+  (bar)
+)

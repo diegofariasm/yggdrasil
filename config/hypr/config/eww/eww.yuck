@@ -1,4 +1,7 @@
-(include "./src/yuck/setups/leftbar.yuck")
+(include "./yuck/widgets.yuck")
+(include "./yuck/windows.yuck")
+(include "./yuck/setups/leftbar.yuck")
+
 
 (defpoll hour :interval "1m" "date +%I")
 (defpoll min  :interval "1m" "date +%M")
@@ -7,10 +10,5 @@
 (defpoll month :interval "1h"  "date +%m")
 (defpoll year  :interval "1h"  "date +%y")
 
-(deflisten volume-level :initial "20" "bin/volume get")
-(deflisten brightness-level :initial "20" "bin/brightness get")
-
-(defvar active-workspace 1)
-
-(deflisten window "bin/hyprland window")
-(deflisten workspaces "bin/hyprland workspaces")
+(deflisten window "maiden hyprland window title --listen")
+(deflisten workspaces "maiden hyprland workspace workspaces --listen")

@@ -1,0 +1,31 @@
+.panel_workspace {
+    @include panel;
+}
+
+.button_workspace {
+    @include button;
+
+    padding: 5px;
+    background-color: transparent;
+
+    transition: ease-in-out;
+    transition-delay: 100ms;
+    transition-duration: 200ms;
+
+
+
+    &__occupied {
+        @extend .panel_workspace__tag;
+        color: darken($foreground-secondary, 0.1)
+    }
+
+    &__empty {
+        @extend .panel_workspace__tag;
+    }
+
+    &__active {
+        @extend .panel_workspace__tag;
+        color: $foreground-primary;
+    }
+
+}

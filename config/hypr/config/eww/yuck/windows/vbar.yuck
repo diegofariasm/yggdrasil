@@ -1,0 +1,23 @@
+
+(defwidget bar [] (centerbox
+    :orientation "v"
+    :class "vbar"
+    (box
+      :space-evenly false
+      :valign "start"
+      :orientation "v"
+      (panel_launcher)
+      (panel_workspaces)
+    )
+    (box
+      :orientation "v"
+      :space-evenly false
+      (panel_info)
+    )
+    (box
+      :space-evenly false
+      :valign "end"
+      :orientation "v"
+      (panel_powermenu)
+    )
+  ))

@@ -1,0 +1,12 @@
+.panel_powermenu {
+    @include panel;
+}
+
+.button_powermenu {
+    @include button;
+    color: $foreground-primary;
+
+    &:hover {
+        color: lightcoral
+    }
+}

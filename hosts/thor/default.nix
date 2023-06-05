@@ -30,8 +30,8 @@
       };
       browsers = {
         default = "google-chrome";
-	chrome.enable = true;
-	firefox.enable = true;
+        chrome.enable = true;
+        firefox.enable = true;
       };
       term = {
         default = "st";
@@ -60,7 +60,7 @@
       polkit.enable = true;
       ssh.enable = true;
     };
-    theme.active = "nordic";
+    theme.active = "alucard";
   };
 
   # Tty config

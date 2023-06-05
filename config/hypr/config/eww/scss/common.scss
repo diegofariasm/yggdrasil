@@ -1,0 +1,32 @@
+* {
+    all: unset;
+}
+
+@mixin panel {
+    color: $foreground-secondary;
+    background-color: $background-secondary;
+
+    padding: 5px;
+    margin: 5px;
+    border-radius: $theme-radius;
+}
+
+@mixin button {
+    padding: 5px;
+
+    font-size: 18px;
+    font-weight: bolder;
+    border-radius: $theme-radius;
+
+    color: $foreground-secondary;
+    background-color: $background-secondary;
+
+    transition: all;
+    transition-delay: 100ms;
+    transition-duration: 200ms;
+
+    &:hover {
+        color: $foreground-primary;
+        background-color: transparentize($background-primary, 0.5);
+    }
+}
