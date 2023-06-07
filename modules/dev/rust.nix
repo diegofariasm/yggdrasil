@@ -27,11 +27,14 @@ in
     (mkIf cfg.enable {
       home.packages = with pkgs; [
         bacon
-        rustup
+        cargo
+        rustc
+        rustfmt
+        rust-analyzer
       ];
 
-      env.PATH = [ 
-      "$(${pkgs.yarn}/bin/yarn global bin)" 
+      env.PATH = [
+        "$(${pkgs.yarn}/bin/yarn global bin)"
       ];
 
       environment.shellAliases = {
@@ -44,9 +47,9 @@ in
 
     (mkIf cfg.xdg.enable {
       env = {
-         RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
-         CARGO_HOME = "$XDG_DATA_HOME/cargo";
-         PATH = [ "$CARGO_HOME/bin" ];
+        RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
+        CARGO_HOME = "$XDG_DATA_HOME/cargo";
+        PATH = [ "$CARGO_HOME/bin" ];
       };
     })
   ];
