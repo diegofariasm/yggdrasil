@@ -15,7 +15,7 @@
       fs.enable = true;
     };
     desktop = {
-      hypr.enable = true;
+      hyprland.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -30,8 +30,8 @@
       };
       browsers = {
         default = "google-chrome";
-        chrome.enable = true;
-        firefox.enable = true;
+	chrome.enable = true;
+	firefox.enable = true;
       };
       term = {
         default = "st";
@@ -60,7 +60,7 @@
       polkit.enable = true;
       ssh.enable = true;
     };
-    theme.active = "alucard";
+    theme.active = "nordic";
   };
 
   # Tty config
