@@ -29,9 +29,9 @@
         thunar.enable = true;
       };
       browsers = {
-        default = "google-chrome";
-	chrome.enable = true;
-	firefox.enable = true;
+        default = "chromium";
+        chromium.enable = true;
+        firefox.enable = true;
       };
       term = {
         default = "st";

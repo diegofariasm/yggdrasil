@@ -21,6 +21,8 @@ in
       ];
       configFile = {
         "starship.toml".text = ''
+          command_timeout = 100000
+
           format = """
           [  $username$hostname ]\
           (bold bg:black fg:white)\

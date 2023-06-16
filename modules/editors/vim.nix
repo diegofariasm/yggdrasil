@@ -4,7 +4,8 @@
 , options
 , lib
 , pkgs
-, inputs , ...
+, inputs
+, ...
 }:
 with lib;
 with lib.my; let
@@ -20,14 +21,15 @@ in
   config = mkIf cfg.enable {
 
     home.packages = with pkgs; [
-        neovim
-        selene
-        lua-language-server
+      neovim
+      selene
+      marksman
+      lua-language-server
     ];
 
     # adds the nyoom bin to the shell path
-    env.PATH = [ 
-        "$HOME/.config/nvim/bin" 
+    env.PATH = [
+      "$HOME/.config/nvim/bin"
     ];
 
   };

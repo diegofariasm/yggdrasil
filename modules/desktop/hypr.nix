@@ -72,6 +72,7 @@ in
     programs.hyprland.enable = true;
     home.packages = with pkgs; [
       foot
+      kitty
       mako
       socat
       hyprpaper

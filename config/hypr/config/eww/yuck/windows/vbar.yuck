@@ -6,7 +6,6 @@
       :space-evenly false
       :valign "start"
       :orientation "v"
-      (panel_launcher)
       (panel_workspaces)
     )
     (box
