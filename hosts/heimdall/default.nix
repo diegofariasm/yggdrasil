@@ -15,7 +15,7 @@
       fs.enable = true;
     };
     desktop = {
-      dwm.enable = true;
+      hypr.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
@@ -25,17 +25,15 @@
         editors = {
           code.enable = true;
         };
-        # teamviewer.enable = true;
         thunar.enable = true;
       };
       browsers = {
-        default = "google-chrome";
-	chrome.enable = true;
-	firefox.enable = true;
+        default = "firefox";
+        firefox.enable = true;
       };
       term = {
-        default = "st";
-        st.enable = true;
+        default = "wezterm";
+        wezterm.enable = true;
       };
     };
     dev = {

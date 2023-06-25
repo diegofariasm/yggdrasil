@@ -5,9 +5,6 @@ alias mkdir='mkdir -pv'
 alias ports='netstat -tulanp'
 alias path='echo -e ${PATH//:/\\n}'
 
-alias shutdown='sudo shutdown'
-alias reboot='sudo reboot'
-
 alias y='xclip -selection clipboard -in'
 alias p='xclip -selection clipboard -out'
 

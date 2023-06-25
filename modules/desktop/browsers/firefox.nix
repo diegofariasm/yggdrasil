@@ -3,15 +3,12 @@
 # Oh Firefox, gateway to the interwebs, devourer of ram. Give onto me your
 # infinite knowledge and shelter me from ads, but bless my $HOME with
 # directories nobody needs and live long enough to turn into Chrome.
-{ options
-, config
-, lib
-, pkgs
-, ...
-}:
+
+{ options, config, lib, pkgs, ... }:
+
 with lib;
-with lib.my; let
-  cfg = config.modules.desktop.browsers.firefox;
+with lib.my;
+let cfg = config.modules.desktop.browsers.firefox;
 in
 {
   options.modules.desktop.browsers.firefox = with types; {
@@ -31,8 +28,7 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
-      programs.dconf.enable = true;
-      home.packages = with pkgs; [
+      user.packages = with pkgs; [
         unstable.firefox-bin
         (makeDesktopItem {
           name = "firefox-private";
@@ -43,6 +39,7 @@ in
           categories = [ "Network" ];
         })
       ];
+
       # Prevent auto-creation of ~/Desktop. The trailing slash is necessary; see
       # https://bugzilla.mozilla.org/show_bug.cgi?id=1082717
       env.XDG_DESKTOP_DIR = "$HOME/";
@@ -50,53 +47,6 @@ in
       modules.desktop.browsers.firefox.settings = {
         # Default to dark theme in DevTools panel
         "devtools.theme" = "dark";
-        # Smooth scrolling
-        "general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS" = 12;
-        "general.smoothScroll.msdPhysics.enabled" = true;
-        "general.smoothScroll.msdPhysics.motionBeginSpringConstant" = 200;
-        "general.smoothScroll.msdPhysics.regularSpringConstant" = 250;
-        "general.smoothScroll.msdPhysics.slowdownMinDeltaMS" = 25;
-        "general.smoothScroll.msdPhysics.slowdownMinDeltaRatio" = "2.0";
-        "general.smoothScroll.msdPhysics.slowdownSpringConstant" = 250;
-        "general.smoothScroll.currentVelocityWeighting" = "1.0";
-        "general.smoothScroll.stopDecelerationWeighting" = "1.0";
-
-        "mousewheel.system_scroll_override.horizontal.factor" = 200;
-        "mousewheel.system_scroll_override.vertical.factor" = 200;
-        "mousewheel.system_scroll_override_on_root_content.enabled" = true;
-        "mousewheel.system_scroll_override.enabled" = true;
-
-        "mousewheel.default.delta_multiplier_x" = 100;
-        "mousewheel.default.delta_multiplier_y" = 100;
-        "mousewheel.default.delta_multiplier_z" = 100;
-
-        "apz.allow_zooming" = true;
-        "apz.force_disable_desktop_zooming_scrollbars" = false;
-        "apz.paint_skipping.enabled" = true;
-        "apz.windows.use_direct_manipulation" = true;
-        "dom.event.wheel-deltaMode-lines.always-disabled" = false;
-        "general.smoothScroll.durationToIntervalRatio" = 200;
-        "general.smoothScroll.lines.durationMaxMS" = 150;
-        "general.smoothScroll.lines.durationMinMS" = 150;
-        "general.smoothScroll.other.durationMaxMS" = 150;
-        "general.smoothScroll.other.durationMinMS" = 150;
-        "general.smoothScroll.pages.durationMaxMS" = 150;
-        "general.smoothScroll.pages.durationMinMS" = 150;
-        "general.smoothScroll.pixels.durationMaxMS" = 150;
-        "general.smoothScroll.pixels.durationMinMS" = 150;
-        "general.smoothScroll.scrollbars.durationMaxMS" = 150;
-        "general.smoothScroll.scrollbars.durationMinMS" = 150;
-        "general.smoothScroll.mouseWheel.durationMaxMS" = 200;
-        "general.smoothScroll.mouseWheel.durationMinMS" = 50;
-        "layers.async-pan-zoom.enabled" = true;
-        "layout.css.scroll-behavior.spring-constant" = "250";
-        "mousewheel.transaction.timeout" = 1500;
-        "mousewheel.acceleration.factor" = 10;
-        "mousewheel.acceleration.start" = -1;
-        "mousewheel.min_line_scroll_amount" = 5;
-        "toolkit.scrollbox.horizontalScrollDistance" = 5;
-        "toolkit.scrollbox.verticalScrollDistance" = 3;
-
         # Enable ETP for decent security (makes firefox containers and many
         # common security/privacy add-ons redundant).
         "browser.contentblocking.category" = "strict";
@@ -112,7 +62,6 @@ in
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         # Stop creating ~/Downloads!
         "browser.download.dir" = "${config.user.home}/downloads";
-        "browser.download.lastDir" = "${config.user.home}/downloads";
         # Don't use the built-in password manager. A nixos user is more likely
         # using an external one (you are using one, right?).
         "signon.rememberSignons" = false;
@@ -121,8 +70,8 @@ in
         # Disable the "new tab page" feature and show a blank tab instead
         # https://wiki.mozilla.org/Privacy/Reviews/New_Tab
         # https://support.mozilla.org/en-US/kb/new-tab-page-show-hide-and-customize-top-sites#w_how-do-i-turn-the-new-tab-page-off
-        # "browser.newtabpage.enabled" = false;
-        # "browser.newtab.url" = "about:blank";
+        "browser.newtabpage.enabled" = false;
+        "browser.newtab.url" = "about:blank";
         # Disable Activity Stream
         # https://wiki.mozilla.org/Firefox/Activity_Stream
         "browser.newtabpage.activity-stream.enabled" = false;
@@ -250,10 +199,7 @@ in
       };
 
       # Use a stable profile name so we can target it in themes
-      home.file =
-        let
-          cfgPath = ".mozilla/firefox";
-        in
+      home.file = let cfgPath = ".mozilla/firefox"; in
         {
           "${cfgPath}/profiles.ini".text = ''
             [Profile0]
@@ -267,23 +213,25 @@ in
             Version=2
           '';
 
-          "${cfgPath}/${cfg.profileName}.default/user.js" = mkIf (cfg.settings != { } || cfg.extraConfig != "") {
-            text = ''
-              ${concatStrings (mapAttrsToList (name: value: ''
+          "${cfgPath}/${cfg.profileName}.default/user.js" =
+            mkIf (cfg.settings != { } || cfg.extraConfig != "") {
+              text = ''
+                ${concatStrings (mapAttrsToList (name: value: ''
                   user_pref("${name}", ${builtins.toJSON value});
-                '')
-                cfg.settings)}
-              ${cfg.extraConfig}
-            '';
-          };
+                '') cfg.settings)}
+                ${cfg.extraConfig}
+              '';
+            };
 
-          "${cfgPath}/${cfg.profileName}.default/chrome/userChrome.css" = mkIf (cfg.userChrome != "") {
-            text = cfg.userChrome;
-          };
+          "${cfgPath}/${cfg.profileName}.default/chrome/userChrome.css" =
+            mkIf (cfg.userChrome != "") {
+              text = cfg.userChrome;
+            };
 
-          "${cfgPath}/${cfg.profileName}.default/chrome/userContent.css" = mkIf (cfg.userContent != "") {
-            text = cfg.userContent;
-          };
+          "${cfgPath}/${cfg.profileName}.default/chrome/userContent.css" =
+            mkIf (cfg.userContent != "") {
+              text = cfg.userContent;
+            };
         };
     }
   ]);

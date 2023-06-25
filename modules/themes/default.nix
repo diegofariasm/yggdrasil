@@ -7,7 +7,8 @@
 with lib;
 with lib.my;
 let cfg = config.modules.theme;
-in {
+in
+{
   options.modules.theme = with types; {
     active = mkOption {
       type = nullOr str;
@@ -44,18 +45,6 @@ in {
   };
 
   config = mkIf (cfg.active != null) (mkMerge [
-    # Read xresources files in ~/.config/xtheme/* to allow modular configuration
-    # of Xresources.
-    (
-      let xrdb = ''cat "$XDG_CONFIG_HOME"/xtheme/* | ${pkgs.xorg.xrdb}/bin/xrdb -load'';
-      in {
-        home.configFile."xtheme.init" = {
-          text = xrdb;
-          executable = true;
-        };
-        modules.theme.onReload.xtheme = xrdb;
-      }
-    )
     {
       home.configFile = {
         # GTK

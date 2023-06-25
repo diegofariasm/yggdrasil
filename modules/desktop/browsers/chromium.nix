@@ -15,13 +15,13 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      chromium
+      ungoogled-chromium
       (makeDesktopItem {
         name = "chromium-private";
         desktopName = "Chromium (Private)";
         genericName = "Open a private chromium window";
         icon = "chromium";
-        exec = "${chromium}/bin/chromium --private-window";
+        exec = "${ungoogled-chromium}/bin/chromium --private-window";
         categories = [ "Network" ];
       })
     ];

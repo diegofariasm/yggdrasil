@@ -27,14 +27,7 @@ in
     (mkIf cfg.enable {
       home.packages = with pkgs; [
         bacon
-        cargo
-        rustc
-        rustfmt
-        rust-analyzer
-      ];
-
-      env.PATH = [
-        "$(${pkgs.yarn}/bin/yarn global bin)"
+        rustup
       ];
 
       environment.shellAliases = {
