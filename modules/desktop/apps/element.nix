@@ -14,7 +14,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       element-web
       element-desktop
     ];

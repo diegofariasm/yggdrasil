@@ -11,8 +11,10 @@
   modules = {
     hardware = {
       audio.enable = true;
-      bluetooth.enable = true;
-      fs.enable = true;
+      fs = {
+        enable = true;
+        ssd.enable = true;
+      };
     };
     desktop = {
       dwm.enable = true;
@@ -32,9 +34,11 @@
         firefox.enable = true;
       };
       term = {
-        default = "wezterm";
-        wezterm.enable = true;
-        st.enable = true;
+        default = {
+          name = "kitty";
+          run = "kitty --single-instace";
+        };
+        kitty.enable = true;
       };
     };
     dev = {

@@ -31,7 +31,7 @@ in
     }
     # Desktop (X11) theming
     (mkIf config.services.xserver.enable {
-      home.packages = with pkgs; [
+      user.packages = with pkgs; [
         nordic
         nordzy-icon-theme
         nordzy-cursor-theme

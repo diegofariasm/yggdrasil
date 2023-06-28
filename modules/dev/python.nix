@@ -23,7 +23,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home.packages = with pkgs; with python310Packages; [
+      user.packages = with pkgs; with python310Packages; [
         isort
         python310
         pip

@@ -23,7 +23,7 @@ in
 
     security.rtkit.enable = true;
 
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       pamixer
     ];
 

@@ -65,7 +65,7 @@ in
     fonts.fonts = with pkgs; [
       jetbrains-mono
     ];
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       nixpkgs-fmt
     ];
   };

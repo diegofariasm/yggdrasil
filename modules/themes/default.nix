@@ -70,12 +70,6 @@ in
             ''gtk-icon-theme-name="${cfg.gtk.iconTheme}"''}
           gtk-font-name="Sans ${toString(cfg.fonts.sans.size)}"
         '';
-        # QT4/5 global theme
-        "Trolltech.conf".text = ''
-          [Qt]
-          ${optionalString (cfg.gtk.theme != "")
-            ''style=${cfg.gtk.theme}''}
-        '';
       };
 
       fonts.fontconfig.defaultFonts = {

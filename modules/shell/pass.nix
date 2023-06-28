@@ -11,7 +11,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       (pass.withExtensions (exts: [
         exts.pass-otp
         exts.pass-genphrase

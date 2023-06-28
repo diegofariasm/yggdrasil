@@ -18,7 +18,7 @@ in
   config = mkMerge [
     (
       mkIf cfg.enable {
-        home.packages = with pkgs; [
+        user.packages = with pkgs; [
           go
           gopls # Language Server
           go-outline

@@ -23,7 +23,7 @@ in
     (
       mkIf cfg.enable {
 
-        home.packages = with pkgs; with nodePackages; [
+        user.packages = with pkgs; with nodePackages; [
           yarn
           nodejs
         ];

@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.desktop.hypr;
   configDir = config.dotfiles.configDir;
-  binDir = config.dotfiles.binDir; inherit (inputs) hyprland;
+  inherit (inputs) hyprland;
 
   # Needed for making gtk work properly on wayland
   configure-gtk = pkgs.writeTextFile {
@@ -36,7 +36,7 @@ with lib.my; let
         	echo "Improper usage: atleast 2 arguments are expected."
         	echo "Example usage: $0 gtk Dracula"
         else
-            
+
             if [[ ''${available_options[*]} =~ (^|[[:space:]])"$1"($|[[:space:]]) ]]; then
                 ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface "$1-theme" "$2"
         		exit 0
@@ -47,21 +47,19 @@ with lib.my; let
         		done
         	fi
         fi
-      
+
       '';
   };
 in
 {
   options.modules.desktop.hypr = { enable = mkBoolOpt false; };
 
-  # The needed module
   imports = [
     hyprland.nixosModules.default
   ];
 
   config = mkIf cfg.enable {
 
-    # Display manager
     services.xserver = {
       enable = true;
       displayManager.lightdm = {
@@ -69,22 +67,21 @@ in
       };
     };
 
+
     programs.hyprland.enable = true;
-    home.packages = with pkgs; [
-      foot
-      kitty
-      mako
-      socat
+
+    user.packages = with pkgs; [
+      clipman
       hyprpaper
       hyprpicker
       eww-wayland
       rofi-wayland
       wl-clipboard
-      wl-clipboard-x11
       configure-gtk
     ];
 
     # This is still in progress, so linking is not really a good idea
+    # Maybe find the way to link files that are mutable?
     # home.configFile = {
     #   "hypr" = {
     #     source = "${configDir}/hypr";

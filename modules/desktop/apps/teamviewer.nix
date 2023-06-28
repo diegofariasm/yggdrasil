@@ -15,7 +15,7 @@ in
 
   config = mkIf cfg.enable {
     services.teamviewer.enable = true;
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       teamviewer
     ];
   };

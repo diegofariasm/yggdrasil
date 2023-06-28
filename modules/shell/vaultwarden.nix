@@ -11,7 +11,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       bitwarden-cli
     ];
     modules.shell.zsh.rcInit = "_cache bw completion --shell zsh; compdef _bw bw;";

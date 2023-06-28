@@ -28,7 +28,7 @@ in
         });
       })
     ];
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       st
     ];
   };

@@ -1,15 +1,15 @@
 # Inspired by https://www.srid.ca/2012301.html
-{
-  options,
-  config,
-  lib,
-  pkgs,
-  ...
+{ options
+, config
+, lib
+, pkgs
+, ...
 }:
 with lib;
 with lib.my; let
   cfg = config.modules.desktop.vm.lxd;
-in {
+in
+{
   options.modules.desktop.vm.lxd = {
     enable = mkBoolOpt false;
   };
@@ -17,7 +17,7 @@ in {
   config = mkIf cfg.enable {
     virtualisation.lxd.enable = true;
 
-    home.packages = [
+    user.packages = [
       (pkgs.writeScriptBin "lxc-build-nixos-image" ''
         #!/usr/bin/env nix-shell
         #!nix-shell -i bash -p nixos-generators

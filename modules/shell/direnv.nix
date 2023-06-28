@@ -10,7 +10,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       direnv
     ];
     modules.shell.zsh.rcInit = ''eval "$(direnv hook zsh)"'';

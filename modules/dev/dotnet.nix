@@ -25,7 +25,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home.packages = with pkgs; [
+      user.packages = with pkgs; [
         dotnet-sdk_7
       ];
     })

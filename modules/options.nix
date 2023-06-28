@@ -1,45 +1,37 @@
-{ config
-, options
-, lib
-, home-manager
-, ...
-}:
+{ config, options, lib, home-manager, ... }:
+
 with lib;
-with lib.my; {
+with lib.my;
+{
   options = with types; {
     user = mkOpt attrs { };
 
     dotfiles = {
-      dir =
-        mkOpt path
-          (removePrefix "/mnt"
-            (findFirst pathExists (toString ../.) [
-              "/mnt/etc/dotfiles"
-              "/etc/dotfiles"
-            ]));
+      dir = mkOpt path
+        (removePrefix "/mnt"
+          (findFirst pathExists (toString ../.) [
+            "/mnt/etc/dotfiles"
+            "/etc/dotfiles"
+          ]));
       binDir = mkOpt path "${config.dotfiles.dir}/bin";
       configDir = mkOpt path "${config.dotfiles.dir}/config";
       modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
       themesDir = mkOpt path "${config.dotfiles.modulesDir}/themes";
     };
-
     maiden = mkOpt' attrs { } "House manager alias";
     home = {
       file = mkOpt' attrs { } "Files to place directly in $HOME";
       configFile = mkOpt' attrs { } "Files to place in $XDG_CONFIG_HOME";
       dataFile = mkOpt' attrs { } "Files to place in $XDG_DATA_HOME";
-      packages = mkOpt' attrs { } "Packages to install";
-      programs = mkOpt' attrs { } "Programs to install";
     };
 
     env = mkOption {
       type = attrsOf (oneOf [ str path (listOf (either str path)) ]);
-      apply =
-        mapAttrs
-          (n: v:
-            if isList v
-            then concatMapStringsSep ":" (x: toString x) v
-            else (toString v));
+      apply = mapAttrs
+        (n: v:
+          if isList v
+          then concatMapStringsSep ":" (x: toString x) v
+          else (toString v));
       default = { };
       description = "TODO";
     };
@@ -49,15 +41,12 @@ with lib.my; {
     user =
       let
         user = builtins.getEnv "USER";
-        name =
-          if elem user [ "" "root" ]
-          then "fushi"
-          else user;
+        name = if elem user [ "" "root" ] then "fushi" else user;
       in
       {
         inherit name;
         description = "${name}'s account";
-        extraGroups = [ "wheel" "storage" ];
+        extraGroups = [ "wheel" ];
         isNormalUser = true;
         home = "/home/${name}";
         group = "users";
@@ -68,6 +57,12 @@ with lib.my; {
     # nixos-rebuild build-vm to work.
     home-manager = {
       useUserPackages = true;
+      # Point home-manager.users.fushi to the maiden alias.
+      # It is then used below to configure the rest of the options.
+      users.${config.user.name} = mkAliasDefinitions options.maiden;
+    };
+
+    maiden = {
       # I only need a subset of home-manager's capabilities. That is, access to
       # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
       # files easily to my $HOME, but 'home-manager.users.fushi.home.file.*'
@@ -76,15 +71,8 @@ with lib.my; {
       #   home.file        ->  home-manager.users.fushi.home.file
       #   home.configFile  ->  home-manager.users.fushi.home.xdg.configFile
       #   home.dataFile    ->  home-manager.users.fushi.home.xdg.dataFile
-      #   maiden.programs    ->  home-manager.users.fushi.programs
-      users.${config.user.name} = mkAliasDefinitions options.maiden;
-    };
-
-    maiden = {
-      programs = mkAliasDefinitions options.home.programs;
       home = {
         file = mkAliasDefinitions options.home.file;
-        packages = mkAliasDefinitions options.home.packages;
         # Necessary for home-manager to work with flakes, otherwise it will
         # look for a nixpkgs channel.
         stateVersion = config.system.stateVersion;
@@ -97,10 +85,7 @@ with lib.my; {
 
     users.users.${config.user.name} = mkAliasDefinitions options.user;
 
-    nix.settings =
-      let
-        users = [ "root" config.user.name ];
-      in
+    nix.settings = let users = [ "root" config.user.name ]; in
       {
         trusted-users = users;
         allowed-users = users;

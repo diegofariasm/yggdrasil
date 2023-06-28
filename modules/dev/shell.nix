@@ -24,7 +24,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home.packages = with pkgs; with nodePackages; [
+      user.packages = with pkgs; with nodePackages; [
         shfmt
         shellcheck
         bash-language-server

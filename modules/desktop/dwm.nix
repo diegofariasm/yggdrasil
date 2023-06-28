@@ -31,20 +31,12 @@ in
           ];
         });
       })
-     (final: prev: {
-        slock = prev.slock.overrideAttrs (oldAttrs: {
-          src = builtins.fetchTarball {
-            url = "https://github.com/fushiii/slock/archive/31e20a16fc977745d7279c637a4377650c303112.tar.gz";
-            sha256 = "075yl91v9sypnpwsr6kyvzql8k3apjwpzvvjwai69xmpn255433x";
-          };
-          buildInputs = with pkgs; oldAttrs.buildInputs ++ [
-            imlib2
-          ];
-        });
-      })
+
     ];
 
-    # Display manager
+    # Needed modules for this desktop
+    modules.desktop.term.st.enable = true;
+
     services.xserver = {
       enable = true;
       windowManager.dwm.enable = true;
@@ -53,19 +45,15 @@ in
       };
     };
 
-    # Screen slocker
     programs.slock.enable = true;
+    user.packages = with pkgs; with my; [
+      luastatus
+    ];
 
-    home = {
-    # Some other apps
-      packages = with pkgs; with my; [
-        luastatus
-      ];
-      configFile = {
-        "dwm" = {
-          source = "${configDir}/dwm";
-          recursive = true;
-        };
+    home.configFile = {
+      "dwm" = {
+        source = "${configDir}/dwm";
+        recursive = true;
       };
     };
   };

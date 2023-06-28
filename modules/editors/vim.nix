@@ -20,7 +20,7 @@ in
 
   config = mkIf cfg.enable {
 
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       neovim
       selene
       marksman

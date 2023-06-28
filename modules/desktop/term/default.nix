@@ -1,21 +1,34 @@
-{
-  options,
-  config,
-  lib,
-  pkgs,
-  ...
+{ options
+, config
+, lib
+, pkgs
+, ...
 }:
 with lib;
 with lib.my; let
   cfg = config.modules.desktop.term;
-in {
+in
+{
   options.modules.desktop.term = {
-    default = mkOpt types.str "xterm";
+    default = {
+      run = mkOpt types.str "xterm";
+      name = mkOpt types.str "xterm";
+    };
+
   };
 
   config = {
-    services.xserver.desktopManager.xterm.enable = mkDefault (cfg.default == "xterm");
+    # Set these variables for later use.
+    # TERMINAL --> the default terminal name
+    # TERMINAL_RUN --> the default command for running the terminal.
 
-    env.TERMINAL = cfg.default;
+    # Example values:
+    # TERMINAL --> kitty
+    # TERMINAL_RUN --> kitty --single-instance
+
+    env = {
+      TERMINAL = cfg.default.name;
+      TERMINAL_RUN = cfg.default.run;
+    };
   };
 }

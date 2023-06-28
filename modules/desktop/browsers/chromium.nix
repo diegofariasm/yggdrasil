@@ -14,7 +14,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       ungoogled-chromium
       (makeDesktopItem {
         name = "chromium-private";

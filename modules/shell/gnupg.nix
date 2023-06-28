@@ -13,7 +13,7 @@ in
   config = mkIf cfg.enable {
     environment.variables.GNUPGHOME = "$XDG_CONFIG_HOME/gnupg";
     programs.gnupg.agent.enable = true;
-    home.packages = with pkgs; [
+    user.packages = with pkgs; [
       tomb
     ];
 
