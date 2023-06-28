@@ -15,11 +15,11 @@
       fs.enable = true;
     };
     desktop = {
+      dwm.enable = true;
       hypr.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
-        editing.enable = true;
       };
       apps = {
         editors = {
@@ -34,13 +34,13 @@
       term = {
         default = "wezterm";
         wezterm.enable = true;
+        st.enable = true;
       };
     };
     dev = {
       shell.enable = true;
       cc.enable = true;
       rust.enable = true;
-      dotnet.enable = true;
       node.enable = true;
       python.enable = true;
     };
@@ -70,6 +70,7 @@
     keyMap = "br-abnt2";
   };
 
+  # This was used for river. Good to have it anyways, i guess
   environment.variables."XKB_DEFAULT_LAYOUT" = "br";
 
   networking.networkmanager.enable = true;
@@ -78,21 +79,10 @@
   services = {
     openssh.startWhenNeeded = true;
     xserver = {
-      # Mouse configuration
-      imwheel.enable = true;
       # Keyboard configuration
       layout = "br";
       autoRepeatDelay = 300;
       autoRepeatInterval = 20;
-      # Touchpad configuration
-      libinput = {
-        enable = true;
-        touchpad = {
-          naturalScrolling = true;
-          middleEmulation = true;
-          tapping = true;
-        };
-      };
     };
   };
 

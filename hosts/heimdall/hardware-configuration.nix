@@ -9,8 +9,10 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
   boot = {
-    initrd.availableKernelModules = [ "xhci_pci" "ahci" "sd_mod" "rtsx_pci_sdmmc" ];
-    initrd.kernelModules = [ ];
+    initrd = {
+    availableKernelModules = [ "xhci_pci" "ahci" "sd_mod" "rtsx_pci_sdmmc" ];
+    kernelModules = [ ];
+    };
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
   };
@@ -37,9 +39,6 @@
   swapDevices = [
     { device = "/dev/disk/by-label/nixos-swap"; }
   ];
-
-  networking.interfaces.enp1s0f1.useDHCP = lib.mkDefault true;
-  networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
