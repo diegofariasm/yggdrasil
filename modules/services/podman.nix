@@ -16,10 +16,14 @@ in
   config = mkIf cfg.enable {
     virtualisation.podman = {
       enable = true;
-      # Alias podman to docker
-      dockerCompat = true;
-      # So docker tools can use the podman socket
+      # Automatically clean volumes
+      autoPrune.enable = true;
+      # So apps that rely on docker can use podman instead;
       dockerSocket.enable = true;
     };
+    user.packages = with pkgs; [
+      podman-desktop
+      podman-compose
+    ];
   };
 }

@@ -61,6 +61,7 @@
     services = {
       polkit.enable = true;
       ssh.enable = true;
+      podman.enable = true;
     };
     theme.active = "nordic";
   };
