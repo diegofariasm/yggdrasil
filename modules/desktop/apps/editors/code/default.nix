@@ -57,7 +57,7 @@ in
 
     maiden.programs.vscode = {
       enable = true;
-      package = pkgs.vscode;
+      package = pkgs.vscodium;
       userSettings = import ./settings.nix;
       extensions = import ./extensions.nix { inherit pkgs; };
     };

@@ -20,11 +20,11 @@ in
       # Don't start when not needed
       enableOnBoot = false;
       # No root
-      rootless = {
-        enable = true;
-        # Point DOCKER_HOST to rootless Docker instance for normal users by default.
-        setSocketVariable = true;
-      };
+      # rootless = {
+      #   enable = true;
+      #   # Point DOCKER_HOST to rootless Docker instance for normal users by default.
+      #   setSocketVariable = true;
+      # };
       # Automatically clean volumes
       autoPrune.enable = true;
     };

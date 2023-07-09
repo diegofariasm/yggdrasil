@@ -17,7 +17,6 @@
       };
     };
     desktop = {
-      dwm.enable = true;
       hypr.enable = true;
       media = {
         vlc.enable = true;
@@ -27,6 +26,9 @@
         editors = {
           code.enable = true;
         };
+	messengers = {
+	  discord.enable = true;
+	};
         thunar.enable = true;
       };
       browsers = {
@@ -61,7 +63,7 @@
     services = {
       polkit.enable = true;
       ssh.enable = true;
-      podman.enable = true;
+      docker.enable = true;
     };
     theme.active = "nordic";
   };

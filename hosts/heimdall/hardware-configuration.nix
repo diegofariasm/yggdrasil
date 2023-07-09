@@ -37,6 +37,9 @@
       };
   };
 
+  swapDevices = [
+    { device = "/dev/disk/by-label/nixos-swap"; }
+  ];
 
   networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
   networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;

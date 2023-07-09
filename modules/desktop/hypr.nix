@@ -62,11 +62,11 @@ in
 
     services.xserver = {
       enable = true;
-      displayManager.lightdm = {
+      displayManager.gdm = {
         enable = true;
+	autoSuspend = true;
       };
     };
-
 
     programs.hyprland.enable = true;
 
@@ -76,8 +76,8 @@ in
       hyprpicker
       eww-wayland
       rofi-wayland
-      wl-clipboard
       configure-gtk
+      wl-clipboard-x11
     ];
 
     # This is still in progress, so linking is not really a good idea
