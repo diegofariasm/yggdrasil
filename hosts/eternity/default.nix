@@ -11,42 +11,38 @@
   modules = {
     hardware = {
       audio.enable = true;
-      fs = {
-        enable = true;
-        ssd.enable = true;
-      };
+      bluetooth.enable = true;
+      fs.enable = true;
     };
     desktop = {
-      hypr.enable = true;
+      dwm.enable = true;
       media = {
         vlc.enable = true;
         nomacs.enable = true;
+        editing.enable = true;
       };
       apps = {
         editors = {
           code.enable = true;
         };
-	messengers = {
-	  discord.enable = true;
-	};
+        # teamviewer.enable = true;
         thunar.enable = true;
       };
       browsers = {
-        default = "firefox";
-        firefox.enable = true;
+        default = "google-chrome";
+	chrome.enable = true;
+	firefox.enable = true;
       };
       term = {
-        default = {
-          name = "kitty";
-          run = "kitty --single-instace";
-        };
-        kitty.enable = true;
+        default = "st";
+        st.enable = true;
       };
     };
     dev = {
       shell.enable = true;
       cc.enable = true;
       rust.enable = true;
+      dotnet.enable = true;
       node.enable = true;
       python.enable = true;
     };
@@ -63,7 +59,6 @@
     services = {
       polkit.enable = true;
       ssh.enable = true;
-      docker.enable = true;
     };
     theme.active = "nordic";
   };
@@ -77,7 +72,6 @@
     keyMap = "br-abnt2";
   };
 
-  # This was used for river. Good to have it anyways, i guess
   environment.variables."XKB_DEFAULT_LAYOUT" = "br";
 
   networking.networkmanager.enable = true;
@@ -86,10 +80,21 @@
   services = {
     openssh.startWhenNeeded = true;
     xserver = {
+      # Mouse configuration
+      imwheel.enable = true;
       # Keyboard configuration
       layout = "br";
       autoRepeatDelay = 300;
       autoRepeatInterval = 20;
+      # Touchpad configuration
+      libinput = {
+        enable = true;
+        touchpad = {
+          naturalScrolling = true;
+          middleEmulation = true;
+          tapping = true;
+        };
+      };
     };
   };
 
