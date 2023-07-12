@@ -5,39 +5,32 @@
 
 {
   imports =
-    [
-      (modulesPath + "/installer/scan/not-detected.nix")
+    [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
-  boot = {
-    initrd.availableKernelModules = [ "xhci_pci" "ahci" "sd_mod" "rtsx_pci_sdmmc" ];
-    initrd.kernelModules = [ ];
-    kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [ ];
-  };
 
-  fileSystems = {
-    "/" =
-      {
-        device = "/dev/disk/by-label/nixos-root";
-        fsType = "ext4";
-      };
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
 
-    "/home" =
-      {
-        device = "/dev/disk/by-label/nixos-home";
-        fsType = "ext4";
-      };
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/b720f5f1-052b-40f5-b53d-9d1bf6b048f6";
+      fsType = "ext4";
+    };
 
-    "/boot" =
-      {
-        device = "/dev/disk/by-label/nixos-boot";
-        fsType = "vfat";
-      };
-  };
-  swapDevices = [
-    { device = "/dev/disk/by-label/nixos-swap"; }
-  ];
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/ee2f81c4-54e1-4e67-aebc-d0a44f1fab5a";
+      fsType = "ext4";
+    };
 
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/C82C-3EF3";
+      fsType = "vfat";
+    };
+
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/ee063004-93dc-4918-a9de-45ba15e6ee48"; }
+    ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -48,6 +41,6 @@
   # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
-
