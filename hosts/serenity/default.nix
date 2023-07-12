@@ -19,23 +19,24 @@
       media = {
         vlc.enable = true;
         nomacs.enable = true;
-        editing.enable = true;
       };
       apps = {
         editors = {
           code.enable = true;
         };
-        # teamviewer.enable = true;
         thunar.enable = true;
       };
       browsers = {
-        default = "google-chrome";
-	chrome.enable = true;
-	firefox.enable = true;
+        default = "firefox";
+        firefox.enable = true;
       };
       term = {
-        default = "st";
-        st.enable = true;
+        default = {
+          name = "kitty";
+          command = "kitty --single-instance";
+        };
+        kitty.enable = true;
+
       };
     };
     dev = {
