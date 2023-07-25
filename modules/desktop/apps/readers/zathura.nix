@@ -1,21 +1,24 @@
 { config
 , options
+, inputs
 , lib
 , pkgs
 , ...
 }:
+with builtins;
 with lib;
 with lib.my; let
-  cfg = config.modules.desktop.browsers.edge;
+  cfg = config.modules.desktop.apps.readers.zathura;
 in
 {
-  options.modules.desktop.browsers.edge = {
+  options.modules.desktop.apps.readers.zathura = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
-      microsoft-edge
+      zathura
     ];
   };
 }
+

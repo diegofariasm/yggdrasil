@@ -10,9 +10,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
-      direnv
-    ];
+
+    programs.direnv = {
+      enable = true;
+      persistDerivations = true;
+      nix-direnv = {
+        enable = true;
+      };
+    };
+
+
     modules.shell.zsh.rcInit = ''eval "$(direnv hook zsh)"'';
   };
 }

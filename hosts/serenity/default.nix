@@ -39,14 +39,6 @@
 
       };
     };
-    dev = {
-      shell.enable = true;
-      cc.enable = true;
-      rust.enable = true;
-      dotnet.enable = true;
-      node.enable = true;
-      python.enable = true;
-    };
     editors = {
       default = "nvim";
       vim.enable = true;

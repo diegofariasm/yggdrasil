@@ -31,7 +31,6 @@ in
           ];
         });
       })
-
     ];
 
     # Needed modules for this desktop
@@ -45,8 +44,8 @@ in
       };
     };
 
-    programs.slock.enable = true;
     user.packages = with pkgs; with my; [
+      rofi
       luastatus
     ];
 

@@ -60,6 +60,8 @@ with lib.my;
       # Point home-manager.users.fushi to the maiden alias.
       # It is then used below to configure the rest of the options.
       users.${config.user.name} = mkAliasDefinitions options.maiden;
+      # Home manager modules.
+
     };
 
     maiden = {
@@ -67,7 +69,6 @@ with lib.my;
       # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
       # files easily to my $HOME, but 'home-manager.users.fushi.home.file.*'
       # is much too long and harder to maintain, so I've made aliases in:
-      #
       #   home.file        ->  home-manager.users.fushi.home.file
       #   home.configFile  ->  home-manager.users.fushi.home.xdg.configFile
       #   home.dataFile    ->  home-manager.users.fushi.home.xdg.dataFile
@@ -81,6 +82,7 @@ with lib.my;
         configFile = mkAliasDefinitions options.home.configFile;
         dataFile = mkAliasDefinitions options.home.dataFile;
       };
+
     };
 
     users.users.${config.user.name} = mkAliasDefinitions options.user;

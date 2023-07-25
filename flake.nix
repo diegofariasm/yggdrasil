@@ -19,9 +19,9 @@
 
 
     # Extras
-    hyprland.url = "github:hyprwm/Hyprland";
     vscode-server.url = "github:msteen/nixos-vscode-server";
     nixos-hardware.url = "github:nixos/nixos-hardware";
+    hyprland.url = "github:hyprwm/Hyprland";
 
     # Theme
     base16 = {
@@ -80,7 +80,7 @@
         mapModules ./packages (p: pkgs.callPackage p { });
 
       nixosModules =
-        { dotfiles = import ./.; } // mapModulesRec ./modules import;
+        { dotfiles = import ./.; } // mapModulesRec ./modules/nixos import;
 
       nixosConfigurations =
         mapHosts ./hosts { };

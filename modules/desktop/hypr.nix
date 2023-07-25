@@ -58,35 +58,26 @@ in
     hyprland.nixosModules.default
   ];
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.enable
+    {
 
-    services.xserver = {
-      enable = true;
-      displayManager.gdm = {
+      services.xserver = {
         enable = true;
-	autoSuspend = true;
+        displayManager.gdm = {
+          enable = true;
+          autoSuspend = true;
+        };
       };
+
+      programs.hyprland.enable = true;
+      user.packages = with pkgs; [
+        dunst
+        hyprpaper
+        wl-clipboard-x11
+        hyprpicker
+        eww-wayland
+        rofi-wayland
+        configure-gtk
+      ];
     };
-
-    programs.hyprland.enable = true;
-
-    user.packages = with pkgs; [
-      clipman
-      hyprpaper
-      hyprpicker
-      eww-wayland
-      rofi-wayland
-      configure-gtk
-      wl-clipboard-x11
-    ];
-
-    # This is still in progress, so linking is not really a good idea
-    # Maybe find the way to link files that are mutable?
-    # home.configFile = {
-    #   "hypr" = {
-    #     source = "${configDir}/hypr";
-    #     recursive = true;
-    #   };
-    # };
-  };
 }

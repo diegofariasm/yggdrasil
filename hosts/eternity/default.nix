@@ -36,24 +36,19 @@
           command = "kitty --single-instance";
         };
         kitty.enable = true;
+        st.enable = true;
       };
-    };
-    dev = {
-      shell.enable = true;
-      cc.enable = true;
-      rust.enable = true;
-      dotnet.enable = true;
-      node.enable = true;
-      python.enable = true;
     };
     editors = {
       default = "nvim";
       vim.enable = true;
+      emacs.enable = true;
     };
     shell = {
       zsh.enable = true;
       git.enable = true;
       tmux.enable = true;
+      direnv.enable = true;
       starship.enable = true;
     };
     services = {
@@ -72,30 +67,7 @@
     keyMap = "br-abnt2";
   };
 
-  environment.variables."XKB_DEFAULT_LAYOUT" = "br";
 
-  networking.networkmanager.enable = true;
-  # Local config
   programs.ssh.startAgent = true;
-  services = {
-    openssh.startWhenNeeded = true;
-    xserver = {
-      # Mouse configuration
-      imwheel.enable = true;
-      # Keyboard configuration
-      layout = "br";
-      autoRepeatDelay = 300;
-      autoRepeatInterval = 20;
-      # Touchpad configuration
-      libinput = {
-        enable = true;
-        touchpad = {
-          naturalScrolling = true;
-          middleEmulation = true;
-          tapping = true;
-        };
-      };
-    };
-  };
-
+  services.openssh.startWhenNeeded = true;
 }

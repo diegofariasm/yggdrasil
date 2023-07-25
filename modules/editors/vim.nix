@@ -19,18 +19,26 @@ in
   };
 
   config = mkIf cfg.enable {
-
     user.packages = with pkgs; [
       neovim
-      selene
-      marksman
-      lua-language-server
+    ];
+    env.PATH = [
+      "$XDG_CONFIG_HOME/.config/nvim/bin"
     ];
 
-    # adds the nyoom bin to the shell path
-    env.PATH = [
-      "$HOME/.config/nvim/bin"
-    ];
+
+    home.mutableFile = {
+      ".config/nvim" = {
+        url = "https://github.com/nyoom-engineering/nyoom.nvim";
+        type = "git";
+      };
+    };
+
+    # TODO: automatically install nyoom
+    # system.userActivationScripts = mkIf cfg.nvim.enable {
+    #   installNyoom = ''
+    #   '';
+    # };
 
   };
 }

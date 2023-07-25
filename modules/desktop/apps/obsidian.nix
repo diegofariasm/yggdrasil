@@ -6,17 +6,16 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.desktop.apps.teamviewer;
+  cfg = config.modules.desktop.apps.obsidian;
 in
 {
-  options.modules.desktop.apps.teamviewer = {
+  options.modules.desktop.apps.obsidian = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
-    services.teamviewer.enable = true;
     user.packages = with pkgs; [
-      teamviewer
+      obsidian
     ];
   };
 }
