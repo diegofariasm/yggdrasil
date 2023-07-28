@@ -1,14 +1,19 @@
+; Includes
 (include "./yuck/widgets.yuck")
 (include "./yuck/windows.yuck")
 (include "./yuck/setups/leftbar.yuck")
 
+; Date and time variables
 
 (defpoll hour :interval "1m" "date +%I")
 (defpoll min  :interval "1m" "date +%M")
 (defpoll type :interval "1m" "date +%p")
+
 (defpoll day   :interval "10m" "date +%d")
 (defpoll month :interval "1h"  "date +%m")
 (defpoll year  :interval "1h"  "date +%y")
 
-(deflisten window "maiden hyprland window title --listen")
+
+; Workspace variables
+(defpoll volume :interval 60 :initial 60 "pamixer --get-volume")
 (deflisten workspaces "maiden hyprland workspace workspaces --listen")

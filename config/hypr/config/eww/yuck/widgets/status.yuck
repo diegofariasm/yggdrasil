@@ -1,0 +1,69 @@
+
+(defwidget slider [ open value label onclick onrightclick onchange orientation ]
+  (box
+    :spacing 5
+    :class "slider"
+    :space-evenly false
+    :orientation orientation
+    (revealer
+      :transition "slidedown"
+      :duration "1s"
+      :reveal open
+      (scale
+        :orientation orientation
+        :onchange onchange
+        :flipped true
+        :value value
+        :max 150
+        :min 0
+      )
+    )
+    (button
+       :onclick onclick
+       :onrightclick onrightclick
+      (box
+        label
+      )
+    )
+  )
+
+)
+
+; Variables are set the way they are now
+; because eww doesn't support local variables yet.
+
+
+; For the volume module
+(defvar volume_open false)
+(defpoll volume_mute :initial false :interval "1s" "pamixer --get-mute")
+
+(defwidget volume [ orientation ]
+    (eventbox 
+    :onhover "${EWW_CMD} update volume_open=true"
+    :onhoverlost "${EWW_CMD} update volume_open=false"
+    (slider
+      :onchange "pamixer --allow-boost --set-limit 150 --set-volume {}"
+      :label "${volume_mute ? '󰝟' : '󰕾'}"
+      :onrightclick "pamixer --unmute"
+      :onclick "pamixer --mute"
+      :orientation orientation
+      :open volume_open
+      :value volume
+    )
+   )
+)
+
+
+(defwidget controller []
+    (box
+      :class "panel"
+      :orientation "v"
+      :space-evenly false
+        (box
+          :space-evenly false
+          :orientation "v"
+          :spacing 10
+          (volume :orientation "v")
+        )
+    )
+)

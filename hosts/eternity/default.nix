@@ -69,5 +69,6 @@
 
 
   programs.ssh.startAgent = true;
+  services.xserver.imwheel.enable = true;
   services.openssh.startWhenNeeded = true;
 }

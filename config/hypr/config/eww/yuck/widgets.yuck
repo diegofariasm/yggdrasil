@@ -1,1 +1,3 @@
+(include "./yuck/widgets/date.yuck")
+(include "./yuck/widgets/status.yuck")
 (include "./yuck/widgets/bar_widgets.yuck")

@@ -96,6 +96,7 @@ in
         success_symbol = "[  ](bold white)"
       '';
     };
+
     modules.shell.zsh.rcInit = ''eval "$(starship init zsh)"'';
   };
 }

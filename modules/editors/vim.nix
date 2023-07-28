@@ -23,9 +23,8 @@ in
       neovim
     ];
     env.PATH = [
-      "$XDG_CONFIG_HOME/.config/nvim/bin"
+      ".config/nvim/bin"
     ];
-
 
     home.mutableFile = {
       ".config/nvim" = {
