@@ -19,16 +19,18 @@ in
   };
 
   config = mkIf cfg.enable {
+
     user.packages = with pkgs; [
       neovim
     ];
+
     env.PATH = [
       ".config/nvim/bin"
     ];
 
     home.mutableFile = {
       ".config/nvim" = {
-        url = "https://github.com/nyoom-engineering/nyoom.nvim";
+        url = "https://github.com/fushiii/nyoom.nvim";
         type = "git";
       };
     };

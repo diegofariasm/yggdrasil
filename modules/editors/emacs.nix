@@ -22,8 +22,8 @@ in
     user.packages = with pkgs; [
       emacs
     ];
-
-    fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
+    # TODO: find way of using the icons from the icomoon font with this.
+    # fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
 
     env.PATH = [
       ".config/emacs/bin"

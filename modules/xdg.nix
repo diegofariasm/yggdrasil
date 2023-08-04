@@ -7,7 +7,7 @@
 , ...
 }: {
   ### A tidy $HOME is a tidy mind
-  maiden.xdg.enable = true;
+  home-manager.users.${config.user.name}.xdg.enable = true;
 
   environment = {
     sessionVariables = {

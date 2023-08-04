@@ -12,26 +12,10 @@
       url = "github:rycee/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
 
     # Extras
-    vscode-server.url = "github:msteen/nixos-vscode-server";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     hyprland.url = "github:hyprwm/Hyprland";
-
-    # Theme
-    base16 = {
-      url = "github:shaunsingh/base16.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    base16-oxocarbon = {
-      url = "github:shaunsingh/base16-oxocarbon";
-      flake = false;
-    };
 
   };
 
@@ -80,12 +64,12 @@
         mapModules ./packages (p: pkgs.callPackage p { });
 
       nixosModules =
-        { dotfiles = import ./.; } // mapModulesRec ./modules/nixos import;
+        { dotfiles = import ./.; } // mapModulesRec ./modules import;
 
       nixosConfigurations =
         mapHosts ./hosts { };
 
-      devShell."${system}" =
+      devShell."${system}".default =
         import ./shell.nix { inherit pkgs; };
 
       templates =

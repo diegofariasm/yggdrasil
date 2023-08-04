@@ -72,10 +72,6 @@ in
         '';
       };
 
-      fonts.fontconfig.defaultFonts = {
-        sansSerif = [ cfg.fonts.sans.name ];
-        monospace = [ cfg.fonts.mono.name ];
-      };
     }
 
     (mkIf (cfg.onReload != { })

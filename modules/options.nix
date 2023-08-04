@@ -18,7 +18,7 @@ with lib.my;
       modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
       themesDir = mkOpt path "${config.dotfiles.modulesDir}/themes";
     };
-    maiden = mkOpt' attrs { } "House manager alias";
+
     home = {
       file = mkOpt' attrs { } "Files to place directly in $HOME";
       configFile = mkOpt' attrs { } "Files to place in $XDG_CONFIG_HOME";
@@ -57,32 +57,27 @@ with lib.my;
     # nixos-rebuild build-vm to work.
     home-manager = {
       useUserPackages = true;
-      # Point home-manager.users.fushi to the maiden alias.
       # It is then used below to configure the rest of the options.
-      users.${config.user.name} = mkAliasDefinitions options.maiden;
-      # Home manager modules.
-
-    };
-
-    maiden = {
       # I only need a subset of home-manager's capabilities. That is, access to
       # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
       # files easily to my $HOME, but 'home-manager.users.fushi.home.file.*'
       # is much too long and harder to maintain, so I've made aliases in:
       #   home.file        ->  home-manager.users.fushi.home.file
-      #   home.configFile  ->  home-manager.users.fushi.home.xdg.configFile
       #   home.dataFile    ->  home-manager.users.fushi.home.xdg.dataFile
-      home = {
-        file = mkAliasDefinitions options.home.file;
-        # Necessary for home-manager to work with flakes, otherwise it will
-        # look for a nixpkgs channel.
-        stateVersion = config.system.stateVersion;
-      };
-      xdg = {
-        configFile = mkAliasDefinitions options.home.configFile;
-        dataFile = mkAliasDefinitions options.home.dataFile;
-      };
+      #   home.configFile  ->  home-manager.users.fushi.home.xdg.configFile
+      users.${config.user.name} = {
+        home = {
+          file = mkAliasDefinitions options.home.file;
+          # Necessary for home-manager to work with flakes, otherwise it will
+          # look for a nixpkgs channel.
+          stateVersion = config.system.stateVersion;
+        };
+        xdg = {
+          configFile = mkAliasDefinitions options.home.configFile;
+          dataFile = mkAliasDefinitions options.home.dataFile;
+        };
 
+      };
     };
 
     users.users.${config.user.name} = mkAliasDefinitions options.user;

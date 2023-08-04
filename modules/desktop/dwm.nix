@@ -44,6 +44,14 @@ in
       };
     };
 
+    fonts.packages = with pkgs; [
+      (nerdfonts.override {
+        fonts = [
+          "Iosevka"
+        ];
+      })
+    ];
+
     user.packages = with pkgs; with my; [
       rofi
       luastatus

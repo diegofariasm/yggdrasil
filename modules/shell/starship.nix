@@ -15,7 +15,7 @@ in
     ];
 
     # Needed font for the icons
-    fonts.fonts = with pkgs; with my; [
+    fonts.packages = with pkgs; with my; [
       icomoon
     ];
 

@@ -96,64 +96,65 @@ in
   };
 
   config = lib.mkIf (cfg != { }) {
-    maiden.systemd.user.services.fetch-mutable-files = {
-      Unit = {
-        Description = "Fetch mutable home-manager-managed files";
-        After = [ "default.target" "network-online.target" ];
-        Wants = [ "network-online.target" ];
-      };
+    home-manager.users.${config.user.name} = { lib, config, ... }: {
+      systemd.user.services.fetch-mutable-files = {
+        Unit = {
+          Description = "Fetch mutable home-manager-managed files";
+          After = [ "default.target" "network-online.target" ];
+          Wants = [ "network-online.target" ];
+        };
 
-      Service = {
-        # We'll assume this service will have lots of things to download so it
-        # is best to make the temp directory to only last with the service.
-        PrivateUsers = true;
-        PrivateTmp = true;
+        Service = {
+          # We'll assume this service will have lots of things to download so it
+          # is best to make the temp directory to only last with the service.
+          PrivateUsers = true;
+          PrivateTmp = true;
 
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart =
-          let
-            mutableFilesCmds = lib.mapAttrsToList
-              (path: value:
-                let
-                  # NOTE: This is needed.
-                  # systemd cannot find the user's packages,
-                  # so in case you don't get them from the nix store,
-                  # it will fail because the service cannot find the command.
-                  arc = "${lib.getBin pkgs.archive}/bin/arc";
-                  curl = "${lib.getBin pkgs.curl}/bin/curl";
-                  git = "${lib.getBin pkgs.git}/bin/git";
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart =
+            let
+              mutableFilesCmds = lib.mapAttrsToList
+                (path: value:
+                  let
+                    # NOTE: This is needed for now.
+                    # systemd cannot find the user's packages,
+                    # so in case you don't get them from the nix store,
+                    # it will fail because the service cannot find the command.
+                    arc = "${lib.getBin pkgs.archive}/bin/arc";
+                    curl = "${lib.getBin pkgs.curl}/bin/curl";
+                    git = "${lib.getBin pkgs.git}/bin/git";
 
-                  url = lib.escapeShellArg value.url;
-                  path = lib.escapeShellArg value.path;
-                  extraArgs = lib.escapeShellArgs value.extraArgs;
-                  isFetchType = type: lib.optionalString (value.type == type);
-                in
-                ''
-                  ${isFetchType "git" "[ -d ${path} ] || ${git} clone ${extraArgs} ${url} ${path}"}
-                  ${isFetchType "fetch" "[ -e ${path} ] || ${curl} ${extraArgs} ${url} --output ${path}"}
-                  ${isFetchType "archive" ''
-                    [ -e ${path} ] || {
-                      filename=$(${curl} ${extraArgs} --output-dir /tmp --silent --show-error --write-out '%{filename_effective}' --remote-name --remote-header-name --location ${url})
-                      ${if (value.extractPath != null) then
-                          ''arc extract "/tmp/$filename" ${lib.escapeShellArg value.extractPath} ${path}''
-                        else
-                          ''arc unarchive "/tmp/$filename" ${path}''
+                    url = lib.escapeShellArg value.url;
+                    path = lib.escapeShellArg value.path;
+                    extraArgs = lib.escapeShellArgs value.extraArgs;
+                    isFetchType = type: lib.optionalString (value.type == type);
+                  in
+                  ''
+                    ${isFetchType "git" "[ -d ${path} ] || ${git} clone ${extraArgs} ${url} ${path}"}
+                    ${isFetchType "fetch" "[ -e ${path} ] || ${curl} ${extraArgs} ${url} --output ${path}"}
+                    ${isFetchType "archive" ''
+                      [ -e ${path} ] || {
+                        filename=$(${curl} ${extraArgs} --output-dir /tmp --silent --show-error --write-out '%{filename_effective}' --remote-name --remote-header-name --location ${url})
+                        ${if (value.extractPath != null) then
+                            ''arc extract "/tmp/$filename" ${lib.escapeShellArg value.extractPath} ${path}''
+                          else
+                            ''arc unarchive "/tmp/$filename" ${path}''
+                        }
                       }
-                    }
-                  ''}
-                  ${isFetchType "custom" "[ -e ${path} ] || ${extraArgs}"}
-                '')
-              cfg;
+                    ''}
+                    ${isFetchType "custom" "[ -e ${path} ] || ${extraArgs}"}
+                  '')
+                cfg;
 
-            script = pkgs.writeShellScript "fetch-mutable-files" ''
-              ${lib.concatStringsSep "\n" mutableFilesCmds}
-            '';
-          in
-          builtins.toString script;
+              script = pkgs.writeShellScript "fetch-mutable-files" ''
+                ${lib.concatStringsSep "\n" mutableFilesCmds}
+              '';
+            in
+            builtins.toString script;
+        };
+        Install.WantedBy = [ "default.target" ];
       };
-
-      Install.WantedBy = [ "default.target" ];
     };
   };
 }

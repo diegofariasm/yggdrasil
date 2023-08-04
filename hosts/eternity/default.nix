@@ -29,6 +29,7 @@
       browsers = {
         default = "firefox";
         firefox.enable = true;
+        chromium.enable = true;
       };
       term = {
         default = {
@@ -55,16 +56,7 @@
       polkit.enable = true;
       ssh.enable = true;
     };
-    theme.active = "nordic";
-  };
-
-  # Tty config
-  i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    earlySetup = true;
-    font = "${pkgs.terminus_font}/share/consolefonts/ter-116n.psf.gz";
-    packages = with pkgs; [ terminus_font ];
-    keyMap = "br-abnt2";
+    theme.active = "tokyo";
   };
 
 

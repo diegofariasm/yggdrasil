@@ -60,7 +60,6 @@ in
 
   config = mkIf cfg.enable
     {
-
       services.xserver = {
         enable = true;
         displayManager.gdm = {
@@ -69,15 +68,24 @@ in
         };
       };
 
+      fonts.packages = with pkgs; [
+        (nerdfonts.override {
+          fonts = [
+            "Iosevka"
+          ];
+        })
+      ];
+
       programs.hyprland.enable = true;
+
       user.packages = with pkgs; [
         dunst
         hyprpaper
-        wl-clipboard-x11
-        hyprpicker
         eww-wayland
         rofi-wayland
         configure-gtk
+        wl-clipboard-x11
       ];
+
     };
 }

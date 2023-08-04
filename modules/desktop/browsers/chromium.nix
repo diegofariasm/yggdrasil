@@ -25,6 +25,7 @@ in
         categories = [ "Network" ];
       })
     ];
+    environment.variables.CHROME_EXECUTABLE = "${lib.getBin pkgs.chromium}/bin/chromium";
 
   };
 }

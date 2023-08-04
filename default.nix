@@ -38,18 +38,18 @@ in
       nixPath =
         nixPathInputs
         ++ [
-          "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
           "dotfiles=${config.dotfiles.dir}"
+          "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
         ];
       registry = registryInputs // { dotfiles.flake = inputs.self; };
       settings = {
         substituters = [
-          "https://nix-community.cachix.org"
           "https://hyprland.cachix.org"
+          "https://nix-community.cachix.org"
         ];
         trusted-public-keys = [
-          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
         auto-optimise-store = true;
       };
@@ -68,7 +68,6 @@ in
   networking.useDHCP = mkDefault false;
 
   boot = {
-    kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_zen;
     loader = {
       efi.canTouchEfiVariables = mkDefault true;
       systemd-boot.configurationLimit = 5;
@@ -79,13 +78,10 @@ in
   # Just the bear necessities...
   environment.systemPackages = with pkgs; [
     git
-    vim
-    wget
     unzip
-    procps
     killall
     rnix-lsp
-    brightnessctl
+    nixpkgs-fmt
     cached-nix-shell
     update-nix-fetchgit
   ];
