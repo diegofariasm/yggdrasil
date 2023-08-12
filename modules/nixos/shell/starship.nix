@@ -15,9 +15,9 @@ in
     ];
 
     # Needed font for the icons
-    fonts.packages = with pkgs; with my; [
-      icomoon
-    ];
+    # fonts.packages = with pkgs; with my; [
+    #   icomoon
+    # ];
 
     # Packages needed by the module
     home.configFile = {

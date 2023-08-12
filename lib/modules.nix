@@ -1,8 +1,8 @@
 { self, lib, ... }:
 
 let
-  inherit (builtins) attrValues readDir pathExists concatLists;
   inherit (lib) id mapAttrsToList filterAttrs hasPrefix hasSuffix nameValuePair removeSuffix;
+  inherit (builtins) attrValues readDir pathExists concatLists;
   inherit (self.attrs) mapFilterAttrs;
 in
 rec {
