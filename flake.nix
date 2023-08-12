@@ -6,7 +6,6 @@
   inputs = {
     # Core dependencies.
     nixpkgs.url = "nixpkgs/nixos-unstable"; # primary nixpkgs
-    nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable"; # for packages on the edge
 
     home-manager = {
       url = "github:rycee/home-manager/master";
@@ -38,7 +37,6 @@
         };
 
       pkgs = mkPkgs nixpkgs [ self.overlay ];
-      pkgs' = mkPkgs nixpkgs-unstable [ ];
 
       lib =
         nixpkgs.lib.extend
@@ -53,7 +51,6 @@
       lib = lib.my;
 
       overlay = final: prev: {
-        unstable = pkgs';
         my = self.packages."${system}";
       };
 
@@ -64,7 +61,10 @@
         mapModules ./packages (p: pkgs.callPackage p { });
 
       nixosModules =
-        { dotfiles = import ./.; } // mapModulesRec ./modules import;
+        mapModulesRec ./modules/nixos import;
+
+      homeModules =
+        mapModulesRec ./modules/home import;
 
       nixosConfigurations =
         mapHosts ./hosts { };
@@ -82,9 +82,5 @@
         // import ./templates;
       defaultTemplate = self.templates.full;
 
-      defaultApp."${system}" = {
-        type = "app";
-        program = ./bin/hey;
-      };
     };
 }

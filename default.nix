@@ -7,6 +7,13 @@
 with lib;
 with lib.my; let
   name = builtins.getEnv "USER";
+
+  # All of my personal modules.
+  # Note: they are pretty unstable, as i will
+  # be making changes as i learn more nix.
+  homeModules = (mapModulesRec' (toString ./modules/home) import);
+  nixosModules = (mapModulesRec' (toString ./modules/nixos) import);
+
 in
 {
   imports =
@@ -14,8 +21,11 @@ in
     [
       inputs.home-manager.nixosModules.home-manager
     ]
-    # All my personal modules
-    ++ (mapModulesRec' (toString ./modules) import);
+    # Nixos modules
+    ++ nixosModules;
+
+  # Home manager modules
+  maiden.imports = homeModules;
 
   # Common config for all nixos machines; and to ensure the flake operates
   # soundly
@@ -44,11 +54,9 @@ in
       registry = registryInputs // { dotfiles.flake = inputs.self; };
       settings = {
         substituters = [
-          "https://hyprland.cachix.org"
           "https://nix-community.cachix.org"
         ];
         trusted-public-keys = [
-          "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
         auto-optimise-store = true;
@@ -80,6 +88,7 @@ in
     git
     unzip
     killall
+    treefmt
     rnix-lsp
     nixpkgs-fmt
     cached-nix-shell
