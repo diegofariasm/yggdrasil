@@ -6,13 +6,16 @@
 }:
 with lib;
 with lib.my; let
-  name = builtins.getEnv "USER";
 
   # All of my personal modules.
   # Note: they are pretty unstable, as i will
   # be making changes as i learn more nix.
   homeModules = (mapModulesRec' (toString ./modules/home-manager) import);
   nixosModules = (mapModulesRec' (toString ./modules/nixos) import);
+  # TODO: Move this to the makeHost function.
+  # NOTE: for some reason, it doesn't seem to be 
+  # importing the path argument in there.
+  userAccounts = (mapModulesRec' (toString ./users) import);
 
 in
 {
@@ -22,7 +25,9 @@ in
       inputs.home-manager.nixosModules.home-manager
     ]
     # Nixos modules
-    ++ nixosModules;
+    ++ nixosModules
+    # User accounts
+    ++ userAccounts;
 
   # Home manager modules
   maiden.imports = homeModules;

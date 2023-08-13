@@ -15,7 +15,7 @@ in
 
   config = mkIf cfg.enable {
     security.polkit.enable = true;
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       mate.mate-polkit
     ];
     systemd.user.services.auth-agent = {

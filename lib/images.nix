@@ -15,9 +15,8 @@ in
       specialArgs = extraArgs;
 
       modules =
-        (mapModulesRec' (toString ../modules/home-manager) import)
         # Our own modules.
-        ++ extraModules;
+        extraModules;
     };
 
   # A wrapper around the home-manager configuration function.
@@ -26,10 +25,8 @@ in
       inherit lib pkgs;
       extraSpecialArgs = extraArgs;
       modules =
-        (mapModulesRec' (toString ../modules/nixos) import)
-        # Importing our custom home-manager modules.
-        # Plus our own.
-        ++ extraModules;
+        # Our own modules.
+        extraModules;
     };
 
   # A wrapper around the nixos-generators `nixosGenerate` function.
@@ -38,7 +35,6 @@ in
       inherit pkgs system format lib;
       specialArgs = extraArgs;
       modules =
-
         # Our own modules.
         extraModules;
     };

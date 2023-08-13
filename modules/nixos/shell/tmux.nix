@@ -13,7 +13,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       tmux
     ];
     # There are errors because the module can't find $TMUX_HOME/extraInit

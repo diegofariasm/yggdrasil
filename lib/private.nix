@@ -1,51 +1,27 @@
-# This is just a library intended solely for this flake.
-# It is expected to use the nixpkgs library with `lib/default.nix`.
 { lib, ... }:
-
+with lib;
+with my;
 rec {
-  # This is only used for home-manager users without a NixOS user counterpart.
-  mapHomeManagerUser = user: settings:
-    let
-      homeDirectory = "/home/${user}";
-      defaultUserConfig = {
-        extraGroups = lib.mkDefault [ "wheel" ];
-        createHome = lib.mkDefault true;
-        home = lib.mkDefault homeDirectory;
-        isNormalUser = lib.mkForce true;
-      };
-    in
-    {
-      imports = [
-        { users.users."${user}" = defaultUserConfig; }
-      ];
-
-      home-manager.users."${user}" = { ... }: {
-        imports = [ (getUser "home-manager" user) ];
-      };
-      users.users."${user}" = settings;
-    };
 
   getSecret = path: ../secrets/${path};
 
-  isInternal = config: config ? _isfoodogsquaredcustom && config._isfoodogsquaredcustom;
-
-  getUsers = type: users:
+  getUsers = users:
     let
-      userModules = lib.filesToAttr ../users/${type};
+      userModules = filesToAttr ../users;
       invalidUsernames = [ "config" "modules" ];
 
-      users' = lib.filterAttrs (n: _: !lib.elem n invalidUsernames && lib.elem n users) userModules;
-      userList = lib.attrNames users';
+      users' = filterAttrs (n: _: !elem n invalidUsernames && elem n users) userModules;
+      userList = attrNames users';
 
-      nonExistentUsers = lib.filter (name: !lib.elem name userList) users;
+      nonExistentUsers = filter (name: !elem name userList) users;
     in
-    lib.trivial.throwIfNot ((lib.length nonExistentUsers) == 0)
-      "there are no users ${lib.concatMapStringsSep ", " (u: "'${u}'") nonExistentUsers} from ${type}"
+    trivial.throwIfNot ((length nonExistentUsers) == 0)
+      "There are no users ${concatMapStringsSep ", " (u: "'${u}'") nonExistentUsers}."
       (r: r)
       users';
 
-  getUser = type: user:
-    lib.getAttr user (getUsers type [ user ]);
+  getUser = user:
+    getAttr user (getUsers [ user ]);
 
   # Import modules with a set blocklist.
   importModules = attrs:
@@ -61,5 +37,5 @@ rec {
         "profiles"
       ];
     in
-    lib.filterAttrs (n: v: !lib.elem n blocklist) (lib.mapAttrsRecursive (_: sopsFile: import sopsFile) attrs);
+    filterAttrs (n: v: !elem n blocklist) (mapAttrsRecursive (_: sopsFile: import sopsFile) attrs);
 }

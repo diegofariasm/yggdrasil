@@ -4,7 +4,6 @@ with lib;
 with lib.my;
 {
   options = with types; {
-    user = mkOpt attrs { };
     dotfiles = {
       dir = mkOpt path
         (removePrefix "/mnt"
@@ -20,9 +19,10 @@ with lib.my;
 
     maiden = mkOpt' attrs { } "Alias to home-manager. Make it easier to use it everywhere, indepently of the user.";
     home = {
-      file = mkOpt' attrs { } "Files to place directly in $HOME";
       configFile = mkOpt' attrs { } "Files to place in $XDG_CONFIG_HOME";
       dataFile = mkOpt' attrs { } "Files to place in $XDG_DATA_HOME";
+      packages = mkOpt' attrs { } "Packages to install for the user";
+      file = mkOpt' attrs { } "Files to place directly in $HOME";
     };
 
     env = mkOption {
@@ -38,21 +38,6 @@ with lib.my;
   };
 
   config = {
-    user =
-      let
-        user = builtins.getEnv "USER";
-        name = if elem user [ "" "root" ] then "fushi" else user;
-      in
-      {
-        inherit name;
-        description = "${name}'s account";
-        extraGroups = [ "wheel" ];
-        isNormalUser = true;
-        home = "/home/${name}";
-        group = "users";
-        uid = 1000;
-      };
-
     # Install user packages to /etc/profiles instead. Necessary for
     # nixos-rebuild build-vm to work.
     home-manager = {
@@ -66,12 +51,13 @@ with lib.my;
       #   home.configFile  ->  home-manager.users.fushi.home.xdg.configFile
       #   home.dataFile    ->  home-manager.users.fushi.home.xdg.dataFile
       #   maiden.programs    ->  home-manager.users.fushi.programs
-      users.${config.user.name} = mkAliasDefinitions options.maiden;
+      users."fushi" = mkAliasDefinitions options.maiden;
     };
 
     maiden = {
       home = {
         file = mkAliasDefinitions options.home.file;
+        packages = mkAliasDefinitions options.home.packages;
         # Necessary for home-manager to work with flakes, otherwise it will
         # look for a nixpkgs channel.
         stateVersion = config.system.stateVersion;
@@ -81,8 +67,6 @@ with lib.my;
         configFile = mkAliasDefinitions options.home.configFile;
       };
     };
-
-    users.users.${config.user.name} = mkAliasDefinitions options.user;
 
     # must already begin with pre-existing PATH. Also, can't use binDir here,
     # because it contains a nix store path.

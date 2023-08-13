@@ -18,7 +18,7 @@ in
   };
 
   config = {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       (mkIf cfg.psx.enable pcsxr)
       (mkIf cfg.psx.enable pcsx2)
       (mkIf cfg.ds.enable desmume)

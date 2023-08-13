@@ -19,7 +19,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       emacs
     ];
     # TODO: find way of using the icons from the icomoon font with this.

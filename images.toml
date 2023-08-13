@@ -10,5 +10,5 @@
 # deployed somewhere (e.g., desktop, homelab server, VPS).
 
 [eternity]
-systems = [ "x86_64-linux" ]
+systems = ["x86_64-linux"]
 format = "iso"

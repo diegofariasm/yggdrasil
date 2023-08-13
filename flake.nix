@@ -65,18 +65,6 @@
         inherit lib;
       };
 
-      # We're considering this as the variant since we'll export the custom
-      # library as `lib` in the output attribute.
-      lib' = nixpkgs.lib.extend (final: prev:
-        import ./lib/utils.nix { lib = prev; }
-        // import ./lib/private.nix { lib = final; });
-
-      # All of my personal modules.
-      # Note: they are pretty unstable, as i will
-      # be making changes as i learn more nix.
-      nixosModules = (mapModulesRec' (toString ./modules/nixos) import);
-      homeModules = (mapModulesRec' (toString ./modules/home-manager) import);
-
       # The shared configuration for the entire list of hosts for this cluster.
       # Take note to only set as minimal configuration as possible since we're
       # also using this with the stable version of nixpkgs.
@@ -86,6 +74,7 @@
         imports = [
           ./.
         ];
+
       };
 
       # The order here is important(?).
@@ -98,19 +87,18 @@
       ];
 
       defaultSystem = "x86_64-linux";
-
       # Just add systems here and it should add systems to the outputs.
       systems = with inputs.flake-utils.lib.system; [
         "x86_64-linux"
         "aarch64-linux"
       ];
-      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
 
+      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
     in
     {
       # Some sensible default configurations.
       nixosConfigurations =
-        lib'.mapAttrs
+        lib.mapAttrs
           (filename: host:
             let
               path = ./hosts/${filename};
@@ -130,17 +118,16 @@
               inherit extraModules extraArgs;
               system = host._system;
             })
-          (lib'.filterAttrs (_: host: (host.format or "iso") == "iso") images);
+          (lib.filterAttrs (_: host: (host.format or "iso") == "iso") images);
 
 
       # We're going to make our custom modules available for our flake. Whether
       # or not this is a good thing is debatable, I just want to test it.
-      nixosModules = lib'.importModules (lib.filesToAttr ./modules/nixos);
+      nixosModules =
+        lib.importModules (lib.filesToAttr ./modules/nixos);
 
-      # I can now install home-manager users in non-NixOS systems.
-      # NICE!
       homeConfigurations =
-        lib'.mapAttrs
+        lib.mapAttrs
           (filename: metadata:
             let
               name = metadata._name;
@@ -149,24 +136,19 @@
                 inherit system overlays;
               };
 
-              path = ./users/home-manager/${name};
+              path = ./users/${name};
               extraModules = [
                 ({ pkgs, config, ... }: {
-                  # To be able to use the most of our config as possible, we want
-                  # both to use the same overlays.
-                  nixpkgs.overlays = overlays;
+                  nixpkgs = {
+                    # To be able to use the most of our config as possible, we want
+                    # both to use the same overlays.
+                    overlays = overlays;
 
-                  # Stallman-senpai will be disappointed. :/
-                  nixpkgs.config.allowUnfree = true;
+                    # Stallman-senpai will be disappointed. :/
+                    nixpkgs.config.allowUnfree = true;
+                  };
 
-                  # Setting the homely options.
-                  home.username = name;
-                  home.homeDirectory = metadata.home-directory or "/home/${config.home.username}";
-
-                  # home-manager configurations are expected to be deployed on
-                  # non-NixOS systems so it is safe to set this.
                   programs.home-manager.enable = true;
-                  targets.genericLinux.enable = true;
                 })
                 sharedConfig
                 path
@@ -180,7 +162,7 @@
 
       # Extending home-manager with my custom modules, if anyone cares.
       homeModules =
-        lib'.importModules (lib'.filesToAttr ./modules/home-manager);
+        lib.importModules (lib.filesToAttr ./modules/home-manager);
 
       # In case somebody wants to use my stuff to be included in nixpkgs.
       overlays.default = final: prev: import ./pkgs { pkgs = prev; };
@@ -198,9 +180,9 @@
       images =
         forAllSystems (system:
           let
-            images' = lib'.filterAttrs (host: metadata: system == metadata._system) images;
+            images' = lib.filterAttrs (host: metadata: system == metadata._system) images;
           in
-          lib'.mapAttrs'
+          lib.mapAttrs'
             (host: metadata:
               let
                 inherit system;
@@ -209,7 +191,7 @@
                 nixpkgs-channel = metadata.nixpkgs-channel or "nixpkgs";
                 pkgs = import inputs."${nixpkgs-channel}" { inherit system overlays; };
               in
-              lib'.nameValuePair name (mkImage {
+              lib.nameValuePair name (mkImage {
                 inherit format system pkgs extraArgs;
                 extraModules = [
                   ({ lib, ... }: {

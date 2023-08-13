@@ -12,7 +12,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       gitAndTools.gh
       gitAndTools.git-open
       gitAndTools.git-annex

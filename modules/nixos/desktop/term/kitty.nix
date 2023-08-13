@@ -12,7 +12,7 @@ in
 {
   options.modules.desktop.term.kitty = { enable = mkBoolOpt false; };
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       kitty
     ];
     home.configFile = {

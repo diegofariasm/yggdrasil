@@ -2,6 +2,6 @@
 # of the users defined here should correspond to one of the home-manager users
 # at `./users/home-manager/`.
 [fushi]
-systems = [
-  "x86_64-linux",
-]
+systems = ["x86_64-linux"]
+[diegofariasm]
+systems = ["x86_64-linux"]

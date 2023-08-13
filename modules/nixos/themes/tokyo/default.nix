@@ -31,7 +31,7 @@ in
     }
     # Desktop (X11) theming
     (mkIf config.services.xserver.enable {
-      user.packages = with pkgs; [
+      home.packages = with pkgs; [
         zafiro-icons
         tokyo-night-gtk
         volantes-cursors

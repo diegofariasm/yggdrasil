@@ -23,7 +23,7 @@ in
 
     security.rtkit.enable = true;
 
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       pamixer
     ];
 
@@ -43,6 +43,6 @@ in
       mkIf config.hardware.pulseaudio.enable
         "${paConfigFile}/default.pa";
 
-    user.extraGroups = [ "audio" ];
+    # user.extraGroups = [ "audio" ];
   };
 }
