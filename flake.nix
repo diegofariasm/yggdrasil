@@ -48,32 +48,20 @@
       # A set of users with their metadata to be deployed with home-manager.
       users = listImagesWithSystems (lib.importTOML ./users.toml);
 
-      system = "x86_64-linux";
-
-      # TODO: make the system use the nixpkgs from the toml,
-      # with the allowUnfree predicate auto activated
-      # in every and which of the configs.
-      mkPkgs = pkgs: extraOverlays:
-        import pkgs {
-          inherit system;
-          config.allowUnfree = true; # forgive me Stallman senpai
-          overlays = extraOverlays ++ (lib.attrValues self.overlays);
-        };
-
-      pkgs = mkPkgs nixpkgs [ ];
-
+      # NOTE: i am not sure wheter is a version mismatch between the libraries
+      # nixpkgs version. So, this is kinda of a hack to be able to use my things
+      # throughout the system.
       lib =
         nixpkgs.lib.extend
           (self: super: {
             my = import ./lib {
-              inherit pkgs inputs;
+              inherit inputs;
               lib = self;
             };
           });
 
       extraArgs = {
         inherit inputs;
-        inherit pkgs;
         inherit lib;
       };
 
@@ -120,9 +108,7 @@
 
     in
     {
-      lib = lib.my;
-
-      # some sensible default configurations.
+      # Some sensible default configurations.
       nixosConfigurations =
         lib'.mapAttrs
           (filename: host:
@@ -131,6 +117,7 @@
               extraModules = [
                 ({ lib, ... }: {
                   config = lib.mkMerge [
+                    { nixpkgs.config.allowUnfree = true; }
                     { networking.hostName = lib.mkForce host._name; }
                   ];
                 })
@@ -227,6 +214,7 @@
                 extraModules = [
                   ({ lib, ... }: {
                     config = lib.mkMerge [
+                      { nixpkgs.config.allowUnfree = true; }
                       { networking.hostName = lib.mkForce metadata.hostname or name; }
                     ];
                   })
