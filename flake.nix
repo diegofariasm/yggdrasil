@@ -19,14 +19,17 @@
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
-    home-manager.url = "github:rycee/home-manager/master";
+    # We're using these libraries for other functions.
+    flake-utils.url = "github:numtide/flake-utils";
+
+    # Managing home configurations.
+    home-manager.url = "github:nix-community/home-manager";
+
     # This is what AUR strives to be.
     nur.url = "github:nix-community/NUR";
 
     # Extras
-    nixos-hardware.url = "github:nixos/nixos-hardware";
     hyprland.url = "github:hyprwm/Hyprland";
-
   };
 
   outputs =
@@ -36,7 +39,7 @@
     , ...
     }:
     let
-      inherit (lib.my) mapModules mapModulesRec mapModulesRec' mkHost mkHome listImagesWithSystems importTOML;
+      inherit (lib.my) mapModules mapModulesRec mapModulesRec' mkHost mkHome mkImage listImagesWithSystems importTOML;
       # A set of images with their metadata that is usually built for usual
       # purposes. The format used here is whatever formats nixos-generators
       # support.
@@ -47,6 +50,9 @@
 
       system = "x86_64-linux";
 
+      # TODO: make the system use the nixpkgs from the toml,
+      # with the allowUnfree predicate auto activated
+      # in every and which of the configs.
       mkPkgs = pkgs: extraOverlays:
         import pkgs {
           inherit system;
@@ -54,7 +60,7 @@
           overlays = extraOverlays ++ (lib.attrValues self.overlays);
         };
 
-      pkgs = mkPkgs nixpkgs [ self.overlay ];
+      pkgs = mkPkgs nixpkgs [ ];
 
       lib =
         nixpkgs.lib.extend
@@ -67,6 +73,7 @@
 
       extraArgs = {
         inherit inputs;
+        inherit pkgs;
         inherit lib;
       };
 
@@ -85,108 +92,12 @@
       # The shared configuration for the entire list of hosts for this cluster.
       # Take note to only set as minimal configuration as possible since we're
       # also using this with the stable version of nixpkgs.
-      hostSharedConfig = { config, lib, pkgs, ... }: {
-        # Some defaults for evaluating modules.
-        _module.check = true;
-        # Only use imports as minimally as possible with the absolute
-        # 1requirements of a host. On second thought, only on flakes with
-        # optional NixOS modules.
-
+      sharedConfig = { config, lib, pkgs, ... }: {
+        # Default configuration for all of my machines:
+        # "default.nix".
         imports = [
-          inputs.home-manager.nixosModules.home-manager
-        ] ++ nixosModules;
-
-        # Home manager modules
-        maiden.imports = homeModules;
-
-        # BOOOOOOOOOOOOO! Somebody give me a tomato!
-        services.xserver.excludePackages = with pkgs; [ xterm ];
-
-        # Set several paths for the traditional channels.
-        nix.nixPath =
-          lib.mapAttrsToList
-            (name: source:
-              let
-                name' = if (name == "self") then "config" else name;
-              in
-              "${name'}=${source}")
-            inputs
-          ++ [
-            "/nix/var/nix/profiles/per-user/root/channels"
-          ];
-
-        boot = {
-          kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-          loader = {
-            efi.canTouchEfiVariables = lib.mkDefault true;
-            systemd-boot = {
-              enable = lib.mkDefault true;
-              configurationLimit = 5;
-            };
-
-          };
-        };
-
-
-      };
-
-
-      # The default config for our home-manager configurations. This is also to
-      # be used for sharing modules among home-manager users from NixOS
-      # configurations with `nixpkgs.useGlobalPkgs` set to `true` so avoid
-      # setting nixpkgs-related options here.
-      userSharedConfig = { pkgs, config, lib, ... }: {
-
-        programs.home-manager.enable = true;
-
-        home.stateVersion = lib.lib.mkDefault "23.11";
-      };
-
-      nixSettingsSharedConfig = { config, lib, pkgs, ... }: {
-        # I want to capture the usual flakes to its exact version so we're
-        # making them available to our system. This will also prevent the
-        # annoying downloads since it always get the latest revision.
-        nix.registry =
-          lib.mapAttrs'
-            (name: flake:
-              let
-                name' = if (name == "self") then "config" else name;
-              in
-              lib.nameValuePair name' { inherit flake; })
-            inputs;
-
-        # Parallel downloads! PARALLEL DOWNLOADS! It's like Pacman 6.0 all over
-        # again.
-        nix.package = pkgs.nixUnstable;
-
-        # Set the configurations for the package manager.
-        nix.settings = {
-          # Set several binary caches.
-          substituters = [
-            "https://nix-community.cachix.org"
-            "https://foo-dogsquared.cachix.org"
-          ];
-          trusted-public-keys = [
-            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-            "foo-dogsquared.cachix.org-1:/2fmqn/gLGvCs5EDeQmqwtus02TUmGy0ZlAEXqRE70E="
-          ];
-
-          # Sane config for the package manager.
-          # TODO: Remove this after nix-command and flakes has been considered
-          # stable.
-          #
-          # Since we're using flakes to make this possible, we need it. Plus, the
-          # UX of Nix CLI is becoming closer to Guix's which is a nice bonus.
-          experimental-features = [ "nix-command" "flakes" "repl-flake" ];
-          auto-optimise-store = lib.lib.mkDefault true;
-        };
-
-        # Stallman-senpai will be disappointed.
-        nixpkgs.config.allowUnfree = true;
-
-        # Extend nixpkgs with our overlays except for the NixOS-focused modules
-        # here.
-        # nixpkgs.overlays = overlays;
+          ./.
+        ];
       };
 
       # The order here is important(?).
@@ -197,18 +108,20 @@
         # Access to NUR.
         inputs.nur.overlay
       ];
+
+      defaultSystem = "x86_64-linux";
+
+      # Just add systems here and it should add systems to the outputs.
+      systems = with inputs.flake-utils.lib.system; [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
+
     in
     {
       lib = lib.my;
 
-      overlay = final: prev: {
-        my = self.packages."${system}";
-      };
-
-      overlays =
-        mapModules ./overlays import;
-
-      # A list of NixOS configurations from the `./hosts` folder. It also has
       # some sensible default configurations.
       nixosConfigurations =
         lib'.mapAttrs
@@ -221,15 +134,14 @@
                     { networking.hostName = lib.mkForce host._name; }
                   ];
                 })
-                nixSettingsSharedConfig
-                hostSharedConfig
+                sharedConfig
                 path
               ];
             in
             mkHost {
+              nixpkgs-channel = host.nixpkgs-channel or "nixpkgs";
               inherit extraModules extraArgs;
               system = host._system;
-              nixpkgs-channel = host.nixpkgs-channel or "nixpkgs";
             })
           (lib'.filterAttrs (_: host: (host.format or "iso") == "iso") images);
 
@@ -269,8 +181,7 @@
                   programs.home-manager.enable = true;
                   targets.genericLinux.enable = true;
                 })
-                userSharedConfig
-                nixSettingsSharedConfig
+                sharedConfig
                 path
               ];
             in
@@ -284,6 +195,45 @@
       homeModules =
         lib'.importModules (lib'.filesToAttr ./modules/home-manager);
 
+      # In case somebody wants to use my stuff to be included in nixpkgs.
+      overlays.default = final: prev: import ./pkgs { pkgs = prev; };
 
+      # My custom packages, available in here as well. Though, I mainly support
+      # "x86_64-linux". I just want to try out supporting other systems.
+      packages = forAllSystems (system:
+        inputs.flake-utils.lib.flattenTree (import ./pkgs {
+          pkgs = import nixpkgs { inherit system; };
+        }));
+
+      # This contains images that are meant to be built and distributed
+      # somewhere else including those NixOS configurations that are built as
+      # an ISO.
+      images =
+        forAllSystems (system:
+          let
+            images' = lib'.filterAttrs (host: metadata: system == metadata._system) images;
+          in
+          lib'.mapAttrs'
+            (host: metadata:
+              let
+                inherit system;
+                name = metadata._name;
+                format = metadata.format or "iso";
+                nixpkgs-channel = metadata.nixpkgs-channel or "nixpkgs";
+                pkgs = import inputs."${nixpkgs-channel}" { inherit system overlays; };
+              in
+              lib'.nameValuePair name (mkImage {
+                inherit format system pkgs extraArgs;
+                extraModules = [
+                  ({ lib, ... }: {
+                    config = lib.mkMerge [
+                      { networking.hostName = lib.mkForce metadata.hostname or name; }
+                    ];
+                  })
+                  sharedConfig
+                  ./hosts/${name}
+                ];
+              }))
+            images');
     };
 }

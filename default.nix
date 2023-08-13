@@ -11,7 +11,7 @@ with lib.my; let
   # All of my personal modules.
   # Note: they are pretty unstable, as i will
   # be making changes as i learn more nix.
-  homeModules = (mapModulesRec' (toString ./modules/home) import);
+  homeModules = (mapModulesRec' (toString ./modules/home-manager) import);
   nixosModules = (mapModulesRec' (toString ./modules/nixos) import);
 
 in
@@ -38,9 +38,9 @@ in
   environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
   nix =
     let
-      filteredInputs = filterAttrs (n: _: n != "self") inputs;
       nixPathInputs = mapAttrsToList (n: v: "${n}=${v}") filteredInputs;
       registryInputs = mapAttrs (_: v: { flake = v; }) filteredInputs;
+      filteredInputs = filterAttrs (n: _: n != "self") inputs;
     in
     {
       package = pkgs.nixVersions.stable;

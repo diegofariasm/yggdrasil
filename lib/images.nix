@@ -6,6 +6,7 @@ let
 
 in
 {
+
   # A wrapper around the NixOS configuration function.
   mkHost = { system, extraModules ? [ ], extraArgs ? { }, nixpkgs-channel ? "nixpkgs" }:
     (lib.makeOverridable inputs."${nixpkgs-channel}".lib.nixosSystem) {
@@ -14,8 +15,9 @@ in
       specialArgs = extraArgs;
 
       modules =
+        (mapModulesRec' (toString ../modules/home-manager) import)
         # Our own modules.
-        extraModules;
+        ++ extraModules;
     };
 
   # A wrapper around the home-manager configuration function.
@@ -24,9 +26,10 @@ in
       inherit lib pkgs;
       extraSpecialArgs = extraArgs;
       modules =
+        (mapModulesRec' (toString ../modules/nixos) import)
         # Importing our custom home-manager modules.
         # Plus our own.
-        extraModules;
+        ++ extraModules;
     };
 
   # A wrapper around the nixos-generators `nixosGenerate` function.
@@ -35,11 +38,9 @@ in
       inherit pkgs system format lib;
       specialArgs = extraArgs;
       modules =
-        # Import all of the NixOS modules.
-        (import ../modules/nixos { inherit lib; isInternal = true; })
 
         # Our own modules.
-        ++ extraModules;
+        extraModules;
     };
 
   listImagesWithSystems = data:

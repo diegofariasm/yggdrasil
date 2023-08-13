@@ -5,11 +5,10 @@ with lib.my;
 {
   options = with types; {
     user = mkOpt attrs { };
-
     dotfiles = {
       dir = mkOpt path
         (removePrefix "/mnt"
-          (findFirst pathExists (toString ../.) [
+          (findFirst pathExists (toString ../..) [
             "/mnt/etc/dotfiles"
             "/etc/dotfiles"
           ]));
@@ -18,8 +17,8 @@ with lib.my;
       modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
       themesDir = mkOpt path "${config.dotfiles.modulesDir}/themes";
     };
-    maiden = mkOpt' attrs { } "Alias to home-manager. Make it easier to use it everywhere, indepently of the user.";
 
+    maiden = mkOpt' attrs { } "Alias to home-manager. Make it easier to use it everywhere, indepently of the user.";
     home = {
       file = mkOpt' attrs { } "Files to place directly in $HOME";
       configFile = mkOpt' attrs { } "Files to place in $XDG_CONFIG_HOME";
@@ -84,12 +83,6 @@ with lib.my;
     };
 
     users.users.${config.user.name} = mkAliasDefinitions options.user;
-
-    nix.settings = let users = [ "root" config.user.name ]; in
-      {
-        trusted-users = users;
-        allowed-users = users;
-      };
 
     # must already begin with pre-existing PATH. Also, can't use binDir here,
     # because it contains a nix store path.

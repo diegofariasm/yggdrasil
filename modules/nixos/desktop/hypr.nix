@@ -9,6 +9,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.desktop.hypr;
   configDir = config.dotfiles.configDir;
+
   inherit (inputs) hyprland;
 
   # Needed for making gtk work properly on wayland
