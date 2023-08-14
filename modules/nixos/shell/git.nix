@@ -12,18 +12,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    environment.systemPackages = with pkgs; [
       gitAndTools.gh
       gitAndTools.git-open
       gitAndTools.git-annex
       gitAndTools.diff-so-fancy
     ];
-
-    home.configFile = {
-      "git/config".source = "${configDir}/git/config";
-      "git/gitconfig-work".source = "${configDir}/git/gitconfig-work";
-      "git/gitconfig-personal".source = "${configDir}/git/gitconfig-personal";
-    };
 
     modules.shell.zsh.rcFiles = [ "${configDir}/git/aliases.zsh" ];
   };

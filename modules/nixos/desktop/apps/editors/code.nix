@@ -18,7 +18,7 @@ in
   config = mkIf cfg.enable {
     # TODO: add back config, make it mutable
     # as well.
-    home.packages = with pkgs; [
+    environment.systemPackages = with pkgs; [
       vscode
       nixpkgs-fmt
     ];

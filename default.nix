@@ -5,32 +5,12 @@
 , ...
 }:
 with lib;
-with lib.my; let
-
-  # All of my personal modules.
-  # Note: they are pretty unstable, as i will
-  # be making changes as i learn more nix.
-  homeModules = (mapModulesRec' (toString ./modules/home-manager) import);
-  nixosModules = (mapModulesRec' (toString ./modules/nixos) import);
-  # TODO: Move this to the makeHost function.
-  # NOTE: for some reason, it doesn't seem to be 
-  # importing the path argument in there.
-  userAccounts = (mapModulesRec' (toString ./users) import);
-
-in
+with lib.my;
 {
   imports =
-    # I use home-manager to deploy files to $HOME; little else
     [
       inputs.home-manager.nixosModules.home-manager
-    ]
-    # Nixos modules
-    ++ nixosModules
-    # User accounts
-    ++ userAccounts;
-
-  # Home manager modules
-  maiden.imports = homeModules;
+    ];
 
   # Common config for all nixos machines; and to ensure the flake operates
   # soundly

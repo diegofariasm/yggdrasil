@@ -6,12 +6,16 @@
   imports = [
     ../home.nix
     ./hardware-configuration.nix
+
+    # The users for this host
+    (lib.my.getUser "fushi")
   ];
+
+
   ## Modules
   modules = {
     hardware = {
       audio.enable = true;
-      bluetooth.enable = true;
       fs.enable = true;
     };
     desktop = {
@@ -37,7 +41,6 @@
           command = "kitty --single-instance";
         };
         kitty.enable = true;
-        st.enable = true;
       };
     };
     editors = {
@@ -48,15 +51,12 @@
     shell = {
       zsh.enable = true;
       git.enable = true;
-      tmux.enable = true;
       direnv.enable = true;
-      starship.enable = true;
     };
     services = {
       polkit.enable = true;
       ssh.enable = true;
     };
-    theme.active = "tokyo";
   };
 
 

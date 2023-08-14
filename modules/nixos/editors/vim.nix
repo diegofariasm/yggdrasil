@@ -20,26 +20,9 @@ in
 
   config = mkIf cfg.enable {
 
-    home.packages = with pkgs; [
+    environment.systemPackages = with pkgs; [
       neovim
     ];
-
-    env.PATH = [
-      ".config/nvim/bin"
-    ];
-
-    maiden.home.mutableFile = {
-      ".config/nvim" = {
-        url = "https://github.com/fushiii/nyoom.nvim";
-        type = "git";
-      };
-    };
-
-    # TODO: automatically install nyoom
-    # system.userActivationScripts = mkIf cfg.nvim.enable {
-    #   installNyoom = ''
-    #   '';
-    # };
 
   };
 }

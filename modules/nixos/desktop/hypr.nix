@@ -79,7 +79,7 @@ in
 
       programs.hyprland.enable = true;
 
-      home.packages = with pkgs; [
+      environment.systemPackages = with pkgs; [
         dunst
         hyprpaper
         eww-wayland

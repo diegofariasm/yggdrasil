@@ -12,15 +12,9 @@ in
 {
   options.modules.desktop.term.kitty = { enable = mkBoolOpt false; };
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    environment.systemPackages = with pkgs; [
       kitty
     ];
-    home.configFile = {
-      "kitty" = {
-        source = "${configDir}/kitty";
-        recursive = true;
-      };
-    };
   };
 }
 

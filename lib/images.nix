@@ -15,18 +15,24 @@ in
       specialArgs = extraArgs;
 
       modules =
-        # Our own modules.
-        extraModules;
+        extraModules
+        ++ (mapModulesRec' (toString ../modules/nixos) import);
+
     };
 
   # A wrapper around the home-manager configuration function.
-  mkHome = { pkgs, system, extraModules ? [ ], extraArgs ? { }, home-manager-channel ? "home-manager" }:
+  mkHome = { pkgs, path, system, extraModules ? [ ], extraArgs ? { }, home-manager-channel ? "home-manager" }:
     inputs."${home-manager-channel}".lib.homeManagerConfiguration {
       inherit lib pkgs;
       extraSpecialArgs = extraArgs;
       modules =
-        # Our own modules.
-        extraModules;
+        extraModules
+        ++ (mapModulesRec' (toString ../modules/home-manager) import);
+
+      # Import the user configuration
+      imports = [
+        path
+      ];
     };
 
   # A wrapper around the nixos-generators `nixosGenerate` function.
@@ -35,8 +41,8 @@ in
       inherit pkgs system format lib;
       specialArgs = extraArgs;
       modules =
-        # Our own modules.
-        extraModules;
+        extraModules
+        ++ (mapModulesRec' (toString ../modules/nixos) import);
     };
 
   listImagesWithSystems = data:

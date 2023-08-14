@@ -125,7 +125,11 @@
       # or not this is a good thing is debatable, I just want to test it.
       nixosModules =
         lib.importModules (lib.filesToAttr ./modules/nixos);
-
+      # User configuration should be done in here.
+      # This runs once for every user, so i won't
+      # run into the same problem as i am right,
+      # that is: home-manager only install the config
+      # for the last user.
       homeConfigurations =
         lib.mapAttrs
           (filename: metadata:
@@ -135,7 +139,6 @@
               pkgs = import inputs."${metadata.nixpkgs-channel or "nixpkgs"}" {
                 inherit system overlays;
               };
-
               path = ./users/${name};
               extraModules = [
                 ({ pkgs, config, ... }: {
@@ -145,17 +148,16 @@
                     overlays = overlays;
 
                     # Stallman-senpai will be disappointed. :/
-                    nixpkgs.config.allowUnfree = true;
+                    config.allowUnfree = true;
                   };
 
                   programs.home-manager.enable = true;
                 })
                 sharedConfig
-                path
               ];
             in
             mkHome {
-              inherit pkgs system extraModules extraArgs;
+              inherit pkgs system extraModules extraArgs path;
               home-manager-channel = metadata.home-manager-channel or "home-manager";
             })
           users;

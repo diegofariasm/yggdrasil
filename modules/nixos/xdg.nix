@@ -7,8 +7,6 @@
 , ...
 }: {
   ### A tidy $HOME is a tidy mind
-  maiden.xdg.enable = true;
-
   environment = {
     sessionVariables = {
       # These are the defaults, and xdg.enable does set them, but due to load

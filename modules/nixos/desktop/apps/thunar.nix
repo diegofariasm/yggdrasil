@@ -25,6 +25,6 @@ in
         thunar-media-tags-plugin
       ];
     };
-    home.packages = with pkgs; [ xfce.exo ];
+    environment.systemPackages = with pkgs; [ xfce.exo ];
   };
 }

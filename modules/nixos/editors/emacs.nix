@@ -19,29 +19,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    environment.systemPackages = with pkgs; [
       emacs
     ];
+
     # TODO: find way of using the icons from the icomoon font with this.
-    # fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
-
-    env.PATH = [
-      ".config/emacs/bin"
-    ];
-
-    maiden.home.mutableFile = {
-      ".config/emacs" = {
-        url = "https://github.com/doomemacs/doomemacs";
-        type = "git";
-      };
-    };
-
-    # TODO: automatically install nyoom
-    # system.userActivationScripts = mkIf cfg.nvim.enable {
-    #   installNyoom = ''
-    #   '';
-    # };
-
+    fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
 
   };
 }
