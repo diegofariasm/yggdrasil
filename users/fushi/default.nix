@@ -19,16 +19,15 @@ in
   home-manager.users."fushi" = { pkgs, config, ... }: {
 
     home.packages = with pkgs; [
-      kitty
+      hello
     ];
 
-    # TODO: find out why the modules aren't found anywhere.
-    #home.mutableFile = {
-    #  ".config/nvim" = {
-    #    url = "https://github.com/fushiii/nyoom.nvim";
-    #    type = "git";
-    #  };
-    #};
+    home.mutableFile = {
+      ".config/nvim" = {
+        url = "https://github.com/fushiii/nyoom.nvim";
+        type = "git";
+      };
+    };
 
     home.stateVersion = "23.11";
   };

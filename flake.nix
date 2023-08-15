@@ -19,6 +19,15 @@
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
+
+    # Removing the manual partitioning part with a little boogie.
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Managing your secrets.
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     # We're using these libraries for other functions.
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -48,9 +57,6 @@
       # A set of users with their metadata to be deployed with home-manager.
       users = listImagesWithSystems (lib.importTOML ./users.toml);
 
-      # NOTE: i am not sure wheter is a version mismatch between the libraries
-      # nixpkgs version. So, this is kinda of a hack to be able to use my things
-      # throughout the system.
       lib =
         nixpkgs.lib.extend
           (self: super: {
@@ -64,18 +70,128 @@
         inherit inputs;
         inherit lib;
       };
-
       # The shared configuration for the entire list of hosts for this cluster.
       # Take note to only set as minimal configuration as possible since we're
       # also using this with the stable version of nixpkgs.
-      sharedConfig = { config, lib, pkgs, ... }: {
-        # Default configuration for all of my machines:
-        # "default.nix".
+      hostSharedConfig = { config, lib, pkgs, ... }: {
+        # Some defaults for evaluating modules.
+        _module.check = true;
+
+        # Only use imports as minimally as possible with the absolute
+        # requirements of a host. On second thought, only on flakes with
+        # optional NixOS modules.
         imports = [
-          ./.
-        ];
+          inputs.home-manager.nixosModules.home-manager
+          inputs.sops-nix.nixosModules.sops
+          inputs.disko.nixosModules.disko
+          inputs.nur.nixosModules.nur
+        ] ++ (mapModulesRec' (toString ./modules/nixos) import);
+
+        # BOOOOOOOOOOOOO! Somebody give me a tomato!
+        services.xserver.excludePackages = with pkgs; [ xterm ];
+
+        # Set several paths for the traditional channels.
+        nix.nixPath =
+          lib.mapAttrsToList
+            (name: source:
+              let
+                name' = if (name == "self") then "config" else name;
+              in
+              "${name'}=${source}")
+            inputs
+          ++ [
+            "/nix/var/nix/profiles/per-user/root/channels"
+          ];
+
+        # Please clean your temporary crap.
+        boot.tmp.cleanOnBoot = lib.mkDefault true;
+
+        # We live in a Unicode world and dominantly English in technical fields so we'll
+        # have to go with it.
+        i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
+
+        # The global configuration for the home-manager module.
+        # home-manager.useUserPackages = lib.mkDefault true;
+        # home-manager.useGlobalPkgs = lib.mkDefault true;
+        home-manager.sharedModules =
+          (mapModulesRec' (toString ./modules/home-manager) import)
+          ++ [ userSharedConfig ];
+        # home-manager.extraSpecialArgs = extraArgs;
+
+        boot = {
+          loader = {
+            systemd-boot = {
+              enable = lib.mkDefault true;
+              configurationLimit = 5;
+            };
+            efi.canTouchEfiVariables = lib.mkDefault true;
+          };
+        };
 
       };
+      # The default config for our home-manager configurations. This is also to
+      # be used for sharing modules among home-manager users from NixOS
+      # configurations with `nixpkgs.useGlobalPkgs` set to `true` so avoid
+      # setting nixpkgs-related options here.
+      userSharedConfig = { pkgs, config, lib, ... }: {
+        imports = [
+          inputs.nur.hmModules.nur
+          inputs.sops-nix.homeManagerModules.sops
+        ];
+
+        # Enable home-manager.
+        # This also makes it able to manage itself.
+        programs.home-manager.enable = true;
+
+        home.stateVersion = lib.mkDefault "23.11";
+      };
+
+
+      nixSettingsSharedConfig = { config, lib, pkgs, ... }: {
+        # I want to capture the usual flakes to its exact version so we're
+        # making them available to our system. This will also prevent the
+        # annoying downloads since it always get the latest revision.
+        nix.registry =
+          lib.mapAttrs'
+            (name: flake:
+              let
+                name' = if (name == "self") then "config" else name;
+              in
+              lib.nameValuePair name' { inherit flake; })
+            inputs;
+
+        # Parallel downloads! PARALLEL DOWNLOADS! It's like Pacman 6.0 all over
+        # again.
+        nix.package = pkgs.nixUnstable;
+
+        # Set the configurations for the package manager.
+        nix.settings = {
+          # Set several binary caches.
+          substituters = [
+            "https://nix-community.cachix.org"
+          ];
+          trusted-public-keys = [
+            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          ];
+
+          # Sane config for the package manager.
+          # TODO: Remove this after nix-command and flakes has been considered
+          # stable.
+          #
+          # Since we're using flakes to make this possible, we need it. Plus, the
+          # UX of Nix CLI is becoming closer to Guix's which is a nice bonus.
+          auto-optimise-store = lib.mkDefault true;
+          experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+        };
+
+        # Stallman-senpai will be disappointed.
+        nixpkgs.config.allowUnfree = true;
+
+        # Extend nixpkgs with our overlays except for the NixOS-focused modules
+        # here.
+        nixpkgs.overlays = overlays;
+      };
+
 
       # The order here is important(?).
       overlays = [
@@ -105,11 +221,11 @@
               extraModules = [
                 ({ lib, ... }: {
                   config = lib.mkMerge [
-                    { nixpkgs.config.allowUnfree = true; }
                     { networking.hostName = lib.mkForce host._name; }
                   ];
                 })
-                sharedConfig
+                hostSharedConfig
+                nixSettingsSharedConfig
                 path
               ];
             in
@@ -125,6 +241,7 @@
       # or not this is a good thing is debatable, I just want to test it.
       nixosModules =
         lib.importModules (lib.filesToAttr ./modules/nixos);
+
       # User configuration should be done in here.
       # This runs once for every user, so i won't
       # run into the same problem as i am right,
@@ -153,11 +270,13 @@
 
                   programs.home-manager.enable = true;
                 })
-                sharedConfig
+                nixSettingsSharedConfig
+                userSharedConfig
+                path
               ];
             in
             mkHome {
-              inherit pkgs system extraModules extraArgs path;
+              inherit pkgs system extraModules extraArgs;
               home-manager-channel = metadata.home-manager-channel or "home-manager";
             })
           users;
@@ -202,7 +321,7 @@
                       { networking.hostName = lib.mkForce metadata.hostname or name; }
                     ];
                   })
-                  sharedConfig
+                  hostSharedConfig
                   ./hosts/${name}
                 ];
               }))

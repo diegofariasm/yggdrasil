@@ -1,82 +1,12 @@
-{ inputs
-, config
-, lib
-, pkgs
-, ...
-}:
-with lib;
-with lib.my;
+{ pkgs ? import <nixpkgs> { } }:
+
+let
+  lib' = pkgs.lib.extend (final: prev:
+    import ./lib/utils.nix { lib = prev; } // import ./lib/private.nix { lib = final; });
+in
 {
-  imports =
-    [
-      inputs.home-manager.nixosModules.home-manager
-    ];
-
-  # Common config for all nixos machines; and to ensure the flake operates
-  # soundly
-  environment.variables = {
-    DOTFILES = config.dotfiles.dir;
-    DOTFILES_BIN = config.dotfiles.binDir;
-  };
-
-  # Configure nix and nixpkgs
-  environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
-  nix =
-    let
-      nixPathInputs = mapAttrsToList (n: v: "${n}=${v}") filteredInputs;
-      registryInputs = mapAttrs (_: v: { flake = v; }) filteredInputs;
-      filteredInputs = filterAttrs (n: _: n != "self") inputs;
-    in
-    {
-      package = pkgs.nixVersions.stable;
-      extraOptions = "experimental-features = nix-command flakes";
-      nixPath =
-        nixPathInputs
-        ++ [
-          "dotfiles=${config.dotfiles.dir}"
-          "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
-        ];
-      registry = registryInputs // { dotfiles.flake = inputs.self; };
-      settings = {
-        substituters = [
-          "https://nix-community.cachix.org"
-        ];
-        trusted-public-keys = [
-          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        ];
-        auto-optimise-store = true;
-      };
-    };
-  system.configurationRevision = with inputs; mkIf (self ? rev) self.rev;
-  system.stateVersion = "21.05";
-
-  ## Some reasonable, global defaults
-  # This is here to appease 'nix flake check' for generic hosts with no
-  # hardware-configuration.nix or fileSystem config.
-  fileSystems."/".device = mkDefault "/dev/disk/by-label/nix-root";
-
-  # The global useDHCP flag is deprecated, therefore explicitly set to false
-  # here. Per-interface useDHCP will be mandatory in the future, so we enforce
-  # this default behavior here.
-  networking.useDHCP = mkDefault false;
-
-  boot = {
-    loader = {
-      efi.canTouchEfiVariables = mkDefault true;
-      systemd-boot.configurationLimit = 5;
-      systemd-boot.enable = mkDefault true;
-    };
-  };
-
-  # Just the bear necessities...
-  environment.systemPackages = with pkgs; [
-    git
-    unzip
-    killall
-    treefmt
-    rnix-lsp
-    nixpkgs-fmt
-    cached-nix-shell
-    update-nix-fetchgit
-  ];
-}
+  lib = import ./lib { lib = pkgs.lib; };
+  modules = lib'.importModules (lib'.filesToAttr ./modules/nixos);
+  overlays.foo-dogsquared-pkgs = final: prev: import ./pkgs { pkgs = prev; };
+  hmModules = lib'.importModules (lib'.filesToAttr ./modules/home-manager);
+} // (import ./pkgs { inherit pkgs; })

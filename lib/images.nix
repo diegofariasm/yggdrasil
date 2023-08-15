@@ -15,24 +15,20 @@ in
       specialArgs = extraArgs;
 
       modules =
-        extraModules
-        ++ (mapModulesRec' (toString ../modules/nixos) import);
+        extraModules;
+      #++ (mapModulesRec' (toString ../modules/nixos) import);
 
     };
 
   # A wrapper around the home-manager configuration function.
-  mkHome = { pkgs, path, system, extraModules ? [ ], extraArgs ? { }, home-manager-channel ? "home-manager" }:
+  mkHome = { pkgs, system, extraModules ? [ ], extraArgs ? { }, home-manager-channel ? "home-manager" }:
     inputs."${home-manager-channel}".lib.homeManagerConfiguration {
       inherit lib pkgs;
       extraSpecialArgs = extraArgs;
       modules =
-        extraModules
-        ++ (mapModulesRec' (toString ../modules/home-manager) import);
+        extraModules;
+      # ++ (mapModulesRec' (toString ../modules/home-manager) import);
 
-      # Import the user configuration
-      imports = [
-        path
-      ];
     };
 
   # A wrapper around the nixos-generators `nixosGenerate` function.
