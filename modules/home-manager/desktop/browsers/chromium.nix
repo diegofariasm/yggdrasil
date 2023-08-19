@@ -1,13 +1,15 @@
 { config, options, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.editors.nvim;
+  cfg = config.modules.desktop.chromium;
+
+
 in
 {
-  options.modules.editors.nvim = {
+  options.modules.desktop.chromium = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install the nvim package.
+        Wheter to install chromium.
       '';
       type = lib.types.bool;
       default = false;
@@ -15,11 +17,8 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-
-    # Install the nvim binary
     home.packages = with pkgs; [
-      neovim
+      chromium
     ];
-
   };
 }

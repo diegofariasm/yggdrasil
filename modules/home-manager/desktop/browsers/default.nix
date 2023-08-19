@@ -14,6 +14,10 @@ in
   };
 
   config = mkIf (cfg.default != null) {
-    env.BROWSER = cfg.default;
+    home.sessionVariables = {
+      # Default browser for the user.
+      # Note: not yet enforced on the mime apps.
+      BROWSER = cfg.default;
+    };
   };
 }

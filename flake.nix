@@ -70,22 +70,29 @@
         inherit inputs;
         inherit lib;
       };
+
       # The shared configuration for the entire list of hosts for this cluster.
       # Take note to only set as minimal configuration as possible since we're
       # also using this with the stable version of nixpkgs.
       hostSharedConfig = { config, lib, pkgs, ... }: {
-        # Some defaults for evaluating modules.
-        _module.check = true;
-
         # Only use imports as minimally as possible with the absolute
         # requirements of a host. On second thought, only on flakes with
         # optional NixOS modules.
-        imports = [
-          inputs.home-manager.nixosModules.home-manager
-          inputs.sops-nix.nixosModules.sops
-          inputs.disko.nixosModules.disko
-          inputs.nur.nixosModules.nur
+        imports = with inputs; [
+          home-manager.nixosModules.home-manager
+          sops-nix.nixosModules.sops
+          disko.nixosModules.disko
+          nur.nixosModules.nur
         ] ++ (mapModulesRec' (toString ./modules/nixos) import);
+
+
+        environment.systemPackages = with pkgs; [
+          vim
+          unzip
+          treefmt
+          rnix-lsp
+          cached-nix-shell
+        ];
 
         # BOOOOOOOOOOOOO! Somebody give me a tomato!
         services.xserver.excludePackages = with pkgs; [ xterm ];
@@ -103,16 +110,9 @@
             "/nix/var/nix/profiles/per-user/root/channels"
           ];
 
-        # Please clean your temporary crap.
-        boot.tmp.cleanOnBoot = lib.mkDefault true;
 
-        # We live in a Unicode world and dominantly English in technical fields so we'll
-        # have to go with it.
-        i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
-
-        # The global configuration for the home-manager module.
-        # home-manager.useUserPackages = lib.mkDefault true;
-        # home-manager.useGlobalPkgs = lib.mkDefault true;
+        home-manager.useUserPackages = lib.mkDefault true;
+        home-manager.useGlobalPkgs = lib.mkDefault true;
         home-manager.sharedModules =
           (mapModulesRec' (toString ./modules/home-manager) import)
           ++ [ userSharedConfig ];
@@ -134,9 +134,9 @@
       # configurations with `nixpkgs.useGlobalPkgs` set to `true` so avoid
       # setting nixpkgs-related options here.
       userSharedConfig = { pkgs, config, lib, ... }: {
-        imports = [
-          inputs.nur.hmModules.nur
-          inputs.sops-nix.homeManagerModules.sops
+        imports = with inputs; [
+          nur.hmModules.nur
+          sops-nix.homeManagerModules.sops
         ];
 
         # Enable home-manager.
@@ -168,9 +168,11 @@
         nix.settings = {
           # Set several binary caches.
           substituters = [
+            "https://hyprland.cachix.org"
             "https://nix-community.cachix.org"
           ];
           trusted-public-keys = [
+            "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
             "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           ];
 

@@ -30,11 +30,6 @@
         };
         thunar.enable = true;
       };
-      browsers = {
-        default = "firefox";
-        firefox.enable = true;
-        chromium.enable = true;
-      };
       term = {
         default = {
           name = "kitty";
@@ -42,11 +37,6 @@
         };
         kitty.enable = true;
       };
-    };
-    editors = {
-      default = "nvim";
-      vim.enable = true;
-      emacs.enable = true;
     };
     shell = {
       zsh.enable = true;
