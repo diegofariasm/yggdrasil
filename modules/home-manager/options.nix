@@ -14,28 +14,27 @@ with lib.my;
       binDir = mkOpt path "${config.dotfiles.dir}/bin";
       configDir = mkOpt path "${config.dotfiles.dir}/config";
       modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
-      themesDir = mkOpt path "${config.dotfiles.modulesDir}/themes";
     };
 
-    env = mkOption {
-      type = attrsOf (oneOf [ str path (listOf (either str path)) ]);
-      apply = mapAttrs
-        (n: v:
-          if isList v
-          then concatMapStringsSep ":" (x: toString x) v
-          else (toString v));
-      default = { };
-      description = "TODO";
-    };
   };
-
   config = {
-    # must already begin with pre-existing PATH. Also, can't use binDir here,
-    # because it contains a nix store path.
-    home.sessionPath = [ "$DOTFILES_BIN" "$XDG_BIN_HOME" "$PATH" ];
 
-    # home.extraInit =
-    #   concatStringsSep "\n"
-    #     (mapAttrsToList (n: v: "export ${n}=\"${v}\"") config.env);
+    # So this can be used throghout the config.
+    # Gives me some peace being able to acess my
+    # dotfiles thorugh the variables.
+    home.sessionVariables = with config.dotfiles; {
+      "DOTFILES_BIN" = binDir;
+      "DOTFILES_CONFIG" = configDir;
+      "DOTFILES_MODULES" = modulesDir;
+    };
+
+    # Add a few things to path.
+    # These are used in all of the users.
+    home.sessionPath = [
+      "$DOTFILES_BIN"
+      "$XDG_BIN_HOME"
+      "$PATH"
+    ];
+
   };
 }

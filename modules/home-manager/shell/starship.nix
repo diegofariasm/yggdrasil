@@ -17,10 +17,14 @@ in
   };
   config = lib.mkIf cfg.enable {
 
-    # Install the starship binary
+    programs.starship = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    # A needed font
     home.packages = with pkgs;  [
       icomoon
-      starship
     ];
 
     # Looks too bad without the font.

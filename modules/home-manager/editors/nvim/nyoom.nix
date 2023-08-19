@@ -28,9 +28,8 @@ in
       };
     };
 
-    # Nyoom bin
     home.sessionPath = [
-      "~/.config/nvim/bin"
+      "$XDG_CONFIG_HOME/nvim/bin"
     ];
 
   };

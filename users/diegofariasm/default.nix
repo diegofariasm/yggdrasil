@@ -1,26 +1,24 @@
 { pkgs, ... }:
 
-
 let
   user = "diegofariasm";
 in
 {
   users.users."${user}" = {
     group = "users";
-    shell = pkgs.elvish;
+    shell = pkgs.zsh;
     isNormalUser = true;
     home = "/home/${user}";
     extraGroups = [ "wheel" ];
-    description = "My personal account.";
     hashedPassword = "$6$YNJGW9lqQz5ccudx$NZnn/GlUXbeoyu6mD7/LLuqVMCd4v8pDmW0xEpMLXcv9gcFqZ24NDpkJxxgCCXbLkSCBiLJ9UdqUBKll4BvAO/";
   };
+
+  programs.zsh.enable = true;
 
   home-manager.users.${user} = { pkgs, config, ... }: {
 
     modules = {
-      # TODO: make this also set the shell for the user.
-      # NOTE: it is probably done through a nixos module.
-      shell.elvish.enable = true;
+      shell.zsh.enable = true;
       desktop = {
         browsers = {
           default = "firefox";

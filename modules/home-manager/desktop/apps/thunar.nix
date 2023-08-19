@@ -8,7 +8,6 @@ in
     enable = lib.mkOption {
       description = ''
         Wheter to install thunar.
-        A gtk file explorer.
       '';
       type = lib.types.bool;
       default = false;
@@ -16,8 +15,11 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
+    home.packages = with pkgs; with xfce; [
       thunar
+      thunar-volman
+      thunar-archive-plugin
+      thunar-media-tags-plugin
     ];
   };
 }

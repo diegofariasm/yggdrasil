@@ -15,10 +15,9 @@ in
   };
 
   config = {
-
-    env = {
-      TERMINAL = cfg.default.name;
-      TERMINAL_COMMAND = cfg.default.command;
+    home.sessionVariables = with cfg.default; {
+      TERMINAL = name;
+      TERMINAL_COMMAND = command;
     };
   };
 }

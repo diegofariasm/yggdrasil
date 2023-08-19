@@ -1,5 +1,4 @@
-{ options
-, config
+{ config
 , lib
 , pkgs
 , ...
@@ -43,6 +42,5 @@ in
       mkIf config.hardware.pulseaudio.enable
         "${paConfigFile}/default.pa";
 
-    # user.extraGroups = [ "audio" ];
   };
 }

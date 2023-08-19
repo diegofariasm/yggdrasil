@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.modules.editors.emacs.doom;
@@ -24,6 +24,10 @@ in
         type = "git";
       };
     };
+
+    home.sessionPath = [
+      "$XDG_CONFIG_HOME/emacs/bin"
+    ];
 
   };
 }
