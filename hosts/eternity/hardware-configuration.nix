@@ -9,35 +9,17 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
   boot = {
-    initrd.availableKernelModules = [ "xhci_pci" "ahci" "sd_mod" "rtsx_pci_sdmmc" ];
-    initrd.kernelModules = [ ];
+    initrd = {
+      kernelModules = [ ];
+      availableKernelModules = [ "xhci_pci" "ahci" "sd_mod" "rtsx_pci_sdmmc" ];
+    };
+
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
   };
 
-  fileSystems = {
-    "/" =
-      {
-        device = "/dev/disk/by-label/nixos-root";
-        fsType = "ext4";
-      };
-
-    "/home" =
-      {
-        device = "/dev/disk/by-label/nixos-home";
-        fsType = "ext4";
-      };
-
-    "/boot" =
-      {
-        device = "/dev/disk/by-label/nixos-boot";
-        fsType = "vfat";
-      };
-  };
-  swapDevices = [
-    { device = "/dev/disk/by-label/nixos-swap"; }
-  ];
-
+  # Extend the life of your ssd.
+  services.fstrim.enable = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

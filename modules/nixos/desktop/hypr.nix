@@ -57,33 +57,26 @@ in
     hyprland.nixosModules.default
   ];
 
-  config = mkIf cfg.enable
-    {
-      services.xserver = {
-        enable = true;
-        displayManager.lightdm = {
-          enable = true;
-        };
-      };
+  config = mkIf cfg.enable {
 
-      fonts.packages = with pkgs; [
-        (nerdfonts.override {
-          fonts = [
-            "Iosevka"
-          ];
-        })
-      ];
+    fonts.packages = with pkgs; [
+      (nerdfonts.override {
+        fonts = [
+          "Iosevka"
+        ];
+      })
+    ];
 
-      programs.hyprland.enable = true;
+    programs.hyprland.enable = true;
 
-      environment.systemPackages = with pkgs; [
-        dunst
-        hyprpaper
-        eww-wayland
-        rofi-wayland
-        configure-gtk
-        wl-clipboard-x11
-      ];
+    environment.systemPackages = with pkgs; [
+      dunst
+      hyprpaper
+      eww-wayland
+      rofi-wayland
+      configure-gtk
+      wl-clipboard-x11
+    ];
 
-    };
+  };
 }
