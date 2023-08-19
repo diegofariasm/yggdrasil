@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.modules.desktop.chromium;
@@ -19,6 +19,14 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       chromium
+      (makeDesktopItem {
+        name = "chromium-private";
+        desktopName = "Chromium (Private)";
+        genericName = "Open a private chromium window";
+        icon = "chromium";
+        exec = "${chromium}/bin/chromium --private-window";
+        categories = [ "Network" ];
+      })
     ];
   };
 }

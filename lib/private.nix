@@ -1,27 +1,9 @@
 { lib, ... }:
 with lib;
 with my;
-rec {
+{
 
   getSecret = path: ../secrets/${path};
-
-  getUsers = users:
-    let
-      userModules = filesToAttr ../users;
-      invalidUsernames = [ "config" "modules" ];
-
-      users' = filterAttrs (n: _: !elem n invalidUsernames && elem n users) userModules;
-      userList = attrNames users';
-
-      nonExistentUsers = filter (name: !elem name userList) users;
-    in
-    trivial.throwIfNot ((length nonExistentUsers) == 0)
-      "There are no users ${concatMapStringsSep ", " (u: "'${u}'") nonExistentUsers}."
-      (r: r)
-      users';
-
-  getUser = user:
-    getAttr user (getUsers [ user ]);
 
   # Import modules with a set blocklist.
   importModules = attrs:

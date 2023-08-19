@@ -1,10 +1,6 @@
 # A set of functions intended for creating images. THis is meant to be imported
 # for use in flake.nix and nowhere else.
-{ inputs, lib, modules, ... }:
-let
-  inherit (modules) mapModules mapModulesRec mapModulesRec';
-
-in
+{ inputs, lib, ... }:
 {
 
   # A wrapper around the NixOS configuration function.
@@ -37,8 +33,8 @@ in
       inherit pkgs system format lib;
       specialArgs = extraArgs;
       modules =
-        extraModules
-        ++ (mapModulesRec' (toString ../modules/nixos) import);
+        extraModules;
+      # ++ (mapModulesRec' (toString ../modules/nixos) import);
     };
 
   listImagesWithSystems = data:

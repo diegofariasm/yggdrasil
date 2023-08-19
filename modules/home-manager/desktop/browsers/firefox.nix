@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.modules.desktop.browsers.firefox;
@@ -19,6 +19,14 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       firefox
+      (makeDesktopItem {
+        name = "firefox-private";
+        desktopName = "Firefox (Private)";
+        genericName = "Open a private Firefox window";
+        icon = "firefox";
+        exec = "${firefox}/bin/firefox --private-window";
+        categories = [ "Network" ];
+      })
     ];
   };
 }

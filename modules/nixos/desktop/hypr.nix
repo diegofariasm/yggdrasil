@@ -2,13 +2,11 @@
 , config
 , inputs
 , lib
-, options
 , ...
 }:
 with lib;
 with lib.my; let
   cfg = config.modules.desktop.hypr;
-  configDir = config.dotfiles.configDir;
 
   inherit (inputs) hyprland;
 
@@ -63,9 +61,8 @@ in
     {
       services.xserver = {
         enable = true;
-        displayManager.gdm = {
+        displayManager.lightdm = {
           enable = true;
-          autoSuspend = true;
         };
       };
 

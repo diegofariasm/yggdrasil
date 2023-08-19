@@ -2,10 +2,7 @@
 #
 # Set up and enforce XDG compliance. Other modules will take care of their own,
 # but this takes care of the general cases.
-{ config
-, home-manager
-, ...
-}: {
+{ ... }: {
   ### A tidy $HOME is a tidy mind
   environment = {
     sessionVariables = {
@@ -14,15 +11,9 @@
       # cause race conditions.
       XDG_CACHE_HOME = "$HOME/.cache";
       XDG_CONFIG_HOME = "$HOME/.config";
-      XDG_DATA_HOME = "$HOME/.local/share";
       XDG_BIN_HOME = "$HOME/.local/bin";
       XDG_RUNTIME_DIR = "/run/user/$UID";
+      XDG_DATA_HOME = "$HOME/.local/share";
     };
-
-    # Move ~/.Xauthority out of $HOME (setting XAUTHORITY early isn't enough)
-    extraInit = ''
-      export XAUTHORITY=/tmp/Xauthority
-      [ -e ~/.Xauthority ] && mv -f ~/.Xauthority "$XAUTHORITY"
-    '';
   };
 }

@@ -1,7 +1,5 @@
-{ lib, pkgs, config, options, ... }:
+{ pkgs, ... }:
 
-with lib;
-with lib.my;
 
 let
   user = "fushi";
@@ -9,6 +7,7 @@ in
 {
   users.users."${user}" = {
     group = "users";
+    shell = pkgs.elvish;
     isNormalUser = true;
     home = "/home/${user}";
     extraGroups = [ "wheel" ];
@@ -19,13 +18,29 @@ in
   home-manager.users.${user} = { pkgs, config, ... }: {
 
     modules = {
+      shell = {
+        elvish.enable = true;
+        direnv.enable = true;
+        starship.enable = true;
+      };
       desktop = {
         browsers = {
           default = "firefox";
           firefox.enable = true;
         };
+        term = {
+          default = {
+            name = "kitty";
+            command = "kitty --single-instance";
+          };
+          kitty.enable = true;
+        };
       };
       editors = {
+        emacs = {
+          enable = true;
+          doom.enable = true;
+        };
         nvim = {
           enable = true;
           nyoom.enable = true;

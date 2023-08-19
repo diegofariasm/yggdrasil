@@ -1,7 +1,5 @@
-{ options
-, config
+{ config
 , lib
-, pkgs
 , ...
 }:
 with lib;
@@ -17,13 +15,6 @@ in
   };
 
   config = {
-    # Set these variables for later use.
-    # TERMINAL --> the default terminal name
-    # TERMINAL_COMMAND --> the default command for running the terminal.
-
-    # Example values:
-    # TERMINAL --> kitty
-    # TERMINAL_COMMAND --> kitty --single-instance
 
     env = {
       TERMINAL = cfg.default.name;

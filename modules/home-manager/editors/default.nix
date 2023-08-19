@@ -1,7 +1,5 @@
 { config
-, options
 , lib
-, pkgs
 , ...
 }:
 with lib;

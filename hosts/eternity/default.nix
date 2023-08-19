@@ -1,14 +1,7 @@
-{ pkgs
-, config
-, lib
-, ...
-}: {
+{ ... }: {
   imports = [
     ../home.nix
     ./hardware-configuration.nix
-
-    # The users for this host
-    (lib.my.getUser "fushi")
   ];
 
 
@@ -30,19 +23,8 @@
         };
         thunar.enable = true;
       };
-      term = {
-        default = {
-          name = "kitty";
-          command = "kitty --single-instance";
-        };
-        kitty.enable = true;
-      };
     };
-    shell = {
-      zsh.enable = true;
-      git.enable = true;
-      direnv.enable = true;
-    };
+
     services = {
       polkit.enable = true;
       ssh.enable = true;

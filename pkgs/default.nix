@@ -5,7 +5,7 @@ with pkgs;
 let
   packages = self:
     let callPackage = newScope self;
-    in rec {
+    in {
       icomoon = callPackage ./icomoon { };
     };
 in

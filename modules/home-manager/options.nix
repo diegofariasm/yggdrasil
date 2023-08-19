@@ -1,4 +1,4 @@
-{ config, options, lib, home-manager, ... }:
+{ config, lib, ... }:
 
 with lib;
 with lib.my;
@@ -32,9 +32,9 @@ with lib.my;
   config = {
     # must already begin with pre-existing PATH. Also, can't use binDir here,
     # because it contains a nix store path.
-    env.PATH = [ "$DOTFILES_BIN" "$XDG_BIN_HOME" "$PATH" ];
+    home.sessionPath = [ "$DOTFILES_BIN" "$XDG_BIN_HOME" "$PATH" ];
 
-    # environment.extraInit =
+    # home.extraInit =
     #   concatStringsSep "\n"
     #     (mapAttrsToList (n: v: "export ${n}=\"${v}\"") config.env);
   };

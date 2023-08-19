@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.modules.editors.nvim.nyoom;

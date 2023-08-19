@@ -15,7 +15,6 @@ let
   };
 
   mylib = makeExtensible (self:
-    with self;
     mapModules ./.
       (file: import file { inherit self lib inputs modules; }));
 in

@@ -19,6 +19,8 @@
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Generating an entire flavored themes with Nix?
+    nix-colors.url = "github:misterio77/nix-colors";
 
     # Removing the manual partitioning part with a little boogie.
     disko.url = "github:nix-community/disko";
@@ -44,11 +46,10 @@
   outputs =
     inputs @ { self
     , nixpkgs
-    , nixpkgs-unstable
     , ...
     }:
     let
-      inherit (lib.my) mapModules mapModulesRec mapModulesRec' mkHost mkHome mkImage listImagesWithSystems importTOML;
+      inherit (lib.my) mapModulesRec' mkHost mkHome mkImage listImagesWithSystems;
       # A set of images with their metadata that is usually built for usual
       # purposes. The format used here is whatever formats nixos-generators
       # support.
@@ -56,6 +57,22 @@
 
       # A set of users with their metadata to be deployed with home-manager.
       users = listImagesWithSystems (lib.importTOML ./users.toml);
+
+      # The order here is important(?).
+      overlays = [
+        # Put my custom packages to be available.
+        self.overlays.default
+
+        # Access to NUR.
+        inputs.nur.overlay
+      ];
+
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+
+      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
 
       lib =
         nixpkgs.lib.extend
@@ -67,6 +84,7 @@
           });
 
       extraArgs = {
+        inherit (inputs) nix-colors;
         inherit inputs;
         inherit lib;
       };
@@ -75,6 +93,7 @@
       # Take note to only set as minimal configuration as possible since we're
       # also using this with the stable version of nixpkgs.
       hostSharedConfig = { config, lib, pkgs, ... }: {
+
         # Only use imports as minimally as possible with the absolute
         # requirements of a host. On second thought, only on flakes with
         # optional NixOS modules.
@@ -83,14 +102,14 @@
           sops-nix.nixosModules.sops
           disko.nixosModules.disko
           nur.nixosModules.nur
-        ] ++ (mapModulesRec' (toString ./modules/nixos) import);
-
+        ] ++ (mapModulesRec' (toString ./modules/nixos) import) ++ (mapModulesRec' (toString ./users) import);
 
         environment.systemPackages = with pkgs; [
+          nil
+          git
           vim
           unzip
           treefmt
-          rnix-lsp
           cached-nix-shell
         ];
 
@@ -110,12 +129,17 @@
             "/nix/var/nix/profiles/per-user/root/channels"
           ];
 
+        # The global configuration for the home-manager module.
+        home-manager = {
+          useUserPackages = lib.mkDefault true;
+          useGlobalPkgs = lib.mkDefault true;
 
-        home-manager.useUserPackages = lib.mkDefault true;
-        home-manager.useGlobalPkgs = lib.mkDefault true;
-        home-manager.sharedModules =
-          (mapModulesRec' (toString ./modules/home-manager) import)
-          ++ [ userSharedConfig ];
+          sharedModules =
+            (mapModulesRec' (toString ./modules/home-manager) import)
+            ++ [ userSharedConfig ];
+
+        };
+
         # home-manager.extraSpecialArgs = extraArgs;
 
         boot = {
@@ -195,23 +219,6 @@
       };
 
 
-      # The order here is important(?).
-      overlays = [
-        # Put my custom packages to be available.
-        self.overlays.default
-
-        # Access to NUR.
-        inputs.nur.overlay
-      ];
-
-      defaultSystem = "x86_64-linux";
-      # Just add systems here and it should add systems to the outputs.
-      systems = with inputs.flake-utils.lib.system; [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
-
-      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
     in
     {
       # Some sensible default configurations.
@@ -296,6 +303,7 @@
         inputs.flake-utils.lib.flattenTree (import ./pkgs {
           pkgs = import nixpkgs { inherit system; };
         }));
+
 
       # This contains images that are meant to be built and distributed
       # somewhere else including those NixOS configurations that are built as
