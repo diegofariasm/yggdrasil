@@ -1,60 +1,36 @@
-(defwidget panel_powermenu []
-  (box :class "panel_powermenu"
+(defwidget powermenu []
+  (box 
+    :class "panel"
     (button
-      :class "button_powermenu"
+      :class "button"
       :onclick "~/.config/hypr/config/rofi/bin/powermenu &"
-      (label :class "icon" :text "")
-    )
-  )
-)
-
-(defwidget panel_launcher []
-  (box :class "panel_launcher"
-    (button
-      :class "button_launcher"
-      :onclick "~/.config/hypr/config/rofi/bin/launcher &"
-      (label :class "icon" :text "")
-    )
-  )
-)
-
-(defwidget time []
-  (box
-    :class "panel_info__card"
-    :orientation "v"
-    hour min type
-  )
-)
-
-(defwidget date []
-  (box :class "panel_info__card"
-    :orientation "v"
-  day month year))
-
-(defwidget panel_info []
-  (box
-    :class "panel_info"
-    :orientation "v"
-    :spacing 5
-    (time)
-    (date)
-  )
-)
-
-
-(defwidget panel_workspaces []
-  (box :class "panel_workspace"
-    (box
-      :space-evenly false
-      :orientation "vertical"
-      :spacing 1
-      (for workspace in {workspaces.workspaces}
-        (button
-          :class "button_workspace ${workspace.id == workspaces.active ? "button_workspace__active" : ""} ${workspace.windows > 0 ? "button_workspacee__occupied" : "button_workspace__empty"}"
-          :onclick "hyprctl dispatch workspace ${workspace.id}"
-          :valign "center"
-          (label :class "icon" :text {workspace.windows > 0 ? "${workspace.id == workspaces.active ? "" : ""}" : ""})
-        )
+      (
+        label
+        :text ""
       )
     )
-  ))
+  )
+)
+
+(defwidget card [ info ]
+    (box
+        :class "panel"
+        "dawd"
+    )
+)
+
+(defwidget workspaces [ orientation ]
+  (box
+    :spacing 5
+    :space-evenly true
+    :orientation orientation
+    :class "panel workspaces"
+    (for workspace in {workspaces.workspaces}
+      (button
+        :class "button workspace ${workspace.id == workspaces.active ? "workspace_active" : ""} ${workspace.windows > 0 ? "workspacee_occupied" : "workspace__empty"}"
+        :onclick "hyprctl dispatch workspace ${workspace.id}"
+        (label :class "icon" :text {workspace.windows > 0 ? "${workspace.id == workspaces.active ? "" : ""}" : ""})
+      )
+    )
+   )
+  )

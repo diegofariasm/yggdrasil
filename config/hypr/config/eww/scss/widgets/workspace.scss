@@ -1,0 +1,15 @@
+.workspaces {
+    // Might apply this in every element.
+    // Could be cool.
+    transition: ease-in-out;
+    transition-delay: 100ms;
+    transition-duration: 200ms;
+
+    &_active {
+        font-size: 18px;
+        font-weight: bold;
+
+        color: $secondary-color;
+        background-color: $background-primary;
+    }
+}

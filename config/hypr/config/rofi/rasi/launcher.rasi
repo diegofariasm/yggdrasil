@@ -1,0 +1,179 @@
+/*****----- Configuration -----*****/
+configuration {
+	modi:                       "drun,run";
+    show-icons:                 true;
+    display-drun:               "";
+    display-run:                "";
+    display-filebrowser:        "";
+    display-window:             "";
+	drun-display-format:        "{name}";
+	window-format:              "{w} · {c} · {t}";
+}
+
+/*****----- Global Properties -----*****/
+
+@import "../color.rasi"
+@import "../font.rasi"
+
+/*****----- Main Window -----*****/
+window {
+    /* properties for window widget */
+    border:                      1px;
+    border-color:                @background-selected;
+    border-radius:               5px;
+    
+    width: 40%;
+    height: 50%;
+   
+    // Center the window
+    anchor:                      center;
+    location:                    center;
+
+    /* properties for all widgets */
+    enabled:                     true;
+    cursor:                      "default";
+    background-color:            @background;
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    enabled:                     true;
+    spacing:                     0px;
+    background-color:            transparent;
+    orientation:                 vertical;
+    children:                    [ "inputbar", "listbox" ];
+}
+
+listbox {
+    spacing:                     20px;
+    padding:                     0 40px 20px;
+    background-color:            transparent;
+    orientation:                 vertical;
+    children:                    [ "message", "listview" ];
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    enabled:                     true;
+    spacing:                     10px;
+    padding:                     40px 40px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    orientation:                 horizontal;
+    children:                    [ "textbox-prompt-colon", "entry", "dummy", "mode-switcher" ];
+}
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "";
+    padding:                     15px 20px 10px 20px;
+    border:                      3px;
+    border-color:                @background-alt;
+    background-color:            @background;
+    text-color:                  inherit;
+}
+entry {
+    enabled:                     true;
+    expand:                      false;
+    width:                       250px;
+    padding:                     12px 16px;
+    border:                      3px;
+    border-color:                @background-alt;
+    background-color:            @background;
+    text-color:                  inherit;
+    cursor:                      text;
+    placeholder:                 "Search";
+    placeholder-color:           inherit;
+}
+dummy {
+    expand:                      true;
+    background-color:            transparent;
+}
+
+/*****----- Mode Switcher -----*****/
+mode-switcher{
+    enabled:                     true;
+    spacing:                     10px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+}
+button {
+    padding:                     5px 25px 5px 20px;
+    border:                      3px;
+    border-color:                @background-alt;
+    background-color:            @background;
+    text-color:                  inherit;
+    cursor:                      pointer;
+}
+button selected {
+    background-color:            @background-selected;
+    text-color:                  @foreground-selected;
+}
+
+/*****----- Listview -----*****/
+listview {
+    enabled:                     true;
+    columns:                     1;
+    lines:                       7;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+
+    spacing:                     5px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      "default";
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    spacing:                     10px;
+    padding:                     5px;
+    cursor:                      pointer;
+    border:                      3px;
+    border-radius:               5px;
+    text-color:                  @foreground;
+}
+element normal.normal {
+    background-color:            @background-alt;
+    text-color:                  @foreground;
+}
+element alternate.normal {
+    background-color:            @background-alt;
+    text-color:                  @foreground;
+}
+
+element selected.normal {
+    background-color:            @background-selected;
+    text-color:                  @background;
+    border:                      3px;
+    border-color:                @background-alt;
+}
+
+
+element-icon {
+    background-color:            transparent;
+    text-color:                  inherit;
+    size:                        32px;
+    cursor:                      inherit;
+}
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+/*****----- Message -----*****/
+
+textbox {
+    padding:                     10px;
+    text-color:                  @foreground;
+    background-color:            @background;
+}

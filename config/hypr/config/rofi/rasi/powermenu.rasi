@@ -1,0 +1,60 @@
+
+@import "../color.rasi"
+@import "../font.rasi"
+
+window {
+    width:                          5%;
+  
+    border:                  	    2px;
+    border-radius:                  10px;
+    border-color:                   @background-selected;
+    
+    y-offset: 0;
+    x-offset: -10px;
+
+    // Center the window
+    anchor:                      center;
+    location:                    east;
+}
+
+listview {
+    columns:                        1;
+    lines:			                6;
+
+    text-color:       @foreground;
+    background-color: @background;
+}
+
+mainbox {
+    padding: 5px;
+    background-color: @background;
+    // So that the prompt does not appear.
+    children:                       [ listview ];
+}
+
+element {
+    border-radius:                  5px;
+    padding:                        10px;
+
+    text-color:                     @foreground;
+    background-color:               @background;
+}
+
+element-text {
+    font:			                "Symbols Nerd Font Mono 18";
+    // Center the icon. 
+    // Why here and not on element-icon?
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+    // So that there isn't a glitched out background
+    // in the icons
+    text-color:       		        inherit;
+    background-color: 		        inherit;
+
+}
+
+element selected {
+    text-color:                     @foreground-selected;
+    background-color:               @background-selected;
+}
+

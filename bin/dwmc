@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Author: this scripts comes from the dwmc patch for dwm.
+# Usage: gets used by a few of my scripts to control dwm.
+
 signal() {
 	xsetroot -name "fsignal:$*"
 }
@@ -132,4 +135,3 @@ case $# in
 	exit 1
 	;;
 esac
-

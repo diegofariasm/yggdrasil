@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-dir="$HOME/.config/hypr/config/rofi/launcher"
-theme='launcher'
+config_dir="$HOME/.config/hypr/config/rofi"
 
-## Run
 rofi \
 	-show drun \
-	-theme ${dir}/${theme}.rasi
+	-theme ${config_dir}/rasi/launcher.rasi

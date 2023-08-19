@@ -1,11 +1,10 @@
-// Theming
+// Common things
+
+@import "./scss/variables.scss";
 @import "./scss/colors.scss";
 @import "./scss/common.scss";
-@import "./scss/variables.scss";
+
 // Widgets
-@import "./scss/widgets/panel_launcher.scss";
-@import "./scss/widgets/panel_workspace.scss";
-@import "./scss/widgets/panel_info.scss";
-@import "./scss/widgets/panel_powermenu.scss";
+@import "./scss/widgets.scss";
 // Windows
-@import "./scss/windows/vbar.scss";
+@import "./scss/windows.scss";
