@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   cfg = config.modules.editors.emacs.doom;
@@ -15,12 +15,21 @@ in
       default = false;
       example = true;
     };
+    autoInstall = lib.mkOption {
+      description = ''
+        Wheter to auto install doom emacs.
+      '';
+      type = lib.types.bool;
+      default = true;
+      example = false;
+    };
+
   };
   config = lib.mkIf cfg.enable {
 
     home.mutableFile = {
       ".config/emacs" = {
-        url = "https://github.com/doomemacs/doomemacs";
+        url = "https://github.com/fushiii/doomemacs";
         type = "git";
       };
     };

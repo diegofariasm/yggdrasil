@@ -24,9 +24,9 @@
       audio.enable = true;
       fs.enable = true;
     };
-   
+
     services.ssh.enable = true;
-    
+
   };
 
 }

@@ -41,6 +41,7 @@
 
     # Extras
     hyprland.url = "github:hyprwm/Hyprland";
+    nix-index-database.url = "github:Mic92/nix-index-database";
   };
 
   outputs =
@@ -59,12 +60,20 @@
       users = listImagesWithSystems (lib.importTOML ./users.toml);
 
       # The order here is important(?).
-      overlays = [
+      overlays = with inputs; [
         # Put my custom packages to be available.
         self.overlays.default
 
         # Access to NUR.
-        inputs.nur.overlay
+        nur.overlay
+
+        (final: prev: {
+          nix-index-database = final.runCommandLocal "nix-index-database" { } ''
+            mkdir -p $out
+            ln -s ${nix-index-database.legacyPackages.${prev.system}.database} $out/files
+          '';
+        })
+
       ];
 
       systems = [
@@ -277,7 +286,7 @@
 
                     # Stallman-senpai will be disappointed. :/
                     config.allowUnfree = true;
-                    
+
                     # Setting the homely options.
                     home.username = name;
                     home.homeDirectory = metadata.home-directory or "/home/${config.home.username}";

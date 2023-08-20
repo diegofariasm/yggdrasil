@@ -1,6 +1,7 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-
+with lib;
+with lib.my;
 let
   user = "fushiii";
 in
@@ -17,6 +18,22 @@ in
   programs.zsh.enable = true;
 
   home-manager.users.${user} = { pkgs, config, ... }: {
+    # Secrets related to this account.
+    # Don't go snooping around
+    sops = {
+      age.keyFile = "${config.xdg.configHome}/age/fushiiii";
+      secrets = getSecrets ./secrets/ssh.yaml {
+        fushiii = {
+          mode = "0600";
+          path = "${config.home.homeDirectory}/.ssh/fushiii";
+        };
+        fushiii_pub = {
+          mode = "0644";
+          path = "${config.home.homeDirectory}/.ssh/fushiii.pub";
+        };
+      };
+    };
+
     modules = {
       shell = {
         zsh.enable = true;
@@ -26,9 +43,6 @@ in
       };
       desktop = {
         apps = {
-          editors = {
-            code.enable = true;
-          };
           media = {
             vlc.enable = true;
             nomacs.enable = true;
@@ -39,7 +53,6 @@ in
         browsers = {
           default = "firefox";
           firefox.enable = true;
-          chromium.enable = true;
         };
         term = {
           default = {

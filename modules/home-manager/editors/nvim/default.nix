@@ -20,6 +20,14 @@ in
     home.packages = with pkgs; [
       neovim
     ];
+    # Aliases.
+    # Why would i use vim if i have
+    # neovim installed?
+    programs.zsh.shellAliases = {
+      v = "nvim";
+      vi = "nvim";
+      vim = "nvim";
+    };
 
   };
 }

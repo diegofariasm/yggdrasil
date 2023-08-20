@@ -1,6 +1,6 @@
 { lib, ... }:
 with lib;
-with my;
+with lib.my;
 {
 
   getSecret = path: ../secrets/${path};

@@ -1,0 +1,7 @@
+keys:
+  - &fushiii age1y5ywzx578na8hgxnyfvwn9knl7heaskswxvc0mfdj9hed75a7eqsrcshhk
+
+creation_rules:
+  - path_regex: users/fushiii/secrets/[^/]+\.(yaml|json)$
+    age: *fushiii
+  

@@ -15,11 +15,25 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-
     # Install the emacs binary
     home.packages = with pkgs; [
-      emacs
+      fd
+      ripgrep
+      marksman
+      shellcheck
+      # There should be no need to install the emacs
+      # package manually. The lines below should provide
+      # the binary.
+      ((emacsPackagesFor emacs).emacsWithPackages (epkgs: [
+        epkgs.vterm
+      ]))
     ];
+
+    # Easier calling of emacs on the command line.
+    # You should probably have the daemon running anyway.
+    programs.zsh.shellAliases = {
+      emacs = "emacsclient -c -a 'emacs'";
+    };
 
   };
 }
