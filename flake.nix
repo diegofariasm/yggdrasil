@@ -107,9 +107,12 @@
         environment.systemPackages = with pkgs; [
           nil
           git
+          age
           vim
+          sops
           unzip
           treefmt
+          nixpkgs-fmt
           cached-nix-shell
         ];
 
@@ -137,7 +140,6 @@
           sharedModules =
             (mapModulesRec' (toString ./modules/home-manager) import)
             ++ [ userSharedConfig ];
-
         };
 
         # home-manager.extraSpecialArgs = extraArgs;
@@ -275,6 +277,10 @@
 
                     # Stallman-senpai will be disappointed. :/
                     config.allowUnfree = true;
+                    
+                    # Setting the homely options.
+                    home.username = name;
+                    home.homeDirectory = metadata.home-directory or "/home/${config.home.username}";
                   };
 
                   programs.home-manager.enable = true;

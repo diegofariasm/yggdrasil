@@ -2,14 +2,12 @@
 
 let
   cfg = config.modules.desktop.browsers.firefox;
-
-
 in
 {
   options.modules.desktop.browsers.firefox = {
     enable = lib.mkOption {
       description = ''
-        Wheter to installfirefox.
+        Wheter to install firefox.
       '';
       type = lib.types.bool;
       default = false;

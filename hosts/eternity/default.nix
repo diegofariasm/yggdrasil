@@ -24,11 +24,9 @@
       audio.enable = true;
       fs.enable = true;
     };
-
-    services = {
-      docker.enable = true;
-      ssh.enable = true;
-    };
+   
+    services.ssh.enable = true;
+    
   };
 
 }

@@ -1,12 +1,10 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.desktop.chromium;
-
-
+  cfg = config.modules.desktop.browsers.chromium;
 in
 {
-  options.modules.desktop.chromium = {
+  options.modules.desktop.browsers.chromium = {
     enable = lib.mkOption {
       description = ''
         Wheter to install chromium.
@@ -24,7 +22,7 @@ in
         desktopName = "Chromium (Private)";
         genericName = "Open a private chromium window";
         icon = "chromium";
-        exec = "${chromium}/bin/chromium --private-window";
+        exec = "${chromium}/bin/chromium --incognito";
         categories = [ "Network" ];
       })
     ];

@@ -10,8 +10,8 @@
       partitions = [
         {
           name = "nixos-boot";
-          start = "1MiB";
-          end = "512MiB";
+          start = "0";
+          end = "1GiB";
           bootable = true;
           content = {
             type = "filesystem";
@@ -21,8 +21,8 @@
         }
         {
           name = "nixos-swap";
-          start = "512MiB";
-          end = "+8GiB";
+          start = "1GiB";
+          end = "9GiB";
           part-type = "primary";
           content = {
             type = "swap";
@@ -31,8 +31,8 @@
         }
         {
           name = "nixos-root";
-          start = "8.5GiB";
-          end = "+128GiB";
+          start = "9GiB";
+          end = "137GiB";
           part-type = "primary";
           content = {
             type = "filesystem";
@@ -42,8 +42,8 @@
         }
         {
           name = "nixos-home";
-          start = "136.5GiB";
-          end = "100%";
+          start = "137GiB";
+          end = "201GiB";
           part-type = "primary";
           content = {
             type = "filesystem";

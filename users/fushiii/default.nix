@@ -2,7 +2,7 @@
 
 
 let
-  user = "fushi";
+  user = "fushiii";
 in
 {
   users.users."${user}" = {
@@ -39,6 +39,7 @@ in
         browsers = {
           default = "firefox";
           firefox.enable = true;
+          chromium.enable = true;
         };
         term = {
           default = {
