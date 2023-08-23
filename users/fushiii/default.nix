@@ -21,16 +21,11 @@ in
     # Secrets related to this account.
     # Don't go snooping around
     sops = {
-      age.keyFile = "${config.xdg.configHome}/age/fushiiii";
-      secrets = getSecrets ./secrets/ssh.yaml {
-        fushiii = {
-          mode = "0600";
-          path = "${config.home.homeDirectory}/.ssh/fushiii";
-        };
-        fushiii_pub = {
-          mode = "0644";
-          path = "${config.home.homeDirectory}/.ssh/fushiii.pub";
-        };
+      age.keyFile = "${config.xdg.configHome}/sops/age/fushiii";
+      defaultSopsFile = ./secrets/ssh.yaml;
+      secrets = {
+        fushiii.path = "/home/fushiii/.ssh/fushiii";
+        fushiii_pub.path = "${config.home.homeDirectory}/.ssh/fushiii.pub";
       };
     };
 

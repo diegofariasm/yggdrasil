@@ -150,8 +150,12 @@
             (mapModulesRec' (toString ./modules/home-manager) import)
             ++ [ userSharedConfig ];
         };
-
         # home-manager.extraSpecialArgs = extraArgs;
+
+        system = {
+          configurationRevision = with inputs; lib.mkIf (self ? rev) self.rev;
+          stateVersion = "21.05";
+        };
 
         boot = {
           loader = {
@@ -183,43 +187,37 @@
 
 
       nixSettingsSharedConfig = { config, lib, pkgs, ... }: {
-        # I want to capture the usual flakes to its exact version so we're
-        # making them available to our system. This will also prevent the
-        # annoying downloads since it always get the latest revision.
-        nix.registry =
-          lib.mapAttrs'
-            (name: flake:
-              let
-                name' = if (name == "self") then "config" else name;
-              in
-              lib.nameValuePair name' { inherit flake; })
-            inputs;
 
-        # Parallel downloads! PARALLEL DOWNLOADS! It's like Pacman 6.0 all over
-        # again.
-        nix.package = pkgs.nixUnstable;
+        # Configure nix and nixpkgs
+        environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
+        nix =
+          let
+            filteredInputs = lib.filterAttrs (n: _: n != "self") inputs;
+            nixPathInputs = lib.mapAttrsToList (n: v: "${n}=${v}") filteredInputs;
+            registryInputs = lib.mapAttrs (_: v: { flake = v; }) filteredInputs;
+          in
+          {
+            package = pkgs.nixFlakes;
+            extraOptions = "experimental-features = nix-command flakes";
+            nixPath = nixPathInputs ++ [
+              "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
+              "dotfiles=${config.dotfiles.dir}"
+            ];
+            registry = registryInputs // { dotfiles.flake = inputs.self; };
+            settings = {
+              substituters = [
+                "https://nix-community.cachix.org"
+              ];
+              trusted-public-keys = [
+                "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+              ];
+              auto-optimise-store = true;
+            };
+          };
 
-        # Set the configurations for the package manager.
-        nix.settings = {
-          # Set several binary caches.
-          substituters = [
-            "https://hyprland.cachix.org"
-            "https://nix-community.cachix.org"
-          ];
-          trusted-public-keys = [
-            "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-          ];
 
-          # Sane config for the package manager.
-          # TODO: Remove this after nix-command and flakes has been considered
-          # stable.
-          #
-          # Since we're using flakes to make this possible, we need it. Plus, the
-          # UX of Nix CLI is becoming closer to Guix's which is a nice bonus.
-          auto-optimise-store = lib.mkDefault true;
-          experimental-features = [ "nix-command" "flakes" "repl-flake" ];
-        };
+
+
 
         # Stallman-senpai will be disappointed.
         nixpkgs.config.allowUnfree = true;
