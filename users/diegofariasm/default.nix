@@ -1,5 +1,7 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+with lib;
+with lib.my;
 let
   user = "diegofariasm";
 in
@@ -16,24 +18,63 @@ in
   programs.zsh.enable = true;
 
   home-manager.users.${user} = { pkgs, config, ... }: {
+    # Secrets related to this account.
+    # Don't go snooping around
+    sops = {
+      age = {
+        # Age key location.
+        # Might change it to the /etc/dotfiles folder.
+        # Does it get copied to the nix store?
+        keyFile = "${config.xdg.configHome}/sops/age/diegofariasm";
+      };
+      defaultSopsFile = ./secrets/ssh.yaml;
+      secrets = {
+        diegofariasm.path = "${config.home.homeDirectory}/.ssh/diegofariasm";
+        diegofariasm_pub.path = "${config.home.homeDirectory}/.ssh/diegofariasm.pub";
+      };
+    };
 
     modules = {
-      shell.zsh.enable = true;
+      shell = {
+        zsh.enable = true;
+        fzf.enable = true;
+        direnv.enable = true;
+        starship.enable = true;
+      };
       desktop = {
+        apps = {
+          media = {
+            vlc.enable = true;
+            nomacs.enable = true;
+          };
+          thunar.enable = true;
+          obsidian.enable = true;
+        };
         browsers = {
           default = "firefox";
           firefox.enable = true;
         };
+        term = {
+          default = {
+            name = "kitty";
+            command = "kitty --single-instance";
+          };
+          kitty.enable = true;
+        };
       };
       editors = {
+        emacs = {
+          enable = true;
+          doom.enable = true;
+        };
         nvim = {
           enable = true;
           nyoom.enable = true;
         };
         default = "nvim";
       };
+      theme.active = "oxocarbon";
     };
 
-    home.stateVersion = "23.11";
   };
 }

@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.modules.editors.emacs;
@@ -15,19 +15,28 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    # Install the emacs binary
-    home.packages = with pkgs; [
-      fd
-      ripgrep
-      marksman
-      shellcheck
-      # There should be no need to install the emacs
-      # package manually. The lines below should provide
-      # the binary.
-      ((emacsPackagesFor emacs).emacsWithPackages (epkgs: [
+
+    programs.emacs = {
+      enable = true;
+      # These generally need to be compiled,
+      # so providing them here is the cleanest
+      # way of actually getting them.
+      extraPackages = epkgs: [
         epkgs.vterm
-      ]))
-    ];
+      ];
+    };
+
+    services.emacs = {
+      enable = true;
+      client = {
+        enable = true;
+        # clientArguments = [
+        #   # TODO  
+        # ];
+      };
+      startWithUserSession = true;
+      socketActivation.enable = true;
+    };
 
     # Easier calling of emacs on the command line.
     # You should probably have the daemon running anyway.

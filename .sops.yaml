@@ -1,7 +1,14 @@
 keys:
   - &fushiii age1y5ywzx578na8hgxnyfvwn9knl7heaskswxvc0mfdj9hed75a7eqsrcshhk
+  - &diegofariasm age1rr9mdpe8wmsmlqxwxsvjyuf6004xfkt9g65r7lnm6enjpqc2mq8s5qtjus
 
 creation_rules:
+  # User secrets.
+  # Should be ssh keys, and some other things
+  # related solely to the user.
   - path_regex: users/fushiii/secrets/[^/]+\.(yaml|json)$
     age: *fushiii
+  - path_regex: users/diegofariasm/secrets/[^/]+\.(yaml|json)$
+    age: *diegofariasm
+
   

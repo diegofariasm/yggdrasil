@@ -21,10 +21,15 @@ in
     # Secrets related to this account.
     # Don't go snooping around
     sops = {
-      age.keyFile = "${config.xdg.configHome}/sops/age/fushiii";
+      age = {
+        # Age key location.
+        # Might change it to the /etc/dotfiles folder.
+        # Does it get copied to the nix store?
+        keyFile = "${config.xdg.configHome}/sops/age/fushiii";
+      };
       defaultSopsFile = ./secrets/ssh.yaml;
       secrets = {
-        fushiii.path = "/home/fushiii/.ssh/fushiii";
+        fushiii.path = "${config.home.homeDirectory}/.ssh/fushiii";
         fushiii_pub.path = "${config.home.homeDirectory}/.ssh/fushiii.pub";
       };
     };
@@ -43,6 +48,7 @@ in
             nomacs.enable = true;
           };
           thunar.enable = true;
+          element.enable = true;
           obsidian.enable = true;
         };
         browsers = {
@@ -68,8 +74,7 @@ in
         };
         default = "nvim";
       };
+      theme.active = "oxocarbon";
     };
-
-    home.stateVersion = "23.11";
   };
 }

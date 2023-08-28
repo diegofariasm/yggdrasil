@@ -16,17 +16,20 @@
     desktop = {
       hypr.enable = true;
       display = {
-        lightdm.enable = true;
+        gdm.enable = true;
       };
     };
 
     hardware = {
+      bluetooth.enable = true;
       audio.enable = true;
       fs.enable = true;
     };
 
-    services.ssh.enable = true;
-
+    services = {
+      ssh.enable = true;
+      upower.enable = true;
+    };
   };
 
 }

@@ -13,10 +13,10 @@ with lib.my;
             "/mnt/etc/dotfiles"
             "/etc/dotfiles"
           ]));
-      binDir     = mkOpt path "${config.dotfiles.dir}/bin";
-      configDir  = mkOpt path "${config.dotfiles.dir}/config";
+      binDir = mkOpt path "${config.dotfiles.dir}/bin";
+      configDir = mkOpt path "${config.dotfiles.dir}/config";
       modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
-      themesDir  = mkOpt path "${config.dotfiles.modulesDir}/themes";
+      themesDir = mkOpt path "${config.dotfiles.modulesDir}/themes";
     };
   };
 

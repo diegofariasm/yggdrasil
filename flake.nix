@@ -19,9 +19,6 @@
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Generating an entire flavored themes with Nix?
-    nix-colors.url = "github:misterio77/nix-colors";
-
     # Removing the manual partitioning part with a little boogie.
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -41,12 +38,22 @@
 
     # Extras
     hyprland.url = "github:hyprwm/Hyprland";
+    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
     nix-index-database.url = "github:Mic92/nix-index-database";
+
+
+    # Theming
+    stylix.url = "github:danth/stylix";
+
+    base16-schemes.flake = false;
+    base16-schemes.url = "github:base16-project/base16-schemes";
+
   };
 
   outputs =
     inputs @ { self
     , nixpkgs
+    , home-manager
     , ...
     }:
     let
@@ -83,6 +90,8 @@
 
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
 
+      # Extend lib with my personal custom library,
+      # as well as home-manager's library.
       lib =
         nixpkgs.lib.extend
           (self: super: {
@@ -90,10 +99,9 @@
               inherit inputs;
               lib = self;
             };
-          });
+          }) // home-manager.lib;
 
       extraArgs = {
-        inherit (inputs) nix-colors;
         inherit inputs;
         inherit lib;
       };
@@ -120,7 +128,9 @@
           vim
           sops
           unzip
+          nixfmt
           treefmt
+          rnix-lsp
           nixpkgs-fmt
           cached-nix-shell
         ];
@@ -146,18 +156,29 @@
           useUserPackages = lib.mkDefault true;
           useGlobalPkgs = lib.mkDefault true;
 
+          # Make all of the flake inputs
+          # available to the home-manager modules.
+          # Note: can not use extraArgs here because
+          # the 'inherit lib' there will collide with hm.
+          extraSpecialArgs = {
+            inherit inputs;
+          };
+
           sharedModules =
             (mapModulesRec' (toString ./modules/home-manager) import)
             ++ [ userSharedConfig ];
         };
-        # home-manager.extraSpecialArgs = extraArgs;
 
         system = {
-          configurationRevision = with inputs; lib.mkIf (self ? rev) self.rev;
+          configurationRevision = lib.mkIf (self ? rev) self.rev;
           stateVersion = "21.05";
         };
 
         boot = {
+          # Probably won't see this.
+          # That's the magic of ssd's for you.
+          plymouth.enable = true;
+
           loader = {
             systemd-boot = {
               enable = lib.mkDefault true;
@@ -173,9 +194,14 @@
       # configurations with `nixpkgs.useGlobalPkgs` set to `true` so avoid
       # setting nixpkgs-related options here.
       userSharedConfig = { pkgs, config, lib, ... }: {
+        # TODO: find how to import some of the modules
+        # in the place where they are needed.
+        # nix-doom-emacs.hmModule in editors/emacs/doom
         imports = with inputs; [
-          nur.hmModules.nur
+          stylix.homeManagerModules.stylix
           sops-nix.homeManagerModules.sops
+          nix-doom-emacs.hmModule
+          nur.hmModules.nur
         ];
 
         # Enable home-manager.
