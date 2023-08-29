@@ -1,25 +1,42 @@
+(defwidget panel_clock [] (box :class "button-bin"
+    (button
+      :onclick "${EWW_CONFIG_DIR}/scripts/launcher toggle_menu calendar"
+      :class "button clock"
+      (box
+        :space-evenly false
+        :orientation "v"
+        (label :text hour :class "clock")
+        (panel_separator :orientation "h" :dots "[1, 2]" :visible true)
+        (label :text minutes :class "minutes")
+      )
+    )
+  ))
 
-(defwidget vbar [] (centerbox
-    :class "vbar"
+(defwidget bar [] (centerbox
     :orientation "v"
+    :class "vpanel ${workspaces.active_empty ? "floating" : ""}"
     (box
+      :class "leftBar"
+      :space-evenly false
       :valign "start"
       :orientation "v"
-      (workspaces :orientation "v")
+      (panel_launcher)
+      (panel_workspaces :orientation "v")
     )
     (box
-      :space-evenly false
+      :class "centerBar"
       :orientation "v"
-      (panel_info :orientation "v")
+      :space-evenly false
+      (panel_clock)
+      (panel_separator :orientation "h" :dots "[1, 2, 3]" :visible true)
     )
-
     (box
+      :class "rightBar"
       :space-evenly false
-      :orientation "v"
       :valign "end"
-      :spacing 5
-      (controller)
-      (powermenu)
+      :orientation "v"
+      (panel_colorpicker)
+      (panel_system_indicators :orientation "v")
+      (panel_powermenu)
     )
-  )
-)
+  ))

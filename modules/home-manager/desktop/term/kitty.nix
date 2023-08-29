@@ -3,8 +3,7 @@
 let
   cfg = config.modules.desktop.term.kitty;
   configDir = config.dotfiles.configDir;
-in
-{
+in {
   options.modules.desktop.term.kitty = {
     enable = lib.mkOption {
       description = ''
@@ -17,9 +16,7 @@ in
   };
   config = lib.mkIf cfg.enable {
     # Install the kitty package
-    home.packages = with pkgs; [
-      kitty
-    ];
+    home.packages = with pkgs; [ kitty ];
 
     # Install my kitty config.
     # You can also do that directly from the user,

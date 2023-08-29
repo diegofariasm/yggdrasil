@@ -1,9 +1,7 @@
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 
-let
-  cfg = config.modules.editors.emacs;
-in
-{
+let cfg = config.modules.editors.emacs;
+in {
   options.modules.editors.emacs = {
     enable = lib.mkOption {
       description = ''
@@ -21,9 +19,7 @@ in
       # These generally need to be compiled,
       # so providing them here is the cleanest
       # way of actually getting them.
-      extraPackages = epkgs: [
-        epkgs.vterm
-      ];
+      extraPackages = epkgs: [ epkgs.vterm ];
     };
 
     services.emacs = {
@@ -37,12 +33,12 @@ in
       startWithUserSession = true;
       socketActivation.enable = true;
     };
+    # Dependencies for emacs ( doom )
+    home.packages = with pkgs; [ fd ripgrep ];
 
     # Easier calling of emacs on the command line.
     # You should probably have the daemon running anyway.
-    programs.zsh.shellAliases = {
-      emacs = "emacsclient -c -a 'emacs'";
-    };
+    programs.zsh.shellAliases = { emacs = "emacsclient -c -a 'emacs'"; };
 
   };
 }

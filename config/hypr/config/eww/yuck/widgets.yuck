@@ -1,3 +1,5 @@
-(include "./yuck/widgets/date.yuck")
-(include "./yuck/widgets/status.yuck")
+(include "./yuck/widgets/notification.yuck")
+(include "./yuck/widgets/sys_sliders.yuck")
+(include "./yuck/widgets/toggles.yuck")
+(include "./yuck/widgets/sysprogress.yuck")
 (include "./yuck/widgets/bar_widgets.yuck")
