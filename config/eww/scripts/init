@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Kill all of the eww processes.
+pkill eww
+
+eww daemon
+eww open bar
+eww open notifications_popup

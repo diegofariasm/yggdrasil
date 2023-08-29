@@ -1,0 +1,13 @@
+@import "./scss/colors.scss";
+@import "./scss/variables.scss";
+@import "./scss/common.scss";
+
+// Widgets
+@import "./scss/widgets.scss";
+
+// Windows
+@import "./scss/windows.scss";
+
+tooltip {
+    @include tooltip
+}
