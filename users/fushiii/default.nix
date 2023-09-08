@@ -6,7 +6,6 @@ let user = "fushiii";
 in
 {
 
-
   sops = {
     age = {
       # Age key location.

@@ -22,36 +22,21 @@
         {
           name = "nixos-swap";
           start = "1GiB";
-          end = "9GiB";
-          part-type = "primary";
+          end = "5GiB";
           content = {
             type = "swap";
             randomEncryption = true;
           };
         }
         {
-          name = "nixos-root";
-          start = "9GiB";
-          end = "137GiB";
-          part-type = "primary";
+          name = "nixos";
+          start = "5GiB";
           content = {
             type = "filesystem";
             mountpoint = "/";
             format = "ext4";
           };
         }
-        {
-          name = "nixos-home";
-          start = "137GiB";
-          end = "201GiB";
-          part-type = "primary";
-          content = {
-            type = "filesystem";
-            mountpoint = "/home";
-            format = "ext4";
-          };
-        }
-
       ];
     };
   };
