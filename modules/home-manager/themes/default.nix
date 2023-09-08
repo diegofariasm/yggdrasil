@@ -2,21 +2,19 @@
 # intertwined with others, and are solely responsible for aesthetics. Disabling
 # a theme module should never leave a system non-functional.
 
-{ inputs, config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 with lib.my;
-let
-  cfg = config.modules.theme;
-in
-{
+let cfg = config.modules.theme;
+in {
   options.modules.theme = with types; {
     active = mkOption {
       type = nullOr str;
       default = null;
       apply = v:
-        let theme = builtins.getEnv "THEME"; in
-        if theme != "" then theme else v;
+        let theme = builtins.getEnv "THEME";
+        in if theme != "" then theme else v;
       description = ''
         Name of the theme to enable. Can be overridden by the THEME environment
         variable. Themes can also be hot-swapped with 'hey theme $THEME'.
@@ -68,8 +66,6 @@ in
       };
     };
 
-
-
     stylix = {
       # Generate the colorschme from the image
       # Note: i am not currently using this to generate
@@ -81,22 +77,22 @@ in
       # change the fonts based on the theme anyway.
       fonts = {
         serif = {
-          package = pkgs.julia-mono;
-          name = "JuliaMono";
+          package = pkgs.nur.repos.oluceps.san-francisco;
+          name = "SF Pro";
         };
         sansSerif = {
-          package = pkgs.julia-mono;
-          name = "JuliaMono";
+          package = pkgs.nur.repos.oluceps.san-francisco;
+          name = "SF Pro Display";
         };
         monospace = {
-          package = pkgs.julia-mono;
-          name = "JuliaMono";
+          package = pkgs.nur.repos.oluceps.san-francisco;
+          name = "SF Mono";
         };
         sizes = {
-          popups = 12;
-          desktop = 11;
+          popups = 11;
+          desktop = 12;
           terminal = 14;
-          applications = 11;
+          applications = 12;
         };
       };
     };

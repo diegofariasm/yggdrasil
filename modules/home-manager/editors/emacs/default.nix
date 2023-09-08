@@ -33,6 +33,7 @@ in {
       startWithUserSession = true;
       socketActivation.enable = true;
     };
+
     # Dependencies for emacs ( doom )
     home.packages = with pkgs; [ fd ripgrep ];
 

@@ -2,8 +2,7 @@
 
 with lib;
 with lib.my;
-let
-  user = "fushiii";
+let user = "fushiii";
 in
 {
   users.users."${user}" = {
@@ -12,7 +11,8 @@ in
     isNormalUser = true;
     home = "/home/${user}";
     extraGroups = [ "wheel" ];
-    hashedPassword = "$6$YNJGW9lqQz5ccudx$NZnn/GlUXbeoyu6mD7/LLuqVMCd4v8pDmW0xEpMLXcv9gcFqZ24NDpkJxxgCCXbLkSCBiLJ9UdqUBKll4BvAO/";
+    hashedPassword =
+      "$6$YNJGW9lqQz5ccudx$NZnn/GlUXbeoyu6mD7/LLuqVMCd4v8pDmW0xEpMLXcv9gcFqZ24NDpkJxxgCCXbLkSCBiLJ9UdqUBKll4BvAO/";
   };
 
   programs.zsh.enable = true;
@@ -64,10 +64,6 @@ in
         };
       };
       editors = {
-        emacs = {
-          enable = true;
-          doom.enable = true;
-        };
         nvim = {
           enable = true;
           nyoom.enable = true;

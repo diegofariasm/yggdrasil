@@ -36,13 +36,17 @@
     # This is what AUR strives to be.
     nur.url = "github:nix-community/NUR";
 
-    # Extras
-    hyprland.url = "github:hyprwm/Hyprland";
-    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
-    nix-index-database.url = "github:Mic92/nix-index-database";
+    # emacs-overlay.url = "github:nix-community/emacs-overlay";
+    # emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Theming
+    nix-index-database.url = "github:Mic92/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
     stylix.url = "github:danth/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
+
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     base16-schemes.flake = false;
     base16-schemes.url = "github:base16-project/base16-schemes";
@@ -86,12 +90,13 @@
 
       # Extend lib with my personal custom library,
       # as well as home-manager's library.
-      lib = nixpkgs.lib.extend (self: super: {
-        my = import ./lib {
-          inherit inputs;
-          lib = self;
-        };
-      }) // home-manager.lib;
+      lib = nixpkgs.lib.extend
+        (self: super: {
+          my = import ./lib {
+            inherit inputs;
+            lib = self;
+          };
+        }) // home-manager.lib;
 
       extraArgs = {
         inherit inputs;
@@ -134,10 +139,12 @@
         services.xserver.excludePackages = with pkgs; [ xterm ];
 
         # Set several paths for the traditional channels.
-        nix.nixPath = lib.mapAttrsToList (name: source:
-          let name' = if (name == "self") then "config" else name;
-          in "${name'}=${source}") inputs
-          ++ [ "/nix/var/nix/profiles/per-user/root/channels" ];
+        nix.nixPath = lib.mapAttrsToList
+          (name: source:
+            let name' = if (name == "self") then "config" else name;
+            in "${name'}=${source}")
+          inputs
+        ++ [ "/nix/var/nix/profiles/per-user/root/channels" ];
 
         # The global configuration for the home-manager module.
         home-manager = {
@@ -182,11 +189,9 @@
       userSharedConfig = { pkgs, config, lib, ... }: {
         # TODO: find how to import some of the modules
         # in the place where they are needed.
-        # nix-doom-emacs.hmModule in editors/emacs/doom
         imports = with inputs; [
           stylix.homeManagerModules.stylix
           sops-nix.homeManagerModules.sops
-          nix-doom-emacs.hmModule
           nur.hmModules.nur
         ];
 
@@ -201,30 +206,32 @@
 
         # Configure nix and nixpkgs
         environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
-        nix = let
-          filteredInputs = lib.filterAttrs (n: _: n != "self") inputs;
-          nixPathInputs = lib.mapAttrsToList (n: v: "${n}=${v}") filteredInputs;
-          registryInputs = lib.mapAttrs (_: v: { flake = v; }) filteredInputs;
-        in {
-          package = pkgs.nixFlakes;
-          extraOptions = "experimental-features = nix-command flakes";
-          nixPath = nixPathInputs ++ [
-            "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
-            "dotfiles=${config.dotfiles.dir}"
-          ];
-          registry = registryInputs // { dotfiles.flake = inputs.self; };
-          settings = {
-            substituters = [
-              "https://hyprland.cachix.org"
-              "https://nix-community.cachix.org"
+        nix =
+          let
+            filteredInputs = lib.filterAttrs (n: _: n != "self") inputs;
+            nixPathInputs = lib.mapAttrsToList (n: v: "${n}=${v}") filteredInputs;
+            registryInputs = lib.mapAttrs (_: v: { flake = v; }) filteredInputs;
+          in
+          {
+            package = pkgs.nixFlakes;
+            extraOptions = "experimental-features = nix-command flakes";
+            nixPath = nixPathInputs ++ [
+              "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
+              "dotfiles=${config.dotfiles.dir}"
             ];
-            trusted-public-keys = [
-              "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-              "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-            ];
-            auto-optimise-store = true;
+            registry = registryInputs // { dotfiles.flake = inputs.self; };
+            settings = {
+              substituters = [
+                "https://hyprland.cachix.org"
+                "https://nix-community.cachix.org"
+              ];
+              trusted-public-keys = [
+                "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+                "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+              ];
+              auto-optimise-store = true;
+            };
           };
-        };
 
         # Stallman-senpai will be disappointed.
         nixpkgs.config.allowUnfree = true;
@@ -234,25 +241,29 @@
         nixpkgs.overlays = overlays;
       };
 
-    in {
+    in
+    {
       # Some sensible default configurations.
-      nixosConfigurations = lib.mapAttrs (filename: host:
-        let
-          path = ./hosts/${filename};
-          extraModules = [
-            ({ lib, ... }: {
-              config =
-                lib.mkMerge [{ networking.hostName = lib.mkForce host._name; }];
-            })
-            hostSharedConfig
-            nixSettingsSharedConfig
-            path
-          ];
-        in mkHost {
-          nixpkgs-channel = host.nixpkgs-channel or "nixpkgs";
-          inherit extraModules extraArgs;
-          system = host._system;
-        }) (lib.filterAttrs (_: host: (host.format or "iso") == "iso") images);
+      nixosConfigurations = lib.mapAttrs
+        (filename: host:
+          let
+            path = ./hosts/${filename};
+            extraModules = [
+              ({ lib, ... }: {
+                config =
+                  lib.mkMerge [{ networking.hostName = lib.mkForce host._name; }];
+              })
+              hostSharedConfig
+              nixSettingsSharedConfig
+              path
+            ];
+          in
+          mkHost {
+            nixpkgs-channel = host.nixpkgs-channel or "nixpkgs";
+            inherit extraModules extraArgs;
+            system = host._system;
+          })
+        (lib.filterAttrs (_: host: (host.format or "iso") == "iso") images);
 
       # We're going to make our custom modules available for our flake. Whether
       # or not this is a good thing is debatable, I just want to test it.
@@ -263,41 +274,43 @@
       # run into the same problem as i am right,
       # that is: home-manager only install the config
       # for the last user.
-      homeConfigurations = lib.mapAttrs (filename: metadata:
-        let
-          name = metadata._name;
-          system = metadata._system;
-          pkgs = import inputs."${metadata.nixpkgs-channel or "nixpkgs"}" {
-            inherit system overlays;
-          };
-          path = ./users/${name};
-          extraModules = [
-            ({ pkgs, config, ... }: {
-              nixpkgs = {
-                # To be able to use the most of our config as possible, we want
-                # both to use the same overlays.
-                overlays = overlays;
+      homeConfigurations = lib.mapAttrs
+        (filename: metadata:
+          let
+            name = metadata._name;
+            system = metadata._system;
+            pkgs = import inputs."${metadata.nixpkgs-channel or "nixpkgs"}" {
+              inherit system overlays;
+            };
+            path = ./users/${name};
+            extraModules = [
+              ({ pkgs, config, ... }: {
+                nixpkgs = {
+                  # To be able to use the most of our config as possible, we want
+                  # both to use the same overlays.
+                  overlays = overlays;
 
-                # Stallman-senpai will be disappointed. :/
-                config.allowUnfree = true;
+                  # Stallman-senpai will be disappointed. :/
+                  config.allowUnfree = true;
 
-                # Setting the homely options.
-                home.username = name;
-                home.homeDirectory =
-                  metadata.home-directory or "/home/${config.home.username}";
-              };
+                  home.username = name;
+                  home.homeDirectory =
+                    metadata.home-directory or "/home/${config.home.username}";
+                };
 
-              programs.home-manager.enable = true;
-            })
-            nixSettingsSharedConfig
-            userSharedConfig
-            path
-          ];
-        in mkHome {
-          inherit pkgs system extraModules extraArgs;
-          home-manager-channel =
-            metadata.home-manager-channel or "home-manager";
-        }) users;
+                programs.home-manager.enable = true;
+              })
+              nixSettingsSharedConfig
+              userSharedConfig
+              path
+            ];
+          in
+          mkHome {
+            inherit pkgs system extraModules extraArgs;
+            home-manager-channel =
+              metadata.home-manager-channel or "home-manager";
+          })
+        users;
 
       # Extending home-manager with my custom modules, if anyone cares.
       homeModules = lib.importModules (lib.filesToAttr ./modules/home-manager);
@@ -309,7 +322,7 @@
       # "x86_64-linux". I just want to try out supporting other systems.
       packages = forAllSystems (system:
         inputs.flake-utils.lib.flattenTree
-        (import ./pkgs { pkgs = import nixpkgs { inherit system; }; }));
+          (import ./pkgs { pkgs = import nixpkgs { inherit system; }; }));
 
       # This contains images that are meant to be built and distributed
       # somewhere else including those NixOS configurations that are built as
@@ -318,28 +331,33 @@
         let
           images' =
             lib.filterAttrs (host: metadata: system == metadata._system) images;
-        in lib.mapAttrs' (host: metadata:
-          let
-            inherit system;
-            name = metadata._name;
-            format = metadata.format or "iso";
-            nixpkgs-channel = metadata.nixpkgs-channel or "nixpkgs";
-            pkgs =
-              import inputs."${nixpkgs-channel}" { inherit system overlays; };
-          in lib.nameValuePair name (mkImage {
-            inherit format system pkgs extraArgs;
-            extraModules = [
-              ({ lib, ... }: {
-                config = lib.mkMerge [
-                  { nixpkgs.config.allowUnfree = true; }
-                  {
-                    networking.hostName = lib.mkForce metadata.hostname or name;
-                  }
-                ];
-              })
-              hostSharedConfig
-              ./hosts/${name}
-            ];
-          })) images');
+        in
+        lib.mapAttrs'
+          (host: metadata:
+            let
+              inherit system;
+              name = metadata._name;
+              format = metadata.format or "iso";
+              nixpkgs-channel = metadata.nixpkgs-channel or "nixpkgs";
+              pkgs =
+                import inputs."${nixpkgs-channel}" { inherit system overlays; };
+            in
+            lib.nameValuePair name (mkImage {
+              inherit format system pkgs extraArgs;
+              extraModules = [
+                ({ lib, ... }: {
+                  config = lib.mkMerge [
+                    {
+                      networking.hostName = lib.mkForce metadata.hostname or name;
+                    }
+                    (lib.mkIf (metadata ? domain)
+                      { networking.domain = lib.mkForce metadata.domain; })
+                  ];
+                })
+                hostSharedConfig
+                ./hosts/${name}
+              ];
+            }))
+          images');
     };
 }

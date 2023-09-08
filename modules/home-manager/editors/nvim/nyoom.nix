@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ pkgs, config, lib, ... }:
 
 let
   cfg = config.modules.editors.nvim.nyoom;
@@ -21,16 +21,23 @@ in
   };
   config = lib.mkIf cfg.enable {
 
-    home.mutableFile = {
-      ".config/nvim" = {
-        url = "https://github.com/fushiii/nyoom.nvim";
-        type = "git";
+    home = {
+      mutableFile = {
+        ".config/nvim" = {
+          url = "https://github.com/fushiii/nyoom.nvim";
+          type = "git";
+        };
       };
+
+      # Add the nyoom binary to path
+      sessionPath = [
+        "$XDG_CONFIG_HOME/nvim/bin"
+      ];
+
+      packages = with pkgs; with vimPlugins; [
+        parinfer-rust
+      ];
+
     };
-
-    home.sessionPath = [
-      "$XDG_CONFIG_HOME/nvim/bin"
-    ];
-
   };
 }
