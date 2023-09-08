@@ -5,15 +5,32 @@ with lib.my;
 let user = "fushiii";
 in
 {
+
+
+  sops = {
+    age = {
+      # Age key location.
+      # Might change it to the /etc/dotfiles folder.
+      # Does it get copied to the nix store?
+      keyFile = "/etc/dotfiles/age/fushiii";
+    };
+    defaultSopsFile = ./secrets/user.yaml;
+    secrets = {
+      password = { };
+    };
+  };
+
+
+
   users.users."${user}" = {
     group = "users";
     shell = pkgs.zsh;
     isNormalUser = true;
     home = "/home/${user}";
     extraGroups = [ "wheel" ];
-    hashedPassword =
-      "$6$YNJGW9lqQz5ccudx$NZnn/GlUXbeoyu6mD7/LLuqVMCd4v8pDmW0xEpMLXcv9gcFqZ24NDpkJxxgCCXbLkSCBiLJ9UdqUBKll4BvAO/";
+    passwordFile = config.sops.secrets.password.path;
   };
+
 
   programs.zsh.enable = true;
 
@@ -25,7 +42,7 @@ in
         # Age key location.
         # Might change it to the /etc/dotfiles folder.
         # Does it get copied to the nix store?
-        keyFile = "${config.xdg.configHome}/sops/age/fushiii";
+        keyFile = "/etc/dotfiles/age/fushiii";
       };
       defaultSopsFile = ./secrets/ssh.yaml;
       secrets = {

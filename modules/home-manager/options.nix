@@ -18,7 +18,6 @@ with lib.my;
 
   };
   config = {
-
     # So this can be used throghout the config.
     # Gives me some peace being able to acess my
     # dotfiles thorugh the variables.
