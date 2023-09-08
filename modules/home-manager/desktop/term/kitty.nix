@@ -3,7 +3,8 @@
 let
   cfg = config.modules.desktop.term.kitty;
   configDir = config.dotfiles.configDir;
-in {
+in
+{
   options.modules.desktop.term.kitty = {
     enable = lib.mkOption {
       description = ''

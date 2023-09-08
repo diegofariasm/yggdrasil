@@ -3,7 +3,8 @@
 let
   cfg = config.modules.shell.starship;
   configDir = config.dotfiles.configDir;
-in {
+in
+{
   options.modules.shell.starship = {
     enable = lib.mkOption {
       description = ''
