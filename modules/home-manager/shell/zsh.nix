@@ -32,10 +32,15 @@ in
 
         # A list of curated plugins.
         plugins = [
+          "djui/alias-tips"
+          "zpm-zsh/colorize"
+          "hlissner/zsh-autopair"
           "unixorn/fzf-zsh-plugin"
+          "gakimball/zsh-coffee-time"
           "zsh-users/zsh-autosuggestions"
-          "zsh-users/zsh-syntax-highlighting"
+          "MichaelAquilina/zsh-auto-notify"
           "zsh-users/zsh-history-substring-search"
+          "zdharma-continuum/fast-syntax-highlighting"
         ];
 
       };

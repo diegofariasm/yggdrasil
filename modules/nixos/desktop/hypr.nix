@@ -71,6 +71,7 @@ in
 
     environment.systemPackages = with pkgs; [
       dunst
+      libnotify
       hyprpaper
       eww-wayland
       rofi-wayland

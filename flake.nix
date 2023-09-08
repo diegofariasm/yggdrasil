@@ -15,18 +15,6 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
 
-    # Generate your NixOS systems to various formats!
-    nixos-generators.url = "github:nix-community/nixos-generators";
-    nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Removing the manual partitioning part with a little boogie.
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Managing your secrets.
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-
     # We're using these libraries for other functions.
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -36,18 +24,54 @@
     # This is what AUR strives to be.
     nur.url = "github:nix-community/NUR";
 
-    # emacs-overlay.url = "github:nix-community/emacs-overlay";
-    # emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    # Generate your NixOS systems to various formats!
+    nixos-generators.url = "github:nix-community/nixos-generators";
+    nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Managing your secrets.
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Easy access to development environments.
+    devshell.url = "github:numtide/devshell";
+    devshell.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Some editors.
+    # I guess nightly is good!?
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
+    helix-editor.url = "github:helix-editor/helix";
+    helix-editor.inputs.nixpkgs.follows = "nixpkgs";
+
+
+    # Removing the manual partitioning part with a little boogie.
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Someone has already solved downloading Firefox addons so we'll use it.
+    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Cached nix-index database.
+    # Doing it manually just takes too long.
 
     nix-index-database.url = "github:Mic92/nix-index-database";
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    stylix.url = "github:danth/stylix";
-    stylix.inputs.nixpkgs.follows = "nixpkgs";
-
+    # The rice machine.
+    # I have been using it for a while, nothing beats it.
+    # ( other than the gtk issues )
     hyprland.url = "github:hyprwm/Hyprland";
-    hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Style your entire computer with nix.
+    # This makes me want to never leave nix or nixos again.
+    stylix.url = "github:danth/stylix";
+
+    # List of curated themes to use with stylix.
+    # Some are missing, but anyway.
     base16-schemes.flake = false;
     base16-schemes.url = "github:base16-project/base16-schemes";
 
@@ -70,14 +94,20 @@
         # Put my custom packages to be available.
         self.overlays.default
 
+        # Neovim nightly!
+        neovim-nightly-overlay.overlays.default
+
+        # Emacs unstable version!
+        emacs-overlay.overlays.default
+
         # Access to NUR.
         nur.overlay
 
         (final: prev: {
           nix-index-database = final.runCommandLocal "nix-index-database" { } ''
-            mkdir -p $out
-            ln -s ${
-              nix-index-database.legacyPackages.${prev.system}.database
+                    mkdir -p $out
+                    ln -s ${
+            nix-index-database.legacyPackages.${prev.system}.database
             } $out/files
           '';
         })
@@ -139,28 +169,31 @@
         services.xserver.excludePackages = with pkgs; [ xterm ];
 
         # Set several paths for the traditional channels.
-        nix.nixPath = lib.mapAttrsToList
-          (name: source:
-            let name' = if (name == "self") then "config" else name;
-            in "${name'}=${source}")
-          inputs
-        ++ [ "/nix/var/nix/profiles/per-user/root/channels" ];
+        nix.nixPath =
+          lib.mapAttrsToList
+            (name: source:
+              let
+                name' = if (name == "self") then "config" else name;
+              in
+              "${name'}=${source}")
+            inputs
+          ++ [
+            "/nix/var/nix/profiles/per-user/root/channels"
+          ];
 
         # The global configuration for the home-manager module.
-        home-manager = {
-          useUserPackages = lib.mkDefault true;
-          useGlobalPkgs = lib.mkDefault true;
+        home-manager.useUserPackages = lib.mkDefault true;
+        home-manager.useGlobalPkgs = lib.mkDefault true;
 
-          # Make all of the flake inputs
-          # available to the home-manager modules.
-          # Note: can not use extraArgs here because
-          # the 'inherit lib' there will collide with hm.
-          extraSpecialArgs = { inherit inputs; };
-
-          sharedModules =
-            (mapModulesRec' (toString ./modules/home-manager) import)
-            ++ [ userSharedConfig ];
-        };
+        # Make all of the flake inputs
+        # available to the home-manager modules.
+        # Note: can not use extraArgs here because
+        # the 'inherit lib' there will collide with hm.
+        # home-manager.extraSpecialArgs = extraArgs;
+        home-manager.extraSpecialArgs = { inherit inputs; };
+        home-manager.sharedModules =
+          (mapModulesRec' (toString ./modules/home-manager) import)
+          ++ [ userSharedConfig ];
 
         system = {
           configurationRevision = lib.mkIf (self ? rev) self.rev;
@@ -175,18 +208,19 @@
           loader = {
             systemd-boot = {
               enable = lib.mkDefault true;
-              configurationLimit = 5;
+              configurationLimit = 10;
             };
             efi.canTouchEfiVariables = lib.mkDefault true;
           };
         };
 
       };
+
       # The default config for our home-manager configurations. This is also to
       # be used for sharing modules among home-manager users from NixOS
       # configurations with `nixpkgs.useGlobalPkgs` set to `true` so avoid
       # setting nixpkgs-related options here.
-      userSharedConfig = { pkgs, config, lib, ... }: {
+      userSharedConfig = { pkgs, config, osConfig, lib, ... }: {
         # TODO: find how to import some of the modules
         # in the place where they are needed.
         imports = with inputs; [
@@ -199,38 +233,51 @@
         # This also makes it able to manage itself.
         programs.home-manager.enable = true;
 
-        home.stateVersion = lib.mkDefault "23.11";
+        # Necessary for home-manager to work with flakes, otherwise it will
+        # look for a nixpkgs channel.
+        home.stateVersion = osConfig.system.stateVersion;
       };
 
       nixSettingsSharedConfig = { config, lib, pkgs, ... }: {
+        # I want to capture the usual flakes to its exact version so we're
+        # making them available to our system. This will also prevent the
+        # annoying downloads since it always get the latest revision.
+        nix.registry =
+          lib.mapAttrs'
+            (name: flake:
+              let
+                name' = if (name == "self") then "config" else name;
+              in
+              lib.nameValuePair name' { inherit flake; })
+            inputs;
 
-        # Configure nix and nixpkgs
-        environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
-        nix =
+        # Parallel downloads! PARALLEL DOWNLOADS! It's like Pacman 6.0 all over
+        # again.
+        nix.package = pkgs.nixUnstable;
+
+        # Set the configurations for the package manager.
+        nix.settings =
           let
-            filteredInputs = lib.filterAttrs (n: _: n != "self") inputs;
-            nixPathInputs = lib.mapAttrsToList (n: v: "${n}=${v}") filteredInputs;
-            registryInputs = lib.mapAttrs (_: v: { flake = v; }) filteredInputs;
+            substituters = [
+              "https://nix-community.cachix.org"
+            ];
           in
           {
-            package = pkgs.nixFlakes;
-            extraOptions = "experimental-features = nix-command flakes";
-            nixPath = nixPathInputs ++ [
-              "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
-              "dotfiles=${config.dotfiles.dir}"
+            # Set several binary caches.
+            substituters = [
+              "https://hyprland.cachix.org"
+              "https://nix-community.cachix.org"
             ];
-            registry = registryInputs // { dotfiles.flake = inputs.self; };
-            settings = {
-              substituters = [
-                "https://hyprland.cachix.org"
-                "https://nix-community.cachix.org"
-              ];
-              trusted-public-keys = [
-                "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-                "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-              ];
-              auto-optimise-store = true;
-            };
+            trusted-public-keys = [
+              "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+              "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+            ];
+
+            # Sane config for the package manager.
+            # TODO: Remove this after nix-command and flakes has been considered
+            # stable.
+            experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+            auto-optimise-store = lib.mkDefault true;
           };
 
         # Stallman-senpai will be disappointed.
@@ -240,6 +287,7 @@
         # here.
         nixpkgs.overlays = overlays;
       };
+
 
     in
     {
@@ -291,10 +339,12 @@
                   overlays = overlays;
 
                   # Stallman-senpai will be disappointed. :/
-                  config.allowUnfree = true;
+                  nixpkgs.config.allowUnfree = true;
+                };
 
-                  home.username = name;
-                  home.homeDirectory =
+                home = {
+                  username = name;
+                  homeDirectory =
                     metadata.home-directory or "/home/${config.home.username}";
                 };
 
@@ -359,5 +409,34 @@
               ];
             }))
           images');
+
+      # My several development shells for usual type of projects. This is much
+      # more preferable than installing all of the packages at the system
+      # configuration (or even home environment).
+      devShells = forAllSystems (system:
+        let pkgs = import nixpkgs { inherit system overlays; };
+        in
+        {
+          default = import ./shell.nix { inherit pkgs; };
+        } // (import ./shells { inherit pkgs; }));
+
+      # Cookiecutter templates for your mama.
+      templates = {
+        default = self.templates.basic-devshell;
+        basic-devshell = {
+          path = ./templates/basic-devshell;
+          description = "Basic development shell template";
+        };
+        basic-overlay-flake = {
+          path = ./templates/basic-overlay-flake;
+          description = "Basic overlay as a flake";
+        };
+        sample-nixos-template = {
+          path = ./templates/sample-nixos-template;
+          description = "Simple sample Nix flake with NixOS and home-manager";
+        };
+
+      };
     };
 }
+

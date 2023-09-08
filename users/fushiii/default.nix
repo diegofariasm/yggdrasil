@@ -80,6 +80,9 @@ in
           kitty.enable = true;
         };
       };
+      services = {
+        udisk.enable = true;
+      };
       editors = {
         nvim = {
           enable = true;

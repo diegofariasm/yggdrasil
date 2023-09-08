@@ -12,7 +12,10 @@
       apps = {
         gaming = {
           steam.enable = true;
-          games = { roblox.enable = true; };
+          heroic.enable = true;
+          games = {
+            roblox.enable = true;
+          };
         };
       };
     };
@@ -27,12 +30,13 @@
 
     hardware = {
       audio.enable = true;
+      zram.enable = true;
       fs.enable = true;
     };
 
     services = {
       ssh.enable = true;
-      upower.enable = true;
+      udisk.enable = true;
       docker.enable = true;
     };
   };

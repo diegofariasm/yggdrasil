@@ -1,6 +1,4 @@
-# These are some of the defaults for every user.
-# For example, we set up auto mount and the nix-index utils.
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   # This set's up nix-locate with a automatic
   # download of a pre made database.
@@ -13,15 +11,5 @@
       source = pkgs.nix-index-database;
     };
   };
-  # Auto mount the drives
-  # And also notify when they are mounted.
-  services = {
-    udiskie = {
-      enable = true;
-      notify = true;
-      autoMount = true;
-    };
-  };
-
 
 }

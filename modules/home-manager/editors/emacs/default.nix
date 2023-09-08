@@ -1,7 +1,8 @@
 { config, pkgs, lib, ... }:
 
 let cfg = config.modules.editors.emacs;
-in {
+in
+{
   options.modules.editors.emacs = {
     enable = lib.mkOption {
       description = ''

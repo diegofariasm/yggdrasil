@@ -3,7 +3,8 @@
 let
   cfg = config.modules.editors.emacs.doom;
   configDir = config.dotfiles.configDir;
-in {
+in
+{
   options.modules.editors.emacs.doom = {
     enable = lib.mkOption {
       description = ''
@@ -44,6 +45,7 @@ in {
           type = "git";
         };
       };
+
       # So there is no need to manually install the fonts.
       # ( or through doom install )
       packages = with pkgs; [ emacs-all-the-icons-fonts ];
