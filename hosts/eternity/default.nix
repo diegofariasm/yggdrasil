@@ -8,15 +8,8 @@
   modules = {
     desktop = {
       hypr.enable = true;
-      display = { gdm.enable = true; };
-      apps = {
-        gaming = {
-          steam.enable = true;
-          heroic.enable = true;
-          games = {
-            roblox.enable = true;
-          };
-        };
+      display = {
+        gdm.enable = true;
       };
     };
 
@@ -36,7 +29,6 @@
 
     services = {
       ssh.enable = true;
-      udisk.enable = true;
       docker.enable = true;
     };
   };

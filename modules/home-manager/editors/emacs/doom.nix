@@ -2,7 +2,6 @@
 
 let
   cfg = config.modules.editors.emacs.doom;
-  configDir = config.dotfiles.configDir;
 in
 {
   options.modules.editors.emacs.doom = {

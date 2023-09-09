@@ -32,8 +32,6 @@ in
 
         # A list of curated plugins.
         plugins = [
-          "djui/alias-tips"
-          "zpm-zsh/colorize"
           "hlissner/zsh-autopair"
           "unixorn/fzf-zsh-plugin"
           "gakimball/zsh-coffee-time"
@@ -44,6 +42,7 @@ in
         ];
 
       };
+
       history = {
         # Share zsh history between sessions
         # This is really nice.

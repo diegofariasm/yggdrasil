@@ -1,0 +1,26 @@
+name: "Cache outputs"
+on:
+  push:
+    branches:
+      - master
+      - develop
+jobs:
+  build-custom-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/magic-nix-cache-action@v2
+      - uses: DeterminateSystems/nix-installer-action@v4
+        with:
+          extra-conf: |
+            keep-going = true
+      - name: Prepare push to binary cache
+        uses: cachix/cachix-action@v12
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          name: foo-dogsquared
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Build custom packages
+        run: nix build -f ./pkgs --impure
+        env:
+          NIXPKGS_ALLOW_UNFREE: "1"

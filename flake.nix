@@ -15,11 +15,12 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
 
-    # We're using these libraries for other functions.
-    flake-utils.url = "github:numtide/flake-utils";
 
     # Managing home configurations.
     home-manager.url = "github:nix-community/home-manager";
+
+    # We're using these libraries for other functions.
+    flake-utils.url = "github:numtide/flake-utils";
 
     # This is what AUR strives to be.
     nur.url = "github:nix-community/NUR";
@@ -36,29 +37,14 @@
     devshell.url = "github:numtide/devshell";
     devshell.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Some editors.
-    # I guess nightly is good!?
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
-
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
-    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
-
-    helix-editor.url = "github:helix-editor/helix";
-    helix-editor.inputs.nixpkgs.follows = "nixpkgs";
-
-
-    # Removing the manual partitioning part with a little boogie.
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Someone has already solved downloading Firefox addons so we'll use it.
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
 
     # Cached nix-index database.
     # Doing it manually just takes too long.
-
     nix-index-database.url = "github:Mic92/nix-index-database";
 
     # The rice machine.
@@ -94,12 +80,6 @@
         # Put my custom packages to be available.
         self.overlays.default
 
-        # Neovim nightly!
-        neovim-nightly-overlay.overlays.default
-
-        # Emacs unstable version!
-        emacs-overlay.overlays.default
-
         # Access to NUR.
         nur.overlay
 
@@ -114,7 +94,7 @@
 
       ];
 
-      systems = [ "x86_64-linux" "aarch64-linux" ];
+      systems = [ "x86_64-linux" ];
 
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
 
@@ -147,7 +127,7 @@
             sops-nix.nixosModules.sops
             disko.nixosModules.disko
             nur.nixosModules.nur
-          ] ++ (mapModulesRec' (toString ./modules/nixos) import)
+          ]
           ++ (mapModulesRec' (toString ./users) import);
 
         environment.systemPackages = with pkgs; [
@@ -159,14 +139,10 @@
           unzip
           nixfmt
           treefmt
-          rnix-lsp
           nixpkgs-fmt
-          font-manager
           cached-nix-shell
         ];
 
-        # BOOOOOOOOOOOOO! Somebody give me a tomato!
-        services.xserver.excludePackages = with pkgs; [ xterm ];
 
         # Set several paths for the traditional channels.
         nix.nixPath =
@@ -182,14 +158,17 @@
           ];
 
         # The global configuration for the home-manager module.
-        home-manager.useUserPackages = lib.mkDefault true;
-        home-manager.useGlobalPkgs = lib.mkDefault true;
+        home-manager = {
+          useGlobalPkgs = lib.mkDefault true;
+          useUserPackages = lib.mkDefault true;
+        };
 
         # Make all of the flake inputs
         # available to the home-manager modules.
         # Note: can not use extraArgs here because
         # the 'inherit lib' there will collide with hm.
         # home-manager.extraSpecialArgs = extraArgs;
+
         home-manager.extraSpecialArgs = { inherit inputs; };
         home-manager.sharedModules =
           (mapModulesRec' (toString ./modules/home-manager) import)
@@ -197,7 +176,7 @@
 
         system = {
           configurationRevision = lib.mkIf (self ? rev) self.rev;
-          stateVersion = "21.05";
+          stateVersion = "23.11";
         };
 
         boot = {
@@ -256,29 +235,23 @@
         nix.package = pkgs.nixUnstable;
 
         # Set the configurations for the package manager.
-        nix.settings =
-          let
-            substituters = [
-              "https://nix-community.cachix.org"
-            ];
-          in
-          {
-            # Set several binary caches.
-            substituters = [
-              "https://hyprland.cachix.org"
-              "https://nix-community.cachix.org"
-            ];
-            trusted-public-keys = [
-              "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-              "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-            ];
+        nix.settings = {
+          # Set several binary caches.
+          substituters = [
+            "https://hyprland.cachix.org"
+            "https://nix-community.cachix.org"
+          ];
+          trusted-public-keys = [
+            "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          ];
 
-            # Sane config for the package manager.
-            # TODO: Remove this after nix-command and flakes has been considered
-            # stable.
-            experimental-features = [ "nix-command" "flakes" "repl-flake" ];
-            auto-optimise-store = lib.mkDefault true;
-          };
+          # Sane config for the package manager.
+          # TODO: Remove this after nix-command and flakes has been considered
+          # stable.
+          experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+          auto-optimise-store = lib.mkDefault true;
+        };
 
         # Stallman-senpai will be disappointed.
         nixpkgs.config.allowUnfree = true;
@@ -299,7 +272,13 @@
             extraModules = [
               ({ lib, ... }: {
                 config =
-                  lib.mkMerge [{ networking.hostName = lib.mkForce host._name; }];
+                  lib.mkMerge [
+                    { networking.hostName = lib.mkForce host._name; }
+
+                    (lib.mkIf (host ? domain)
+                      { networking.domain = lib.mkForce host.domain; })
+                  ];
+
               })
               hostSharedConfig
               nixSettingsSharedConfig

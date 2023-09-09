@@ -59,7 +59,7 @@ in
 
   config = mkIf cfg.enable {
 
-    fonts.packages = with pkgs; [
+    fonts.fonts = with pkgs; [
       (nerdfonts.override {
         fonts = [
           "Iosevka"

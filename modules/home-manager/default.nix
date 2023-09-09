@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   # This set's up nix-locate with a automatic
   # download of a pre made database.

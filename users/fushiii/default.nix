@@ -1,7 +1,5 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
-with lib;
-with lib.my;
 let user = "fushiii";
 in
 {
@@ -78,9 +76,6 @@ in
           };
           kitty.enable = true;
         };
-      };
-      services = {
-        udisk.enable = true;
       };
       editors = {
         nvim = {

@@ -1,29 +1,34 @@
 # A set of functions intended for creating images. THis is meant to be imported
 # for use in flake.nix and nowhere else.
 { inputs, lib, ... }:
+
+with lib;
+with lib.my;
 {
 
   # A wrapper around the NixOS configuration function.
   mkHost = { system, extraModules ? [ ], extraArgs ? { }, nixpkgs-channel ? "nixpkgs" }:
     (lib.makeOverridable inputs."${nixpkgs-channel}".lib.nixosSystem) {
       # The system of the NixOS system.
-      inherit system;
+      inherit system lib;
       specialArgs = extraArgs;
 
       modules =
-        extraModules;
-      #++ (mapModulesRec' (toString ../modules/nixos) import);
+        extraModules
+        ++ (mapModulesRec' (toString ../modules/nixos) import);
 
     };
 
   # A wrapper around the home-manager configuration function.
   mkHome = { pkgs, system, extraModules ? [ ], extraArgs ? { }, home-manager-channel ? "home-manager" }:
+    # Note: the value for home-manager-channel doesn't seem to be the right one.
+    # TODO: fix that.
     inputs."${home-manager-channel}".lib.homeManagerConfiguration {
       inherit lib pkgs;
       extraSpecialArgs = extraArgs;
       modules =
-        extraModules;
-      # ++ (mapModulesRec' (toString ../modules/home-manager) import);
+        extraModules
+        ++ (mapModulesRec' (toString ../modules/home-manager) import);
 
     };
 
