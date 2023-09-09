@@ -42,7 +42,7 @@
 
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
-
+   
     # Cached nix-index database.
     # Doing it manually just takes too long.
     nix-index-database.url = "github:Mic92/nix-index-database";
@@ -214,7 +214,7 @@
 
         # Necessary for home-manager to work with flakes, otherwise it will
         # look for a nixpkgs channel.
-        home.stateVersion = osConfig.system.stateVersion;
+        home.stateVersion = osConfig.system.stateVersion or "23.11";
       };
 
       nixSettingsSharedConfig = { config, lib, pkgs, ... }: {

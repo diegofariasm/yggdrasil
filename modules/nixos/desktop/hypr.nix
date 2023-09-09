@@ -59,25 +59,39 @@ in
 
   config = mkIf cfg.enable {
 
-    fonts.fonts = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "Iosevka"
-        ];
-      })
-    ];
+    fonts = {
+      packages = with pkgs; [
+        # Install only one the fonts.
+        # Nerdfonts is just too big.
+        (nerdfonts.override {
+          fonts = [
+            "Iosevka"
+          ];
+        })
+      ];
+    };
 
-    programs.hyprland.enable = true;
+    programs = {
+      # The rice machine.
+      # A bunch of things that don't normally
+      # work out of the box should work using my module.
+      hyprland = {
+        enable = true;
+        xwayland.enable = true;
+      };
 
-    environment.systemPackages = with pkgs; [
-      dunst
-      libnotify
-      hyprpaper
-      eww-wayland
-      rofi-wayland
-      configure-gtk
-      wl-clipboard-x11
-    ];
+     gpaste.enable = true;
+    };
 
+
+    environment = {
+      systemPackages = with pkgs; [
+        dunst
+        hyprpaper
+        eww-wayland
+        rofi-wayland
+        configure-gtk
+      ];
+    };
   };
 }

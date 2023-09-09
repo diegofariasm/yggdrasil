@@ -9,8 +9,7 @@ in
 {
   options.modules.desktop.display.gdm = { enable = mkBoolOpt false; };
 
-  config = mkIf cfg.enable
-    {
+  config = mkIf cfg.enable {
       services.xserver = {
         enable = true;
         displayManager.gdm = {
@@ -18,6 +17,6 @@ in
           autoSuspend = true;
         };
       };
-
     };
+    
 }

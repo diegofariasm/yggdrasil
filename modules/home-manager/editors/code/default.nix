@@ -15,6 +15,7 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
+
     # TODO: add vscode settings in a mutable way.
     # home.mutableFile should be the way to go.
     programs.vscode = {
@@ -26,10 +27,14 @@ in
         mkhl.direnv
         bbenoist.nix
         jnoortheen.nix-ide
+        tamasfe.even-better-toml
         github.vscode-github-actions
         vscode-icons-team.vscode-icons
       ];
-
+      
+      # Make the extensions dir mutable.
+      # This will be useful because i will be
+      # making the settings made by home-manager mutable.
       mutableExtensionsDir = true;
     };
   };
