@@ -121,15 +121,13 @@
         # Only use imports as minimally as possible with the absolute
         # requirements of a host. On second thought, only on flakes with
         # optional NixOS modules.
-        imports = with inputs;
-          [
+        imports = with inputs; [
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             disko.nixosModules.disko
             nur.nixosModules.nur
-          ]
-          ++ (mapModulesRec' (toString ./users) import);
-
+          ];
+          
         environment.systemPackages = with pkgs; [
           nil
           git

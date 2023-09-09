@@ -71,6 +71,14 @@ in {
       # Note: i am not currently using this to generate
       # the themes, i am just passing the base16 themes by myself.
       image = cfg.wallpaper;
+      
+      # This is the hall of shame for the targets.
+      # If it's here, it either breaks something or looks terrible.
+      targets = {
+       # Let's just say that the color schem doesn't
+       # play that nicely with vscode.
+       vscode.enable = false;
+      };
 
       # Font configuration for the desktop.
       # I don't have a option for this, as i don't

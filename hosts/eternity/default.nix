@@ -1,5 +1,15 @@
-{ ... }: {
-  imports = [ ../home.nix ./hardware-configuration.nix ];
+{ lib, inputs, ... }:
+with lib;
+with lib.my;
+{
+  imports = [ 
+    ../home.nix 
+    ./hardware-configuration.nix 
+
+    # The users for this host.
+    (getUser "fushiii")
+
+  ];
   # Automagically format the disk
   # and mount the partitions.
   disko.devices = import ./disko.nix { disks = [ "/dev/sda" ]; };
