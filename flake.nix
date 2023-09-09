@@ -294,7 +294,7 @@
 
       # We're going to make our custom modules available for our flake. Whether
       # or not this is a good thing is debatable, I just want to test it.
-      nixosModules = lib.importModules (lib.filesToAttr ./modules/nixos);
+      nixosModules = lib.my.importModules (lib.my.filesToAttr ./modules/nixos);
 
       # User configuration should be done in here.
       # This runs once for every user, so i won't
@@ -342,7 +342,7 @@
         users;
 
       # Extending home-manager with my custom modules, if anyone cares.
-      homeModules = lib.importModules (lib.filesToAttr ./modules/home-manager);
+      homeModules = lib.my.importModules (lib.my.filesToAttr ./modules/home-manager);
 
       # In case somebody wants to use my stuff to be included in nixpkgs.
       overlays.default = final: prev: import ./pkgs { pkgs = prev; };
@@ -388,16 +388,6 @@
               ];
             }))
           images');
-
-      # My several development shells for usual type of projects. This is much
-      # more preferable than installing all of the packages at the system
-      # configuration (or even home environment).
-      devShells = forAllSystems (system:
-        let pkgs = import nixpkgs { inherit system overlays; };
-        in
-        {
-          default = import ./shell.nix { inherit pkgs; };
-        } // (import ./shells { inherit pkgs; }));
 
       # Cookiecutter templates for your mama.
       templates = {
