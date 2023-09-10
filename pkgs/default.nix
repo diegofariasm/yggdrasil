@@ -7,7 +7,8 @@ let
     let callPackage = newScope self;
     in
     {
-      icomoon = callPackage ./icomoon { };
+      icomoon = callPackage ./fonts/icomoon { };
+      san-francisco = callPackage ./fonts/san-francisco { };
     };
 in
 lib.fix' (lib.extends overrides packages)

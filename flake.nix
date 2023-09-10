@@ -15,15 +15,11 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
 
-
     # Managing home configurations.
     home-manager.url = "github:nix-community/home-manager";
 
     # We're using these libraries for other functions.
     flake-utils.url = "github:numtide/flake-utils";
-
-    # This is what AUR strives to be.
-    nur.url = "github:nix-community/NUR";
 
     # Generate your NixOS systems to various formats!
     nixos-generators.url = "github:nix-community/nixos-generators";
@@ -42,7 +38,7 @@
 
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
-   
+
     # Cached nix-index database.
     # Doing it manually just takes too long.
     nix-index-database.url = "github:Mic92/nix-index-database";
@@ -79,9 +75,6 @@
       overlays = with inputs; [
         # Put my custom packages to be available.
         self.overlays.default
-
-        # Access to NUR.
-        nur.overlay
 
         (final: prev: {
           nix-index-database = final.runCommandLocal "nix-index-database" { } ''
@@ -122,25 +115,27 @@
         # requirements of a host. On second thought, only on flakes with
         # optional NixOS modules.
         imports = with inputs; [
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            disko.nixosModules.disko
-            nur.nixosModules.nur
-          ];
-          
-        environment.systemPackages = with pkgs; [
-          nil
-          git
-          age
-          vim
-          sops
-          unzip
-          nixfmt
-          treefmt
-          nixpkgs-fmt
-          cached-nix-shell
+          home-manager.nixosModules.home-manager
+          sops-nix.nixosModules.sops
+          disko.nixosModules.disko
         ];
 
+        environment = {
+          # Some default goodies.
+          # These are needed in any place.
+          systemPackages = with pkgs; [
+            nil
+            git
+            age
+            vim
+            sops
+            unzip
+            nixfmt
+            treefmt
+            nixpkgs-fmt
+            cached-nix-shell
+          ];
+        };
 
         # Set several paths for the traditional channels.
         nix.nixPath =
@@ -203,7 +198,6 @@
         imports = with inputs; [
           stylix.homeManagerModules.stylix
           sops-nix.homeManagerModules.sops
-          nur.hmModules.nur
         ];
 
         # Enable home-manager.
@@ -323,6 +317,14 @@
                   username = name;
                   homeDirectory =
                     metadata.home-directory or "/home/${config.home.username}";
+                };
+
+                home.stateVersion = lib.mkDefault "23.11";
+
+                manual = lib.mkDefault {
+                  html.enable = true;
+                  json.enable = true;
+                  manpages.enable = true;
                 };
 
                 programs.home-manager.enable = true;

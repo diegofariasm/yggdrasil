@@ -71,38 +71,38 @@ in {
       # Note: i am not currently using this to generate
       # the themes, i am just passing the base16 themes by myself.
       image = cfg.wallpaper;
-      
+
       # This is the hall of shame for the targets.
       # If it's here, it either breaks something or looks terrible.
       targets = {
-       # Let's just say that the color schem doesn't
-       # play that nicely with vscode.
-       vscode.enable = false;
+        # Let's just say that the color schem doesn't
+        # play that nicely with vscode.
+        vscode.enable = false;
       };
 
       # Font configuration for the desktop.
       # I don't have a option for this, as i don't
       # change the fonts based on the theme anyway.
-      fonts = {
-        serif = {
-          package = pkgs.nur.repos.oluceps.san-francisco;
-          name = "SF Pro";
-        };
-        sansSerif = {
-          package = pkgs.nur.repos.oluceps.san-francisco;
-          name = "SF Pro Display";
-        };
-        monospace = {
-          package = pkgs.nur.repos.oluceps.san-francisco;
-          name = "SF Mono";
-        };
-        sizes = {
-          popups = 11;
-          desktop = 12;
-          terminal = 14;
-          applications = 12;
-        };
-      };
+       fonts = {
+         serif = {
+           package = pkgs.san-francisco;
+           name = "SF Pro";
+         };
+         sansSerif = {
+           package = pkgs.san-francisco;
+           name = "SF Pro Display";
+         };
+         monospace = {
+           package = pkgs.san-francisco;
+           name = "SF Mono";
+         };
+         sizes = {
+           popups = 11;
+           desktop = 12;
+           terminal = 12;
+           applications = 12;
+         };
+       };
     };
   };
 }

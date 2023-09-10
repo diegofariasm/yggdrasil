@@ -38,8 +38,8 @@ with lib.my;
       inherit pkgs system format lib;
       specialArgs = extraArgs;
       modules =
-        extraModules;
-      # ++ (mapModulesRec' (toString ../modules/nixos) import);
+        extraModules
+        ++ (mapModulesRec' (toString ../modules/nixos) import);
     };
 
   listImagesWithSystems = data:

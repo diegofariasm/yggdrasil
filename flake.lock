@@ -447,21 +447,6 @@
         "type": "github"
       }
     },
-    "nur": {
-      "locked": {
-        "lastModified": 1694270448,
-        "narHash": "sha256-3o8OvyMAgFeyFG/nZl5EK1n24kiGc3Q0ZZZAYRDAe/I=",
-        "owner": "nix-community",
-        "repo": "NUR",
-        "rev": "b944476b030a89bc4ca83a10944476afa5ea5548",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "NUR",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "base16-schemes": "base16-schemes",
@@ -477,7 +462,6 @@
         "nixos-unstable": "nixos-unstable",
         "nixos-unstable-small": "nixos-unstable-small",
         "nixpkgs": "nixpkgs_4",
-        "nur": "nur",
         "sops-nix": "sops-nix",
         "stylix": "stylix"
       }

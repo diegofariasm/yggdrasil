@@ -80,7 +80,7 @@ in
         xwayland.enable = true;
       };
 
-     gpaste.enable = true;
+      gpaste.enable = true;
     };
 
 
@@ -91,6 +91,7 @@ in
         eww-wayland
         rofi-wayland
         configure-gtk
+        wl-clipboard-x11
       ];
     };
   };

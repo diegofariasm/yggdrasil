@@ -10,13 +10,13 @@ in
   options.modules.desktop.display.gdm = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
-      services.xserver = {
+    services.xserver = {
+      enable = true;
+      displayManager.gdm = {
         enable = true;
-        displayManager.gdm = {
-          enable = true;
-          autoSuspend = true;
-        };
+        autoSuspend = true;
       };
     };
-    
+  };
+
 }

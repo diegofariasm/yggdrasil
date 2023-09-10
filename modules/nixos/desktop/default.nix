@@ -2,21 +2,22 @@
 
 with lib;
 with lib.my;
-let 
+let
   cfg = config.modules.desktop;
-in {
+in
+{
   config = mkIf config.services.xserver.enable {
     assertions = [
-    
+
       {
         assertion =
           let srv = config.services;
           in srv.xserver.enable ||
-           srv.hypr.enable ||
-             !(anyAttrs
-               (n: v: isAttrs v &&
-                      anyAttrs (n: v: isAttrs v && v.enable))
-               cfg);
+            srv.hypr.enable ||
+            !(anyAttrs
+              (n: v: isAttrs v &&
+                anyAttrs (n: v: isAttrs v && v.enable))
+              cfg);
         message = "Can't enable a desktop app without a desktop environment";
       }
     ];
@@ -42,6 +43,6 @@ in {
         symbola
       ];
     };
- 
+
   };
 }

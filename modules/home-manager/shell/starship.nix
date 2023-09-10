@@ -23,7 +23,7 @@ in
     };
 
     # A needed font
-    home.packages = with pkgs; [ icomoon ];
+    home.packages = with pkgs; [ icomoon san-francisco ];
 
   };
 }

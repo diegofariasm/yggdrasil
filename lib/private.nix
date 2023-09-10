@@ -18,9 +18,9 @@ rec {
     in
     {
       imports = [
-        { 
+        {
           users.users."${user}" = defaultUserConfig;
-         }
+        }
       ];
 
       home-manager.users."${user}" = { ... }: {
@@ -36,8 +36,9 @@ rec {
   getUsers = users:
     let
       userModules = filesToAttr ../users;
-      invalidUsernames = [ 
-        "config" "modules" 
+      invalidUsernames = [
+        "config"
+        "modules"
       ];
 
       users' = filterAttrs (n: _: !elem n invalidUsernames && elem n users) userModules;
@@ -50,7 +51,7 @@ rec {
       (r: r)
       users';
 
-  getUser =  user:
+  getUser = user:
     getAttr user (getUsers [ user ]);
 
   # Import modules with a set blocklist.

@@ -2,9 +2,9 @@
 with lib;
 with lib.my;
 {
-  imports = [ 
-    ../home.nix 
-    ./hardware-configuration.nix 
+  imports = [
+    ../home.nix
+    ./hardware-configuration.nix
 
     # The users for this host.
     (getUser "fushiii")

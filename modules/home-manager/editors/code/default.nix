@@ -31,7 +31,7 @@ in
         github.vscode-github-actions
         vscode-icons-team.vscode-icons
       ];
-      
+
       # Make the extensions dir mutable.
       # This will be useful because i will be
       # making the settings made by home-manager mutable.

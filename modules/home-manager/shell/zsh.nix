@@ -34,7 +34,6 @@ in
         plugins = [
           "hlissner/zsh-autopair"
           "unixorn/fzf-zsh-plugin"
-          "gakimball/zsh-coffee-time"
           "zsh-users/zsh-autosuggestions"
           "MichaelAquilina/zsh-auto-notify"
           "zsh-users/zsh-history-substring-search"
