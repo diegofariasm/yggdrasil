@@ -13,6 +13,10 @@
 systems = ["x86_64-linux"]
 format = "iso"
 
+[serenity]
+systems = ["x86_64-linux"]
+format = "iso"
+
 
 [bootstrap]
 systems = ["aarch64-linux", "x86_64-linux"]
