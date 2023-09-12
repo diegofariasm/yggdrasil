@@ -15,12 +15,12 @@ in
   };
   config = lib.mkIf cfg.enable {
 
-    # programs.emacs = {
-    #   enable = true;
-    #   extraPackages = epkgs: [
-    #     epkgs.vterm
-    #   ];
-    # };
+    programs.emacs = {
+      enable = true;
+      extraPackages = epkgs: [
+        epkgs.vterm
+      ];
+    };
 
     services.emacs = {
       enable = true;
@@ -35,7 +35,7 @@ in
     };
 
     # Dependencies for emacs ( doom )
-    home.packages = with pkgs; [ fd emacs ripgrep ];
+    home.packages = with pkgs; [ fd ripgrep ];
 
     # Easier calling of emacs on the command line.
     # You should probably have the daemon running anyway.
