@@ -15,8 +15,10 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
 
+
     # Managing home configurations.
     home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # We're using these libraries for other functions.
     flake-utils.url = "github:numtide/flake-utils";

@@ -40,6 +40,7 @@ with lib.my;
     services = {
       ssh.enable = true;
       docker.enable = true;
+      udiskie.enable = true;
     };
   };
 

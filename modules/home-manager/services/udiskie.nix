@@ -1,10 +1,10 @@
 { config, lib, ... }:
 
 let
-  cfg = config.modules.services.udisk;
+  cfg = config.modules.services.udiskie;
 in
 {
-  options.modules.services.udisk = {
+  options.modules.services.udiskie = {
     enable = lib.mkOption {
       description = ''
         Wheter to install zsh.

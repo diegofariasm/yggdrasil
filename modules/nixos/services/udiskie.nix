@@ -2,10 +2,10 @@
 with lib;
 with lib.my;
 let
-  cfg = config.modules.services.udisk;
+  cfg = config.modules.services.udiskie;
 in
 {
-  options.modules.services.udisk = {
+  options.modules.services.udiskie = {
     enable = mkBoolOpt false;
   };
 

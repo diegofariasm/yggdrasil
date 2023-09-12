@@ -14,7 +14,11 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       gcc
+      cmake
       clang
+      ninja
+      libtool
+      gnumake
       clang-tools
       llvmPackages.libcxx
     ];

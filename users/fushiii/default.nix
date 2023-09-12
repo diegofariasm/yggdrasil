@@ -49,6 +49,7 @@ in
     };
 
     modules = {
+    services.udiskie.enable = true;
       shell = {
         zsh.enable = true;
         fzf.enable = true;
@@ -79,6 +80,10 @@ in
       };
       editors = {
         code.enable = true;
+        emacs = {
+          enable = true;
+          doom.enable = true;
+        };
         nvim = {
           enable = true;
           nyoom.enable = true;
