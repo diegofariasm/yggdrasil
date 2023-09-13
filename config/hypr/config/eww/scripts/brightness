@@ -6,19 +6,11 @@ function screen_icon {
     echo ${ARRAY[$IND]}
 }
 
-function kbd_icon {
-    ARRAY=( '󰛩' '󱩎' '󱩏' '󱩐' '󱩑' '󱩒' '󱩓' '󱩔' '󱩕' '󱩖' '󰛨' )
-    IND=$(( $(kbd_level) / 10))
-    echo ${ARRAY[$IND]}
-}
 
 function screen_level {
     echo $(brightnessctl info | grep Current | awk '{print $4}' | tr '%' ' ' | tr '(' ' ' | tr ')' ' ')
 }
 
-function kbd_level {
-    echo $(brightnessctl -d asus::kbd_backlight info | grep Current | awk '{print $4}' | tr '%' ' ' | tr '(' ' ' | tr ')' ' ')
-}
 
 function raise_screen {
     brightnessctl set 5%+ -q
@@ -28,21 +20,6 @@ function raise_screen {
 function lower_screen {
     brightnessctl set 5%- -q
     update_screen
-}
-
-function raise_kbd {
-    brightnessctl -d asus::kbd_backlight set +1 -q
-    update_kbd
-}
-
-function lower_kbd { 
-    brightnessctl -d asus::kbd_backlight set 1- -q
-    update_kbd
-}
-
-function update_kbd {
-    eww update brightness="$(get)"
-    ~/.config/eww/scripts/./osd $(kbd_icon) $(kbd_level)
 }
 
 function update_screen {
@@ -57,14 +34,11 @@ function set_screen {
 
 function get {
     echo "{
-        \"kbd\": { \"level\": \"$(kbd_level)\", \"icon\": \"$(kbd_icon)\" },
         \"screen\": { \"level\": \"$(screen_level)\", \"icon\": \"$(screen_icon)\" }
     }"
 }
 
 if [[ $1 == 'get' ]]; then get; fi
-if [[ $1 == 'kbd' ]] && [[ $2 == 'up'   ]]; then raise_kbd; fi
-if [[ $1 == 'kbd' ]] && [[ $2 == 'down' ]]; then lower_kbd; fi
 if [[ $1 == 'screen' ]] && [[ $2 == 'up'   ]]; then raise_screen; fi
 if [[ $1 == 'screen' ]] && [[ $2 == 'down' ]]; then lower_screen; fi
 if [[ $1 == 'set_screen' ]]; then set_screen $2; fi

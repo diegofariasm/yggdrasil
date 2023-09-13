@@ -1,15 +1,7 @@
-(defvar     bluetooth       "{}")
-(defvar     network         "{}")
-(defvar     battery         "{}")
-(defvar     notifications   "{}")
-
 (deflisten  window      `maiden hyprland window class --listen`)
-(deflisten  workspaces  `maiden hyprland workspace workspaces --listen`)
+(deflisten  workspaces  `maiden hyprland workspace --listen`)
 
-(defpoll    volume      :interval "3s" :initial "{}" `maiden volume get`)
-(defpoll    theme       :interval "3s" :initial "{}" `scripts/theme get`)
-(defpoll    power       :interval "3s" :initial "{}" `scripts/power get`)
-(defpoll    night_light :interval "3s" :initial "{}" `scripts/night_light get`)
+(defpoll    volume      :interval "3s" :initial "{}" `scripts/volume get`)
 (defpoll    brightness  :interval "3s" :initial "{}" `scripts/brightness get`)
 
 

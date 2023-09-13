@@ -10,7 +10,7 @@ stdenvNoCC.mkDerivation rec {
 
   src = fetchFromGitHub ({
     owner = "fushiii";
-    repo = "san-franciso-fonts";
+    repo = "san-francisco-fonts";
     rev = version;
     fetchSubmodules = false;
     sha256 = "MPrqqXwYX9Ij4h7jiOktTyxx52p17oVKt+ZowcH6deM=";

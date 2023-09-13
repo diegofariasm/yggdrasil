@@ -28,6 +28,9 @@ in
         # Mount the drives on connection
         # Could be annoying, might turn it off later.
         automount = true;
+
+        # This seems to cause an error
+        tray = "never";
       };
     };
 

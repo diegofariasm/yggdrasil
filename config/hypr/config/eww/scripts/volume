@@ -16,16 +16,19 @@ function level {
 
 function lower {
     pactl set-sink-volume @DEFAULT_SINK@ -5%
+    
     update
 }
 
 function raise {
     pactl set-sink-volume @DEFAULT_SINK@ +5%
+
     update
 }
 
 function update {
     eww update volume="$(get)"
+    
     ~/.config/eww/scripts/osd $(icon) $(level)
 }
 

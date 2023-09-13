@@ -8,11 +8,13 @@ in {
   config = mkIf cfg.enable {
     virtualisation = {
       docker.enable = lib.mkForce false;
+      # A docker replacemnt.
+      # Should be a dropin thing.
       podman = {
         enable = true;
         autoPrune.enable = true;
+        dockerCompat = true;
         dockerSocket.enable = true;
-        dockerCompat.enable = true;
       };
     };
   };

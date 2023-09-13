@@ -12,3 +12,4 @@ function toggle {
 }
 
 if [[ $1 == 'toggle' ]]; then toggle; fi
+if [[ $1 == 'state' ]]; then state; fi

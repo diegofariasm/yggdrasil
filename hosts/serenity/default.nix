@@ -9,9 +9,6 @@ with lib.my;
     # The users for this host.
     (getUser "diegofariasm")
   ];
-  # Automagically format the disk
-  # and mount the partitions.
-  disko.devices = import ./disko.nix { disks = [ "/dev/nvme0n1" ]; };
 
   ## Modules
   modules = {
@@ -31,6 +28,7 @@ with lib.my;
     };
 
     hardware = {
+      bluetooth.enable = true;
       audio.enable = true;
       zram.enable = true;
       fs.enable = true;
@@ -38,9 +36,15 @@ with lib.my;
 
     services = {
       ssh.enable = true;
-      docker.enable = true;
+      podman.enable = true;
       udiskie.enable = true;
     };
   };
+
+  programs.ssh.startAgent = true;
+  services.openssh.startWhenNeeded = true;
+
+  # networkinwireless.enable = true;
+  networking.networkmanager.enable = true;
 
 }
