@@ -83,26 +83,26 @@ in {
       # Font configuration for the desktop.
       # I don't have a option for this, as i don't
       # change the fonts based on the theme anyway.
-       fonts = {
-         serif = {
-           package = pkgs.san-francisco;
-           name = "SF Pro";
-         };
-         sansSerif = {
-           package = pkgs.san-francisco;
-           name = "SF Pro Display";
-         };
-         monospace = {
-           package = pkgs.san-francisco;
-           name = "SF Mono";
-         };
-         sizes = {
-           popups = 11;
-           desktop = 12;
-           terminal = 12;
-           applications = 12;
-         };
-       };
+      fonts = {
+        serif = {
+          package = pkgs.san-francisco;
+          name = "SF Pro";
+        };
+        sansSerif = {
+          package = pkgs.san-francisco;
+          name = "SF Pro Display";
+        };
+        monospace = {
+          package = pkgs.san-francisco;
+          name = "SF Mono";
+        };
+        sizes = {
+          popups = 11;
+          desktop = 12;
+          terminal = 12;
+          applications = 12;
+        };
+      };
     };
   };
 }

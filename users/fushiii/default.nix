@@ -49,7 +49,7 @@ in
     };
 
     modules = {
-    services.udiskie.enable = true;
+      services.udiskie.enable = true;
       shell = {
         zsh.enable = true;
         fzf.enable = true;

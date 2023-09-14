@@ -17,8 +17,6 @@ in
     };
   };
 
-
-
   users.users."${user}" = {
     group = "users";
     shell = pkgs.zsh;
@@ -43,8 +41,8 @@ in
       };
       defaultSopsFile = ./secrets/ssh.yaml;
       secrets = {
-        diegofariasm.path = "${config.home.homeDirectory}/.ssh/diegofariasm";
-        diegofariasm_pub.path = "${config.home.homeDirectory}/.ssh/diegofariasm.pub";
+        diegofariasm.path = "${config.home.homeDirectory}/.ssh/id_rsa";
+        diegofariasm_pub.path = "${config.home.homeDirectory}/.ssh/id_rsa.pub";
       };
     };
 
@@ -80,10 +78,6 @@ in
       };
       editors = {
         code.enable = true;
-        emacs = {
-          enable = true;
-          doom.enable = true;
-        };
         nvim = {
           enable = true;
           nyoom.enable = true;

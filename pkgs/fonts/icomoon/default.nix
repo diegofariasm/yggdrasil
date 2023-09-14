@@ -1,5 +1,5 @@
 { stdenvNoCC
-, fetchFromGitHub 
+, fetchFromGitHub
 , ...
 }:
 stdenvNoCC.mkDerivation rec {

@@ -27,10 +27,8 @@ in
       # These generally are meant for things
       # that shouldn't too much, like notifcations and etc.
       systemPackages = with pkgs; [
-        xclip
-        xdotool
         libnotify
-        xorg.xwininfo
+        brightnessctl
       ];
     };
 

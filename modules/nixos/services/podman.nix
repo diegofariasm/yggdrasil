@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 with lib;
 with lib.my;
 let cfg = config.modules.services.podman;
@@ -16,6 +16,13 @@ in {
         dockerCompat = true;
         dockerSocket.enable = true;
       };
+    };
+
+    environment = {
+      # Some useful things.
+      systemPackages = with pkgs; [
+        podman-compose
+      ];
     };
   };
 }
