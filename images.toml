@@ -21,4 +21,4 @@ format = "iso"
 [bootstrap]
 systems = ["aarch64-linux", "x86_64-linux"]
 format = "install-iso"
-nixpkgs-channel = "nixos-unstable"
+nixpkgs-channel = "nixos-unstable-small"

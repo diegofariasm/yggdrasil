@@ -14,7 +14,9 @@
   boot.tmp.cleanOnBoot = lib.mkDefault (!config.boot.tmp.useTmpfs);
 
   boot = {
-    kernelModules = [ "tcp_bbr" ];
+    kernelModules = [ 
+      "tcp_bbr" 
+    ];
     # Fix a security hole in place for backwards compatibility. See desc in
     # nixpkgs/nixos/modules/system/boot/loader/systemd-boot/systemd-boot.nix
     loader.systemd-boot.editor = false;

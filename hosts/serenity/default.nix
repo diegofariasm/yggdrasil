@@ -22,10 +22,6 @@ with lib.my;
     # These are generally by a lof of packages.
     # So, instead of i having to wrap to be able to install them,
     # i just install it globally and use it like that. I can just override it anyway.
-    dev = {
-      cc.enable = true;
-      rust.enable = true;
-    };
 
     hardware = {
       bluetooth.enable = true;
@@ -37,7 +33,7 @@ with lib.my;
     services = {
       ssh.enable = true;
       podman.enable = true;
-      udiskie.enable = true;
+      tumbler.enable = true;
     };
   };
 

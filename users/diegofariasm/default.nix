@@ -47,7 +47,6 @@ in
     };
 
     modules = {
-      services.udiskie.enable = true;
       shell = {
         zsh.enable = true;
         fzf.enable = true;
@@ -61,8 +60,6 @@ in
             nomacs.enable = true;
           };
           thunar.enable = true;
-          element.enable = true;
-          obsidian.enable = true;
         };
         browsers = {
           default = "firefox";

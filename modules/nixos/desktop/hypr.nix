@@ -1,11 +1,7 @@
-{ pkgs
-, config
-, inputs
-, lib
-, ...
-}:
+{ pkgs, config, inputs, lib, ... }:
 with lib;
-with lib.my; let
+with lib.my;
+let
   cfg = config.modules.desktop.hypr;
 
   inherit (inputs) hyprland;
@@ -58,16 +54,11 @@ in
   ];
 
   config = mkIf cfg.enable {
-
     fonts = {
       packages = with pkgs; [
         # Install only one the fonts.
         # Nerdfonts is just too big.
-        (nerdfonts.override {
-          fonts = [
-            "Iosevka"
-          ];
-        })
+        (nerdfonts.override { fonts = [ "Iosevka" ]; })
       ];
     };
 
@@ -79,19 +70,17 @@ in
         enable = true;
         xwayland.enable = true;
       };
-
-      gpaste.enable = true;
     };
-
 
     environment = {
       systemPackages = with pkgs; [
         dunst
+        clipman
         hyprpaper
+        hyprpicker
         eww-wayland
         rofi-wayland
-        configure-gtk
-        wl-clipboard-x11
+        wl-clipboard
       ];
     };
   };

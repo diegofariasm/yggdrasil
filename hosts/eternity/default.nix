@@ -10,6 +10,7 @@ with lib.my;
     (getUser "fushiii")
 
   ];
+
   # Automagically format the disk
   # and mount the partitions.
   disko.devices = import ./disko.nix { disks = [ "/dev/sda" ]; };
@@ -21,14 +22,14 @@ with lib.my;
       display = {
         gdm.enable = true;
       };
-    };
-
-    # These are generally by a lof of packages.
-    # So, instead of i having to wrap to be able to install them,
-    # i just install it globally and use it like that. I can just override it anyway.
-    dev = {
-      cc.enable = true;
-      rust.enable = true;
+      apps = {
+        gaming = {
+          games = {
+            roblox.enable = true;
+          };
+          steam.enable = true;
+        };
+      };
     };
 
     hardware = {
@@ -39,8 +40,7 @@ with lib.my;
 
     services = {
       ssh.enable = true;
-      docker.enable = true;
-      udiskie.enable = true;
+      tumbler.enable = true;
     };
   };
 

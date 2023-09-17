@@ -15,6 +15,10 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
 
+    # A util i am making myself.
+    # Not nearly ready for use, but might be in a few years.
+    maiden.url = "github:fushiii/maiden/staging";
+    maiden.inputs.nixpkgs.follows = "nixpkgs";
 
     # Managing home configurations.
     home-manager.url = "github:nix-community/home-manager";
@@ -37,6 +41,14 @@
 
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Deploying stuff with Nix. This is becoming a monorepo for everything I
+    # need and I'm liking it.
+    deploy.url = "github:serokell/deploy-rs";
+    deploy.inputs.nixpkgs.follows = "nixpkgs";
+
+    flake-compat.flake = false;
+    flake-compat.url = "github:edolstra/flake-compat";
 
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
@@ -61,7 +73,7 @@
 
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, deploy, home-manager, ... }:
     let
       inherit (lib.my)
         mapModulesRec' mkHost mkHome mkImage listImagesWithSystems;
@@ -78,6 +90,8 @@
         # Put my custom packages to be available.
         self.overlays.default
 
+        maiden.overlays.default
+
         (final: prev: {
           nix-index-database = final.runCommandLocal "nix-index-database" { } ''
                     mkdir -p $out
@@ -86,10 +100,15 @@
             } $out/files
           '';
         })
-
       ];
 
-      systems = [ "x86_64-linux" ];
+      defaultSystem = "x86_64-linux";
+
+      # Just add systems here and it should add systems to the outputs.
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
 
@@ -112,7 +131,6 @@
       # Take note to only set as minimal configuration as possible since we're
       # also using this with the stable version of nixpkgs.
       hostSharedConfig = { config, lib, pkgs, ... }: {
-
         # Only use imports as minimally as possible with the absolute
         # requirements of a host. On second thought, only on flakes with
         # optional NixOS modules.
@@ -124,18 +142,11 @@
 
         environment = {
           # Some default goodies.
-          # These are needed in any place.
+          # These are needed in ( and many ) places.
           systemPackages = with pkgs; [
-            nil
-            git
             age
-            vim
+            git
             sops
-            unzip
-            nixfmt
-            treefmt
-            nixpkgs-fmt
-            cached-nix-shell
           ];
         };
 
@@ -161,7 +172,7 @@
         # Make all of the flake inputs
         # available to the home-manager modules.
         # Note: can not use extraArgs here because
-        # the 'inherit lib' there will collide with hm.
+        # the 'inherit lib there will collide with hm.
         # home-manager.extraSpecialArgs = extraArgs;
 
         home-manager.extraSpecialArgs = { inherit inputs; };
@@ -330,6 +341,7 @@
                 };
 
                 programs.home-manager.enable = true;
+                targets.genericLinux.enable = true;
               })
               nixSettingsSharedConfig
               userSharedConfig
@@ -409,10 +421,76 @@
 
       };
 
+
+      # My several development shells for usual type of projects. This is much
+      # more preferable than installing all of the packages at the system
+      # configuration (or even home environment).
+      devShells = forAllSystems (system:
+        let pkgs = import nixpkgs { inherit system overlays; };
+        in {
+          default = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              nixpkgs-fmt
+            ];
+          };
+        });
+
       # No amount of formatters will make this codebase nicer but it sure does
       # feel like it does.
       formatter =
         forAllSystems (system: nixpkgs.legacyPackages.${system}.treefmt);
+
+      # nixops-lite (that is much more powerful than nixops itself)... in
+      # here!?! We got it all, son!
+      #
+      # Also, don't forget to always clean your shell history when overriding
+      # sensitive info such as the hostname and such. A helpful tip would be
+      # ignoring the shell entry by simply prefixing it with a space which most
+      # command-line shells have support for (e.g., Bash, zsh, fish).
+      deploy.nodes =
+        let
+          nixosConfigurations = lib.mapAttrs'
+            (name: value:
+              let
+                metadata = images.${name};
+              in
+              lib.nameValuePair "nixos-${name}" {
+                hostname = metadata.deploy.hostname or name;
+                autoRollback = metadata.deploy.auto-rollback or true;
+                magicRollback = metadata.deploy.magic-rollback or true;
+                fastConnection = metadata.deploy.fast-connection or true;
+                remoteBuild = metadata.deploy.remote-build or false;
+                profiles.system = {
+                  sshUser = metadata.deploy.ssh-user or "admin";
+                  user = "root";
+                  path = inputs.deploy.lib.${metadata.system or defaultSystem}.activate.nixos value;
+                };
+              })
+            self.nixosConfigurations;
+          homeConfigurations = lib.mapAttrs'
+            (name: value:
+              let
+                metadata = users.${name};
+                username = metadata.deploy.username or name;
+              in
+              lib.nameValuePair "home-manager-${name}" {
+                hostname = metadata.deploy.hostname or name;
+                autoRollback = metadata.deploy.auto-rollback or true;
+                magicRollback = metadata.deploy.magic-rollback or true;
+                fastConnection = metadata.deploy.fast-connection or true;
+                remoteBuild = metadata.deploy.remote-build or false;
+                profiles.home = {
+                  sshUser = metadata.deploy.ssh-user or username;
+                  user = metadata.deploy.user or username;
+                  path = inputs.deploy.lib.${metadata.system or defaultSystem}.activate.home-manager value;
+                };
+              })
+            self.homeConfigurations;
+        in
+        nixosConfigurations // homeConfigurations;
+
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy.lib;
+
 
     };
 }

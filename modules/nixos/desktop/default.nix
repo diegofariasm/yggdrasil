@@ -12,12 +12,13 @@ in
       {
         assertion =
           let srv = config.services;
-          in srv.xserver.enable ||
-            srv.hypr.enable ||
-            !(anyAttrs
-              (n: v: isAttrs v &&
-                anyAttrs (n: v: isAttrs v && v.enable))
-              cfg);
+          in
+          srv.xserver.enable ||
+          srv.hypr.enable ||
+          !(anyAttrs
+            (n: v: isAttrs v &&
+            anyAttrs (n: v: isAttrs v && v.enable))
+            cfg);
         message = "Can't enable a desktop app without a desktop environment";
       }
     ];

@@ -17,9 +17,8 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; with xfce; [
       thunar
-      thunar-volman
-      thunar-archive-plugin
-      thunar-media-tags-plugin
+      tumbler
+      ffmpegthumbnailer
     ];
   };
 }

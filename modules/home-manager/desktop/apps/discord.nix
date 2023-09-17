@@ -1,14 +1,13 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.desktop.apps.obsidian;
+  cfg = config.modules.desktop.apps.discord;
 in
 {
-  options.modules.desktop.apps.obsidian = {
+  options.modules.desktop.apps.discord = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install obsidian.
-        A Markdown notetaking app.
+        Wheter to install discord.
       '';
       type = lib.types.bool;
       default = false;
@@ -16,8 +15,8 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      obsidian
+    home.packages = with pkgs; with xfce; [
+      discord
     ];
   };
 }

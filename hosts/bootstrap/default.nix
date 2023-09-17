@@ -16,4 +16,5 @@
     }];
   };
 
+  # boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 }

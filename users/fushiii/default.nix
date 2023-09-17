@@ -25,7 +25,7 @@ in
     isNormalUser = true;
     home = "/home/${user}";
     extraGroups = [ "wheel" ];
-    passwordFile = config.sops.secrets.password.path;
+    hashedPasswordFile = config.sops.secrets.password.path;
   };
 
 
@@ -43,13 +43,16 @@ in
       };
       defaultSopsFile = ./secrets/ssh.yaml;
       secrets = {
-        fushiii.path = "${config.home.homeDirectory}/.ssh/fushiii";
-        fushiii_pub.path = "${config.home.homeDirectory}/.ssh/fushiii.pub";
+        fushiii = {
+          path = "${config.home.homeDirectory}/.ssh/id_rsa";
+        };
+        fushiii_pub = {
+          path = "${config.home.homeDirectory}/.ssh/id_rsa.pub";
+        };
       };
     };
 
     modules = {
-      services.udiskie.enable = true;
       shell = {
         zsh.enable = true;
         fzf.enable = true;
@@ -63,8 +66,6 @@ in
             nomacs.enable = true;
           };
           thunar.enable = true;
-          element.enable = true;
-          obsidian.enable = true;
         };
         browsers = {
           default = "firefox";
