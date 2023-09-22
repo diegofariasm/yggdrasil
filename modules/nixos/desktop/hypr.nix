@@ -74,8 +74,6 @@ in
 
     environment = {
       systemPackages = with pkgs; [
-        dunst
-        clipman
         hyprpaper
         hyprpicker
         eww-wayland

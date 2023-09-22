@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
-let user = "fushiii";
+let
+  user = "fushiii";
 in
 {
 
@@ -17,14 +18,15 @@ in
     };
   };
 
-
-
   users.users."${user}" = {
     group = "users";
     shell = pkgs.zsh;
     isNormalUser = true;
     home = "/home/${user}";
-    extraGroups = [ "wheel" ];
+    extraGroups = [
+      "wheel"
+      "docker"
+    ];
     hashedPasswordFile = config.sops.secrets.password.path;
   };
 
@@ -55,11 +57,18 @@ in
     modules = {
       shell = {
         zsh.enable = true;
+        eza.enable = true;
         fzf.enable = true;
         direnv.enable = true;
         starship.enable = true;
       };
       desktop = {
+        services = {
+          notifications = {
+            mako.enable = true;
+          };
+          clipman.enable = true;
+        };
         apps = {
           media = {
             vlc.enable = true;
@@ -73,10 +82,10 @@ in
         };
         term = {
           default = {
-            name = "kitty";
-            command = "kitty --single-instance";
+            name = "wezterm";
+            command = "wezterm";
           };
-          kitty.enable = true;
+          wezterm.enable = true;
         };
       };
       editors = {

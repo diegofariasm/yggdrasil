@@ -1,29 +1,27 @@
 { config, pkgs, lib, ... }:
 with lib;
 with lib.my;
-let cfg = config.modules.services.podman;
+let cfg = config.modules.services.docker;
 in
 {
-  options.modules.services.podman = {
+  options.modules.services.docker = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
 
     virtualisation = {
-      podman = {
+      docker = {
         enable = true;
-        dockerCompat = true;
-        dockerSocket.enable = true;
       };
-      docker.enable = false;
+      podman.enable = false;
     };
 
     environment = {
       systemPackages = with pkgs; [
-        docker-client
-        docker
+        docker-sync
       ];
     };
+
   };
 }

@@ -32,6 +32,7 @@ in
 
         # A list of curated plugins.
         plugins = [
+          "Aloxaf/fzf-tab"
           "hlissner/zsh-autopair"
           "unixorn/fzf-zsh-plugin"
           "zsh-users/zsh-autosuggestions"

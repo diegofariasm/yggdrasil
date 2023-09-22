@@ -17,7 +17,7 @@
 
     # A util i am making myself.
     # Not nearly ready for use, but might be in a few years.
-    maiden.url = "github:fushiii/maiden/staging";
+    maiden.url = "github:fushiii/maiden";
     maiden.inputs.nixpkgs.follows = "nixpkgs";
 
     # Managing home configurations.
@@ -85,9 +85,8 @@
       # A set of users with their metadata to be deployed with home-manager.
       users = listImagesWithSystems (lib.importTOML ./users.toml);
 
-      # The order here is important(?).
       overlays = with inputs; [
-        # Put my custom packages to be available.
+
         self.overlays.default
 
         maiden.overlays.default
@@ -147,6 +146,9 @@
             age
             git
             sops
+            maiden
+            rnix-lsp
+            nixpkgs-fmt
           ];
         };
 
@@ -403,37 +405,6 @@
             }))
           images');
 
-      # Cookiecutter templates for your mama.
-      templates = {
-        default = self.templates.basic-devshell;
-        basic-devshell = {
-          path = ./templates/basic-devshell;
-          description = "Basic development shell template";
-        };
-        basic-overlay-flake = {
-          path = ./templates/basic-overlay-flake;
-          description = "Basic overlay as a flake";
-        };
-        sample-nixos-template = {
-          path = ./templates/sample-nixos-template;
-          description = "Simple sample Nix flake with NixOS and home-manager";
-        };
-
-      };
-
-
-      # My several development shells for usual type of projects. This is much
-      # more preferable than installing all of the packages at the system
-      # configuration (or even home environment).
-      devShells = forAllSystems (system:
-        let pkgs = import nixpkgs { inherit system overlays; };
-        in {
-          default = pkgs.mkShell {
-            buildInputs = with pkgs; [
-              nixpkgs-fmt
-            ];
-          };
-        });
 
       # No amount of formatters will make this codebase nicer but it sure does
       # feel like it does.
