@@ -45,12 +45,16 @@ in
       };
       defaultSopsFile = ./secrets/ssh.yaml;
       secrets = {
-        fushiii = {
-          path = "${config.home.homeDirectory}/.ssh/id_rsa";
-        };
-        fushiii_pub = {
-          path = "${config.home.homeDirectory}/.ssh/id_rsa.pub";
-        };
+        fushiii.path =
+          ".ssh/fushiii";
+        fushiii_pub.path =
+          ".ssh/fushiii.pub";
+
+        diegofariasm.path =
+          ".ssh/diegofariasm";
+        diegofariasm_pub.path =
+          ".ssh/diegofariasm.pub";
+
       };
     };
 
@@ -67,6 +71,7 @@ in
           notifications = {
             mako.enable = true;
           };
+          udiskie.enable = true;
           clipman.enable = true;
         };
         apps = {
@@ -82,8 +87,7 @@ in
         };
         term = {
           default = {
-            name = "wezterm";
-            command = "wezterm";
+            bin = "wezterm";
           };
           wezterm.enable = true;
         };
@@ -98,7 +102,9 @@ in
           enable = true;
           nyoom.enable = true;
         };
-        default = "nvim";
+        default = {
+          bin = "nvim";
+        };
       };
       theme.active = "oxocarbon";
     };

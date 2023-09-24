@@ -16,18 +16,15 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    # Install the kitty package
-    home.packages = with pkgs; [ kitty ];
-
-    # Install my kitty config.
-    # You can also do that directly from the user,
-    # if you want to specify different configs for the 
-    # terminal.
-    xdg.configFile = {
-      "kitty" = {
-        recursive = true;
-        source = "${configDir}/kitty";
+    programs = {
+      kitty = {
+        enable = true;
       };
+    };
+    home = {
+      packages = with pkgs; [
+        kitty
+      ];
     };
   };
 }

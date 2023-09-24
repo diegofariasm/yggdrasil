@@ -8,6 +8,11 @@ in {
     enable = mkBoolOpt false;
   };
 
-  config =
-    mkIf cfg.enable { environment.systemPackages = with pkgs; [ grapejuice ]; };
+  config = mkIf cfg.enable {
+    environment = {
+      systemPackages = with pkgs;  [
+        grapejuice
+      ];
+    };
+  };
 }

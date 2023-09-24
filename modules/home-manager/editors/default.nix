@@ -8,15 +8,30 @@ with lib.my; let
 in
 {
   options.modules.editors = {
-    default = mkOpt types.str "vim";
+    default = {
+      bin = mkOpt types.str "vim";
+      args = mkOption {
+        default = null;
+        type = types.nullOr (types.listOf types.str);
+        description = "A list of strings representing arguments";
+      };
+
+      about = mkOpt types.str "The default editor.";
+    };
+
   };
 
   config = mkIf (cfg.default != null) {
-    home.sessionVariables = {
-      # Pass the default editor to the user environment.
-      # Useful in case you generally open things.
-      # Doesn't everyone?
-      EDITOR = cfg.default;
+    maiden = {
+      launch = {
+        editor = {
+          bin = cfg.default.bin;
+          args = cfg.default.args;
+          about = cfg.default.about;
+        };
+      };
     };
   };
+
 }
+

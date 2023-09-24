@@ -1,7 +1,5 @@
-{ config
-, lib
-, ...
-}:
+{ config, lib, ... }:
+
 with lib;
 with lib.my; let
   cfg = config.modules.desktop.term;
@@ -9,15 +7,25 @@ in
 {
   options.modules.desktop.term = {
     default = {
-      name = mkOpt types.str "xterm";
-      command = mkOpt types.str "xterm";
+      bin = mkOpt types.str "xterm";
+      args = mkOption {
+        default = null;
+        type = types.nullOr (types.listOf types.str);
+        description = "A list of strings representing arguments";
+      };
+      about = mkOpt types.str "The default terminal emulator.";
     };
   };
 
   config = {
-    home.sessionVariables = with cfg.default; {
-      TERMINAL = name;
-      TERMINAL_COMMAND = command;
+    maiden = {
+      launch = {
+        term = {
+          bin = cfg.default.bin;
+          args = cfg.default.args;
+          about = cfg.default.about;
+        };
+      };
     };
   };
 }

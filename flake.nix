@@ -35,31 +35,11 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Easy access to development environments.
-    devshell.url = "github:numtide/devshell";
-    devshell.inputs.nixpkgs.follows = "nixpkgs";
-
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Deploying stuff with Nix. This is becoming a monorepo for everything I
-    # need and I'm liking it.
-    deploy.url = "github:serokell/deploy-rs";
-    deploy.inputs.nixpkgs.follows = "nixpkgs";
-
-    flake-compat.flake = false;
-    flake-compat.url = "github:edolstra/flake-compat";
-
-    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Cached nix-index database.
-    # Doing it manually just takes too long.
-    nix-index-database.url = "github:Mic92/nix-index-database";
-
     # The rice machine.
     # I have been using it for a while, nothing beats it.
-    # ( other than the gtk issues )
     hyprland.url = "github:hyprwm/Hyprland";
 
     # Style your entire computer with nix.
@@ -73,7 +53,7 @@
 
   };
 
-  outputs = inputs@{ self, nixpkgs, deploy, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
       inherit (lib.my)
         mapModulesRec' mkHost mkHome mkImage listImagesWithSystems;
@@ -91,14 +71,6 @@
 
         maiden.overlays.default
 
-        (final: prev: {
-          nix-index-database = final.runCommandLocal "nix-index-database" { } ''
-                    mkdir -p $out
-                    ln -s ${
-            nix-index-database.legacyPackages.${prev.system}.database
-            } $out/files
-          '';
-        })
       ];
 
       defaultSystem = "x86_64-linux";
@@ -332,17 +304,13 @@
                   username = name;
                   homeDirectory =
                     metadata.home-directory or "/home/${config.home.username}";
+
+                  stateVersion = lib.mkDefault "23.11";
                 };
 
-                home.stateVersion = lib.mkDefault "23.11";
-
-                manual = lib.mkDefault {
-                  html.enable = true;
-                  json.enable = true;
-                  manpages.enable = true;
-                };
 
                 programs.home-manager.enable = true;
+
                 targets.genericLinux.enable = true;
               })
               nixSettingsSharedConfig
@@ -411,56 +379,6 @@
       formatter =
         forAllSystems (system: nixpkgs.legacyPackages.${system}.treefmt);
 
-      # nixops-lite (that is much more powerful than nixops itself)... in
-      # here!?! We got it all, son!
-      #
-      # Also, don't forget to always clean your shell history when overriding
-      # sensitive info such as the hostname and such. A helpful tip would be
-      # ignoring the shell entry by simply prefixing it with a space which most
-      # command-line shells have support for (e.g., Bash, zsh, fish).
-      deploy.nodes =
-        let
-          nixosConfigurations = lib.mapAttrs'
-            (name: value:
-              let
-                metadata = images.${name};
-              in
-              lib.nameValuePair "nixos-${name}" {
-                hostname = metadata.deploy.hostname or name;
-                autoRollback = metadata.deploy.auto-rollback or true;
-                magicRollback = metadata.deploy.magic-rollback or true;
-                fastConnection = metadata.deploy.fast-connection or true;
-                remoteBuild = metadata.deploy.remote-build or false;
-                profiles.system = {
-                  sshUser = metadata.deploy.ssh-user or "admin";
-                  user = "root";
-                  path = inputs.deploy.lib.${metadata.system or defaultSystem}.activate.nixos value;
-                };
-              })
-            self.nixosConfigurations;
-          homeConfigurations = lib.mapAttrs'
-            (name: value:
-              let
-                metadata = users.${name};
-                username = metadata.deploy.username or name;
-              in
-              lib.nameValuePair "home-manager-${name}" {
-                hostname = metadata.deploy.hostname or name;
-                autoRollback = metadata.deploy.auto-rollback or true;
-                magicRollback = metadata.deploy.magic-rollback or true;
-                fastConnection = metadata.deploy.fast-connection or true;
-                remoteBuild = metadata.deploy.remote-build or false;
-                profiles.home = {
-                  sshUser = metadata.deploy.ssh-user or username;
-                  user = metadata.deploy.user or username;
-                  path = inputs.deploy.lib.${metadata.system or defaultSystem}.activate.home-manager value;
-                };
-              })
-            self.homeConfigurations;
-        in
-        nixosConfigurations // homeConfigurations;
-
-      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy.lib;
 
 
     };

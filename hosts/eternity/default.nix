@@ -42,6 +42,8 @@ with lib.my;
       ssh.enable = true;
       docker.enable = true;
       tumbler.enable = true;
+      udisks.enable = true;
+      upower.enable = true;
     };
   };
 

@@ -4,18 +4,18 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.services.upower;
+  cfg = config.modules.services.udisks;
 in
 {
-  options.modules.services.upower = {
+  options.modules.services.udisks = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
-    # Enable upower to be able
+    # Enable udisks to be able
     # to get the battery information in other places.
     services = {
-      upower = {
+      udisks2 = {
         enable = true;
       };
     };
