@@ -11,8 +11,9 @@ in {
   config = mkIf cfg.enable {
     environment = {
       systemPackages = with pkgs;  [
-        grapejuice
+        vinegar
       ];
     };
+   hardware.opengl.driSupport32Bit = true;
   };
 }

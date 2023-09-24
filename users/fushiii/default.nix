@@ -93,17 +93,12 @@ in
         };
       };
       editors = {
-        code.enable = true;
         emacs = {
           enable = true;
           doom.enable = true;
         };
-        nvim = {
-          enable = true;
-          nyoom.enable = true;
-        };
         default = {
-          bin = "nvim";
+          bin = "emacs";
         };
       };
       theme.active = "oxocarbon";

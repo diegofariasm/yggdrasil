@@ -17,8 +17,9 @@ in
 
     programs.emacs = {
       enable = true;
-      extraPackages = epkgs: [
-        epkgs.vterm
+      extraPackages = epkgs: with epkgs; [
+        vterm
+        all-the-icons
       ];
     };
 
