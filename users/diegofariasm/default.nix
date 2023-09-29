@@ -1,7 +1,8 @@
 { config, pkgs, ... }:
 
-let user = "fushiii";
-in {
+let user = "diegofariasm";
+in
+{
 
   sops = {
     age = {
@@ -37,8 +38,8 @@ in {
       };
       defaultSopsFile = ./secrets/ssh.yaml;
       secrets = {
-        id_rsa.path = ".ssh/fushiii";
-        id_rsa_pub.path = ".ssh/fushiii.pub";
+        id_rsa.path = ".ssh/diegofariasm";
+        id_rsa_pub.path = ".ssh/diegofariasm.pub";
       };
     };
 
@@ -73,6 +74,11 @@ in {
         };
       };
       editors = {
+        code.enable = true;
+        nvim = {
+          enable = true;
+          nyoom.enable = true;
+        };
         emacs = {
           enable = true;
           doom.enable = true;
