@@ -19,5 +19,10 @@ in
         enable = true;
       };
     };
+    # envrionment = {
+    #   systemPackages = with pkgs; [
+    #     udisks2
+    #   ];
+    # };
   };
 }

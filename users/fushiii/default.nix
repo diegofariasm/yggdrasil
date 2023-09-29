@@ -1,9 +1,7 @@
 { config, pkgs, ... }:
 
-let
-  user = "fushiii";
-in
-{
+let user = "fushiii";
+in {
 
   sops = {
     age = {
@@ -13,9 +11,7 @@ in
       keyFile = "/etc/dotfiles/age/fushiii";
     };
     defaultSopsFile = ./secrets/user.yaml;
-    secrets = {
-      password = { };
-    };
+    secrets = { password = { }; };
   };
 
   users.users."${user}" = {
@@ -23,13 +19,9 @@ in
     shell = pkgs.zsh;
     isNormalUser = true;
     home = "/home/${user}";
-    extraGroups = [
-      "wheel"
-      "docker"
-    ];
+    extraGroups = [ "wheel" "docker" ];
     hashedPasswordFile = config.sops.secrets.password.path;
   };
-
 
   programs.zsh.enable = true;
 
@@ -45,16 +37,10 @@ in
       };
       defaultSopsFile = ./secrets/ssh.yaml;
       secrets = {
-        fushiii.path =
-          ".ssh/fushiii";
-        fushiii_pub.path =
-          ".ssh/fushiii.pub";
-
-        diegofariasm.path =
-          ".ssh/diegofariasm";
-        diegofariasm_pub.path =
-          ".ssh/diegofariasm.pub";
-
+        fushiii.path = ".ssh/fushiii";
+        fushiii_pub.path = ".ssh/fushiii.pub";
+        diegofariasm.path = ".ssh/diegofariasm";
+        diegofariasm_pub.path = ".ssh/diegofariasm.pub";
       };
     };
 
@@ -68,9 +54,7 @@ in
       };
       desktop = {
         services = {
-          notifications = {
-            mako.enable = true;
-          };
+          notifications = { mako.enable = true; };
           udiskie.enable = true;
           clipman.enable = true;
         };
@@ -86,9 +70,7 @@ in
           firefox.enable = true;
         };
         term = {
-          default = {
-            bin = "wezterm";
-          };
+          default = { bin = "wezterm"; };
           wezterm.enable = true;
         };
       };
@@ -97,9 +79,7 @@ in
           enable = true;
           doom.enable = true;
         };
-        default = {
-          bin = "emacs";
-        };
+        default = { bin = "emacs"; };
       };
       theme.active = "oxocarbon";
     };

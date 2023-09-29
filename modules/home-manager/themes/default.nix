@@ -85,15 +85,15 @@ in {
       # change the fonts based on the theme anyway.
       fonts = {
         serif = {
-          package = pkgs.san-francisco;
+          package = pkgs.fonts.san-francisco;
           name = "SF Pro";
         };
         sansSerif = {
-          package = pkgs.san-francisco;
+          package = pkgs.fonts.san-francisco;
           name = "SF Pro Display";
         };
         monospace = {
-          package = pkgs.san-francisco;
+          package = pkgs.fonts.san-francisco;
           name = "SF Mono";
         };
         sizes = {

@@ -1,7 +1,6 @@
 { lib, inputs, ... }:
 with lib;
-with lib.my;
-{
+with lib.my; {
   imports = [
     ../home.nix
     ./hardware-configuration.nix
@@ -19,15 +18,13 @@ with lib.my;
   modules = {
     desktop = {
       hypr.enable = true;
-      display = {
-        gdm.enable = true;
-      };
+      display = { gdm.enable = true; };
       apps = {
+        wine.enable = true;
         gaming = {
-          games = {
-            roblox.enable = true;
-          };
+          games = { roblox.enable = true; };
           steam.enable = true;
+          heroic.enable = true;
         };
       };
     };
