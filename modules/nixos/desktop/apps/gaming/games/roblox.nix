@@ -14,6 +14,6 @@ in {
         vinegar
       ];
     };
-   hardware.opengl.driSupport32Bit = true;
+    hardware.opengl.driSupport32Bit = true;
   };
 }

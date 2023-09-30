@@ -13,4 +13,5 @@ let
       };
 
     };
-in lib.fix' (lib.extends overrides packages)
+in
+lib.fix' (lib.extends overrides packages)

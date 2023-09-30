@@ -74,11 +74,6 @@ in
         };
       };
       editors = {
-        code.enable = true;
-        nvim = {
-          enable = true;
-          nyoom.enable = true;
-        };
         emacs = {
           enable = true;
           doom.enable = true;

@@ -82,12 +82,13 @@
 
       # Extend lib with my personal custom library,
       # as well as home-manager's library.
-      lib = nixpkgs.lib.extend (self: super: {
-        my = import ./lib {
-          inherit inputs;
-          lib = self;
-        };
-      }) // home-manager.lib;
+      lib = nixpkgs.lib.extend
+        (self: super: {
+          my = import ./lib {
+            inherit inputs;
+            lib = self;
+          };
+        }) // home-manager.lib;
 
       extraArgs = {
         inherit inputs;
@@ -125,10 +126,12 @@
         };
 
         # Set several paths for the traditional channels.
-        nix.nixPath = lib.mapAttrsToList (name: source:
-          let name' = if (name == "self") then "config" else name;
-          in "${name'}=${source}") inputs
-          ++ [ "/nix/var/nix/profiles/per-user/root/channels" ];
+        nix.nixPath = lib.mapAttrsToList
+          (name: source:
+            let name' = if (name == "self") then "config" else name;
+            in "${name'}=${source}")
+          inputs
+        ++ [ "/nix/var/nix/profiles/per-user/root/channels" ];
 
         # The global configuration for the home-manager module.
         home-manager = {
@@ -193,9 +196,11 @@
         # I want to capture the usual flakes to its exact version so we're
         # making them available to our system. This will also prevent the
         # annoying downloads since it always get the latest revision.
-        nix.registry = lib.mapAttrs' (name: flake:
-          let name' = if (name == "self") then "config" else name;
-          in lib.nameValuePair name' { inherit flake; }) inputs;
+        nix.registry = lib.mapAttrs'
+          (name: flake:
+            let name' = if (name == "self") then "config" else name;
+            in lib.nameValuePair name' { inherit flake; })
+          inputs;
 
         # Parallel downloads! PARALLEL DOWNLOADS! It's like Pacman 6.0 all over
         # again.
@@ -228,31 +233,35 @@
         nixpkgs.overlays = overlays;
       };
 
-    in {
+    in
+    {
       # Some sensible default configurations.
-      nixosConfigurations = lib.mapAttrs (filename: host:
-        let
-          path = ./hosts/${filename};
-          extraModules = [
-            ({ lib, ... }: {
-              config = lib.mkMerge [
-                { networking.hostName = lib.mkForce host._name; }
+      nixosConfigurations = lib.mapAttrs
+        (filename: host:
+          let
+            path = ./hosts/${filename};
+            extraModules = [
+              ({ lib, ... }: {
+                config = lib.mkMerge [
+                  { networking.hostName = lib.mkForce host._name; }
 
-                (lib.mkIf (host ? domain) {
-                  networking.domain = lib.mkForce host.domain;
-                })
-              ];
+                  (lib.mkIf (host ? domain) {
+                    networking.domain = lib.mkForce host.domain;
+                  })
+                ];
 
-            })
-            hostSharedConfig
-            nixSettingsSharedConfig
-            path
-          ];
-        in mkHost {
-          nixpkgs-channel = host.nixpkgs-channel or "nixpkgs";
-          inherit extraModules extraArgs;
-          system = host._system;
-        }) (lib.filterAttrs (_: host: (host.format or "iso") == "iso") images);
+              })
+              hostSharedConfig
+              nixSettingsSharedConfig
+              path
+            ];
+          in
+          mkHost {
+            nixpkgs-channel = host.nixpkgs-channel or "nixpkgs";
+            inherit extraModules extraArgs;
+            system = host._system;
+          })
+        (lib.filterAttrs (_: host: (host.format or "iso") == "iso") images);
 
       # We're going to make our custom modules available for our flake. Whether
       # or not this is a good thing is debatable, I just want to test it.
@@ -263,46 +272,49 @@
       # run into the same problem as i am right,
       # that is: home-manager only install the config
       # for the last user.
-      homeConfigurations = lib.mapAttrs (filename: metadata:
-        let
-          name = metadata._name;
-          system = metadata._system;
-          pkgs = import inputs."${metadata.nixpkgs-channel or "nixpkgs"}" {
-            inherit system overlays;
-          };
-          path = ./users/${name};
-          extraModules = [
-            ({ pkgs, config, ... }: {
-              nixpkgs = {
-                # To be able to use the most of our config as possible, we want
-                # both to use the same overlays.
-                overlays = overlays;
+      homeConfigurations = lib.mapAttrs
+        (filename: metadata:
+          let
+            name = metadata._name;
+            system = metadata._system;
+            pkgs = import inputs."${metadata.nixpkgs-channel or "nixpkgs"}" {
+              inherit system overlays;
+            };
+            path = ./users/${name};
+            extraModules = [
+              ({ pkgs, config, ... }: {
+                nixpkgs = {
+                  # To be able to use the most of our config as possible, we want
+                  # both to use the same overlays.
+                  overlays = overlays;
 
-                # Stallman-senpai will be disappointed. :/
-                nixpkgs.config.allowUnfree = true;
-              };
+                  # Stallman-senpai will be disappointed. :/
+                  nixpkgs.config.allowUnfree = true;
+                };
 
-              home = {
-                username = name;
-                homeDirectory =
-                  metadata.home-directory or "/home/${config.home.username}";
+                home = {
+                  username = name;
+                  homeDirectory =
+                    metadata.home-directory or "/home/${config.home.username}";
 
-                stateVersion = lib.mkDefault "23.11";
-              };
+                  stateVersion = lib.mkDefault "23.11";
+                };
 
-              programs.home-manager.enable = true;
+                programs.home-manager.enable = true;
 
-              targets.genericLinux.enable = true;
-            })
-            nixSettingsSharedConfig
-            userSharedConfig
-            path
-          ];
-        in mkHome {
-          inherit pkgs system extraModules extraArgs;
-          home-manager-channel =
-            metadata.home-manager-channel or "home-manager";
-        }) users;
+                targets.genericLinux.enable = true;
+              })
+              nixSettingsSharedConfig
+              userSharedConfig
+              path
+            ];
+          in
+          mkHome {
+            inherit pkgs system extraModules extraArgs;
+            home-manager-channel =
+              metadata.home-manager-channel or "home-manager";
+          })
+        users;
 
       # Extending home-manager with my custom modules, if anyone cares.
       homeModules =
@@ -317,7 +329,7 @@
       # "x86_64-linux". I just want to try out supporting other systems.
       packages = forAllSystems (system:
         inputs.flake-utils.lib.flattenTree
-        (import ./pkgs { pkgs = import nixpkgs { inherit system; }; }));
+          (import ./pkgs { pkgs = import nixpkgs { inherit system; }; }));
 
       # This contains images that are meant to be built and distributed
       # somewhere else including those NixOS configurations that are built as
@@ -326,31 +338,35 @@
         let
           images' =
             lib.filterAttrs (host: metadata: system == metadata._system) images;
-        in lib.mapAttrs' (host: metadata:
-          let
-            inherit system;
-            name = metadata._name;
-            format = metadata.format or "iso";
-            nixpkgs-channel = metadata.nixpkgs-channel or "nixpkgs";
-            pkgs =
-              import inputs."${nixpkgs-channel}" { inherit system overlays; };
-          in lib.nameValuePair name (mkImage {
-            inherit format system pkgs extraArgs;
-            extraModules = [
-              ({ lib, ... }: {
-                config = lib.mkMerge [
-                  {
-                    networking.hostName = lib.mkForce metadata.hostname or name;
-                  }
-                  (lib.mkIf (metadata ? domain) {
-                    networking.domain = lib.mkForce metadata.domain;
-                  })
-                ];
-              })
-              hostSharedConfig
-              ./hosts/${name}
-            ];
-          })) images');
+        in
+        lib.mapAttrs'
+          (host: metadata:
+            let
+              inherit system;
+              name = metadata._name;
+              format = metadata.format or "iso";
+              nixpkgs-channel = metadata.nixpkgs-channel or "nixpkgs";
+              pkgs =
+                import inputs."${nixpkgs-channel}" { inherit system overlays; };
+            in
+            lib.nameValuePair name (mkImage {
+              inherit format system pkgs extraArgs;
+              extraModules = [
+                ({ lib, ... }: {
+                  config = lib.mkMerge [
+                    {
+                      networking.hostName = lib.mkForce metadata.hostname or name;
+                    }
+                    (lib.mkIf (metadata ? domain) {
+                      networking.domain = lib.mkForce metadata.domain;
+                    })
+                  ];
+                })
+                hostSharedConfig
+                ./hosts/${name}
+              ];
+            }))
+          images');
 
       # No amount of formatters will make this codebase nicer but it sure does
       # feel like it does.

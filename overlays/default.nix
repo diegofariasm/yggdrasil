@@ -4,4 +4,5 @@
 # simply have to append them as a list (i.e., `lib.attrValues`).
 {
   heroic = import ./heroic;
+  kakoune = import ./kakoune;
 }

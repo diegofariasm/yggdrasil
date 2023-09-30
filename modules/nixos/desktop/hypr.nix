@@ -49,17 +49,16 @@ in
 {
   options.modules.desktop.hypr = { enable = mkBoolOpt false; };
 
-  imports = [
-    hyprland.nixosModules.default
-  ];
+  imports = [ hyprland.nixosModules.default ];
 
   config = mkIf cfg.enable {
     fonts = {
-      packages = with pkgs; [
-        # Install only one the fonts.
-        # Nerdfonts is just too big.
-        (nerdfonts.override { fonts = [ "Iosevka" ]; })
-      ];
+      packages = with pkgs;
+        [
+          # Install only one the fonts.
+          # Nerdfonts is just too big.
+          (nerdfonts.override { fonts = [ "Iosevka" ]; })
+        ];
     };
 
     programs = {
