@@ -61,6 +61,7 @@ in {
             vlc.enable = true;
             nomacs.enable = true;
           };
+          qbit.enable = true;
           thunar.enable = true;
         };
         browsers = {
@@ -73,13 +74,14 @@ in {
         };
       };
       editors = {
+        kakoune.enable = true;
         emacs = {
           enable = true;
           doom.enable = true;
         };
         default = { bin = "emacs"; };
       };
-      theme.active = "oxocarbon";
+      theme.active = "tokyo";
     };
   };
 }

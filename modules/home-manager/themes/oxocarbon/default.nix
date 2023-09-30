@@ -2,16 +2,13 @@
 
 with lib;
 with lib.my;
-let
-  cfg = config.modules.theme;
-in
-{
+let cfg = config.modules.theme;
+in {
   config = mkIf (cfg.active == "oxocarbon") {
 
     modules.theme.wallpaper = mkDefault ./config/wallpaper.jpg;
 
-    # Set the theme for the applications.
-    stylix.base16Scheme = if cfg.isLight then ./config/light.yaml else ./config/dark.yaml;
+    stylix.base16Scheme = ./config/oxocarbon.yaml;
 
   };
 
