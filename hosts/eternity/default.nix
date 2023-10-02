@@ -17,14 +17,16 @@ with lib.my; {
   ## Modules
   modules = {
     desktop = {
-      hypr.enable = true;
-      display = { gdm.enable = true; };
+      hyprland.enable = true;
+      display = {
+        gdm.enable = true;
+      };
       apps = {
-        wine.enable = true;
         gaming = {
-          games = { roblox.enable = true; };
+          games = {
+            roblox.enable = true;
+          };
           steam.enable = true;
-          heroic.enable = true;
         };
       };
     };
@@ -38,9 +40,6 @@ with lib.my; {
     services = {
       ssh.enable = true;
       docker.enable = true;
-      tumbler.enable = true;
-      udisks.enable = true;
-      upower.enable = true;
     };
   };
 

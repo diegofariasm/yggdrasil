@@ -1,5 +1,0 @@
-[user]
-  name = fushiii 
-  email = fushitheimortal@gmail.com
-[core]
-  sshCommand = "ssh -i ~/.ssh/fushiii"

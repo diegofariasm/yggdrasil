@@ -1,5 +1,0 @@
-[user]
-  name = diegofariasm
-  email = diegofarias016@gmail.com
-[core]
-  sshCommand = "ssh -i ~/.ssh/diegofariasm"

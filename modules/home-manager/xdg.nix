@@ -31,7 +31,7 @@
         # on my folders.
         music = appendToHomeDir "music";
         videos = appendToHomeDir "videos";
-        desktop = appendToHomeDir "desktop";
+        desktop = appendToHomeDir "/";
         pictures = appendToHomeDir "pictures";
         publicShare = appendToHomeDir "public";
         download = appendToHomeDir "downloads";

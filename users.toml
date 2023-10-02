@@ -4,6 +4,3 @@
 
 [fushi]
 systems = ["x86_64-linux"]
-
-[diegofariasm]
-systems = ["x86_64-linux"]

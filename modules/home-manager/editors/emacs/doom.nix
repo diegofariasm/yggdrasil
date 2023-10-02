@@ -45,12 +45,6 @@ in
         };
       };
 
-      # So there is no need to manually install the fonts.
-      # ( or through doom install )
-      packages = with pkgs; [
-        emacs-all-the-icons-fonts
-      ];
-
       # Add the doom binary to user path.
       # If you shell is not managed by home-manager,
       # you should add it yourself.

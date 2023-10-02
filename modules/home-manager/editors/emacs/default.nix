@@ -19,7 +19,6 @@ in
       enable = true;
       extraPackages = epkgs: with epkgs; [
         vterm
-        all-the-icons
       ];
     };
 

@@ -17,14 +17,6 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       chromium
-      (makeDesktopItem {
-        name = "chromium-private";
-        desktopName = "Chromium (Private)";
-        genericName = "Open a private chromium window";
-        icon = "chromium";
-        exec = "${chromium}/bin/chromium --incognito";
-        categories = [ "Network" ];
-      })
     ];
   };
 }

@@ -10,15 +10,21 @@
 # deployed somewhere (e.g., desktop, homelab server, VPS).
 
 [eternity]
-systems = ["x86_64-linux"]
-format = "iso"
-
-[serenity]
-systems = ["x86_64-linux"]
+systems = [
+  "x86_64-linux"
+]
 format = "iso"
 
 
 [bootstrap]
-systems = ["aarch64-linux", "x86_64-linux"]
+systems = [
+  "x86_64-linux",
+]
 format = "install-iso"
-# nixpkgs-channel = "nixos-unstable-small"
+nixpkgs-channel = "nixos-unstable-small"
+
+[graphical-installer]
+systems = [
+  "x86_64-linux",
+]
+format = "install-iso"

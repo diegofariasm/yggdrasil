@@ -65,18 +65,17 @@
       # A set of users with their metadata to be deployed with home-manager.
       users = listImagesWithSystems (lib.importTOML ./users.toml);
 
-      overlays = with inputs;
-        [
+      overlays = with inputs; [
 
-          self.overlays.default
+        self.overlays.default
 
-          maiden.overlays.default
-
-        ] ++ (lib.attrValues self.overlays);
+        maiden.overlays.default
+      ] ++ (lib.attrValues self.overlays);
       defaultSystem = "x86_64-linux";
 
-      # Just add systems here and it should add systems to the outputs.
-      systems = [ "x86_64-linux" "aarch64-linux" ];
+      systems = [
+        "x86_64-linux"
+      ];
 
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
 
@@ -108,36 +107,19 @@
           disko.nixosModules.disko
         ];
 
-        environment = {
-          # Some default goodies.
-          # These are needed in ( and many ) places.
-          systemPackages = with pkgs; [
-            age
-            git
-            sops
-            maiden
-            nixfmt
-            shfmt
-            shellcheck
-            rnix-lsp
-            nixpkgs-fmt
 
-          ];
-        };
+        environment.systemPackages = with pkgs; [
+          age
+          nil
+          git
+          sops
+          maiden
+          nixpkgs-fmt
+        ];
 
-        # Set several paths for the traditional channels.
-        nix.nixPath = lib.mapAttrsToList
-          (name: source:
-            let name' = if (name == "self") then "config" else name;
-            in "${name'}=${source}")
-          inputs
-        ++ [ "/nix/var/nix/profiles/per-user/root/channels" ];
 
-        # The global configuration for the home-manager module.
-        home-manager = {
-          useGlobalPkgs = lib.mkDefault true;
-          useUserPackages = lib.mkDefault true;
-        };
+        home-manager.useGlobalPkgs = lib.mkDefault true;
+        home-manager.useUserPackages = lib.mkDefault true;
 
         # Make all of the flake inputs
         # available to the home-manager modules.
@@ -150,16 +132,20 @@
           (mapModulesRec' (toString ./modules/home-manager) import)
           ++ [ userSharedConfig ];
 
+        programs = {
+          gnupg.agent = lib.mkDefault {
+            enable = true;
+            enableSSHSupport = true;
+          };
+        };
+        services.openssh.enable = lib.mkDefault true;
+
         system = {
           configurationRevision = lib.mkIf (self ? rev) self.rev;
           stateVersion = "23.11";
         };
 
         boot = {
-          # Probably won't see this.
-          # That's the magic of ssd's for you.
-          plymouth.enable = true;
-
           loader = {
             systemd-boot = {
               enable = lib.mkDefault true;

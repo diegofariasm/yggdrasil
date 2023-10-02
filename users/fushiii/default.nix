@@ -37,8 +37,10 @@ in {
       };
       defaultSopsFile = ./secrets/ssh.yaml;
       secrets = {
-        id_rsa.path = ".ssh/fushiii";
-        id_rsa_pub.path = ".ssh/fushiii.pub";
+        fushiii.path = ".ssh/fushiii";
+        fushiii_pub.path = ".ssh/fushiii.pub";
+        diegofariasm.path = ".ssh/diegofariasm";
+        diegofariasm_pub.path = ".ssh/diegofarias.pub";
       };
     };
 
@@ -52,28 +54,38 @@ in {
       };
       desktop = {
         services = {
-          notifications = { mako.enable = true; };
-          udiskie.enable = true;
+          notifications = {
+            mako.enable = true;
+          };
           clipman.enable = true;
         };
         apps = {
-          media = {
-            vlc.enable = true;
-            nomacs.enable = true;
+          files = {
+            thunar.enable = true;
+            default = {
+              bin = "thunar";
+            };
           };
           qbit.enable = true;
-          thunar.enable = true;
         };
         browsers = {
-          default = "firefox";
-          firefox.enable = true;
+          default = {
+            bin = "brave";
+          };
+          brave.enable = true;
         };
         term = {
-          default = { bin = "wezterm"; };
-          wezterm.enable = true;
+          default = {
+            bin = "kitty";
+            args = [
+              "--single-instance"
+            ];
+          };
+          kitty.enable = true;
         };
       };
       editors = {
+        helix.enable = true;
         kakoune.enable = true;
         emacs = {
           enable = true;
@@ -81,7 +93,7 @@ in {
         };
         default = { bin = "emacs"; };
       };
-      theme.active = "tokyo";
+      theme.active = "oxocarbon";
     };
   };
 }

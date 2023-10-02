@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.desktop.apps.thunar;
+  cfg = config.modules.desktop.apps.files.thunar;
 in
 {
-  options.modules.desktop.apps.thunar = {
+  options.modules.desktop.apps.files.thunar = {
     enable = lib.mkOption {
       description = ''
         Wheter to install thunar.
@@ -17,8 +17,6 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; with xfce; [
       thunar
-      tumbler
-      ffmpegthumbnailer
     ];
   };
 }

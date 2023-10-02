@@ -12,13 +12,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.openssh = {
-      enable = true;
-      # You probably shouldn't have password authentication on,
-      # it just isn't safe. But if you do, be unforgiving in the attempts.
-      settings = {
-        KbdInteractiveAuthentication = false;
-        PasswordAuthentication = false;
+    services = {
+      openssh = {
+        enable = true;
+        settings = {
+          KbdInteractiveAuthentication = false;
+          PasswordAuthentication = false;
+        };
       };
     };
   };

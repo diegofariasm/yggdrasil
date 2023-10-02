@@ -19,12 +19,14 @@ in
     programs = {
       kitty = {
         enable = true;
+        settings = {
+          window_padding_width = 16;
+          confirm_os_window_close = 0;
+          # The most annoying thing in the world.
+          # I know i did something wrong, no need to shame me.
+          enable_audio_bell = false;
+        };
       };
-    };
-    home = {
-      packages = with pkgs; [
-        kitty
-      ];
     };
   };
 }
