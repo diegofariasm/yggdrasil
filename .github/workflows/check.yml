@@ -1,4 +1,4 @@
-name: "Check flake outputs"
+name: "checks"
 on:
   pull_request:
   push:
@@ -19,6 +19,4 @@ jobs:
         run: |
           nix flake check --impure --no-build --accept-flake-config
         env:
-          NIXPKGS_ALLOW_BROKEN: "1"
           NIXPKGS_ALLOW_UNFREE: "1"
-          NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM: "1"
