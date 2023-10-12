@@ -21,9 +21,14 @@ with lib.my; {
       display = {
         gdm.enable = true;
       };
-      #     apps = {
-      #       gaming = { games = { roblox.enable = true; }; steam.enable = true; };
-      #     };
+      apps = {
+        gaming = {
+          games = {
+            roblox.enable = true;
+          };
+          steam.enable = true;
+        };
+      };
     };
 
     hardware = {
