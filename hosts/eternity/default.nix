@@ -21,14 +21,9 @@ with lib.my; {
       display = {
         gdm.enable = true;
       };
-      apps = {
-        gaming = {
-          games = {
-            roblox.enable = true;
-          };
-          steam.enable = true;
-        };
-      };
+      #     apps = {
+      #       gaming = { games = { roblox.enable = true; }; steam.enable = true; };
+      #     };
     };
 
     hardware = {
@@ -38,8 +33,8 @@ with lib.my; {
     };
 
     services = {
-      ssh.enable = true;
       docker.enable = true;
+      ssh.enable = true;
     };
   };
 

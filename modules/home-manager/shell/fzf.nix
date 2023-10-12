@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   cfg = config.modules.shell.fzf;
@@ -17,7 +17,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.fzf = {
       enable = true;
-      enableZshIntegration = true;
     };
+    home.packages = with pkgs; [ fzf ];
   };
 }

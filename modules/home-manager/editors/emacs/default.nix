@@ -35,7 +35,7 @@ in
     };
 
     # Dependencies for emacs ( doom )
-    home.packages = with pkgs; [ fd ripgrep ];
+    home.packages = with pkgs; [ fd ];
 
     # Easier calling of emacs on the command line.
     # You should probably have the daemon running anyway.

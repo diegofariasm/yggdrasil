@@ -44,11 +44,13 @@ in {
       };
     };
 
+
     modules = {
       shell = {
         zsh.enable = true;
         eza.enable = true;
         fzf.enable = true;
+        tmux.enable = true;
         direnv.enable = true;
         starship.enable = true;
       };
@@ -66,13 +68,13 @@ in {
               bin = "thunar";
             };
           };
-          qbit.enable = true;
+          discord.enable = true;
         };
         browsers = {
           default = {
-            bin = "brave";
+            bin = "firefox";
           };
-          brave.enable = true;
+          firefox.enable = true;
         };
         term = {
           default = {
@@ -85,7 +87,6 @@ in {
         };
       };
       editors = {
-        helix.enable = true;
         kakoune.enable = true;
         emacs = {
           enable = true;

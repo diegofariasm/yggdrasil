@@ -21,18 +21,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    services.udiskie = {
-      enable = true;
-    };
-
-    # Else, it wont start.
-    # This is not supplied by wayland.
-    systemd.user.targets.tray = {
-      Unit = {
-        Description = "Home manager system tray";
-        Requires = [
-          "graphical-session-pre.target"
-        ];
+    services = {
+      udiskie = {
+        enable = true;
+        automount = true;
+        # Don't appear on the tray.
+        # This doesn't seem to work properly on wayland.
+        tray = "never";
       };
     };
 

@@ -14,11 +14,23 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    programs = {
-      kakoune = {
-        enable = true;
-      };
-    };
+    nixpkgs.overlays = [
+        (self: super: {
+          kakoune = super.wrapKakoune self.kakoune-unwrapped {
+            configure = {
+              plugins = with self.kakounePlugins; [
+                parinfer-rust
+              ];
+            };
+          };
+        })
+      ];
+   #  programs = {
+   #    kakoune = {
+   #      enable = true;
+   #    };
+   #  };
+   home.packages = with pkgs; [ kakoune kak-lsp ];
   };
 
 }

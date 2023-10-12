@@ -31,6 +31,10 @@
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Cached nix-index database.
+    # Doing it manually just takes too long.
+    nix-index-database.url = "github:Mic92/nix-index-database";
+
     # Managing your secrets.
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -57,6 +61,7 @@
     let
       inherit (lib.my)
         mapModulesRec' mkHost mkHome mkImage listImagesWithSystems;
+
       # A set of images with their metadata that is usually built for usual
       # purposes. The format used here is whatever formats nixos-generators
       # support.
@@ -70,8 +75,15 @@
         self.overlays.default
 
         maiden.overlays.default
+        (final: prev: {
+          nix-index-database = final.runCommandLocal "nix-index-database" { } ''
+                    mkdir -p $out
+                    ln -s ${
+            nix-index-database.legacyPackages.${prev.system}.database
+            } $out/files
+          '';
+        })
       ] ++ (lib.attrValues self.overlays);
-      defaultSystem = "x86_64-linux";
 
       systems = [
         "x86_64-linux"
@@ -112,11 +124,16 @@
           age
           nil
           git
+          act
           sops
           maiden
           nixpkgs-fmt
         ];
 
+
+        # Note: this is needed for automount.
+        # Other than that, i don't think there is anything that uses it.
+        services.udisks2.enable = true;
 
         home-manager.useGlobalPkgs = lib.mkDefault true;
         home-manager.useUserPackages = lib.mkDefault true;
@@ -132,14 +149,6 @@
           (mapModulesRec' (toString ./modules/home-manager) import)
           ++ [ userSharedConfig ];
 
-        programs = {
-          gnupg.agent = lib.mkDefault {
-            enable = true;
-            enableSSHSupport = true;
-          };
-        };
-        services.openssh.enable = lib.mkDefault true;
-
         system = {
           configurationRevision = lib.mkIf (self ? rev) self.rev;
           stateVersion = "23.11";
@@ -149,7 +158,7 @@
           loader = {
             systemd-boot = {
               enable = lib.mkDefault true;
-              configurationLimit = 10;
+              configurationLimit = 5;
             };
             efi.canTouchEfiVariables = lib.mkDefault true;
           };
@@ -173,6 +182,17 @@
         # This also makes it able to manage itself.
         programs.home-manager.enable = true;
 
+        programs.nix-index = {
+          enable = true;
+        };
+        # Put the database in the user directory
+        home.file = {
+          ".cache/nix-index" = {
+            source = pkgs.nix-index-database;
+          };
+        };
+
+
         # Necessary for home-manager to work with flakes, otherwise it will
         # look for a nixpkgs channel.
         home.stateVersion = osConfig.system.stateVersion or "23.11";
@@ -187,10 +207,6 @@
             let name' = if (name == "self") then "config" else name;
             in lib.nameValuePair name' { inherit flake; })
           inputs;
-
-        # Parallel downloads! PARALLEL DOWNLOADS! It's like Pacman 6.0 all over
-        # again.
-        nix.package = pkgs.nixUnstable;
 
         # Set the configurations for the package manager.
         nix.settings = {
@@ -208,7 +224,15 @@
           # TODO: Remove this after nix-command and flakes has been considered
           # stable.
           experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+
           auto-optimise-store = lib.mkDefault true;
+        };
+
+        # I don't have much space.
+        nix.gc = {
+          automatic = true;
+          dates = "weekly";
+          options = "--delete-older-than-30d";
         };
 
         # Stallman-senpai will be disappointed.
