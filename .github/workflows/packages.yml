@@ -2,8 +2,8 @@ name: "packages"
 on:
   push:
     branches:
-      - master
-      - develop
+      - main
+      - staging
 jobs:
   build-custom-packages:
     runs-on: ubuntu-latest

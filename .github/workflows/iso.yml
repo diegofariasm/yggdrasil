@@ -2,9 +2,8 @@ name: "iso"
 on:
   push:
     branches:
-      - master
+      - main
     paths-ignore:
-      - docs/
 jobs:
   build-iso:
     strategy:
