@@ -1,19 +1,24 @@
 { pkgs, config, inputs, lib, ... }:
-with lib;
-with lib.my;
+
+
 let
   cfg = config.modules.desktop.hyprland;
 
 
 in
 {
-  options.modules.desktop.hyprland = { enable = mkBoolOpt false; };
+  options.modules.desktop.hyprland = {   enable = lib.mkOption {
+      
+     type = lib.types.bool;
+      default = false;
+      example = true;
+    }; };
 
   imports = [
     inputs.hyprland.nixosModules.default
   ];
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     fonts = {
       packages = with pkgs; [

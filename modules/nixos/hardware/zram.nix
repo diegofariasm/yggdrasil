@@ -3,16 +3,21 @@
 , pkgs
 , ...
 }:
-with lib;
-with lib.my; let
+
+ let
   cfg = config.modules.hardware.zram;
 in
 {
   options.modules.hardware.zram = {
-    enable = mkBoolOpt false;
+      enable = lib.mkOption {
+      
+     type = lib.types.bool;
+      default = false;
+      example = true;
+    };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     # Note: this should make the system a little bit snappier
     # It also helps as it doesn't abuse your ssd as much with the swap writes.
     zramSwap = {

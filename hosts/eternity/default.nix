@@ -1,20 +1,21 @@
 { lib, inputs, ... }:
-with lib;
-with lib.my; {
+
+ {
   imports = [
     ../home.nix
     ./hardware-configuration.nix
 
     # The users for this host.
-    (getUser "fushiii")
+    (lib.getUser "fushiii")
 
   ];
 
   # Automagically format the disk
   # and mount the partitions.
   disko.devices = import ./disko.nix { disks = [ "/dev/sda" ]; };
-
-  ## Modules
+  
+  # The host configuration.
+  # This is available at modules/nixos.
   modules = {
     desktop = {
       hyprland.enable = true;

@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 with lib;
-with lib.my; let
+let
   cfg = config.modules.desktop.term;
 in
 {

@@ -2,16 +2,21 @@
 , lib
 , ...
 }:
-with lib;
-with lib.my; let
+
+ let
   cfg = config.modules.services.ssh;
 in
 {
   options.modules.services.ssh = {
-    enable = mkBoolOpt false;
+      enable = lib.mkOption {
+      
+     type = lib.types.bool;
+      default = false;
+      example = true;
+    };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services = {
       openssh = {
         enable = true;

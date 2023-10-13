@@ -2,14 +2,19 @@
 , lib
 , ...
 }:
-with lib;
-with lib.my; let
+
+ let
   cfg = config.modules.desktop.display.lightdm;
 in
 {
-  options.modules.desktop.display.lightdm = { enable = mkBoolOpt false; };
+  options.modules.desktop.display.lightdm = {   enable = lib.mkOption {
+      
+     type = lib.types.bool;
+      default = false;
+      example = true;
+    }; };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.xserver = {
       enable = true;
       displayManager.lightdm = {

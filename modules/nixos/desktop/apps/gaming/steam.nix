@@ -1,13 +1,18 @@
 { pkgs, config, inputs, lib, ... }:
-with lib;
-with lib.my;
+
+
 let cfg = config.modules.desktop.apps.gaming.steam;
 
 in
 {
-  options.modules.desktop.apps.gaming.steam = { enable = mkBoolOpt false; };
+  options.modules.desktop.apps.gaming.steam = {   enable = lib.mkOption {
+      
+     type = lib.types.bool;
+      default = false;
+      example = true;
+    }; };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     programs = {
       steam = {

@@ -1,13 +1,13 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.desktop.browsers.brave;
+  cfg = config.modules.desktop.apps.media.zathura;
 in
 {
-  options.modules.desktop.browsers.brave = {
+  options.modules.desktop.apps.media.zathura = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install brave.
+        Wheter to install zathura.
       '';
       type = lib.types.bool;
       default = false;
@@ -16,7 +16,7 @@ in
   };
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      brave
+      zathura
     ];
   };
 }

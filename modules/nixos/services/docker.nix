@@ -1,14 +1,19 @@
 { config, pkgs, lib, ... }:
-with lib;
-with lib.my;
+
+
 let cfg = config.modules.services.docker;
 in
 {
   options.modules.services.docker = {
-    enable = mkBoolOpt false;
+      enable = lib.mkOption {
+      
+     type = lib.types.bool;
+      default = false;
+      example = true;
+    };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     virtualisation = {
       docker = {

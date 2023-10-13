@@ -1,7 +1,5 @@
-# Welcome to ground zero. Where the whole flake gets set up and all its modules
-# are loaded.
 {
-  description = "You shall meet your doom here";
+  description = "You are not supposed to be here!";
 
   inputs = {
     # I know NixOS can be stable but we're going cutting edge, baybee! While
@@ -46,35 +44,34 @@
     # I have been using it for a while, nothing beats it.
     hyprland.url = "github:hyprwm/Hyprland";
 
-    # Style your entire computer with nix.
-    # This makes me want to never leave nix or nixos again.
-    stylix.url = "github:danth/stylix";
-
     # List of curated themes to use with stylix.
     # Some are missing, but anyway.
     base16-schemes.flake = false;
+    nix-colors.url = "github:misterio77/nix-colors";
     base16-schemes.url = "github:base16-project/base16-schemes";
+
 
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-colors, home-manager, ... }:
     let
-      inherit (lib.my)
-        mapModulesRec' mkHost mkHome mkImage listImagesWithSystems;
-
       # A set of images with their metadata that is usually built for usual
       # purposes. The format used here is whatever formats nixos-generators
       # support.
-      images = listImagesWithSystems (lib.importTOML ./images.toml);
+      images = listImagesWithSystems (lib'.importTOML ./images.toml);
 
       # A set of users with their metadata to be deployed with home-manager.
-      users = listImagesWithSystems (lib.importTOML ./users.toml);
+      users = listImagesWithSystems (lib'.importTOML ./users.toml);
+
+      inherit (import ./lib/images.nix { inherit inputs; lib = lib'; }) mkHost mkHome mkImage listImagesWithSystems;
+
 
       overlays = with inputs; [
 
         self.overlays.default
 
         maiden.overlays.default
+        
         (final: prev: {
           nix-index-database = final.runCommandLocal "nix-index-database" { } ''
                     mkdir -p $out
@@ -83,28 +80,25 @@
             } $out/files
           '';
         })
-      ] ++ (lib.attrValues self.overlays);
+      ] ++ (lib'.attrValues self.overlays);
 
       systems = [
         "x86_64-linux"
       ];
 
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
-
-      # Extend lib with my personal custom library,
-      # as well as home-manager's library.
-      lib = nixpkgs.lib.extend
-        (self: super: {
-          my = import ./lib {
-            inherit inputs;
-            lib = self;
-          };
-        }) // home-manager.lib;
-
+      
       extraArgs = {
+        inherit nix-colors;
         inherit inputs;
-        inherit lib;
       };
+
+      # We're considering this as the variant since we'll export the custom
+      # library as `lib` in the output attribute.
+      lib' = nixpkgs.lib.extend (final: prev:
+        import ./lib { lib = prev; }
+        // import ./lib/private.nix { lib = final; }
+        );
 
       # The shared configuration for the entire list of hosts for this cluster.
       # Take note to only set as minimal configuration as possible since we're
@@ -115,6 +109,7 @@
         # optional NixOS modules.
         imports = with inputs; [
           home-manager.nixosModules.home-manager
+          nix-colors.homeManagerModules.default
           sops-nix.nixosModules.sops
           disko.nixosModules.disko
         ];
@@ -130,37 +125,31 @@
           nixpkgs-fmt
         ];
 
-
-        # Note: this is needed for automount.
-        # Other than that, i don't think there is anything that uses it.
-        services.udisks2.enable = true;
-
-        home-manager.useGlobalPkgs = lib.mkDefault true;
-        home-manager.useUserPackages = lib.mkDefault true;
+        home-manager.useGlobalPkgs = lib'.mkDefault true;
+        home-manager.useUserPackages = lib'.mkDefault true;
 
         # Make all of the flake inputs
         # available to the home-manager modules.
         # Note: can not use extraArgs here because
         # the 'inherit lib there will collide with hm.
-        # home-manager.extraSpecialArgs = extraArgs;
+        home-manager.extraSpecialArgs = extraArgs;
 
-        home-manager.extraSpecialArgs = { inherit inputs; };
+        # (mapModulesRec' (toString ./modules/home-manager) import)
         home-manager.sharedModules =
-          (mapModulesRec' (toString ./modules/home-manager) import)
+          (lib'.modulesToList (lib'.filesToAttr ./modules/home-manager))
           ++ [ userSharedConfig ];
-
         system = {
-          configurationRevision = lib.mkIf (self ? rev) self.rev;
+          configurationRevision = lib'.mkIf (self ? rev) self.rev;
           stateVersion = "23.11";
         };
 
         boot = {
           loader = {
             systemd-boot = {
-              enable = lib.mkDefault true;
+              enable = lib'.mkDefault true;
               configurationLimit = 5;
             };
-            efi.canTouchEfiVariables = lib.mkDefault true;
+            efi.canTouchEfiVariables = lib'.mkDefault true;
           };
         };
 
@@ -174,7 +163,6 @@
         # TODO: find how to import some of the modules
         # in the place where they are needed.
         imports = with inputs; [
-          stylix.homeManagerModules.stylix
           sops-nix.homeManagerModules.sops
         ];
 
@@ -202,10 +190,10 @@
         # I want to capture the usual flakes to its exact version so we're
         # making them available to our system. This will also prevent the
         # annoying downloads since it always get the latest revision.
-        nix.registry = lib.mapAttrs'
+        nix.registry = lib'.mapAttrs'
           (name: flake:
             let name' = if (name == "self") then "config" else name;
-            in lib.nameValuePair name' { inherit flake; })
+            in lib'.nameValuePair name' { inherit flake; })
           inputs;
 
         # Set the configurations for the package manager.
@@ -225,14 +213,7 @@
           # stable.
           experimental-features = [ "nix-command" "flakes" "repl-flake" ];
 
-          auto-optimise-store = lib.mkDefault true;
-        };
-
-        # I don't have much space.
-        nix.gc = {
-          automatic = true;
-          dates = "weekly";
-          options = "--delete-older-than-30d";
+          auto-optimise-store = lib'.mkDefault true;
         };
 
         # Stallman-senpai will be disappointed.
@@ -245,18 +226,22 @@
 
     in
     {
+      # Exposes only my library with the custom functions to make it easier to
+      # include in other flakes for whatever reason may be.
+      lib = import ./lib { lib = nixpkgs.lib; };
+
       # Some sensible default configurations.
-      nixosConfigurations = lib.mapAttrs
+      nixosConfigurations = lib'.mapAttrs
         (filename: host:
           let
             path = ./hosts/${filename};
             extraModules = [
               ({ lib, ... }: {
-                config = lib.mkMerge [
-                  { networking.hostName = lib.mkForce host._name; }
+                config = lib'.mkMerge [
+                  { networking.hostName = lib'.mkForce host._name; }
 
-                  (lib.mkIf (host ? domain) {
-                    networking.domain = lib.mkForce host.domain;
+                  (lib'.mkIf (host ? domain) {
+                    networking.domain = lib'.mkForce host.domain;
                   })
                 ];
 
@@ -271,18 +256,18 @@
             inherit extraModules extraArgs;
             system = host._system;
           })
-        (lib.filterAttrs (_: host: (host.format or "iso") == "iso") images);
+        (lib'.filterAttrs (_: host: (host.format or "iso") == "iso") images);
 
       # We're going to make our custom modules available for our flake. Whether
       # or not this is a good thing is debatable, I just want to test it.
-      nixosModules = lib.my.importModules (lib.my.filesToAttr ./modules/nixos);
+      nixosModules = lib'.importModules (lib'.filesToAttr ./modules/nixos);
 
       # User configuration should be done in here.
       # This runs once for every user, so i won't
       # run into the same problem as i am right,
       # that is: home-manager only install the config
       # for the last user.
-      homeConfigurations = lib.mapAttrs
+      homeConfigurations = lib'.mapAttrs
         (filename: metadata:
           let
             name = metadata._name;
@@ -307,7 +292,7 @@
                   homeDirectory =
                     metadata.home-directory or "/home/${config.home.username}";
 
-                  stateVersion = lib.mkDefault "23.11";
+                  stateVersion = lib'.mkDefault "23.11";
                 };
 
                 programs.home-manager.enable = true;
@@ -328,7 +313,7 @@
 
       # Extending home-manager with my custom modules, if anyone cares.
       homeModules =
-        lib.my.importModules (lib.my.filesToAttr ./modules/home-manager);
+        lib'.importModules (lib'.filesToAttr ./modules/home-manager);
 
       # In case somebody wants to use my stuff to be included in nixpkgs.
       overlays = import ./overlays // {
@@ -347,9 +332,9 @@
       images = forAllSystems (system:
         let
           images' =
-            lib.filterAttrs (host: metadata: system == metadata._system) images;
+            lib'.filterAttrs (host: metadata: system == metadata._system) images;
         in
-        lib.mapAttrs'
+        lib'.mapAttrs'
           (host: metadata:
             let
               inherit system;
@@ -359,16 +344,16 @@
               pkgs =
                 import inputs."${nixpkgs-channel}" { inherit system overlays; };
             in
-            lib.nameValuePair name (mkImage {
+            lib'.nameValuePair name (mkImage {
               inherit format system pkgs extraArgs;
               extraModules = [
                 ({ lib, ... }: {
-                  config = lib.mkMerge [
+                  config = lib'.mkMerge [
                     {
-                      networking.hostName = lib.mkForce metadata.hostname or name;
+                      networking.hostName = lib'.mkForce metadata.hostname or name;
                     }
-                    (lib.mkIf (metadata ? domain) {
-                      networking.domain = lib.mkForce metadata.domain;
+                    (lib'.mkIf (metadata ? domain) {
+                      networking.domain = lib'.mkForce metadata.domain;
                     })
                   ];
                 })

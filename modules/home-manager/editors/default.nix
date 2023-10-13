@@ -3,7 +3,7 @@
 , ...
 }:
 with lib;
-with lib.my; let
+ let
   cfg = config.modules.editors;
 in
 {
@@ -15,13 +15,12 @@ in
         type = types.nullOr (types.listOf types.str);
         description = "A list of strings representing arguments";
       };
-
       about = mkOpt types.str "The default editor.";
     };
 
   };
 
-  config = mkIf (cfg.default != null) {
+  config = lib.mkIf (cfg.default != null) {
     maiden = {
       launch = {
         editor = {

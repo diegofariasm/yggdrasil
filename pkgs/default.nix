@@ -6,7 +6,6 @@ let
   packages = self:
     let callPackage = newScope self;
     in {
-      vinegar = callPackage ./vinegar { wine = wineWowPackages.staging; };
       fonts = {
         icomoon = callPackage ./fonts/icomoon { };
         san-francisco = callPackage ./fonts/san-francisco { };

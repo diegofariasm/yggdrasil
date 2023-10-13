@@ -3,16 +3,21 @@
 , pkgs
 , ...
 }:
-with lib;
-with lib.my; let
+
+ let
   cfg = config.modules.hardware.audio;
 in
 {
   options.modules.hardware.audio = {
-    enable = mkBoolOpt false;
+    enable = lib.mkOption {
+      
+     type = lib.types.bool;
+      default = false;
+      example = true;
+    };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.pipewire = {
       enable = true;
       alsa.enable = true;
@@ -40,7 +45,7 @@ in
             sed -i -e 's|load-module module-esound-protocol-unix|# ...|' "$out/default.pa"
           '';
       in
-      mkIf config.hardware.pulseaudio.enable
+      lib.mkIf config.hardware.pulseaudio.enable
         "${paConfigFile}/default.pa";
 
   };

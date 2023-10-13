@@ -1,8 +1,7 @@
 { config, lib, ... }:
-
 with lib;
-with lib.my;
-let cfg = config.modules.desktop.apps.files;
+let
+cfg = config.modules.desktop.apps.files;
 in {
   options.modules.desktop.apps.files = {
     default = {

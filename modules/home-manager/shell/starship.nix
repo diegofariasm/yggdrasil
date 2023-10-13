@@ -20,17 +20,6 @@ in
     programs.starship = {
       enable = true;
     };
-
     home.packages = with pkgs; [ fonts.icomoon ];
-
-    # My config for starship.
-    # You will probably have lots of font
-    # issues with emacs if you enable this module.
-    xdg.configFile = {
-      "starship.toml" = {
-        source = "${configDir}/starship.toml";
-      };
-    };
-
   };
 }

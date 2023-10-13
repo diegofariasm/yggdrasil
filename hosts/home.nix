@@ -2,7 +2,7 @@
 , lib
 , ...
 }:
-with lib; {
+ {
   networking.hosts =
     let
       hostConfig =
@@ -12,13 +12,13 @@ with lib; {
           "192.168.0.186" = [ "odin" ];
         }
         else { };
-      hosts = flatten (attrValues hostConfig);
+      hosts = lib.flatten (lib.attrValues hostConfig);
       hostName = config.networking.hostName;
     in
-    mkIf (builtins.elem hostName hosts) hostConfig;
+    lib.mkIf (builtins.elem hostName hosts) hostConfig;
 
   ## Location config -- since Toronto is my 127.0.0.1
-  time.timeZone = mkDefault "America/Sao_Paulo";
-  i18n.defaultLocale = mkDefault "en_US.UTF-8";
+  time.timeZone = lib.mkDefault "America/Sao_Paulo";
+  i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
 
 }

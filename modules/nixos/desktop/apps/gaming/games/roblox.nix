@@ -1,17 +1,22 @@
 { pkgs, config, inputs, lib, ... }:
-with lib;
-with lib.my;
+
+
 let cfg = config.modules.desktop.apps.gaming.games.roblox;
 
 in {
   options.modules.desktop.apps.gaming.games.roblox = {
-    enable = mkBoolOpt false;
+      enable = lib.mkOption {
+      
+     type = lib.types.bool;
+      default = false;
+      example = true;
+    };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     environment = {
       systemPackages = with pkgs;  [
-        vinegar
+        grapejuice
       ];
     };
     hardware.opengl.driSupport32Bit = true;

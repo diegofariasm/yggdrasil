@@ -6,9 +6,9 @@ in {
   sops = {
     age = {
       # Age key location.
-      # Might change it to the /etc/dotfiles folder.
+      # Might change it to the /etc/nixos folder.
       # Does it get copied to the nix store?
-      keyFile = "/etc/dotfiles/age/master";
+      keyFile = "/etc/nixos/age/master";
     };
     defaultSopsFile = ./secrets/user.yaml;
     secrets = { password = { }; };
@@ -31,9 +31,9 @@ in {
     sops = {
       age = {
         # Age key location.
-        # Might change it to the /etc/dotfiles folder.
+        # Might change it to the /etc/nixos folder.
         # Does it get copied to the nix store?
-        keyFile = "/etc/dotfiles/age/master";
+        keyFile = "/etc/nixos/age/master";
       };
       defaultSopsFile = ./secrets/ssh.yaml;
       secrets = {
@@ -68,6 +68,11 @@ in {
               bin = "thunar";
             };
           };
+          media = {
+            zathura.enable = true;
+            nomacs.enable = true;
+            vlc.enable = true;
+          };
           discord.enable = true;
         };
         browsers = {
@@ -94,7 +99,6 @@ in {
         };
         default = { bin = "emacs"; };
       };
-      theme.active = "oxocarbon";
     };
   };
 }

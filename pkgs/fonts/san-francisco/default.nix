@@ -22,7 +22,7 @@ stdenvNoCC.mkDerivation rec {
     cp */*.otf $out/share/fonts/opentype
   '';
 
-  meta = with lib; {
+  meta =  {
     description =
       ''
         Apple fonts

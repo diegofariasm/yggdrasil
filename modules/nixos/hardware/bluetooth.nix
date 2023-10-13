@@ -2,16 +2,21 @@
 , lib
 , ...
 }:
-with lib;
-with lib.my; let
+
+ let
   cfg = config.modules.hardware.bluetooth;
 in
 {
   options.modules.hardware.bluetooth = {
-    enable = mkBoolOpt false;
+      enable = lib.mkOption {
+      
+     type = lib.types.bool;
+      default = false;
+      example = true;
+    };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     # In case you are not using a dwm.
     # You probably shouldn't be.
     services.blueman.enable = true;

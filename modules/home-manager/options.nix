@@ -1,15 +1,14 @@
 { config, pkgs, lib, ... }:
 
 with lib;
-with lib.my;
 {
   options = with types; {
     dotfiles = {
       dir = mkOpt path
         (removePrefix "/mnt"
           (findFirst pathExists (toString ../..) [
-            "/mnt/etc/dotfiles"
-            "/etc/dotfiles"
+            "/mnt/etc/nixos"
+            "/etc/nixos"
           ]));
       binDir = mkOpt path "${config.dotfiles.dir}/bin";
       configDir = mkOpt path "${config.dotfiles.dir}/config";
