@@ -1,31 +1,38 @@
 { config, pkgs, ... }:
 
-let user = "fushiii";
-in {
-
-  sops = {
-    age = {
-      # Age key location.
-      # Might change it to the /etc/nixos folder.
-      # Does it get copied to the nix store?
-      keyFile = "/etc/nixos/age/master";
+let
+  user = "fushiii";
+in
+{
+  # Set up the user.
+  # This needed for nixos, but soon i will
+  # be making this separate from here, enabling other linux distros.
+  users = {
+    users = {
+      "${user}" = {
+        group = "users";
+        shell = pkgs.zsh;
+        isNormalUser = true;
+        home = "/home/${user}";
+        extraGroups = [
+          "wheel"
+          "docker"
+        ];
+        hashedPassword = "$y$j9T$4kH1DpfluPRI4kjUG3eC..$O56uu5IvPNqoYDZ3zh95dNbiqHo7iQHcszhhVDdipo9";
+      };
     };
-    defaultSopsFile = ./secrets/user.yaml;
-    secrets = { password = { }; };
-  };
 
-  users.users."${user}" = {
-    group = "users";
-    shell = pkgs.zsh;
-    isNormalUser = true;
-    home = "/home/${user}";
-    extraGroups = [ "wheel" "docker" ];
-    hashedPasswordFile = config.sops.secrets.password.path;
   };
 
   programs.zsh.enable = true;
 
   home-manager.users.${user} = { pkgs, config, ... }: {
+    # Common user configuration.
+    # Mostly home-manager stuff for now.
+    imports = [
+      ../default.nix
+    ];
+
     # Secrets related to this account.
     # Don't go snooping around
     sops = {
@@ -63,23 +70,22 @@ in {
         };
         apps = {
           files = {
-            thunar.enable = true;
             default = {
               bin = "thunar";
             };
+            thunar.enable = true;
           };
           media = {
             zathura.enable = true;
             nomacs.enable = true;
             vlc.enable = true;
           };
-          discord.enable = true;
         };
         browsers = {
           default = {
-            bin = "firefox";
+            bin = "chromium";
           };
-          firefox.enable = true;
+          chromium.enable = true;
         };
         term = {
           default = {
@@ -95,10 +101,15 @@ in {
         kakoune.enable = true;
         emacs = {
           enable = true;
-          doom.enable = true;
+          doom = {
+            enable = true;
+          };
         };
-        default = { bin = "emacs"; };
+        default = {
+          bin = "emacs";
+        };
       };
+      theme.active = "oxocarbon";
     };
   };
 }

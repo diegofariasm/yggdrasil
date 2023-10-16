@@ -4,14 +4,13 @@
 , ...
 }:
 
- let
+let
   cfg = config.modules.hardware.audio;
 in
 {
   options.modules.hardware.audio = {
     enable = lib.mkOption {
-      
-     type = lib.types.bool;
+      type = lib.types.bool;
       default = false;
       example = true;
     };

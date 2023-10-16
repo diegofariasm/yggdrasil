@@ -1,13 +1,13 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.desktop.browsers.firefox;
+  cfg = config.modules.desktop.browsers.chromium;
 in
 {
-  options.modules.desktop.browsers.firefox = {
+  options.modules.desktop.browsers.chromium = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install firefox.
+        Wheter to install chromium.
       '';
       type = lib.types.bool;
       default = false;
@@ -16,7 +16,7 @@ in
   };
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      firefox
+      chromium
     ];
   };
 }

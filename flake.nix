@@ -44,12 +44,11 @@
     # I have been using it for a while, nothing beats it.
     hyprland.url = "github:hyprwm/Hyprland";
 
-    # List of curated themes to use with stylix.
-    # Some are missing, but anyway.
-    base16-schemes.flake = false;
+    stylix.url = "github:danth/stylix";
     nix-colors.url = "github:misterio77/nix-colors";
-    base16-schemes.url = "github:base16-project/base16-schemes";
 
+    base16-schemes.flake = false;
+    base16-schemes.url = "github:base16-project/base16-schemes";
 
   };
 
@@ -71,7 +70,7 @@
         self.overlays.default
 
         maiden.overlays.default
-        
+
         (final: prev: {
           nix-index-database = final.runCommandLocal "nix-index-database" { } ''
                     mkdir -p $out
@@ -87,7 +86,7 @@
       ];
 
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
-      
+
       extraArgs = {
         inherit nix-colors;
         inherit inputs;
@@ -98,7 +97,7 @@
       lib' = nixpkgs.lib.extend (final: prev:
         import ./lib { lib = prev; }
         // import ./lib/private.nix { lib = final; }
-        );
+      );
 
       # The shared configuration for the entire list of hosts for this cluster.
       # Take note to only set as minimal configuration as possible since we're
@@ -109,35 +108,31 @@
         # optional NixOS modules.
         imports = with inputs; [
           home-manager.nixosModules.home-manager
-          nix-colors.homeManagerModules.default
           sops-nix.nixosModules.sops
           disko.nixosModules.disko
         ];
 
-
         environment.systemPackages = with pkgs; [
           age
-          nil
           git
           act
           sops
           maiden
+          rnix-lsp
           nixpkgs-fmt
         ];
 
-        home-manager.useGlobalPkgs = lib'.mkDefault true;
-        home-manager.useUserPackages = lib'.mkDefault true;
+        home-manager = {
+          useGlobalPkgs = lib'.mkDefault true;
+          useUserPackages = lib'.mkDefault true;
 
-        # Make all of the flake inputs
-        # available to the home-manager modules.
-        # Note: can not use extraArgs here because
-        # the 'inherit lib there will collide with hm.
-        home-manager.extraSpecialArgs = extraArgs;
+          extraSpecialArgs = extraArgs;
 
-        # (mapModulesRec' (toString ./modules/home-manager) import)
-        home-manager.sharedModules =
-          (lib'.modulesToList (lib'.filesToAttr ./modules/home-manager))
-          ++ [ userSharedConfig ];
+          sharedModules =
+            (lib'.modulesToList (lib'.filesToAttr ./modules/home-manager))
+            ++ [ userSharedConfig ];
+        };
+
         system = {
           configurationRevision = lib'.mkIf (self ? rev) self.rev;
           stateVersion = "23.11";
@@ -159,10 +154,11 @@
       # be used for sharing modules among home-manager users from NixOS
       # configurations with `nixpkgs.useGlobalPkgs` set to `true` so avoid
       # setting nixpkgs-related options here.
-      userSharedConfig = { pkgs, config, osConfig, lib, ... }: {
-        # TODO: find how to import some of the modules
-        # in the place where they are needed.
+      userSharedConfig = { pkgs, config, lib, ... }: {
+
         imports = with inputs; [
+          nix-colors.homeManagerModules.default
+          stylix.homeManagerModules.stylix
           sops-nix.homeManagerModules.sops
         ];
 
@@ -173,6 +169,7 @@
         programs.nix-index = {
           enable = true;
         };
+
         # Put the database in the user directory
         home.file = {
           ".cache/nix-index" = {
@@ -180,10 +177,6 @@
           };
         };
 
-
-        # Necessary for home-manager to work with flakes, otherwise it will
-        # look for a nixpkgs channel.
-        home.stateVersion = osConfig.system.stateVersion or "23.11";
       };
 
       nixSettingsSharedConfig = { config, lib, pkgs, ... }: {
