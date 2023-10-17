@@ -12,30 +12,22 @@
     isoBaseName = config.networking.hostName;
 
     # Put the source code somewhere easy to see.
-    contents = [{
-      source = inputs.self;
-      target = "/etc/nixos";
-    }];
+    contents = [
+      {
+        source = inputs.self;
+        target = "/etc/nixos";
+      }
+    ];
   };
-
-  # Use my desktop environment configuration without the apps just to make the
-  # closure size smaller.
-  workflows.workflows.a-happy-gnome = {
-    enable = true;
-    extraApps = [ ];
-  };
-
-  # Some niceties.
-  profiles.desktop.enable = true;
-
-  services.xserver.displayManager = {
-    gdm = {
-      enable = true;
-      autoSuspend = false;
+  modules = {
+    desktop = {
+      hyprland.enable = true;
+      display = {
+        gdm.enable = true;
+      };
     };
-    autoLogin = {
-      enable = true;
-      user = "nixos";
+    services = {
+      ssh.enable = true;
     };
   };
 }
