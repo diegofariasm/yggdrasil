@@ -12,7 +12,7 @@
 
   # Automagically format the disk
   # and mount the partitions.
-  disko.devices = import ./disko.nix { disks = [ "/dev/sda" ]; };
+  disko.devices = import ./disko.nix { disks = [ "/dev/nvme0n1" ]; };
 
   # The host configuration.
   # This is available at modules/nixos.
@@ -35,5 +35,6 @@
       ssh.enable = true;
     };
   };
+  networking = { networkmanager.enable = true; };
 
 }

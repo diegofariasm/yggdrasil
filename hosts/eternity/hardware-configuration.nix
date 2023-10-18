@@ -23,13 +23,7 @@
     extraModulePackages = [ ];
   };
 
-  powerManagement = {
-    enable = true;
-    powertop = {
-      enable = true;
-    };
-    cpuFreqGovernor = "performance";
-  };
+  powerManagement.cpuFreqGovernor = "performance";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
 

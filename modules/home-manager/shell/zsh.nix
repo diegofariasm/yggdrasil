@@ -35,7 +35,6 @@ in
           "Aloxaf/fzf-tab"
           "hlissner/zsh-autopair"
           "unixorn/fzf-zsh-plugin"
-          "zsh-users/zsh-autosuggestions"
           "MichaelAquilina/zsh-auto-notify"
           "zsh-users/zsh-history-substring-search"
           "zdharma-continuum/fast-syntax-highlighting"
