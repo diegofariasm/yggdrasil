@@ -31,7 +31,9 @@
       fs.enable = true;
     };
     services = {
-      docker.enable = true;
+      podman = {
+        enable = true;
+      };
       ssh.enable = true;
     };
   };

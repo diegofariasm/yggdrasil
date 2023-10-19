@@ -24,8 +24,6 @@
       };
       apps = {
         gaming = {
-          emulators.ps2.enable = true;
-          emulators.ps1.enable = true;
           games = {
             roblox.enable = true;
           };
@@ -41,7 +39,9 @@
       fs.enable = true;
     };
     services = {
-      docker.enable = true;
+      podman = {
+        enable = true;
+      };
       ssh.enable = true;
     };
   };
