@@ -1,6 +1,6 @@
 keys:
   - &master age1vqkhlwzs9hhsnl2yms37p4fctpvaznta5sk7kshxvmj0u9u5c3jqvk4nh7
 creation_rules:
-  - path_regex: ^users/[^/]+/secrets/[^/]+\.(yaml|json)$
+  - path_regex: ^users/home-manager/[^/]+/secrets/[^/]+\.(yaml|json)$
     age: *master
 

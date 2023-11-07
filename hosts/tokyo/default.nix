@@ -5,55 +5,51 @@
     ../default.nix
     ./hardware-configuration.nix
 
-    (lib.getUser
-      "nixos" "enmei"
-    )
+    (lib.getUser "nixos" "enmei")
+    (lib.getUser "nixos" "diegofariasm")
   ];
 
   disko.devices = import ./disko.nix { disks = [ "/dev/sda" ]; };
 
   modules = {
     shell.zsh.enable = true;
-    boot = {
-      loader = {
-        systemd = {
-          enable = true;
-        };
-        display.lightdm.enable = true;
-      };
-      splash.enable = true;
-    };
 
-    # Hardware related things.
-    # Language settings are here, but that is
-    # just because the keyboard modules are also here.
-    hardware = {
-      language = {
-        keyboard = {
-          br.enable = true;
-        };
-        en.enable = true;
-      };
-      bluetooth.enable = true;
-      audio.enable = true;
-    };
 
     desktop = {
       enable = true;
       hypr.enable = true;
       vm = {
-        virtualbox = {
-          enable = true;
-        };
         qemu.enable = true;
+        virtualbox.enable = true;
       };
       services = {
-        notifications = {
-          mako.enable = true;
-        };
         clipman.enable = true;
+        notifications.mako.enable = true;
       };
     };
+
+    hardware = {
+      language = {
+        en.enable = true;
+        keyboard.br.enable = true;
+      };
+      bluetooth.enable = true;
+      audio.enable = true;
+    };
+
+    boot = {
+      loader = {
+        systemd.enable = true;
+        display.lightdm.enable = true;
+      };
+      splash.enable = true;
+    };
+
+    services = {
+      docker.enable = true;
+      ssh.enable = true;
+    };
+
   };
 
 }

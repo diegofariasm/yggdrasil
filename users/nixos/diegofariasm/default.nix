@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 let
-  user = "enmei";
+  user = "diegofariasm";
   homeManagerUser = lib.getUser "home-manager" user;
 in
 {
