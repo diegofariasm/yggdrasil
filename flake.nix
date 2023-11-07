@@ -111,6 +111,7 @@
           age
         ];
         home-manager = {
+          useGlobalPkgs = true;
           sharedModules = [
             userSharedConfig
           ];

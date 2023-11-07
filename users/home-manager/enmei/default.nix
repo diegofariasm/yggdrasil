@@ -30,27 +30,29 @@
     desktop = {
       apps = {
         files = {
-          default = {
-            bin = "thunar";
-          };
           thunar.enable = true;
+          default.bin = "thunar";
         };
       };
       term = {
         default = {
           bin = "kitty";
+          args = [
+            "--single-instance"
+          ];
         };
         kitty.enable = true;
       };
       browsers = {
-        default = {
-          bin = "firefox";
-        };
         firefox.enable = true;
+        default.bin = "firefox";
       };
 
     };
     editors = {
+      code = {
+        enable = true;
+      };
       kakoune.enable = true;
     };
     theme.active = "gruvbox";
