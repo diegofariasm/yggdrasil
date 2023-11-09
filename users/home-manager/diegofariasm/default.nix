@@ -9,10 +9,10 @@
     # Age key location.
     # Without having this on place,
     # you will not be able to get my secrets.
-    age.keyFile = "${config.xdg.configHome}/age/user";
+    age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
     secrets = lib.getSecrets ./secrets/ssh.yaml {
-      id_ed25519.path = ".ssh/ id_ed25519";
-      id_ed25519_pub.path = ".ssh/ id_ed25519.pub";
+      id_ed25519.path = ".ssh/id_ed25519";
+      id_ed25519_pub.path = ".ssh/id_ed25519.pub";
     };
   };
 
@@ -21,7 +21,7 @@
       apps = {
         eza.enable = true;
         fzf.enable = true;
-        tmux.enable = true;
+        zellij.enable = true;
         direnv.enable = true;
       };
       prompt.starship.enable = true;
