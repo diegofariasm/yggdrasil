@@ -1,13 +1,13 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.shell.apps.tmux;
+  cfg = config.modules.shell.apps.zellij;
 in
 {
-  options.modules.shell.apps.tmux = {
+  options.modules.shell.apps.zellij = {
     enable = lib.mkOption {
       description = ''
-        Wheter to enable the tmux package for the shell.
+        Wheter to enable the zellij package for the shell.
       '';
       type = lib.types.bool;
       default = false;
@@ -15,9 +15,9 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    # programs.tmux = {
+    # programs.zellij = {
     #   enable = true;
     # };
-    home.packages = with pkgs; [ tmux ];
+    home.packages = with pkgs; [ zellij ];
   };
 }

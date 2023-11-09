@@ -1,8 +1,8 @@
 { config, options, lib, pkgs, ... }:
 
-let 
+let
   cfg = config.modules.desktop;
-in 
+in
 {
   options.modules.desktop = {
     enable = lib.mkOption {
@@ -11,12 +11,12 @@ in
       example = true;
     };
   };
- 
-   config = lib.mkIf ((lib.countAttrs (name: value: name == "enable" && value) cfg) > 0) {
-     environment.systemPackages = with pkgs; [
-       brightnessctl
-       libnotify
-     ];
-   };
+
+  config = lib.mkIf ((lib.countAttrs (name: value: name == "enable" && value) cfg) > 0) {
+    environment.systemPackages = with pkgs; [
+      brightnessctl
+      libnotify
+    ];
+  };
 
 }

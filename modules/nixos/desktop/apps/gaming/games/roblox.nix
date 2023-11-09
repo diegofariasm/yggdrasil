@@ -3,7 +3,8 @@
 
 let
   cfg = config.modules.desktop.apps.gaming.games.roblox;
-in {
+in
+{
   options.modules.desktop.apps.gaming.games.roblox = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -14,7 +15,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs;  [
-        vinegar
+      vinegar
     ];
   };
 }

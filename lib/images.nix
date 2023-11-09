@@ -3,7 +3,7 @@
 { inputs, lib }:
 
 {
-   # A wrapper around the NixOS configuration function.
+  # A wrapper around the NixOS configuration function.
   mkHost = { system, extraModules ? [ ], extraArgs ? { }, nixpkgs-channel ? "nixpkgs" }:
     (lib.makeOverridable inputs."${nixpkgs-channel}".lib.nixosSystem) {
       # The system of the NixOS system.

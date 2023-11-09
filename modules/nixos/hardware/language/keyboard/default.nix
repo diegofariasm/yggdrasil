@@ -22,7 +22,7 @@ in
     services.xserver.autoRepeatDelay = 300;
 
     environment.systemPackages = with pkgs; [
-        btop
+      btop
     ];
   };
 }
