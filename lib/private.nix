@@ -16,7 +16,14 @@ rec {
     in
     ({ lib, ... }: {
       home-manager.users."${user}" = { ... }: {
-        imports = [ (getUser "home-manager" user) ];
+        imports = [
+          {
+            home.username = user;
+            home.homeDirectory = homeDirectory;
+          }
+
+          (getUser "home-manager" user)
+        ];
       };
 
       users.users."${user}" = lib.mkMerge [
@@ -29,9 +36,9 @@ rec {
 
   isInternal = config: config ? _isfoodogsquaredcustom && config._isfoodogsquaredcustom;
 
-  getUsers = users:
+  getUsers = type: users:
     let
-      userModules = lib.filesToAttr ../users;
+      userModules = lib.filesToAttr ../users/${type};
       invalidUsernames = [ "config" "modules" ];
 
       users' = lib.removeAttrs userModules invalidUsernames;
@@ -40,11 +47,11 @@ rec {
       nonExistentUsers = lib.filter (name: !lib.elem name userList) users;
     in
     lib.trivial.throwIfNot ((lib.length nonExistentUsers) == 0)
-      "There are no users ${lib.concatMapStringsSep ", " (u: "'${u}'") nonExistentUsers}"
+      "there are no users ${lib.concatMapStringsSep ", " (u: "'${u}'") nonExistentUsers} from ${type}"
       (r: r)
       users';
 
-  getUser = user:  ../users/${user};
+  getUser = type: user: ../users/${type}/${user};
 
   # Import modules with a set blocklist.
   importModules = attrs:
@@ -62,3 +69,4 @@ rec {
     in
     lib.attrsets.removeAttrs (lib.mapAttrsRecursive (_: sopsFile: import sopsFile) attrs) blocklist;
 }
+

@@ -13,11 +13,6 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
 
-    # A util i am making myself.
-    # Not nearly ready for use, but might be in a few years.
-    maiden.url = "github:fushiii/maiden";
-    maiden.inputs.nixpkgs.follows = "nixpkgs";
-
     # Managing home configurations.
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -29,27 +24,30 @@
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Cached nix-index database.
-    # Doing it manually just takes too long.
-    nix-index-database.url = "github:Mic92/nix-index-database";
-
     # Managing your secrets.
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Deploying stuff with Nix. This is becoming a monorepo for everything I
+    # need and I'm liking it.
+    deploy.url = "github:serokell/deploy-rs";
+    deploy.inputs.nixpkgs.follows = "nixpkgs";
+
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    stylix.url = "github:danth/stylix";
+
+    nix-colors.url = "github:misterio77/nix-colors";
 
     # The rice machine.
     # I have been using it for a while, nothing beats it.
     hyprland.url = "github:hyprwm/Hyprland";
 
-    stylix.url = "github:danth/stylix";
-    nix-colors.url = "github:misterio77/nix-colors";
-
-    base16-schemes.flake = false;
-    base16-schemes.url = "github:base16-project/base16-schemes";
-
+    # A util i am making myself.
+    # Not nearly ready for use, but might be in a few years.
+    maiden.url = "github:fushiii/maiden";
+    maiden.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs@{ self, nixpkgs, nix-colors, home-manager, ... }:
@@ -62,25 +60,17 @@
       # A set of users with their metadata to be deployed with home-manager.
       users = listImagesWithSystems (lib'.importTOML ./users.toml);
 
+      # A set of image-related utilities for the flake outputs.
       inherit (import ./lib/images.nix { inherit inputs; lib = lib'; }) mkHost mkHome mkImage listImagesWithSystems;
 
-
       overlays = with inputs; [
-
         self.overlays.default
 
         maiden.overlays.default
 
-        (final: prev: {
-          nix-index-database = final.runCommandLocal "nix-index-database" { } ''
-                    mkdir -p $out
-                    ln -s ${
-            nix-index-database.legacyPackages.${prev.system}.database
-            } $out/files
-          '';
-        })
       ] ++ (lib'.attrValues self.overlays);
 
+      defaultSystem = "x86_64-linux";
       systems = [
         "x86_64-linux"
       ];
@@ -110,44 +100,25 @@
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
           disko.nixosModules.disko
-        ];
+        ] ++ (lib'.modulesToList (lib'.filesToAttr ./modules/nixos));
 
         environment.systemPackages = with pkgs; [
-          age
-          git
-          act
-          sops
-          maiden
-          rnix-lsp
           nixpkgs-fmt
+          rnix-lsp
+          maiden
+          sops
+          git
+          age
         ];
-
         home-manager = {
-          useGlobalPkgs = lib'.mkDefault true;
-          useUserPackages = lib'.mkDefault true;
-
+          sharedModules = [
+            userSharedConfig
+          ];
           extraSpecialArgs = extraArgs;
-
-          sharedModules =
-            (lib'.modulesToList (lib'.filesToAttr ./modules/home-manager))
-            ++ [ userSharedConfig ];
         };
 
-        system = {
-          configurationRevision = lib'.mkIf (self ? rev) self.rev;
-          stateVersion = "23.11";
-        };
-
-        boot = {
-          loader = {
-            systemd-boot = {
-              enable = lib'.mkDefault true;
-              configurationLimit = 5;
-            };
-            efi.canTouchEfiVariables = lib'.mkDefault true;
-          };
-        };
-
+        system.configurationRevision = lib'.mkIf (self ? rev) self.rev;
+        system.stateVersion = "23.11";
       };
 
       # The default config for our home-manager configurations. This is also to
@@ -155,59 +126,65 @@
       # configurations with `nixpkgs.useGlobalPkgs` set to `true` so avoid
       # setting nixpkgs-related options here.
       userSharedConfig = { pkgs, config, lib, ... }: {
-
         imports = with inputs; [
           nix-colors.homeManagerModules.default
           stylix.homeManagerModules.stylix
           sops-nix.homeManagerModules.sops
-        ];
+        ] ++ (lib'.modulesToList (lib'.filesToAttr ./modules/home-manager));
 
         # Enable home-manager.
         # This also makes it able to manage itself.
         programs.home-manager.enable = true;
-
-        programs.nix-index = {
-          enable = true;
-        };
-
-        # Put the database in the user directory
-        home.file = {
-          ".cache/nix-index" = {
-            source = pkgs.nix-index-database;
-          };
-        };
-
       };
 
+      # This will be shared among NixOS and home-manager configurations.
       nixSettingsSharedConfig = { config, lib, pkgs, ... }: {
+
         # I want to capture the usual flakes to its exact version so we're
         # making them available to our system. This will also prevent the
         # annoying downloads since it always get the latest revision.
-        nix.registry = lib'.mapAttrs'
-          (name: flake:
-            let name' = if (name == "self") then "config" else name;
-            in lib'.nameValuePair name' { inherit flake; })
-          inputs;
+        nix.registry =
+          lib.mapAttrs'
+            (name: flake:
+              let
+                name' = if (name == "self") then "config" else name;
+              in
+              lib.nameValuePair name' { inherit flake; })
+            inputs;
+
+        # Parallel downloads! PARALLEL DOWNLOADS! It's like Pacman 6.0 all over
+        # again.
+        nix.package = pkgs.nixUnstable;
 
         # Set the configurations for the package manager.
-        nix.settings = {
-          # Set several binary caches.
-          substituters = [
-            "https://hyprland.cachix.org"
-            "https://nix-community.cachix.org"
-          ];
-          trusted-public-keys = [
-            "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-          ];
+        nix.settings =
+          let
+            substituters = [
+              "https://nix-community.cachix.org"
+            ];
+          in
+          {
+            # Set several binary caches.
+            inherit substituters;
 
-          # Sane config for the package manager.
-          # TODO: Remove this after nix-command and flakes has been considered
-          # stable.
-          experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+            trusted-substituters = substituters;
+            trusted-public-keys = [
+              "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+            ];
 
-          auto-optimise-store = lib'.mkDefault true;
-        };
+            # All of the users with the wheel group are trusted.
+            # Anyway, they have the permission to rebuild the system so it doens't matter.
+            trusted-users = [ "root" "@wheel" ];
+
+            # Sane config for the package manager.
+            # TODO: Remove this after nix-command and flakes has been considered
+            # stable.
+            #
+            # Since we're using flakes to make this possible, we need it. Plus, the
+            # UX of Nix CLI is becoming closer to Guix's which is a nice bonus.
+            experimental-features = [ "nix-command" "flakes" "repl-flake" ];
+            auto-optimise-store = lib.mkDefault true;
+          };
 
         # Stallman-senpai will be disappointed.
         nixpkgs.config.allowUnfree = true;
@@ -217,96 +194,91 @@
         nixpkgs.overlays = overlays;
       };
 
+
     in
     {
       # Exposes only my library with the custom functions to make it easier to
       # include in other flakes for whatever reason may be.
       lib = import ./lib { lib = nixpkgs.lib; };
 
-      # Some sensible default configurations.
-      nixosConfigurations = lib'.mapAttrs
-        (filename: host:
-          let
-            path = ./hosts/${filename};
-            extraModules = [
-              ({ lib, ... }: {
-                config = lib'.mkMerge [
-                  { networking.hostName = lib'.mkForce host._name; }
+      # A list of NixOS configurations from the `./hosts` folder. It also has
+      # some sensible default configurations.
+      nixosConfigurations =
+        lib'.mapAttrs
+          (filename: host:
+            let
+              path = ./hosts/${filename};
+              extraModules = [
+                ({ lib, ... }: {
+                  config = lib.mkMerge [
+                    { networking.hostName = lib.mkForce host._name; }
 
-                  (lib'.mkIf (host ? domain) {
-                    networking.domain = lib'.mkForce host.domain;
-                  })
-                ];
+                    (lib.mkIf (host ? domain)
+                      { networking.domain = lib.mkForce host.domain; })
+                  ];
+                })
 
-              })
-              hostSharedConfig
-              nixSettingsSharedConfig
-              path
-            ];
-          in
-          mkHost {
-            nixpkgs-channel = host.nixpkgs-channel or "nixpkgs";
-            inherit extraModules extraArgs;
-            system = host._system;
-          })
-        (lib'.filterAttrs (_: host: (host.format or "iso") == "iso") images);
+                hostSharedConfig
+                nixSettingsSharedConfig
+                path
+              ];
+            in
+            mkHost {
+              inherit extraModules extraArgs;
+              system = host._system;
+              nixpkgs-channel = host.nixpkgs-channel or "nixpkgs";
+            })
+          (lib'.filterAttrs (_: host: (host.format or "iso") == "iso") images);
 
       # We're going to make our custom modules available for our flake. Whether
       # or not this is a good thing is debatable, I just want to test it.
       nixosModules = lib'.importModules (lib'.filesToAttr ./modules/nixos);
 
-      # User configuration should be done in here.
-      # This runs once for every user, so i won't
-      # run into the same problem as i am right,
-      # that is: home-manager only install the config
-      # for the last user.
-      homeConfigurations = lib'.mapAttrs
-        (filename: metadata:
-          let
-            name = metadata._name;
-            system = metadata._system;
-            pkgs = import inputs."${metadata.nixpkgs-channel or "nixpkgs"}" {
-              inherit system overlays;
-            };
-            path = ./users/${name};
-            extraModules = [
-              ({ pkgs, config, ... }: {
-                nixpkgs = {
+      # I can now install home-manager users in non-NixOS systems.
+      # NICE!
+      homeConfigurations =
+        lib'.mapAttrs
+          (filename: metadata:
+            let
+              name = metadata._name;
+              system = metadata._system;
+              pkgs = import inputs."${metadata.nixpkgs-channel or "nixpkgs"}" {
+                inherit system overlays;
+              };
+              path = ./users/home-manager/${name};
+              extraModules = [
+                ({ pkgs, config, ... }: {
+                  # Don't create the user directories since they are assumed to
+                  # be already created by a pre-installed system (which should
+                  # already handle them).
+                  xdg.userDirs.createDirectories = false;
+
                   # To be able to use the most of our config as possible, we want
                   # both to use the same overlays.
-                  overlays = overlays;
+                  nixpkgs.overlays = overlays;
 
                   # Stallman-senpai will be disappointed. :/
                   nixpkgs.config.allowUnfree = true;
-                };
 
-                home = {
-                  username = name;
-                  homeDirectory =
-                    metadata.home-directory or "/home/${config.home.username}";
+                  # Setting the homely options.
+                  home.username = name;
+                  home.homeDirectory = metadata.home-directory or "/home/${config.home.username}";
 
-                  stateVersion = lib'.mkDefault "23.11";
-                };
-
-                programs.home-manager.enable = true;
-
-                targets.genericLinux.enable = true;
-              })
-              nixSettingsSharedConfig
-              userSharedConfig
-              path
-            ];
-          in
-          mkHome {
-            inherit pkgs system extraModules extraArgs;
-            home-manager-channel =
-              metadata.home-manager-channel or "home-manager";
-          })
-        users;
-
-      # Extending home-manager with my custom modules, if anyone cares.
-      homeModules =
-        lib'.importModules (lib'.filesToAttr ./modules/home-manager);
+                  # home-manager configurations are expected to be deployed on
+                  # non-NixOS systems so it is safe to set this.
+                  programs.home-manager.enable = true;
+                  targets.genericLinux.enable = true;
+                })
+                userSharedConfig
+                nixSettingsSharedConfig
+                path
+              ];
+            in
+            mkHome {
+              inherit pkgs system extraModules extraArgs;
+              home-manager-channel = metadata.home-manager-channel or "home-manager";
+            })
+          users;
 
       # In case somebody wants to use my stuff to be included in nixpkgs.
       overlays = import ./overlays // {
@@ -360,6 +332,61 @@
       # feel like it does.
       formatter =
         forAllSystems (system: nixpkgs.legacyPackages.${system}.treefmt);
+
+      # nixops-lite (that is much more powerful than nixops itself)... in
+      # here!?! We got it all, son!
+      #
+      # Also, don't forget to always clean your shell history when overriding
+      # sensitive info such as the hostname and such. A helpful tip would be
+      # ignoring the shell entry by simply prefixing it with a space which most
+      # command-line shells have support for (e.g., Bash, zsh, fish).
+      deploy.nodes =
+        let
+          nixosConfigurations = lib'.mapAttrs'
+            (name: value:
+              let
+                metadata = images.${name};
+              in
+              lib'.nameValuePair "nixos-${name}" {
+                hostname = metadata.deploy.hostname or name;
+                autoRollback = metadata.deploy.auto-rollback or true;
+                magicRollback = metadata.deploy.magic-rollback or true;
+                fastConnection = metadata.deploy.fast-connection or true;
+                remoteBuild = metadata.deploy.remote-build or false;
+                profiles.system = {
+                  sshUser = metadata.deploy.ssh-user or "admin";
+                  user = "root";
+                  path = inputs.deploy.lib.${metadata.system or defaultSystem}.activate.nixos value;
+                };
+              })
+            self.nixosConfigurations;
+          homeConfigurations = lib'.mapAttrs'
+            (name: value:
+              let
+                metadata = users.${name};
+                username = metadata.deploy.username or name;
+              in
+              lib'.nameValuePair "home-manager-${name}" {
+                hostname = metadata.deploy.hostname or name;
+                autoRollback = metadata.deploy.auto-rollback or true;
+                magicRollback = metadata.deploy.magic-rollback or true;
+                fastConnection = metadata.deploy.fast-connection or true;
+                remoteBuild = metadata.deploy.remote-build or false;
+                profiles.home = {
+                  sshUser = metadata.deploy.ssh-user or username;
+                  user = metadata.deploy.user or username;
+                  path = inputs.deploy.lib.${metadata.system or defaultSystem}.activate.home-manager value;
+                };
+              })
+            self.homeConfigurations;
+        in
+        nixosConfigurations // homeConfigurations;
+
+      # How to make yourself slightly saner than before. So far the main checks
+      # are for deploy nodes.
+      checks = lib'.mapAttrs
+        (system: deployLib: deployLib.deployChecks self.deploy)
+        inputs.deploy.lib;
 
     };
 }

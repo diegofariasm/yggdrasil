@@ -1,9 +1,10 @@
 { config, lib, ... }:
 
 with lib;
-let 
-cfg = config.modules.desktop.browsers;
-in {
+let
+  cfg = config.modules.desktop.browsers;
+in
+{
   options.modules.desktop.browsers = {
     default = {
       bin = mkOpt types.str "firefox";
@@ -17,14 +18,10 @@ in {
   };
 
   config = {
-    maiden = {
-      launch = {
-        browser = {
-          bin = cfg.default.bin;
-          args = cfg.default.args;
-          about = cfg.default.about;
-        };
-      };
+    maiden.launch.browser = {
+      bin = cfg.default.bin;
+      args = cfg.default.args;
+      about = cfg.default.about;
     };
   };
 }

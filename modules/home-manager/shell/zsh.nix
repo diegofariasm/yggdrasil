@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   cfg = config.modules.shell.zsh;
@@ -7,7 +7,7 @@ in
   options.modules.shell.zsh = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install zsh.
+        Wheter to install the zsh package.
       '';
       type = lib.types.bool;
       default = false;
@@ -15,40 +15,9 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    # Note: this is temporary.
-    # I am currently using this because
-    # i haven't figured out yet how to add
-    # user variables to my other shells.
     programs.zsh = {
       enable = true;
-
-      # GET OUT OF MY $HOME
-      dotDir = ".config/zsh";
-
-      # Package manager
-      antidote = {
-        enable = true;
-        useFriendlyNames = true;
-
-        # A list of curated plugins.
-        plugins = [
-          "Aloxaf/fzf-tab"
-          "hlissner/zsh-autopair"
-          "unixorn/fzf-zsh-plugin"
-          "MichaelAquilina/zsh-auto-notify"
-          "zsh-users/zsh-history-substring-search"
-          "zdharma-continuum/fast-syntax-highlighting"
-        ];
-
-      };
-
-      history = {
-        # Share zsh history between sessions
-        # This is really nice.
-        share = true;
-        ignoreSpace = true;
-      };
     };
-
+    home.packages = with pkgs; [ zsh ];
   };
 }

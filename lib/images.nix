@@ -3,19 +3,13 @@
 { inputs, lib }:
 
 {
-  # A wrapper around the NixOS configuration function.
+   # A wrapper around the NixOS configuration function.
   mkHost = { system, extraModules ? [ ], extraArgs ? { }, nixpkgs-channel ? "nixpkgs" }:
     (lib.makeOverridable inputs."${nixpkgs-channel}".lib.nixosSystem) {
       # The system of the NixOS system.
       inherit system lib;
       specialArgs = extraArgs;
-      modules =
-        # Importing our custom nixos modules.
-
-        lib.modulesToList (lib.filesToAttr ../modules/nixos)
-
-        # Our own modules.
-        ++ extraModules;
+      modules = extraModules;
     };
 
   # A wrapper around the home-manager configuration function.
@@ -23,12 +17,7 @@
     inputs."${home-manager-channel}".lib.homeManagerConfiguration {
       inherit lib pkgs;
       extraSpecialArgs = extraArgs;
-      modules =
-        # Importing our custom home-manager modules.
-      lib.modulesToList (lib.filesToAttr ./modules/home-manager)
-
-        # Plus our own.
-        ++ extraModules;
+      modules = extraModules;
     };
 
   # A wrapper around the nixos-generators `nixosGenerate` function.
@@ -36,13 +25,9 @@
     inputs.nixos-generators.nixosGenerate {
       inherit pkgs system format lib;
       specialArgs = extraArgs;
-      modules =
-        # Import all of the NixOS modules.
-        lib.modulesToList (lib.filesToAttr ../modules/nixos)
-
-        # Our own modules.
-        ++ extraModules;
+      modules = extraModules;
     };
+
 
   listImagesWithSystems = data:
     lib.foldlAttrs

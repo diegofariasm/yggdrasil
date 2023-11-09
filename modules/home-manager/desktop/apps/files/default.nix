@@ -1,8 +1,9 @@
 { config, lib, ... }:
 with lib;
 let
-cfg = config.modules.desktop.apps.files;
-in {
+  cfg = config.modules.desktop.apps.files;
+in
+{
   options.modules.desktop.apps.files = {
     default = {
       bin = mkOpt types.str "thunar";
@@ -16,14 +17,10 @@ in {
   };
 
   config = {
-    maiden = {
-      launch = {
-        files = {
-          bin = cfg.default.bin;
-          args = cfg.default.args;
-          about = cfg.default.about;
-        };
-      };
+    maiden.launch.files = {
+      bin = cfg.default.bin;
+      args = cfg.default.args;
+      about = cfg.default.about;
     };
   };
 }

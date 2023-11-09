@@ -1,6 +1,5 @@
 .direnv
 result*
-build-iso-result
 *.qcow2
 
 # These are dotenv files with sensitive data so we won't have to include them.
@@ -41,6 +40,3 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
-
-# My secrets
-age

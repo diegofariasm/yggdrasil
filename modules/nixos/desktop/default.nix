@@ -1,31 +1,22 @@
 { config, options, lib, pkgs, ... }:
 
-
-
-let
+let 
   cfg = config.modules.desktop;
-in
+in 
 {
-  config = lib.mkIf config.services.xserver.enable {
-    environment = {
-      # Some common packages.
-      # These generally are meant for things
-      # that shouldn't too much, like notifcations and etc.
-      systemPackages = with pkgs; [
-        libnotify
-        brightnessctl
-      ];
+  options.modules.desktop = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      example = true;
     };
-
-    fonts = {
-      fontDir.enable = true;
-      enableGhostscriptFonts = true;
-      packages = with pkgs; [
-        ubuntu_font_family
-        dejavu_fonts
-        symbola
-      ];
-    };
-
   };
+ 
+   config = lib.mkIf ((lib.countAttrs (name: value: name == "enable" && value) cfg) > 0) {
+     environment.systemPackages = with pkgs; [
+       brightnessctl
+       libnotify
+     ];
+   };
+
 }

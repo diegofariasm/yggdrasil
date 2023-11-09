@@ -18,14 +18,10 @@ in
   };
 
   config = {
-    maiden = {
-      launch = {
-        term = {
-          bin = cfg.default.bin;
-          args = cfg.default.args;
-          about = cfg.default.about;
-        };
-      };
+    maiden.launch.term = {
+      bin = cfg.default.bin;
+      args = cfg.default.args;
+      about = cfg.default.about;
     };
   };
 }

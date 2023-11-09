@@ -24,7 +24,6 @@ in
 
     wallpaper = mkOpt (either path null) null;
 
-
     # Options to the gtk theming.
     # Note: theme is not here because
     # there are other tools already doing that job.
@@ -56,7 +55,19 @@ in
       };
     };
 
-    stylix.image = config.modules.theme.wallpaper;
+    stylix = {
+      # Don't auto enable targets.
+      # This makes sure that i am the one to theme
+      # my apps, while stylix provies me with help to do so.
+      autoEnable = false;
+      # These are targets that need somethings to work properly.
+      # So, with that, we actually theme it through nixos / home-manager.
+      targets = {
+        gtk = {
+          enable = true;
+        };
+      };
+    };
 
   };
 }

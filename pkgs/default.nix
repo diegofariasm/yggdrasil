@@ -5,12 +5,10 @@ with pkgs;
 let
   packages = self:
     let callPackage = newScope self;
-    in {
-      fonts = {
-        icomoon = callPackage ./fonts/icomoon { };
-        san-francisco = callPackage ./fonts/san-francisco { };
-      };
-
+    in
+    {
+      fonts = import ./fonts;
+      vinegar = callPackage ./vinegar { wine = pkgs.wineWowPackages.full; };
     };
 in
 lib.fix' (lib.extends overrides packages)
