@@ -1,4 +1,4 @@
-name: "iso"
+name: "Build personalized bootstrap ISO"
 on:
   push:
     branches:
@@ -16,13 +16,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/magic-nix-cache-action@v2
       - uses: DeterminateSystems/nix-installer-action@v6
-      - name: bootstrap
+      - name: Build ISO
         run: |
           nix build .#images.${{ matrix.arch }}.bootstrap --impure --out-link build-iso-result
         env:
           NIXPKGS_ALLOW_BROKEN: "1"
           NIXPKGS_ALLOW_UNFREE: "1"
-      - name: release
+      - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

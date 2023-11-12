@@ -1,10 +1,9 @@
-name: "packages"
+name: "Cache outputs"
 on:
   push:
     branches:
       - main
-    paths-ignore:
-      - docs/
+      - staging
 jobs:
   build-custom-packages:
     runs-on: ubuntu-latest
@@ -15,7 +14,7 @@ jobs:
         with:
           extra-conf: |
             keep-going = true
-      - name: packages
+      - name: Build custom packages
         run: nix build -f ./pkgs --impure
         env:
           NIXPKGS_ALLOW_UNFREE: "1"
