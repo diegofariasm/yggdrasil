@@ -8,7 +8,7 @@ let
     in
     {
       fonts = import ./fonts;
-      vinegar = callPackage ./vinegar { wine = pkgs.wineWowPackages.full; };
+      vinegar = callPackage ./vinegar { wine = wineWowPackages.staging; };
     };
 in
 lib.fix' (lib.extends overrides packages)

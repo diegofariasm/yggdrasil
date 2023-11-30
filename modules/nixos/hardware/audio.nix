@@ -17,8 +17,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    hardware.pulseaudio = {
-      enable = true;
-    };
+    hardware.pulseaudio.enable = true;
   };
 }

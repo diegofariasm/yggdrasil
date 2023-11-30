@@ -1,4 +1,5 @@
 {
+
   description = "You are not supposed to be here!";
 
   inputs = {
@@ -28,17 +29,8 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Deploying stuff with Nix. This is becoming a monorepo for everything I
-    # need and I'm liking it.
-    deploy.url = "github:serokell/deploy-rs";
-    deploy.inputs.nixpkgs.follows = "nixpkgs";
-
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-
-    stylix.url = "github:danth/stylix";
-
-    nix-colors.url = "github:misterio77/nix-colors";
 
     # The rice machine.
     # I have been using it for a while, nothing beats it.
@@ -64,10 +56,7 @@
       inherit (import ./lib/images.nix { inherit inputs; lib = lib'; }) mkHost mkHome mkImage listImagesWithSystems;
 
       overlays = with inputs; [
-        self.overlays.default
-
         maiden.overlays.default
-
       ] ++ (lib'.attrValues self.overlays);
 
       defaultSystem = "x86_64-linux";
@@ -78,7 +67,6 @@
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
 
       extraArgs = {
-        inherit nix-colors;
         inherit inputs;
       };
 
@@ -105,11 +93,13 @@
         environment.systemPackages = with pkgs; [
           nixpkgs-fmt
           rnix-lsp
+          flavours
           maiden
           sops
           git
           age
         ];
+
         home-manager = {
           useGlobalPkgs = true;
           sharedModules = [
@@ -119,19 +109,19 @@
         };
 
         system.configurationRevision = lib'.mkIf (self ? rev) self.rev;
-        system.stateVersion = "23.11";
+        system.stateVersion = "23.05";
       };
 
       # The default config for our home-manager configurations. This is also to
       # be used for sharing modules among home-manager users from NixOS
       # configurations with `nixpkgs.useGlobalPkgs` set to `true` so avoid
       # setting nixpkgs-related options here.
-      userSharedConfig = { pkgs, config, lib, ... }: {
+      userSharedConfig = { pkgs, config, lib, osConfig, ... }: {
         imports = with inputs; [
-          nix-colors.homeManagerModules.default
-          stylix.homeManagerModules.stylix
           sops-nix.homeManagerModules.sops
         ] ++ (lib'.modulesToList (lib'.filesToAttr ./modules/home-manager));
+
+        home.stateVersion = osConfig.system.stateVersion;
 
         # Enable home-manager.
         # This also makes it able to manage itself.
@@ -246,20 +236,16 @@
               pkgs = import inputs."${metadata.nixpkgs-channel or "nixpkgs"}" {
                 inherit system overlays;
               };
-              path = ./users/home-manager/${name};
+              path = ./users/${name};
               extraModules = [
                 ({ pkgs, config, ... }: {
-                  # Don't create the user directories since they are assumed to
-                  # be already created by a pre-installed system (which should
-                  # already handle them).
-                  xdg.userDirs.createDirectories = false;
-
                   # To be able to use the most of our config as possible, we want
                   # both to use the same overlays.
                   nixpkgs.overlays = overlays;
 
                   # Stallman-senpai will be disappointed. :/
                   nixpkgs.config.allowUnfree = true;
+
 
                   # Setting the homely options.
                   home.username = name;
@@ -268,7 +254,6 @@
                   # home-manager configurations are expected to be deployed on
                   # non-NixOS systems so it is safe to set this.
                   programs.home-manager.enable = true;
-                  targets.genericLinux.enable = true;
                 })
                 userSharedConfig
                 nixSettingsSharedConfig
@@ -333,61 +318,6 @@
       # feel like it does.
       formatter =
         forAllSystems (system: nixpkgs.legacyPackages.${system}.treefmt);
-
-      # nixops-lite (that is much more powerful than nixops itself)... in
-      # here!?! We got it all, son!
-      #
-      # Also, don't forget to always clean your shell history when overriding
-      # sensitive info such as the hostname and such. A helpful tip would be
-      # ignoring the shell entry by simply prefixing it with a space which most
-      # command-line shells have support for (e.g., Bash, zsh, fish).
-      deploy.nodes =
-        let
-          nixosConfigurations = lib'.mapAttrs'
-            (name: value:
-              let
-                metadata = images.${name};
-              in
-              lib'.nameValuePair "nixos-${name}" {
-                hostname = metadata.deploy.hostname or name;
-                autoRollback = metadata.deploy.auto-rollback or true;
-                magicRollback = metadata.deploy.magic-rollback or true;
-                fastConnection = metadata.deploy.fast-connection or true;
-                remoteBuild = metadata.deploy.remote-build or false;
-                profiles.system = {
-                  sshUser = metadata.deploy.ssh-user or "admin";
-                  user = "root";
-                  path = inputs.deploy.lib.${metadata.system or defaultSystem}.activate.nixos value;
-                };
-              })
-            self.nixosConfigurations;
-          homeConfigurations = lib'.mapAttrs'
-            (name: value:
-              let
-                metadata = users.${name};
-                username = metadata.deploy.username or name;
-              in
-              lib'.nameValuePair "home-manager-${name}" {
-                hostname = metadata.deploy.hostname or name;
-                autoRollback = metadata.deploy.auto-rollback or true;
-                magicRollback = metadata.deploy.magic-rollback or true;
-                fastConnection = metadata.deploy.fast-connection or true;
-                remoteBuild = metadata.deploy.remote-build or false;
-                profiles.home = {
-                  sshUser = metadata.deploy.ssh-user or username;
-                  user = metadata.deploy.user or username;
-                  path = inputs.deploy.lib.${metadata.system or defaultSystem}.activate.home-manager value;
-                };
-              })
-            self.homeConfigurations;
-        in
-        nixosConfigurations // homeConfigurations;
-
-      # How to make yourself slightly saner than before. So far the main checks
-      # are for deploy nodes.
-      checks = lib'.mapAttrs
-        (system: deployLib: deployLib.deployChecks self.deploy)
-        inputs.deploy.lib;
 
     };
 }

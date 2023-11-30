@@ -7,7 +7,7 @@ in
   options.modules.desktop.apps.media.zathura = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install zathura.
+        Whether to install zathura.
       '';
       type = lib.types.bool;
       default = false;

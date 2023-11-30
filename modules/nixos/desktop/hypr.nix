@@ -18,7 +18,7 @@ in
   ];
 
   config = lib.mkIf cfg.enable {
-    fonts.fonts = with pkgs; [
+    fonts.packages = with pkgs; [
       (nerdfonts.override {
         fonts = [
           "Iosevka"
@@ -32,7 +32,7 @@ in
         enable = true;
       };
     };
-    environment.systemPackages = with pkgs; [ eww-wayland rofi-wayland wl-clipboard hyprpaper ];
+    environment.systemPackages = with pkgs; [ eww-wayland rofi-wayland wl-clipboard hyprpaper jq socat ];
 
   };
 }

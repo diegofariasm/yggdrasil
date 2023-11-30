@@ -1,7 +1,4 @@
-# This is project data for deploying home-manager users with this flake. Each
-# of the users defined here should correspond to one of the home-manager users
-# at `./users/home-manager/`.
-
+# Each of the users defined here should correspond to one of the home-manager users at `./users/`.
 [enmei]
 systems = [
     "x86_64-linux"

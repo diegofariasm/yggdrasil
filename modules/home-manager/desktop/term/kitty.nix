@@ -7,7 +7,7 @@ in
   options.modules.desktop.term.kitty = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install kitty.
+        Whether to install kitty.
       '';
       type = lib.types.bool;
       default = false;

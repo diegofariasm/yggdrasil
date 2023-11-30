@@ -17,6 +17,5 @@ in
     # Set the computer language.
     # Note that this is already the default.
     i18n.defaultLocale = "en_US.UTF-8";
-
   };
 }

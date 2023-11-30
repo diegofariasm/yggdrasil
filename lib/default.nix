@@ -2,10 +2,7 @@
 { lib }:
 rec {
 
-  /* Create an attribute set that represents the structure of the modules
-    inside of a directory.  While it can recurse into directories, it will
-    stop once it detects `default.nix` inside.
-
+  /*
     Signature:
     path -> attrset
     Where:
@@ -26,7 +23,7 @@ rec {
   filesToAttr = dirPath:
     let
       isModule = file: type:
-        (type == "regular" && lib.hasSuffix ".nix" file)
+        (type == "regular" && lib.hasSuffix ".nix" file && !lib.hasSuffix ".theme.nix" file)
         || (type == "directory");
 
       collect = file: type: {
@@ -39,9 +36,8 @@ rec {
           else if type == "directory" then
             filesToAttr path
           else
-            null; # Optionally, you can return `null` for other file types
+            null;
       };
-
       files = lib.filterAttrs isModule (builtins.readDir dirPath);
     in
     lib.filterAttrs (name: value: value != null)

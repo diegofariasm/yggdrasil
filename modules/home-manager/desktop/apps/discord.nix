@@ -7,7 +7,7 @@ in
   options.modules.desktop.apps.discord = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install discord.
+        Whether to install discord.
       '';
       type = lib.types.bool;
       default = false;

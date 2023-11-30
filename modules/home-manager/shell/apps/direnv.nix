@@ -7,7 +7,7 @@ in
   options.modules.shell.apps.direnv = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install the direnv package.
+        Whether to install the direnv package.
       '';
       type = lib.types.bool;
       default = false;
@@ -15,12 +15,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    programs.direnv = {
-      enable = true;
-      nix-direnv = {
-        enable = true;
-      };
-    };
     home.packages = with pkgs; [ direnv ];
   };
 }

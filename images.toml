@@ -8,6 +8,11 @@
 #
 # Take note, any images with the "iso" format is essentially made to be
 # deployed somewhere (e.g., desktop, homelab server, VPS).
+[kyoto]
+systems = [
+  "x86_64-linux"
+]
+format = "iso"
 
 [tokyo]
 systems = [
@@ -21,3 +26,9 @@ systems = [
 ]
 format = "install-iso"
 nixpkgs-channel = "nixos-unstable-small"
+
+[graphical-installer]
+systems = [
+  "x86_64-linux",
+]
+format = "install-iso"

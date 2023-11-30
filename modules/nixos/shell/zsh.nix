@@ -17,6 +17,5 @@ in
       enable = true;
     };
     users.defaultUserShell = pkgs.zsh;
-
   };
 }

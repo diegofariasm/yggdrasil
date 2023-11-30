@@ -7,7 +7,7 @@ in
   options.modules.desktop.apps.media.nomacs = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install nomacs.
+        Whether to install nomacs.
       '';
       type = lib.types.bool;
       default = false;

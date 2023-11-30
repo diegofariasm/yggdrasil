@@ -7,7 +7,7 @@ in
   options.modules.desktop.services.clipman = {
     enable = lib.mkOption {
       description = ''
-        Wheter to enable the clipman service.
+        Whether to enable the clipman service.
       '';
       type = lib.types.bool;
       default = false;

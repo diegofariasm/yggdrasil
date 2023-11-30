@@ -1,44 +1,54 @@
-{ pkgs
-, lib
+{ lib
 , buildGoModule
-, fetchFromGitHub ? pkgs.fetchFromGitHub
+, fetchFromGitHub
 , wine
 , symlinkJoin
 , makeWrapper
 , pkg-config
 , libGL
+, samba
 , libxkbcommon
 , xorg
 }:
+
 let
-  version = "1.5.6";
+  version = "1.5.4";
+
   unwrapped = buildGoModule rec {
     pname = "vinegar";
+
     inherit version;
+
     src = fetchFromGitHub {
       owner = "vinegarhq";
       repo = "vinegar";
       rev = "v${version}";
-      hash = "sha256-r4/nxSMD4Ehqpj5tEmDUX0HY6V/fo37NmRcgF4ZGaS8=";
+      hash = "sha256-6fQZ+NCJq7mMEGKubTIiffC2+05FUmM58Qb+6PMsoC8=";
     };
-    vendorHash = "sha256-UJLwSOJ4vZt3kquKllm5OMfFheZtAG5gLSA20313PpA=";
+
+    vendorHash = "sha256-EO7G2WD00wVErO72pag9qIxmLeBGV9orY98piGuh8Ac=";
+
     makeFlags = [
       "PREFIX=$(out)"
       "VERSION=${version}"
     ];
+
     buildPhase = ''
-      			runHook preBuild
-      			make $makeFlags
-      			runHook postBuild
-      		'';
+      runHook preBuild
+      make $makeFlags
+      runHook postBuild
+    '';
+
     installPhase = ''
-      			runHook preInstall
-      			make install $makeFlags
-      			runHook postInstall
-      		'';
+      runHook preInstall
+      make install $makeFlags
+      runHook postInstall
+    '';
+
     nativeBuildInputs = [ pkg-config ];
-    buildInputs = [ libGL libxkbcommon xorg.libX11 xorg.libXcursor xorg.libXfixes ];
+    buildInputs = [ samba libGL libxkbcommon xorg.libX11 xorg.libXcursor xorg.libXfixes ];
   };
+
 in
 symlinkJoin {
   name = "vinegar";
@@ -53,7 +63,7 @@ symlinkJoin {
     maintainers = with maintainers; [ ];
   };
   postBuild = ''
-    		wrapProgram $out/bin/vinegar \
-    			--prefix PATH : ${lib.makeBinPath [ wine ]}
-    	'';
+    wrapProgram $out/bin/vinegar \
+      --prefix PATH : ${lib.makeBinPath [ wine ]}
+  '';
 }

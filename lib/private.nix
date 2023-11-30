@@ -3,55 +3,10 @@
 { lib }:
 
 rec {
-  # This is only used for home-manager users without a NixOS user counterpart.
-  mapHomeManagerUser = user: settings:
-    let
-      homeDirectory = "/home/${user}";
-      defaultUserConfig = {
-        extraGroups = lib.mkDefault [ "wheel" ];
-        createHome = lib.mkDefault true;
-        home = lib.mkDefault homeDirectory;
-        isNormalUser = lib.mkForce true;
-      };
-    in
-    ({ lib, ... }: {
-      home-manager.users."${user}" = { ... }: {
-        imports = [
-          {
-            home.username = user;
-            home.homeDirectory = homeDirectory;
-          }
-
-          (getUser "home-manager" user)
-        ];
-      };
-
-      users.users."${user}" = lib.mkMerge [
-        defaultUserConfig
-        settings
-      ];
-    });
 
   getSecret = path: ../secrets/${path};
 
-  isInternal = config: config ? _isfoodogsquaredcustom && config._isfoodogsquaredcustom;
-
-  getUsers = type: users:
-    let
-      userModules = lib.filesToAttr ../users/${type};
-      invalidUsernames = [ "config" "modules" ];
-
-      users' = lib.removeAttrs userModules invalidUsernames;
-      userList = lib.attrNames users';
-
-      nonExistentUsers = lib.filter (name: !lib.elem name userList) users;
-    in
-    lib.trivial.throwIfNot ((lib.length nonExistentUsers) == 0)
-      "there are no users ${lib.concatMapStringsSep ", " (u: "'${u}'") nonExistentUsers} from ${type}"
-      (r: r)
-      users';
-
-  getUser = type: user: ../users/${type}/${user};
+  getUser = user: ../users/${user};
 
   # Import modules with a set blocklist.
   importModules = attrs:

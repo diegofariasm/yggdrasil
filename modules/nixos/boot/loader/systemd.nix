@@ -12,11 +12,9 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    boot.loader = {
-      systemd-boot = {
-        enable = true;
-      };
-      grub.enable = lib.mkForce false;
+    boot.loader.systemd-boot = {
+      enable = true;
+      configurationLimit = 5;
     };
   };
 

@@ -7,7 +7,7 @@ in
   options.modules.shell.apps.fzf = {
     enable = lib.mkOption {
       description = ''
-        Wheter to enable fzf.
+        Whether to enable fzf.
       '';
       type = lib.types.bool;
       default = false;
@@ -15,9 +15,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    programs.fzf = {
-      enable = true;
-    };
     home.packages = with pkgs; [ fzf ];
   };
 }

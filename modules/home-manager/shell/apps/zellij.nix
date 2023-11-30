@@ -7,7 +7,7 @@ in
   options.modules.shell.apps.zellij = {
     enable = lib.mkOption {
       description = ''
-        Wheter to enable the zellij package for the shell.
+        Whether to enable the zellij package for the shell.
       '';
       type = lib.types.bool;
       default = false;
@@ -15,9 +15,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    # programs.zellij = {
-    #   enable = true;
-    # };
     home.packages = with pkgs; [ zellij ];
   };
 }

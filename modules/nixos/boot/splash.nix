@@ -7,7 +7,7 @@ in
   options.modules.boot.splash = {
     enable = lib.mkOption {
       description = ''
-        Wheter to enable the splash on boot.
+        Whether to enable the splash on boot.
       '';
       type = lib.types.bool;
       default = false;

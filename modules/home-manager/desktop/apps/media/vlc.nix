@@ -7,7 +7,7 @@ in
   options.modules.desktop.apps.media.vlc = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install vlc.
+        Whether to install vlc.
       '';
       type = lib.types.bool;
       default = false;

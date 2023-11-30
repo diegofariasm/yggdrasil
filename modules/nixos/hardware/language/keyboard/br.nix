@@ -22,6 +22,5 @@ in
     # This sets up the tty.
     # Not generally used, but good.
     console.keyMap = "br-abnt2";
-
   };
 }

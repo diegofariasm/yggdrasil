@@ -7,7 +7,7 @@ in
   options.modules.desktop.apps.files.thunar = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install thunar.
+        Whether to install thunar.
       '';
       type = lib.types.bool;
       default = false;

@@ -7,7 +7,7 @@ in
   options.modules.desktop.services.notifications.mako = {
     enable = lib.mkOption {
       description = ''
-        Wheter to enable the mako service.
+        Whether to enable the mako service.
       '';
       type = lib.types.bool;
       default = false;

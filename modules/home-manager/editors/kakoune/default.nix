@@ -6,7 +6,7 @@ in
   options.modules.editors.kakoune = {
     enable = lib.mkOption {
       description = ''
-        Wheter to install kakoune.
+        Whether to install kakoune.
       '';
       type = lib.types.bool;
       default = false;
@@ -14,10 +14,7 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      kakoune
-      kak-lsp
-    ];
+    home.packages = with pkgs; [ kakoune kak-lsp ];
   };
 
 }

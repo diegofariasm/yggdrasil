@@ -1,12 +1,11 @@
-{ options, config, lib, pkgs, ... }:
+{ pkgs, config, inputs, lib, ... }:
 
-with lib;
 
 let
-  cfg = config.modules.desktop.vm.qemu;
+  cfg = config.modules.desktop.apps.gaming.bottles;
 in
 {
-  options.modules.desktop.vm.qemu = {
+  options.modules.desktop.apps.gaming.bottles = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -14,9 +13,10 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      qemu
+      bottles
     ];
   };
 }
+
