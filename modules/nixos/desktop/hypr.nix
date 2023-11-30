@@ -32,7 +32,27 @@ in
         enable = true;
       };
     };
-    environment.systemPackages = with pkgs; [ eww-wayland rofi-wayland wl-clipboard hyprpaper jq socat ];
+
+    xdg.portal = {
+      enable = true;
+      wlr.enable = true;
+      config = {
+        common = {
+          default = [
+            "wlr"
+          ];
+        };
+      };
+    };
+
+    environment.systemPackages = with pkgs; [
+      eww-wayland
+      rofi-wayland
+      wl-clipboard
+      hyprpaper
+      jq
+      socat
+    ];
 
   };
 }
