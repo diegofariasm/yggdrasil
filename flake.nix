@@ -1,6 +1,12 @@
 {
 
   description = "You are not supposed to be here!";
+  nixConfig = {
+    extra-substituters =
+      "https://nix-community.cachix.org";
+    extra-trusted-public-keys =
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+  };
 
   inputs = {
     # I know NixOS can be stable but we're going cutting edge, baybee! While
@@ -14,7 +20,6 @@
     nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
 
-    # Managing home configurations.
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -32,14 +37,18 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    # The rice machine.
-    # I have been using it for a while, nothing beats it.
-    hyprland.url = "github:hyprwm/Hyprland";
+    # Cached nix-index database.
+    # Doing it manually just takes too long.
+    nix-index-database.url = "github:Mic92/nix-index-database";
 
-    # A util i am making myself.
-    # Not nearly ready for use, but might be in a few years.
-    maiden.url = "github:fushiii/maiden";
+    maiden.url = "github:enmeei/maiden";
     maiden.inputs.nixpkgs.follows = "nixpkgs";
+
+    recolor.url = "github:enmeei/recolor";
+    recolor.inputs.nixpkgs.follows = "nixpkgs";
+
+    flavours.url = "github:enmeei/flavours";
+    flavours.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs@{ self, nixpkgs, nix-colors, home-manager, ... }:
@@ -57,15 +66,32 @@
 
       overlays = with inputs; [
         maiden.overlays.default
+
+        flavours.overlays.default
+
+        recolor.overlays.default
+
+
+        (final: prev: {
+          nix-index-database = final.runCommandLocal "nix-index-database" { } ''
+                    mkdir -p $out
+                    ln -s ${
+            nix-index-database.legacyPackages.${prev.system}.database
+            } $out/files
+          '';
+        })
+
       ] ++ (lib'.attrValues self.overlays);
 
-      defaultSystem = "x86_64-linux";
       systems = [
         "x86_64-linux"
       ];
 
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
 
+      # Note that you need to inherit lib here.
+      # Without that, you won't have the needed attributes
+      # for building the nixos hosts and things of the likes.
       extraArgs = {
         inherit inputs;
       };
@@ -92,10 +118,14 @@
 
         environment.systemPackages = with pkgs; [
           nixpkgs-fmt
-          rnix-lsp
+          gallery-dl
+          nixd
+          recolor
+          imagecolorizer
           flavours
           maiden
           sops
+          nil
           git
           age
         ];
@@ -185,7 +215,6 @@
         nixpkgs.overlays = overlays;
       };
 
-
     in
     {
       # Exposes only my library with the custom functions to make it easier to
@@ -223,7 +252,7 @@
 
       # We're going to make our custom modules available for our flake. Whether
       # or not this is a good thing is debatable, I just want to test it.
-      nixosModules = lib'.importModules (lib'.filesToAttr ./modules/nixos);
+      nixosModules = lib'.filesToAttr ./modules/nixos;
 
       # I can now install home-manager users in non-NixOS systems.
       # NICE!
@@ -246,7 +275,6 @@
                   # Stallman-senpai will be disappointed. :/
                   nixpkgs.config.allowUnfree = true;
 
-
                   # Setting the homely options.
                   home.username = name;
                   home.homeDirectory = metadata.home-directory or "/home/${config.home.username}";
@@ -265,6 +293,8 @@
               home-manager-channel = metadata.home-manager-channel or "home-manager";
             })
           users;
+      homeModules = lib'.filesToAttr ./modules/home-manager;
+
 
       # In case somebody wants to use my stuff to be included in nixpkgs.
       overlays = import ./overlays // {
@@ -321,4 +351,3 @@
 
     };
 }
-

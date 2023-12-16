@@ -23,9 +23,8 @@
       splash.enable = true;
     };
 
-
     desktop = {
-      hypr.enable = true;
+      hyprland.enable = true;
       services = {
         notifications = {
           mako.enable = true;

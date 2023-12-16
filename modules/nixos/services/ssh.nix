@@ -7,13 +7,7 @@ let
   cfg = config.modules.services.ssh;
 in
 {
-  options.modules.services.ssh = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      example = true;
-    };
-  };
+  options.modules.services.ssh.enable = lib.mkOpt lib.types.bool false;
 
   config = lib.mkIf cfg.enable {
     services.openssh = {

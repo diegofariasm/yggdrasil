@@ -7,8 +7,12 @@ let
     let callPackage = newScope self;
     in
     {
-      fonts = import ./fonts;
+      fonts = {
+        san-francisco = callPackage ./fonts/san-francisco { };
+        icomoon = callPackage ./fonts/icomoon { };
+      };
       vinegar = callPackage ./vinegar { wine = wineWowPackages.staging; };
+      imagecolorizer = callPackage ./imagecolorizer { };
     };
 in
 lib.fix' (lib.extends overrides packages)

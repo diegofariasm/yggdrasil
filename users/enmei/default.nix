@@ -8,7 +8,6 @@ in
       isNormalUser = true;
       extraGroups = [
         "wheel"
-        "vboxusers"
       ];
       hashedPassword = "$y$j9T$4kH1DpfluPRI4kjUG3eC..$O56uu5IvPNqoYDZ3zh95dNbiqHo7iQHcszhhVDdipo9";
     };
@@ -34,6 +33,7 @@ in
           fzf.enable = true;
           zellij.enable = true;
           direnv.enable = true;
+          starship.enable = true;
         };
       };
 
@@ -65,6 +65,7 @@ in
 
       };
       editors = {
+        codium.enable = true;
         kakoune.enable = true;
       };
     };
