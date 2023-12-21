@@ -16,7 +16,9 @@ python310Packages.buildPythonApplication rec {
     }
   );
 
-  propagatedBuildInputs = with python310Packages; [ pillow ];
+  propagatedBuildInputs = with python310Packages; [
+      pillow
+  ];
 
   doCheck = false;
 }

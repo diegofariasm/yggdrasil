@@ -1,13 +1,13 @@
 { config, pkgs, lib, ... }:
 
 let
-  cfg = config.modules.shell.apps.direnv;
+  cfg = config.modules.shell.fzf;
 in
 {
-  options.modules.shell.apps.direnv = {
+  options.modules.shell.fzf = {
     enable = lib.mkOption {
       description = ''
-        Whether to install the direnv package.
+        Whether to enable fzf.
       '';
       type = lib.types.bool;
       default = false;
@@ -15,6 +15,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ direnv ];
+    home.packages = with pkgs; [ fzf ];
   };
 }

@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.shell.apps.starship;
+  cfg = config.modules.shell.starship;
 in
 {
-  options.modules.shell.apps.starship = {
+  options.modules.shell.starship = {
     enable = lib.mkOption {
       description = ''
         Whether to enable the starship package for the shell.

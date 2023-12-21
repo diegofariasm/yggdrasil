@@ -1,11 +1,15 @@
-{ lib, inputs, ... }:
-
+{ lib
+, inputs
+, ...
+}:
+with lib;
+with lib.my;
 {
   imports = [
     ../default.nix
     ./hardware-configuration.nix
 
-    (lib.getUser "enmei")
+    (getUser "enmei")
   ];
 
 

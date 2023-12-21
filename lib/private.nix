@@ -1,6 +1,6 @@
 # This is just a library intended solely for this flake.
 # It is expected to use the nixpkgs library with `lib/default.nix`.
-{ lib }:
+{ lib, ... }:
 
 rec {
 

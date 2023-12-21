@@ -13,6 +13,7 @@ let
       };
       vinegar = callPackage ./vinegar { wine = wineWowPackages.staging; };
       imagecolorizer = callPackage ./imagecolorizer { };
+      pywalfox = callPackage ./pywalfox { };
     };
 in
 lib.fix' (lib.extends overrides packages)

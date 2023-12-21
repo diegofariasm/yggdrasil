@@ -7,13 +7,13 @@ in
 {
   options.modules.desktop.term = {
     default = {
-      bin = mkOpt types.str "xterm";
+      bin = lib.my.mkOpt types.str "xterm";
       args = mkOption {
         default = null;
         type = types.nullOr (types.listOf types.str);
         description = "A list of strings representing arguments";
       };
-      about = mkOpt types.str "The default terminal emulator.";
+      about = lib.my.mkOpt types.str "The default terminal emulator.";
     };
   };
 

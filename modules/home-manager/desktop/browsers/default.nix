@@ -7,13 +7,13 @@ in
 {
   options.modules.desktop.browsers = {
     default = {
-      bin = mkOpt types.str "firefox";
+      bin = lib.my.mkOpt types.str "firefox";
       args = mkOption {
         default = null;
         type = types.nullOr (types.listOf types.str);
         description = "A list of strings representing arguments";
       };
-      about = mkOpt types.str "The default browser";
+      about = lib.my.mkOpt types.str "The default browser";
     };
   };
 

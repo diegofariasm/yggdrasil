@@ -5,7 +5,7 @@ let
   cfg = config.modules.desktop.hyprland;
 in
 {
-  options.modules.desktop.hyprland.enable = lib.mkOpt' lib.types.bool false "Wheter to enable the hyprland desktop";
+  options.modules.desktop.hyprland.enable = lib.my.mkOpt' lib.types.bool false "Wheter to enable the hyprland desktop";
 
   config = lib.mkIf cfg.enable {
     programs.hyprland = {

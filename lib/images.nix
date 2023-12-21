@@ -1,6 +1,9 @@
 # A set of functions intended for creating images. THis is meant to be imported
 # for use in flake.nix and nowhere else.
-{ inputs, lib }:
+{ inputs
+, lib
+, ...
+}:
 
 {
   # A wrapper around the NixOS configuration function.

@@ -1,12 +1,13 @@
 { config, pkgs, lib, ... }:
 
-let cfg = config.modules.editors.codium;
+let
+  cfg = config.modules.shell.direnv;
 in
 {
-  options.modules.editors.codium = {
+  options.modules.shell.direnv = {
     enable = lib.mkOption {
       description = ''
-        Whether to install codium.
+        Whether to install the direnv package.
       '';
       type = lib.types.bool;
       default = false;
@@ -14,6 +15,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ vscodium ];
+    home.packages = with pkgs; [ direnv ];
   };
 }

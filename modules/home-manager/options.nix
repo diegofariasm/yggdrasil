@@ -4,15 +4,15 @@ with lib;
 {
   options = with types; {
     dotfiles = {
-      dir = mkOpt path
+      dir = lib.my.mkOpt path
         (removePrefix "/mnt"
           (findFirst pathExists (toString ../..) [
             "/mnt/etc/nixos"
             "/etc/nixos"
           ]));
-      binDir = mkOpt path "${config.dotfiles.dir}/bin";
-      configDir = mkOpt path "${config.dotfiles.dir}/config";
-      modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
+      binDir = lib.my.mkOpt path "${config.dotfiles.dir}/bin";
+      configDir = lib.my.mkOpt path "${config.dotfiles.dir}/config";
+      modulesDir = lib.my.mkOpt path "${config.dotfiles.dir}/modules";
     };
 
     # Ah yes, an idiotic thing to do.

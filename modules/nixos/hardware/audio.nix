@@ -8,7 +8,7 @@ let
   cfg = config.modules.hardware.audio;
 in
 {
-  options.modules.hardware.audio.enable = lib.mkOpt lib.types.bool false;
+  options.modules.hardware.audio.enable = lib.my.mkOpt lib.types.bool false;
 
   config = lib.mkIf cfg.enable {
     services.pipewire = {

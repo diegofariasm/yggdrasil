@@ -1,13 +1,14 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.shell.apps.zellij;
+  cfg = config.modules.shell.eza;
+  configDir = config.dotfiles.configDir;
 in
 {
-  options.modules.shell.apps.zellij = {
+  options.modules.shell.eza = {
     enable = lib.mkOption {
       description = ''
-        Whether to enable the zellij package for the shell.
+        Whether to enable the eza package for the shell.
       '';
       type = lib.types.bool;
       default = false;
@@ -15,6 +16,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ zellij ];
+    home.packages = with pkgs; [ eza ];
   };
 }

@@ -6,13 +6,13 @@ in
 {
   options.modules.desktop.apps.files = {
     default = {
-      bin = mkOpt types.str "thunar";
+      bin = lib.my.mkOpt types.str "thunar";
       args = mkOption {
         default = null;
         type = types.nullOr (types.listOf types.str);
         description = "A list of strings representing arguments";
       };
-      about = mkOpt types.str "The default file manager";
+      about = lib.my.mkOpt types.str "The default file manager";
     };
   };
 

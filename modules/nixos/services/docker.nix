@@ -7,7 +7,7 @@ let
   cfg = config.modules.services.docker;
 in
 {
-  options.modules.services.docker.enable = lib.mkOpt lib.types.bool false;
+  options.modules.services.docker.enable = lib.my.mkOpt lib.types.bool false;
 
   config = lib.mkIf cfg.enable {
     virtualisation.docker.rootless = {

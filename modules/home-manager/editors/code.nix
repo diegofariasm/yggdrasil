@@ -1,13 +1,12 @@
 { config, pkgs, lib, ... }:
 
-let
-  cfg = config.modules.shell.apps.fzf;
+let cfg = config.modules.editors.code;
 in
 {
-  options.modules.shell.apps.fzf = {
+  options.modules.editors.code = {
     enable = lib.mkOption {
       description = ''
-        Whether to enable fzf.
+        Whether to install code.
       '';
       type = lib.types.bool;
       default = false;
@@ -15,6 +14,8 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ fzf ];
+    home.packages = with pkgs; [
+      vscode
+    ];
   };
 }

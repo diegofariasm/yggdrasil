@@ -41,28 +41,28 @@
     # Doing it manually just takes too long.
     nix-index-database.url = "github:Mic92/nix-index-database";
 
-    maiden.url = "github:enmeei/maiden";
-    maiden.inputs.nixpkgs.follows = "nixpkgs";
-
     recolor.url = "github:enmeei/recolor";
     recolor.inputs.nixpkgs.follows = "nixpkgs";
+
+    maiden.url = "github:enmeei/maiden";
+    maiden.inputs.nixpkgs.follows = "nixpkgs";
 
     flavours.url = "github:enmeei/flavours";
     flavours.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-colors, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
       # A set of images with their metadata that is usually built for usual
       # purposes. The format used here is whatever formats nixos-generators
       # support.
-      images = listImagesWithSystems (lib'.importTOML ./images.toml);
+      images = listImagesWithSystems (lib.importTOML ./images.toml);
 
       # A set of users with their metadata to be deployed with home-manager.
-      users = listImagesWithSystems (lib'.importTOML ./users.toml);
+      users = listImagesWithSystems (lib.importTOML ./users.toml);
 
       # A set of image-related utilities for the flake outputs.
-      inherit (import ./lib/images.nix { inherit inputs; lib = lib'; }) mkHost mkHome mkImage listImagesWithSystems;
+      inherit (import ./lib/images.nix { inherit inputs; lib = lib; }) mkHost mkHome mkImage listImagesWithSystems;
 
       overlays = with inputs; [
         maiden.overlays.default
@@ -70,7 +70,6 @@
         flavours.overlays.default
 
         recolor.overlays.default
-
 
         (final: prev: {
           nix-index-database = final.runCommandLocal "nix-index-database" { } ''
@@ -81,7 +80,7 @@
           '';
         })
 
-      ] ++ (lib'.attrValues self.overlays);
+      ] ++ (lib.attrValues self.overlays);
 
       systems = [
         "x86_64-linux"
@@ -93,20 +92,50 @@
       # Without that, you won't have the needed attributes
       # for building the nixos hosts and things of the likes.
       extraArgs = {
-        inherit inputs;
+        inherit inputs lib;
       };
 
       # We're considering this as the variant since we'll export the custom
       # library as `lib` in the output attribute.
-      lib' = nixpkgs.lib.extend (final: prev:
-        import ./lib { lib = prev; }
-        // import ./lib/private.nix { lib = final; }
-      );
+      # lib = nixpkgs.lib.extend (final: prev:
+      #   import ./lib { lib = prev; }
+      #   // import ./lib/private.nix { lib = final; }
+      # );
+
+      lib = nixpkgs.lib.extend
+        (self: super: { my = import ./lib { inherit inputs; lib = self; }; } // home-manager.lib);
 
       # The shared configuration for the entire list of hosts for this cluster.
       # Take note to only set as minimal configuration as possible since we're
       # also using this with the stable version of nixpkgs.
       hostSharedConfig = { config, lib, pkgs, ... }: {
+        _module.check = true;
+
+        # Initialize some of the XDG base directories ourselves since it is used by NIX_PROFILES to properly link some of them.
+        environment = {
+          systemPackages = with pkgs; [
+            nixpkgs-fmt
+            pywalfox
+            gallery-dl
+            killall
+            nixd
+            rnix-lsp
+            recolor
+            imagecolorizer
+            flavours
+            maiden
+            sops
+            nil
+            git
+            age
+          ];
+          sessionVariables = {
+            XDG_CACHE_HOME = "$HOME/.cache";
+            XDG_CONFIG_HOME = "$HOME/.config";
+            XDG_DATA_HOME = "$HOME/.local/share";
+            XDG_STATE_HOME = "$HOME/.local/state";
+          };
+        };
         # Only use imports as minimally as possible with the absolute
         # requirements of a host. On second thought, only on flakes with
         # optional NixOS modules.
@@ -114,21 +143,7 @@
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
           disko.nixosModules.disko
-        ] ++ (lib'.modulesToList (lib'.filesToAttr ./modules/nixos));
-
-        environment.systemPackages = with pkgs; [
-          nixpkgs-fmt
-          gallery-dl
-          nixd
-          recolor
-          imagecolorizer
-          flavours
-          maiden
-          sops
-          nil
-          git
-          age
-        ];
+        ] ++ (lib.my.modulesToList (lib.my.filesToAttr ./modules/nixos));
 
         home-manager = {
           useGlobalPkgs = true;
@@ -138,7 +153,7 @@
           extraSpecialArgs = extraArgs;
         };
 
-        system.configurationRevision = lib'.mkIf (self ? rev) self.rev;
+        system.configurationRevision = lib.mkIf (self ? rev) self.rev;
         system.stateVersion = "23.05";
       };
 
@@ -149,7 +164,7 @@
       userSharedConfig = { pkgs, config, lib, osConfig, ... }: {
         imports = with inputs; [
           sops-nix.homeManagerModules.sops
-        ] ++ (lib'.modulesToList (lib'.filesToAttr ./modules/home-manager));
+        ] ++ (lib.my.modulesToList (lib.my.filesToAttr ./modules/home-manager));
 
         home.stateVersion = osConfig.system.stateVersion;
 
@@ -160,7 +175,7 @@
 
       # This will be shared among NixOS and home-manager configurations.
       nixSettingsSharedConfig = { config, lib, pkgs, ... }: {
-
+        _module.check = true;
         # I want to capture the usual flakes to its exact version so we're
         # making them available to our system. This will also prevent the
         # annoying downloads since it always get the latest revision.
@@ -219,12 +234,12 @@
     {
       # Exposes only my library with the custom functions to make it easier to
       # include in other flakes for whatever reason may be.
-      lib = import ./lib { lib = nixpkgs.lib; };
+      lib = lib.my;
 
       # A list of NixOS configurations from the `./hosts` folder. It also has
       # some sensible default configurations.
       nixosConfigurations =
-        lib'.mapAttrs
+        lib.mapAttrs
           (filename: host:
             let
               path = ./hosts/${filename};
@@ -237,7 +252,6 @@
                       { networking.domain = lib.mkForce host.domain; })
                   ];
                 })
-
                 hostSharedConfig
                 nixSettingsSharedConfig
                 path
@@ -248,16 +262,16 @@
               system = host._system;
               nixpkgs-channel = host.nixpkgs-channel or "nixpkgs";
             })
-          (lib'.filterAttrs (_: host: (host.format or "iso") == "iso") images);
+          (lib.filterAttrs (_: host: (host.format or "iso") == "iso") images);
 
       # We're going to make our custom modules available for our flake. Whether
       # or not this is a good thing is debatable, I just want to test it.
-      nixosModules = lib'.filesToAttr ./modules/nixos;
+      nixosModules = lib.my.filesToAttr ./modules/nixos;
 
       # I can now install home-manager users in non-NixOS systems.
       # NICE!
       homeConfigurations =
-        lib'.mapAttrs
+        lib.mapAttrs
           (filename: metadata:
             let
               name = metadata._name;
@@ -293,7 +307,7 @@
               home-manager-channel = metadata.home-manager-channel or "home-manager";
             })
           users;
-      homeModules = lib'.filesToAttr ./modules/home-manager;
+      homeModules = lib.my.filesToAttr ./modules/home-manager;
 
 
       # In case somebody wants to use my stuff to be included in nixpkgs.
@@ -313,9 +327,9 @@
       images = forAllSystems (system:
         let
           images' =
-            lib'.filterAttrs (host: metadata: system == metadata._system) images;
+            lib.filterAttrs (host: metadata: system == metadata._system) images;
         in
-        lib'.mapAttrs'
+        lib.mapAttrs'
           (host: metadata:
             let
               inherit system;
@@ -325,16 +339,16 @@
               pkgs =
                 import inputs."${nixpkgs-channel}" { inherit system overlays; };
             in
-            lib'.nameValuePair name (mkImage {
+            lib.nameValuePair name (mkImage {
               inherit format system pkgs extraArgs;
               extraModules = [
                 ({ lib, ... }: {
-                  config = lib'.mkMerge [
+                  config = lib.mkMerge [
                     {
-                      networking.hostName = lib'.mkForce metadata.hostname or name;
+                      networking.hostName = lib.mkForce metadata.hostname or name;
                     }
-                    (lib'.mkIf (metadata ? domain) {
-                      networking.domain = lib'.mkForce metadata.domain;
+                    (lib.mkIf (metadata ? domain) {
+                      networking.domain = lib.mkForce metadata.domain;
                     })
                   ];
                 })

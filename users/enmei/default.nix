@@ -20,7 +20,7 @@ in
       # you will not be able to get my secrets.
       age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
 
-      secrets = lib.getSecrets ./secrets/ssh.yaml {
+      secrets = lib.my.getSecrets ./secrets/ssh.yaml {
         id_ed25519.path = ".ssh/id_ed25519";
         id_ed25519_pub.path = ".ssh/id_ed25519.pub";
       };
@@ -28,13 +28,11 @@ in
 
     modules = {
       shell = {
-        apps = {
-          eza.enable = true;
-          fzf.enable = true;
-          zellij.enable = true;
-          direnv.enable = true;
-          starship.enable = true;
-        };
+        eza.enable = true;
+        fzf.enable = true;
+        zellij.enable = true;
+        direnv.enable = true;
+        starship.enable = true;
       };
 
       desktop = {
@@ -65,7 +63,7 @@ in
 
       };
       editors = {
-        codium.enable = true;
+        code.enable = true;
         kakoune.enable = true;
       };
     };
