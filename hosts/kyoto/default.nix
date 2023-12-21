@@ -13,7 +13,7 @@ with lib.my;
   ];
 
 
-  disko.devices = import ./disko.nix { disks = [ "/dev/sda" ]; };
+  disko.devices = import ./disko.nix { disks = [ "/dev/nvme0n1" ]; };
 
   modules = {
     shell.zsh.enable = true;
@@ -26,6 +26,7 @@ with lib.my;
       };
       splash.enable = true;
     };
+
 
     desktop = {
       hyprland.enable = true;
@@ -46,5 +47,6 @@ with lib.my;
       ssh.enable = true;
     };
   };
+
 
 }

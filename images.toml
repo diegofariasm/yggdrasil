@@ -13,3 +13,23 @@ systems = [
   "x86_64-linux"
 ]
 format = "iso"
+
+[kyoto]
+systems = [
+  "x86_64-linux"
+]
+format = "iso"
+
+[bootstrap]
+systems = [
+  "x86_64-linux",
+]
+format = "install-iso"
+nixpkgs-channel = "nixos-unstable"
+
+[graphical-installer]
+systems = [
+  "x86_64-linux",
+]
+format = "install-iso"
+nixpkgs-channel = "nixos-unstable"
