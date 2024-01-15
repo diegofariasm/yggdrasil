@@ -22,13 +22,26 @@ with lib.my;
         systemd = {
           enable = true;
         };
-        display.lightdm.enable = true;
+        display.gdm.enable = true;
       };
       splash.enable = true;
     };
 
     desktop = {
       hyprland.enable = true;
+      services = {
+        notifier = {
+          mako.enable = true;
+        };
+        clipman.enable = true;
+      };
+
+      gaming = {
+        games = {
+          roblox.enable = true;
+        };
+        steam.enable = true;
+      };
     };
 
     hardware = {

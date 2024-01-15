@@ -18,6 +18,5 @@ in
     boot.plymouth = {
       enable = true;
     };
-
   };
 }

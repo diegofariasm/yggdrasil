@@ -69,15 +69,6 @@ in
       ];
 
 
-      xdg.portal = {
-        enable = true;
-        wlr.enable = true;
-        config.common.default = [
-          "wlr"
-        ];
-      };
-
-
       environment.systemPackages = with pkgs; [
         jq
         socat

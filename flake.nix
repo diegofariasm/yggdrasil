@@ -37,6 +37,8 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    hyprland.url = "github:hyprwm/Hyprland";
+
     # Cached nix-index database.
     # Doing it manually just takes too long.
     nix-index-database.url = "github:Mic92/nix-index-database";
@@ -44,8 +46,8 @@
     recolor.url = "github:enmeei/recolor";
     recolor.inputs.nixpkgs.follows = "nixpkgs";
 
-    maiden.url = "github:enmeei/maiden";
-    maiden.inputs.nixpkgs.follows = "nixpkgs";
+    dwm.url = "github:enmeei/dwm";
+    dwm.inputs.nixpkgs.follows = "nixpkgs";
 
     flavours.url = "github:enmeei/flavours";
     flavours.inputs.nixpkgs.follows = "nixpkgs";
@@ -65,8 +67,6 @@
       inherit (import ./lib/images.nix { inherit inputs; lib = lib; }) mkHost mkHome mkImage listImagesWithSystems;
 
       overlays = with inputs; [
-        maiden.overlays.default
-
         flavours.overlays.default
 
         recolor.overlays.default
@@ -119,11 +119,12 @@
             gallery-dl
             killall
             nixd
+            gh
+            wget
             rnix-lsp
             recolor
             imagecolorizer
             flavours
-            maiden
             sops
             nil
             git
@@ -136,6 +137,12 @@
             XDG_STATE_HOME = "$HOME/.local/state";
           };
         };
+
+        networking.firewall.allowedTCPPorts = [
+          3000
+          3001
+        ];
+
         # Only use imports as minimally as possible with the absolute
         # requirements of a host. On second thought, only on flakes with
         # optional NixOS modules.

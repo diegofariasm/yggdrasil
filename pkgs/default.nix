@@ -12,6 +12,7 @@ let
         icomoon = callPackage ./fonts/icomoon { };
       };
       vinegar = callPackage ./vinegar { wine = wineWowPackages.staging; };
+      luastatus = callPackage ./luastatus { };
       imagecolorizer = callPackage ./imagecolorizer { };
       pywalfox = callPackage ./pywalfox { };
     };

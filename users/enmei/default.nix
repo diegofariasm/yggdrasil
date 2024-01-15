@@ -7,7 +7,9 @@ in
     "${user}" = {
       isNormalUser = true;
       extraGroups = [
+        "audio"
         "wheel"
+        "storage"
       ];
       hashedPassword = "$y$j9T$4kH1DpfluPRI4kjUG3eC..$O56uu5IvPNqoYDZ3zh95dNbiqHo7iQHcszhhVDdipo9";
     };

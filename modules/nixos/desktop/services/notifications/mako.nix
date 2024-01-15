@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.desktop.services.notifications.mako;
+  cfg = config.modules.desktop.services.notifier.mako;
 in
 {
-  options.modules.desktop.services.notifications.mako = {
+  options.modules.desktop.services.notifier.mako = {
     enable = lib.mkOption {
       description = ''
         Whether to enable the mako service.
@@ -17,8 +17,6 @@ in
 
   config = lib.mkIf cfg.enable {
     systemd.user.services = {
-      # The mako service.
-      # This is meant to be handling notifications.
       mako = {
         enable = true;
         wantedBy = [
@@ -28,6 +26,7 @@ in
         serviceConfig.ExecStart = "${pkgs.mako}/bin/mako";
       };
     };
-    environment.systemPackages = with pkgs; [ mako ];
+    systemd.user.services.mako.bindsTo = [ "graphical-session.target" ];
+
   };
 }

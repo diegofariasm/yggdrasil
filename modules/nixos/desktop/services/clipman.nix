@@ -17,8 +17,6 @@ in
 
   config = lib.mkIf cfg.enable {
     systemd.user.services = {
-      # The clipman service.
-      # This is meant to be handling notifications.
       clipman = {
         enable = true;
         wantedBy = [
@@ -28,6 +26,7 @@ in
         serviceConfig.ExecStart = "${pkgs.clipman}/bin/clipman";
       };
     };
-    environment.systemPackages = with pkgs; [ clipman ];
+    systemd.user.services.clipman.bindsTo = [ "graphical-session.target" ];
+
   };
 }
