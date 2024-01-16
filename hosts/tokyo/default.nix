@@ -8,13 +8,12 @@ with lib.my;
   imports = [
     ../default.nix
     ./hardware-configuration.nix
-
+    ./disko.nix
     (getUser "enmei")
   ];
 
-
-  disko.devices = import ./disko.nix { disks = [ "/dev/sda" ]; };
-
+  networking.hostId = "16c6bb2e";
+  
   modules = {
     shell.zsh.enable = true;
     boot = {
@@ -29,19 +28,6 @@ with lib.my;
 
     desktop = {
       hyprland.enable = true;
-      services = {
-        notifier = {
-          mako.enable = true;
-        };
-        clipman.enable = true;
-      };
-
-      gaming = {
-        games = {
-          roblox.enable = true;
-        };
-        steam.enable = true;
-      };
     };
 
     hardware = {

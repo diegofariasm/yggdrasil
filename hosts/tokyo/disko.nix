@@ -1,43 +1,66 @@
-{ disks, ... }:
-
 {
-  disk.disk0 = {
-    device = builtins.elemAt disks 0;
-    type = "disk";
-    content = {
-      format = "gpt";
-      type = "table";
-      partitions = [
-        {
-          name = "nixos-boot";
-          start = "0";
-          end = "1GiB";
-          bootable = true;
-          content = {
-            type = "filesystem";
-            mountpoint = "/boot";
-            format = "vfat";
+  disko.devices = {
+    disk = {
+sda = {
+        type = "disk";
+        device = "/dev/sda";
+        content = {
+          type = "gpt";
+          partitions = {
+            ESP = {
+              size = "512M";
+              type = "EF00";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
+              };
+            };
+            zfs = {
+              size = "100%";
+              content = {
+                type = "zfs";
+                pool = "zroot";
+              };
+            };
           };
-        }
-        {
-          name = "nixos-swap";
-          start = "1GiB";
-          end = "5GiB";
-          content = {
-            type = "swap";
-            randomEncryption = true;
-          };
-        }
-        {
-          name = "nixos";
-          start = "5GiB";
-          content = {
-            type = "filesystem";
+        };
+      };
+     
+    };
+    zpool = {
+      zroot = {
+        type = "zpool";
+        rootFsOptions = {
+          canmount = "off";
+        };
+        datasets = {
+          root = {
+            type = "zfs_fs";
             mountpoint = "/";
-            format = "ext4";
+            options.mountpoint = "legacy";
+            postCreateHook = "zfs snapshot zroot/root@blank";
           };
-        }
-      ];
+          nix = {
+            type = "zfs_fs";
+            mountpoint = "/nix";
+            options.mountpoint = "legacy";
+          };
+          persist = {
+            type = "zfs_fs";
+            options.mountpoint = "legacy";
+            mountpoint = "/persist";
+          };
+          home = {
+            type = "zfs_fs";
+            options.mountpoint = "legacy";
+            mountpoint = "/home";
+            postCreateHook = "zfs snapshot zroot/home@blank";
+          };
+       
+        };
+      };
     };
   };
 }
+
