@@ -12,7 +12,7 @@ stdenvNoCC.mkDerivation rec {
       repo = "icomoon";
       rev = version;
       fetchSubmodules = false;
-      sha256 = "LKn6kBA6TTb6tUklzrkY0Fnw3sxyrJxUy4kf/ntZc+E=";
+      sha256 = "sha256-hOWs/3lesFhRsd8mmMlqZ7vkSNwtI9v8k/xj9Xpyr9E=";
     }
   );
 

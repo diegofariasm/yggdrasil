@@ -65,6 +65,7 @@ in
             "Iosevka"
           ];
         })
+	fonts.icomoon
       ];
 
 

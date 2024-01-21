@@ -7,9 +7,7 @@ in
     "${user}" = {
       isNormalUser = true;
       extraGroups = [
-        "audio"
         "wheel"
-        "storage"
       ];
       hashedPassword = "$y$j9T$4kH1DpfluPRI4kjUG3eC..$O56uu5IvPNqoYDZ3zh95dNbiqHo7iQHcszhhVDdipo9";
     };
@@ -17,14 +15,79 @@ in
 
   home-manager.users.${user} = { lib, config, ... }: {
     sops = {
-      # Age key location.
-      # Without having this on place,
-      # you will not be able to get my secrets.
       age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
-
       secrets = lib.my.getSecrets ./secrets/ssh.yaml {
         id_ed25519.path = ".ssh/id_ed25519";
         id_ed25519_pub.path = ".ssh/id_ed25519.pub";
+      };
+    };
+ 
+    home = {
+      persistence = {
+        "/persist/home/${user}" = {
+          allowOther = true;
+          directories = [
+            {
+              directory = ".config/hypr";
+              method = "symlink";
+            }
+             {
+              directory = ".config/eww";
+              method = "symlink";
+            }
+            {
+              directory = ".config/flavours";
+              method = "symlink";
+            }
+            {
+              directory = ".config/zsh";
+              method = "symlink";
+            }
+            {
+              directory = ".config/kak";
+              method = "symlink";
+            }
+            {
+              directory = ".config/kitty";
+              method = "symlink";
+            }
+            {
+              directory = ".config/xsettingsd";
+              method = "symlink";
+            }
+            {
+              directory = ".config/mako";
+              method = "symlink";
+            }
+            {
+              directory = ".config/gtk-2.0";
+              method = "symlink";
+            }
+            {
+              directory = ".config/gtk-3.0";
+              method = "symlink";
+            }
+            {
+              directory = ".config/gtk-4.0";
+              method = "symlink";
+            }
+
+            {
+              directory = ".config/sops";
+              method = "symlink";
+            }
+             ".zi"
+            "projects"
+            # Add all of the directories under xdg.userDirs
+          ] ++ builtins.map (str: lib.removePrefix "/home/${user}/" str) (lib.attrValues (lib.filterAttrs (key: value: key != "enable" && key != "createDirectories" && key != "extraConfig") config.xdg.userDirs));
+
+          files = [
+            ".zshrc"
+            ".xsettingsd"
+            ".config/starship.toml"
+            ".config/maiden/config.toml"
+          ];
+        };
       };
     };
 
@@ -36,7 +99,6 @@ in
         direnv.enable = true;
         starship.enable = true;
       };
-
       desktop = {
         apps = {
           files = {

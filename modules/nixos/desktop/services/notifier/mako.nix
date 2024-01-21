@@ -27,6 +27,5 @@ in
       };
     };
     systemd.user.services.mako.bindsTo = [ "graphical-session.target" ];
-
   };
 }

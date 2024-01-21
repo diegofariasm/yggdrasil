@@ -1,13 +1,14 @@
 {
-
   description = "You are not supposed to be here!";
+  
   nixConfig = {
     extra-substituters =
       "https://nix-community.cachix.org";
     extra-trusted-public-keys =
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+    commit-lockfile-summary = "flake.lock: update inputs";
   };
-
+  
   inputs = {
     # I know NixOS can be stable but we're going cutting edge, baybee! While
     # `nixpkgs-unstable` branch could be faster delivering updates, it is
@@ -30,6 +31,8 @@
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
+    impermanence.url = "github:nix-community/impermanence";
+
     # Managing your secrets.
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -46,8 +49,8 @@
     recolor.url = "github:enmeei/recolor";
     recolor.inputs.nixpkgs.follows = "nixpkgs";
 
-    dwm.url = "github:enmeei/dwm";
-    dwm.inputs.nixpkgs.follows = "nixpkgs";
+    maiden.url = "github:enmeei/maiden/8e5511a69e765385b190bb39c451672c8784a7f5";
+    maiden.inputs.nixpkgs.follows = "nixpkgs";
 
     flavours.url = "github:enmeei/flavours";
     flavours.inputs.nixpkgs.follows = "nixpkgs";
@@ -67,6 +70,8 @@
       inherit (import ./lib/images.nix { inherit inputs; lib = lib; }) mkHost mkHome mkImage listImagesWithSystems;
 
       overlays = with inputs; [
+        maiden.overlays.default
+
         flavours.overlays.default
 
         recolor.overlays.default
@@ -95,13 +100,6 @@
         inherit inputs lib;
       };
 
-      # We're considering this as the variant since we'll export the custom
-      # library as `lib` in the output attribute.
-      # lib = nixpkgs.lib.extend (final: prev:
-      #   import ./lib { lib = prev; }
-      #   // import ./lib/private.nix { lib = final; }
-      # );
-
       lib = nixpkgs.lib.extend
         (self: super: { my = import ./lib { inherit inputs; lib = self; }; } // home-manager.lib);
 
@@ -110,6 +108,8 @@
       # also using this with the stable version of nixpkgs.
       hostSharedConfig = { config, lib, pkgs, ... }: {
         _module.check = true;
+
+        programs.fuse.userAllowOther = true;
 
         # Initialize some of the XDG base directories ourselves since it is used by NIX_PROFILES to properly link some of them.
         environment = {
@@ -124,6 +124,7 @@
             rnix-lsp
             recolor
             imagecolorizer
+            maiden
             flavours
             sops
             nil
@@ -137,11 +138,6 @@
             XDG_STATE_HOME = "$HOME/.local/state";
           };
         };
-
-        networking.firewall.allowedTCPPorts = [
-          3000
-          3001
-        ];
 
         # Only use imports as minimally as possible with the absolute
         # requirements of a host. On second thought, only on flakes with
@@ -171,6 +167,7 @@
       userSharedConfig = { pkgs, config, lib, osConfig, ... }: {
         imports = with inputs; [
           sops-nix.homeManagerModules.sops
+          impermanence.nixosModules.home-manager.impermanence
         ] ++ (lib.my.modulesToList (lib.my.filesToAttr ./modules/home-manager));
 
         home.stateVersion = osConfig.system.stateVersion;

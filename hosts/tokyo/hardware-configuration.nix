@@ -10,11 +10,15 @@
     ];
   boot = {
     initrd = {
+      postDeviceCommands = lib.mkAfter ''
+          zfs rollback -r zroot/root@blank
+          zfs rollback -r zroot/home@blank
+       '';
       availableKernelModules = [
         "xhci_pci"
         "ahci"
         "sd_mod"
-        "rtsx_pci_sdmmc"
+        "usbhid"
       ];
     };
     kernelModules = [ "kvm-intel" ];

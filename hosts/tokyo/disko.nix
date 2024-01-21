@@ -1,7 +1,7 @@
 {
   disko.devices = {
     disk = {
-sda = {
+      sda = {
         type = "disk";
         device = "/dev/sda";
         content = {
@@ -26,7 +26,7 @@ sda = {
           };
         };
       };
-     
+
     };
     zpool = {
       zroot = {
@@ -57,10 +57,20 @@ sda = {
             mountpoint = "/home";
             postCreateHook = "zfs snapshot zroot/home@blank";
           };
-       
         };
       };
     };
   };
+
+fileSystems = {
+
+
+  "/".neededForBoot = true;
+  "/nix".neededForBoot = true;
+  "/home".neededForBoot = true;
+  "/boot".neededForBoot = true;
+  "/persist".neededForBoot = true;
+
+};
 }
 

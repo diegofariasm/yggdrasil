@@ -3,18 +3,6 @@
 with lib;
 {
   options = with types; {
-    dotfiles = {
-      dir = lib.my.mkOpt path
-        (removePrefix "/mnt"
-          (findFirst pathExists (toString ../..) [
-            "/mnt/etc/nixos"
-            "/etc/nixos"
-          ]));
-      binDir = lib.my.mkOpt path "${config.dotfiles.dir}/bin";
-      configDir = lib.my.mkOpt path "${config.dotfiles.dir}/config";
-      modulesDir = lib.my.mkOpt path "${config.dotfiles.dir}/modules";
-    };
-
     # Ah yes, an idiotic thing to do.
     # This will be a list of commands, generally used between
     # all of the hosts. This make will it so that you can change between packages without that much of a hassle.
@@ -32,8 +20,6 @@ with lib;
 
   };
   config = {
-    # Put the generated config in place.
-    # Note: this will probably be changed later.
     xdg = {
       configFile = {
         "maiden/generated.toml" = {
@@ -45,20 +31,10 @@ with lib;
       };
     };
 
-
     home = {
-      # So this can be used throghout the config.
-      # Gives me some peace being able to acess my dotfiles thorugh the variables.
-      sessionVariables = with config.dotfiles; {
-        "DOTFILES_BIN" = binDir;
-        "DOTFILES_CONFIG" = configDir;
-        "DOTFILES_MODULES" = modulesDir;
-      };
-
       # Add a few things to path.
       # These are used in all of the users.
       sessionPath = [
-        "$DOTFILES_BIN"
         "$XDG_BIN_HOME"
         "$PATH"
       ];

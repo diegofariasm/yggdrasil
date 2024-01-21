@@ -7,7 +7,7 @@
         appendToHomeDir = path: "${config.home.homeDirectory}/${path}";
       in
       {
-          enable = true;
+        enable = true;
         desktop = appendToHomeDir "desktop";
         documents = appendToHomeDir "documents";
         download = appendToHomeDir "downloads";
@@ -17,7 +17,7 @@
         templates = appendToHomeDir "templates";
         videos = appendToHomeDir "videos";
       };
-  
+
   };
 }
 

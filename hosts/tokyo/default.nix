@@ -13,7 +13,7 @@ with lib.my;
   ];
 
   networking.hostId = "16c6bb2e";
-  
+
   modules = {
     shell.zsh.enable = true;
     boot = {
@@ -23,11 +23,16 @@ with lib.my;
         };
         display.gdm.enable = true;
       };
-      splash.enable = true;
     };
 
     desktop = {
       hyprland.enable = true;
+      services = {
+          notifier = {
+              mako.enable = true;
+          };
+          clipman.enable = true;
+      };
     };
 
     hardware = {
