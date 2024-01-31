@@ -1,10 +1,12 @@
-{ pkgs, config, inputs, lib, ... }:
-
-
-let
-  cfg = config.modules.hardware.language.keyboard.br;
-in
 {
+  pkgs,
+  config,
+  inputs,
+  lib,
+  ...
+}: let
+  cfg = config.modules.hardware.language.keyboard.br;
+in {
   options.modules.hardware.language.keyboard.br.enable = lib.my.mkOpt lib.types.bool false;
 
   config = lib.mkIf cfg.enable {

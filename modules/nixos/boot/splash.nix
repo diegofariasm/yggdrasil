@@ -1,9 +1,11 @@
-{ config, pkgs, lib, ... }:
-
-let
-  cfg = config.modules.boot.splash;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  cfg = config.modules.boot.splash;
+in {
   options.modules.boot.splash = {
     enable = lib.mkOption {
       description = ''

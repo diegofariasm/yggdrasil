@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.shell.apps.zellij;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.shell.apps.zellij;
+in {
   options.modules.shell.apps.zellij = {
     enable = lib.mkOption {
       description = ''
@@ -15,6 +17,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ zellij ];
+    home.packages = with pkgs; [zellij];
   };
 }

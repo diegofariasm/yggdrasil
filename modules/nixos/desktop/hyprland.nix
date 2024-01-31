@@ -1,9 +1,12 @@
-{ pkgs, config, inputs, lib, ... }:
-
-let
-  cfg = config.modules.desktop.hyprland;
-in
 {
+  pkgs,
+  config,
+  inputs,
+  lib,
+  ...
+}: let
+  cfg = config.modules.desktop.hyprland;
+in {
   options.modules.desktop.hyprland.enable = lib.my.mkOpt' lib.types.bool false "Wheter to enable the hyprland desktop";
 
   # imports = [
@@ -21,6 +24,5 @@ in
       hyprpicker
       hyprpaper
     ];
-
   };
 }

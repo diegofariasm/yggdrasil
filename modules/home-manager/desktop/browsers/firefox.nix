@@ -1,9 +1,12 @@
-{ config, inputs, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.desktop.browsers.firefox;
-in
 {
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.desktop.browsers.firefox;
+in {
   options.modules.desktop.browsers.firefox = {
     enable = lib.mkOption {
       description = ''
@@ -19,11 +22,13 @@ in
       enable = true;
       profiles = {
         personal = {
-          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-            ublock-origin
-          ] ++ (with pkgs.firefox-addons; [
-            sourcegraph-for-firefox
-          ]);
+          extensions = with pkgs.nur.repos.rycee.firefox-addons;
+            [
+              ublock-origin
+            ]
+            ++ (with pkgs.firefox-addons; [
+              sourcegraph-for-firefox
+            ]);
         };
       };
     };

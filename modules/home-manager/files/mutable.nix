@@ -1,9 +1,18 @@
-{ config, options, lib, pkgs, ... }:
-
-let
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.home.mutableFile;
 
-  fileType = baseDir: { name, config, options, ... }: {
+  fileType = baseDir: {
+    name,
+    config,
+    options,
+    ...
+  }: {
     options = {
       url = lib.mkOption {
         type = lib.types.str;
@@ -22,7 +31,9 @@ let
         example = lib.literalExpression "\${config.xdg.userDirs.documents}/top-secret";
         default = name;
         apply = p:
-          if lib.hasPrefix "/" p then p else "${baseDir}/${p}";
+          if lib.hasPrefix "/" p
+          then p
+          else "${baseDir}/${p}";
       };
 
       extractPath = lib.mkOption {
@@ -37,7 +48,7 @@ let
       };
 
       type = lib.mkOption {
-        type = lib.types.enum [ "git" "fetch" "archive" "gopass" "custom" ];
+        type = lib.types.enum ["git" "fetch" "archive" "gopass" "custom"];
         description = ''
           Type that configures the behavior for fetching the URL.
 
@@ -65,13 +76,12 @@ let
           note of the commands used for each type as documented from
           {option}`config.home.mutableFile.<name>.type`.
         '';
-        default = [ ];
-        example = [ "--depth" "1" ];
+        default = [];
+        example = ["--depth" "1"];
       };
     };
   };
-in
-{
+in {
   options.home.mutableFile = lib.mkOption {
     type = with lib.types; attrsOf (submodule (fileType config.home.homeDirectory));
     description = ''
@@ -80,7 +90,7 @@ in
       idempotent) as it will only do its fetching when the designated file is
       missing.
     '';
-    default = { };
+    default = {};
     example = lib.literalExpression ''
       {
         "library/dotfiles" = {
@@ -96,12 +106,12 @@ in
     '';
   };
 
-  config = lib.mkIf (cfg != { }) {
+  config = lib.mkIf (cfg != {}) {
     systemd.user.services.fetch-mutable-files = {
       Unit = {
         Description = "Fetch mutable home-manager-managed files";
-        After = [ "default.target" "network-online.target" ];
-        Wants = [ "network-online.target" ];
+        After = ["default.target" "network-online.target"];
+        Wants = ["network-online.target"];
       };
 
       Service = {
@@ -112,46 +122,43 @@ in
 
         Type = "oneshot";
         RemainAfterExit = true;
-        ExecStart =
-          let
-            mutableFilesCmds = lib.mapAttrsToList
-              (path: value:
-                let
-                  url = lib.escapeShellArg value.url;
-                  path = lib.escapeShellArg value.path;
-                  extraArgs = lib.escapeShellArgs value.extraArgs;
-                  isFetchType = type: lib.optionalString (value.type == type);
-                in
-                ''
-                  ${isFetchType "git" "[ -d ${path} ] || git clone ${extraArgs} ${url} ${path}"}
-                  ${isFetchType "fetch" "[ -e ${path} ] || curl ${extraArgs} ${url} --output ${path}"}
-                  ${isFetchType "archive" ''
-                    [ -e ${path} ] || {
-                      filename=$(curl ${extraArgs} --output-dir /tmp --silent --show-error --write-out '%{filename_effective}' --remote-name --remote-header-name --location ${url})
-                      ${if (value.extractPath != null) then
-                          ''arc extract "/tmp/$filename" ${lib.escapeShellArg value.extractPath} ${path}''
-                        else
-                          ''arc unarchive "/tmp/$filename" ${path}''
-                      }
-                    }
-                  ''}
-                  ${isFetchType "gopass" ''
-                    [ -e ${path} ] || gopass clone ${extraArgs} ${url} --path ${path} ${extraArgs}
-                  ''}
-                  ${isFetchType "custom" "[ -e ${path} ] || ${extraArgs}"}
-                '')
-              cfg;
+        ExecStart = let
+          mutableFilesCmds =
+            lib.mapAttrsToList
+            (path: value: let
+              url = lib.escapeShellArg value.url;
+              path = lib.escapeShellArg value.path;
+              extraArgs = lib.escapeShellArgs value.extraArgs;
+              isFetchType = type: lib.optionalString (value.type == type);
+            in ''
+              ${isFetchType "git" "[ -d ${path} ] || git clone ${extraArgs} ${url} ${path}"}
+              ${isFetchType "fetch" "[ -e ${path} ] || curl ${extraArgs} ${url} --output ${path}"}
+              ${isFetchType "archive" ''
+                [ -e ${path} ] || {
+                  filename=$(curl ${extraArgs} --output-dir /tmp --silent --show-error --write-out '%{filename_effective}' --remote-name --remote-header-name --location ${url})
+                  ${
+                  if (value.extractPath != null)
+                  then ''arc extract "/tmp/$filename" ${lib.escapeShellArg value.extractPath} ${path}''
+                  else ''arc unarchive "/tmp/$filename" ${path}''
+                }
+                }
+              ''}
+              ${isFetchType "gopass" ''
+                [ -e ${path} ] || gopass clone ${extraArgs} ${url} --path ${path} ${extraArgs}
+              ''}
+              ${isFetchType "custom" "[ -e ${path} ] || ${extraArgs}"}
+            '')
+            cfg;
 
-            script = pkgs.writeShellApplication {
-              name = "fetch-mutable-files";
-              runtimeInputs = with pkgs; [ archiver curl git gopass ];
-              text = "${lib.concatStringsSep "\n" mutableFilesCmds}";
-            };
-          in
-          "${script}/bin/fetch-mutable-files";
+          script = pkgs.writeShellApplication {
+            name = "fetch-mutable-files";
+            runtimeInputs = with pkgs; [archiver curl git gopass];
+            text = "${lib.concatStringsSep "\n" mutableFilesCmds}";
+          };
+        in "${script}/bin/fetch-mutable-files";
       };
 
-      Install.WantedBy = [ "default.target" ];
+      Install.WantedBy = ["default.target"];
     };
   };
 }

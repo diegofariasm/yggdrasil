@@ -1,14 +1,17 @@
-{ lib, flake-parts-lib, moduleLocation, ... }:
-
 {
+  lib,
+  flake-parts-lib,
+  moduleLocation,
+  ...
+}: {
   options = {
     flake = flake-parts-lib.mkSubmoduleOptions {
       homeModules = lib.mkOption {
         type = with lib.types; lazyAttrsOf unspecified;
-        default = { };
+        default = {};
         apply = lib.mapAttrs (k: v: {
           _file = "${toString moduleLocation}#homeModules.${k}";
-          imports = [ v ];
+          imports = [v];
         });
         description = ''
           home-manager modules.

@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.shell.apps.git;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.shell.apps.git;
+in {
   options.modules.shell.apps.git = {
     enable = lib.mkOption {
       description = ''
@@ -25,7 +27,6 @@ in
         example = true;
       };
     };
-
   };
   config = lib.mkIf cfg.enable {
     programs.git = {
@@ -33,6 +34,5 @@ in
       userName = cfg.user.name;
       userEmail = cfg.user.email;
     };
-
   };
 }

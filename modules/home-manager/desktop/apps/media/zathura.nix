@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.desktop.apps.media.zathura;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.desktop.apps.media.zathura;
+in {
   options.modules.desktop.apps.media.zathura = {
     enable = lib.mkOption {
       description = ''

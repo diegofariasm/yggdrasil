@@ -1,26 +1,44 @@
 # This is the declarative user management converted into a flake-parts module.
-{ config, lib, inputs, ... }:
-
-let
+{
+  config,
+  lib,
+  inputs,
+  ...
+}: let
   cfg = config.setups.home-manager;
   homeManagerModules = lib.my.modulesToList (lib.my.filesToAttr ../../home-manager);
   partsConfig = config;
 
   # A thin wrapper around the home-manager configuration function.
-  mkHome = { system, nixpkgsBranch ? "nixpkgs", homeManagerBranch ? "home-manager", extraModules ? [ ] }:
-    let
-      pkgs = inputs.${nixpkgsBranch}.legacyPackages.${system};
-    in
+  mkHome = {
+    system,
+    nixpkgsBranch ? "nixpkgs",
+    homeManagerBranch ? "home-manager",
+    extraModules ? [],
+  }: let
+    pkgs = inputs.${nixpkgsBranch}.legacyPackages.${system};
+  in
     inputs.${homeManagerBranch}.lib.homeManagerConfiguration {
       inherit pkgs;
-      lib = inputs.nixpkgs.lib.extend
-        (self: super: { my = import ../../../lib { inherit inputs; lib = self; }; });
+      lib =
+        inputs.nixpkgs.lib.extend
+        (self: super: {
+          my = import ../../../lib {
+            inherit inputs;
+            lib = self;
+          };
+        });
       modules = extraModules;
     };
 
-  deploySettingsType = { config, lib, username, ... }: {
+  deploySettingsType = {
+    config,
+    lib,
+    username,
+    ...
+  }: {
     freeformType = with lib.types; attrsOf anything;
-    imports = [ ./shared/deploy-node-type.nix ];
+    imports = [./shared/deploy-node-type.nix];
 
     options = {
       profiles = lib.mkOption {
@@ -59,11 +77,16 @@ let
     };
   };
 
-  configType = { config, name, lib, ... }: {
+  configType = {
+    config,
+    name,
+    lib,
+    ...
+  }: {
     options = {
       overlays = lib.mkOption {
         type = with lib.types; listOf (functionTo raw);
-        default = [ ];
+        default = [];
         example = lib.literalExpression ''
           [
             inputs.neovim-nightly-overlay.overlays.default
@@ -111,12 +134,13 @@ let
       };
 
       deploy = lib.mkOption {
-        type = with lib.types; nullOr (submoduleWith {
-          specialArgs = {
-            username = name;
-          };
-          modules = [ deploySettingsType ];
-        });
+        type = with lib.types;
+          nullOr (submoduleWith {
+            specialArgs = {
+              username = name;
+            };
+            modules = [deploySettingsType];
+          });
         default = null;
         description = ''
           deploy-rs settings to be passed onto the home-manager configuration
@@ -132,23 +156,24 @@ let
           let
             setupConfig = config;
           in
-          { config, lib, ... }: {
-            nixpkgs.overlays = setupConfig.overlays;
-            home.username = lib.mkForce name;
-            home.homeDirectory = lib.mkForce setupConfig.homeDirectory;
-          }
+            {
+              config,
+              lib,
+              ...
+            }: {
+              nixpkgs.overlays = setupConfig.overlays;
+              home.username = lib.mkForce name;
+              home.homeDirectory = lib.mkForce setupConfig.homeDirectory;
+            }
         )
-
-
       ];
     };
   };
-in
-{
+in {
   options.setups.home-manager = {
     sharedModules = lib.mkOption {
       type = with lib.types; listOf raw;
-      default = [ ];
+      default = [];
       description = ''
         A list of modules to be shared by all of the declarative home-manager
         setups.
@@ -162,7 +187,7 @@ in
 
     standaloneConfigModules = lib.mkOption {
       type = with lib.types; listOf raw;
-      default = [ ];
+      default = [];
       internal = true;
       description = ''
         A list of modules to be added alongside the shared home-manager modules
@@ -175,14 +200,15 @@ in
     };
 
     configs = lib.mkOption {
-      type = with lib.types; attrsOf (submoduleWith {
-        specialArgs = { inherit (config) systems; };
-        modules = [
-          ./shared/config-options.nix
-          configType
-        ];
-      });
-      default = { };
+      type = with lib.types;
+        attrsOf (submoduleWith {
+          specialArgs = {inherit (config) systems;};
+          modules = [
+            ./shared/config-options.nix
+            configType
+          ];
+        });
+      default = {};
       description = ''
         An attribute set of metadata for the declarative home-manager setups.
       '';
@@ -207,69 +233,64 @@ in
     };
   };
 
-  config = lib.mkIf (cfg.configs != { }) {
+  config = lib.mkIf (cfg.configs != {}) {
     # Import our own home-manager modules.
     # setups.home-manager.sharedModules = homeManagerModules ++ [ ];
 
-    flake =
-      let
-        # A quick data structure we can pass through multiple build pipelines.
-        pureHomeManagerConfigs =
-          let
-            generatePureConfigs = username: metadata:
-              lib.listToAttrs
-                (builtins.map
-                  (system:
-                    lib.nameValuePair system (mkHome {
-                      inherit (metadata) nixpkgsBranch homeManagerBranch;
-                      inherit system;
-                      extraModules =
-                        cfg.sharedModules
-                        ++ cfg.standaloneConfigModules
-                        ++ metadata.modules;
-                    })
-                  )
-                  metadata.systems);
-          in
-          lib.mapAttrs generatePureConfigs cfg.configs;
+    flake = let
+      # A quick data structure we can pass through multiple build pipelines.
+      pureHomeManagerConfigs = let
+        generatePureConfigs = username: metadata:
+          lib.listToAttrs
+          (builtins.map
+            (
+              system:
+                lib.nameValuePair system (mkHome {
+                  inherit (metadata) nixpkgsBranch homeManagerBranch;
+                  inherit system;
+                  extraModules =
+                    cfg.sharedModules
+                    ++ cfg.standaloneConfigModules
+                    ++ metadata.modules;
+                })
+            )
+            metadata.systems);
       in
-      {
-        homeConfigurations =
-          let
-            renameSystems = name: system: config:
-              lib.nameValuePair "${name}-${system}" config;
-          in
-          lib.concatMapAttrs
-            (name: configs:
-              lib.mapAttrs' (renameSystems name) configs)
-            pureHomeManagerConfigs;
+        lib.mapAttrs generatePureConfigs cfg.configs;
+    in {
+      homeConfigurations = let
+        renameSystems = name: system: config:
+          lib.nameValuePair "${name}-${system}" config;
+      in
+        lib.concatMapAttrs
+        (name: configs:
+          lib.mapAttrs' (renameSystems name) configs)
+        pureHomeManagerConfigs;
 
-        deploy.nodes =
-          let
-            validConfigs =
-              lib.filterAttrs
-                (name: _: cfg.configs.${name}.deploy != null)
-                pureHomeManagerConfigs;
+      deploy.nodes = let
+        validConfigs =
+          lib.filterAttrs
+          (name: _: cfg.configs.${name}.deploy != null)
+          pureHomeManagerConfigs;
 
-            generateDeployNode = name: system: config:
-              lib.nameValuePair "home-manager-${name}-${system}" (
-                let
-                  deployConfig = cfg.configs.${name}.deploy;
-                  deployConfig' = lib.attrsets.removeAttrs deployConfig [ "profiles" ];
-                in
-                deployConfig'
-                // {
-                  profiles =
-                    cfg.configs.${name}.deploy.profiles {
-                      inherit name config system;
-                    };
-                }
-              );
-          in
-          lib.concatMapAttrs
-            (name: configs:
-              lib.mapAttrs' (generateDeployNode name) configs)
-            validConfigs;
-      };
+        generateDeployNode = name: system: config:
+          lib.nameValuePair "home-manager-${name}-${system}" (
+            let
+              deployConfig = cfg.configs.${name}.deploy;
+              deployConfig' = lib.attrsets.removeAttrs deployConfig ["profiles"];
+            in
+              deployConfig'
+              // {
+                profiles = cfg.configs.${name}.deploy.profiles {
+                  inherit name config system;
+                };
+              }
+          );
+      in
+        lib.concatMapAttrs
+        (name: configs:
+          lib.mapAttrs' (generateDeployNode name) configs)
+        validConfigs;
+    };
   };
 }

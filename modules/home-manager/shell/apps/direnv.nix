@@ -1,9 +1,11 @@
-{ config, pkgs, lib, ... }:
-
-let
-  cfg = config.modules.shell.apps.direnv;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  cfg = config.modules.shell.apps.direnv;
+in {
   options.modules.shell.apps.direnv = {
     enable = lib.mkOption {
       description = ''
@@ -15,6 +17,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ direnv ];
+    home.packages = with pkgs; [direnv];
   };
 }

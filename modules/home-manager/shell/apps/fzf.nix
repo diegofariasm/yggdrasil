@@ -1,9 +1,11 @@
-{ config, pkgs, lib, ... }:
-
-let
-  cfg = config.modules.shell.apps.fzf;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  cfg = config.modules.shell.apps.fzf;
+in {
   options.modules.shell.apps.fzf = {
     enable = lib.mkOption {
       description = ''
@@ -15,6 +17,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ fzf ];
+    home.packages = with pkgs; [fzf];
   };
 }

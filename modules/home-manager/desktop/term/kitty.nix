@@ -1,9 +1,12 @@
-{ config, inputs, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.desktop.term.kitty;
-in
 {
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.desktop.term.kitty;
+in {
   options.modules.desktop.term.kitty = {
     enable = lib.mkOption {
       description = ''
@@ -15,6 +18,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ kitty ];
+    home.packages = with pkgs; [kitty];
   };
 }

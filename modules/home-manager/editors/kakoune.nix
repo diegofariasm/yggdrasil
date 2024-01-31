@@ -1,8 +1,11 @@
-{ config, pkgs, lib, ... }:
-
-let cfg = config.modules.editors.kakoune;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  cfg = config.modules.editors.kakoune;
+in {
   options.modules.editors.kakoune = {
     enable = lib.mkOption {
       description = ''
@@ -14,7 +17,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ kakoune kak-lsp ];
+    home.packages = with pkgs; [kakoune kak-lsp];
   };
-
 }

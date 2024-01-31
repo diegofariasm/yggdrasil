@@ -1,11 +1,13 @@
-{ lib, flake-parts-lib, ... }:
-
 {
+  lib,
+  flake-parts-lib,
+  ...
+}: {
   options = {
     flake = flake-parts-lib.mkSubmoduleOptions {
       homeConfigurations = lib.mkOption {
         type = with lib.types; lazyAttrsOf raw;
-        default = { };
+        default = {};
         description = ''
           Instantiated home-manager configurations.
 

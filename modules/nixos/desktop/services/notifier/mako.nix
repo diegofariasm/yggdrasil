@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.desktop.services.notifier.mako;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.desktop.services.notifier.mako;
+in {
   options.modules.desktop.services.notifier.mako = {
     enable = lib.mkOption {
       description = ''
@@ -22,10 +24,10 @@ in
         wantedBy = [
           "graphical-session.target"
         ];
-        after = [ "graphical-session.target" ];
+        after = ["graphical-session.target"];
         serviceConfig.ExecStart = "${pkgs.mako}/bin/mako";
       };
     };
-    systemd.user.services.mako.bindsTo = [ "graphical-session.target" ];
+    systemd.user.services.mako.bindsTo = ["graphical-session.target"];
   };
 }

@@ -1,5 +1,4 @@
-{ pkgs ? import <nixpkgs> { } }:
-
+{pkgs ? import <nixpkgs> {}}:
 with pkgs; {
-  install = callPackage ./install.nix { };
+  install = callPackage ./install.nix {};
 }

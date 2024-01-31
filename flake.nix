@@ -1,5 +1,4 @@
 {
-
   inputs = {
     # I know NixOS can be stable but we're going cutting edge, baybee! While
     # `nixpkgs-unstable` branch could be faster delivering updates, it is
@@ -56,16 +55,30 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
-  outputs = inputs@{ self, flake-parts, ... }:
-    let
-      lib = inputs.nixpkgs.lib.extend
-        (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
-    in
-    flake-parts.lib.mkFlake { inherit inputs; specialArgs.lib = lib; }
-      {
-        systems = [ "x86_64-linux"  "aarch64-linux"  ];
-        imports = [
+  outputs = inputs @ {
+    self,
+    flake-parts,
+    ...
+  }: let
+    lib =
+      inputs.nixpkgs.lib.extend
+      (self: super: {
+        my = import ./lib {
+          inherit inputs;
+          lib = self;
+        };
+      });
+  in
+    flake-parts.lib.mkFlake {
+      inherit inputs;
+      specialArgs.lib = lib;
+    }
+    {
+      systems = ["x86_64-linux" "aarch64-linux"];
+      imports =
+        [
           ./modules/flake-parts
-        ] ++ lib.my.modulesToList (lib.my.filesToAttr ./configs/flake-parts);
-      };
+        ]
+        ++ lib.my.modulesToList (lib.my.filesToAttr ./configs/flake-parts);
+    };
 }

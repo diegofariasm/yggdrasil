@@ -1,5 +1,4 @@
-{ pkgs }:
-
+{pkgs}:
 pkgs.mkShell {
   description = ''
     An development shell meant to be used for install.

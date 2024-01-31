@@ -26,7 +26,6 @@
           };
         };
       };
-
     };
     zpool = {
       zroot = {
@@ -70,4 +69,3 @@
     "/persist".neededForBoot = true;
   };
 }
-

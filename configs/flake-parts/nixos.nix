@@ -1,16 +1,16 @@
-{ inputs
-, defaultExtraArgs
-, defaultNixConf
-, lib
-, ...
-}:
-
 {
+  inputs,
+  defaultExtraArgs,
+  defaultNixConf,
+  lib,
+  ...
+}: {
   setups.nixos = {
     configs = {
       tokyo = {
         systems = [
-          "x86_64-linux" "aarch64-linux"
+          "x86_64-linux"
+          "aarch64-linux"
         ];
         formats = null;
         homeManagerUsers = {
@@ -25,38 +25,45 @@
           };
         };
       };
-
     };
 
-    sharedModules = [
-      inputs.sops-nix.nixosModules.sops
-      inputs.disko.nixosModules.disko
+    sharedModules =
+      [
+        inputs.sops-nix.nixosModules.sops
+        inputs.disko.nixosModules.disko
 
-      # Bring our own teeny-tiny snippets of configurations.
-      defaultNixConf
+        # Bring our own teeny-tiny snippets of configurations.
+        defaultNixConf
 
-      # The NixOS module that came from flake-parts.
-      ({ config, lib, ... }: {
-        _module.args = defaultExtraArgs;
+        # The NixOS module that came from flake-parts.
+        ({
+          config,
+          lib,
+          ...
+        }: {
+          _module.args = defaultExtraArgs;
 
-        # Set several paths for the traditional channels.
-        nix.nixPath = lib.mkIf config.nix.channel.enable
-          (lib.mapAttrsToList
-            (name: source:
-              let
-                name' = if (name == "self") then "config" else name;
-              in
-              "${name'}=${source}")
-            inputs
-          ++ [
-            "/nix/var/nix/profiles/per-user/root/channels"
-          ]);
+          # Set several paths for the traditional channels.
+          nix.nixPath =
+            lib.mkIf config.nix.channel.enable
+            (lib.mapAttrsToList
+              (name: source: let
+                name' =
+                  if (name == "self")
+                  then "config"
+                  else name;
+              in "${name'}=${source}")
+              inputs
+              ++ [
+                "/nix/var/nix/profiles/per-user/root/channels"
+              ]);
 
           programs.fuse.userAllowOther = true;
 
-        system.stateVersion = lib.mkDefault "24.05";
-      })
-    ] ++ lib.my.modulesToList (lib.my.filesToAttr ../../modules/nixos);
+          system.stateVersion = lib.mkDefault "24.05";
+        })
+      ]
+      ++ lib.my.modulesToList (lib.my.filesToAttr ../../modules/nixos);
   };
 
   flake = {

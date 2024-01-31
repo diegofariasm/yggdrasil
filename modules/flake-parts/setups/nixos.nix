@@ -3,36 +3,48 @@
 # inclusion of the home-manager NixOS module, a deploy-rs node, a hostname and
 # an optional domain, and deploy-rs-related options so it isn't really made to
 # be generic or anything like that.
-{ config
-, lib
-, inputs
-, ...
-}:
-
-let
+{
+  config,
+  lib,
+  inputs,
+  ...
+}: let
   cfg = config.setups.nixos;
   nixosModules = lib.my.modulesToList (lib.my.filesToAttr ../../nixos);
   partsConfig = config;
 
   # A thin wrapper around the NixOS configuration function.
-  mkHost = { extraModules ? [ ], nixpkgsBranch ? "nixpkgs", system }:
-    let
-      nixpkgs = inputs.${nixpkgsBranch};
+  mkHost = {
+    extraModules ? [],
+    nixpkgsBranch ? "nixpkgs",
+    system,
+  }: let
+    nixpkgs = inputs.${nixpkgsBranch};
 
-      lib' = inputs.nixpkgs.lib.extend
-        (self: super: { my = import ../../../lib { inherit inputs; lib = self; }; });
+    lib' =
+      inputs.nixpkgs.lib.extend
+      (self: super: {
+        my = import ../../../lib {
+          inherit inputs;
+          lib = self;
+        };
+      });
 
-      # A modified version of `nixosSystem` from nixpkgs flake. There is a
-      # recent change at nixpkgs (at 039f73f134546e59ec6f1b56b4aff5b81d889f64)
-      # that prevents setting our own custom functions so we'll have to
-      # evaluate the NixOS system ourselves.
-      nixosSystem = args: import "${nixpkgs}/nixos/lib/eval-config.nix" args;
-    in
+    # A modified version of `nixosSystem` from nixpkgs flake. There is a
+    # recent change at nixpkgs (at 039f73f134546e59ec6f1b56b4aff5b81d889f64)
+    # that prevents setting our own custom functions so we'll have to
+    # evaluate the NixOS system ourselves.
+    nixosSystem = args: import "${nixpkgs}/nixos/lib/eval-config.nix" args;
+  in
     (lib'.makeOverridable nixosSystem) {
       lib = lib';
-      modules = extraModules ++ [{
-        nixpkgs.hostPlatform = lib.mkForce system;
-      }];
+      modules =
+        extraModules
+        ++ [
+          {
+            nixpkgs.hostPlatform = lib.mkForce system;
+          }
+        ];
 
       # Since we're setting it through nixpkgs.hostPlatform, we'll have to pass
       # this as null.
@@ -40,20 +52,28 @@ let
     };
 
   # A very very thin wrapper around `mkHost` to build with the given format.
-  mkImage = { system, nixpkgsBranch ? "nixpkgs", extraModules ? [ ], format ? "iso" }:
-    let
-      extraModules' =
-        extraModules ++ [ inputs.nixos-generators.nixosModules.${format} ];
-      image = mkHost {
-        inherit nixpkgsBranch system;
-        extraModules = extraModules';
-      };
-    in
+  mkImage = {
+    system,
+    nixpkgsBranch ? "nixpkgs",
+    extraModules ? [],
+    format ? "iso",
+  }: let
+    extraModules' =
+      extraModules ++ [inputs.nixos-generators.nixosModules.${format}];
+    image = mkHost {
+      inherit nixpkgsBranch system;
+      extraModules = extraModules';
+    };
+  in
     image.config.system.build.${image.config.formatAttr};
 
-  deployNodeType = { config, lib, ... }: {
+  deployNodeType = {
+    config,
+    lib,
+    ...
+  }: {
     freeformType = with lib.types; attrsOf anything;
-    imports = [ ./shared/deploy-node-type.nix ];
+    imports = [./shared/deploy-node-type.nix];
 
     options = {
       profiles = lib.mkOption {
@@ -92,7 +112,12 @@ let
     };
   };
 
-  homeManagerUserType = { name, config, lib, ... }: {
+  homeManagerUserType = {
+    name,
+    config,
+    lib,
+    ...
+  }: {
     options = {
       userConfig = lib.mkOption {
         type = with lib.types; attrsOf anything;
@@ -111,31 +136,34 @@ let
       };
     };
 
-    config =
-      let
-        hmUserConfig = partsConfig.setups.home-manager.configs.${name};
-      in
-      {
-        userConfig = {
-          isNormalUser = lib.mkDefault true;
-          createHome = lib.mkDefault true;
-          home = lib.mkForce hmUserConfig.homeDirectory;
-        };
-
-        additionalModules = [
-          ({ lib, ... }: {
-            home.homeDirectory = lib.mkForce hmUserConfig.homeDirectory;
-            home.username = lib.mkForce name;
-          })
-        ];
+    config = let
+      hmUserConfig = partsConfig.setups.home-manager.configs.${name};
+    in {
+      userConfig = {
+        isNormalUser = lib.mkDefault true;
+        createHome = lib.mkDefault true;
+        home = lib.mkForce hmUserConfig.homeDirectory;
       };
+
+      additionalModules = [
+        ({lib, ...}: {
+          home.homeDirectory = lib.mkForce hmUserConfig.homeDirectory;
+          home.username = lib.mkForce name;
+        })
+      ];
+    };
   };
 
-  configType = { config, name, lib, ... }: {
+  configType = {
+    config,
+    name,
+    lib,
+    ...
+  }: {
     options = {
       formats = lib.mkOption {
         type = with lib.types; nullOr (listOf str);
-        default = [ "iso" ];
+        default = ["iso"];
         description = ''
           The image formats to be generated from nixos-generators. When given
           as `null`, it is listed as part of `nixosConfigurations` and excluded
@@ -146,7 +174,7 @@ let
 
       overlays = lib.mkOption {
         type = with lib.types; listOf (functionTo raw);
-        default = [ ];
+        default = [];
         example = lib.literalExpression ''
           [
             inputs.neovim-nightly-overlay.overlays.default
@@ -203,7 +231,7 @@ let
           options = {
             users = lib.mkOption {
               type = with lib.types; attrsOf (submodule homeManagerUserType);
-              default = { };
+              default = {};
               description = ''
                 A set of home-manager users from {option}`setups.home-manager` to be
                 mapped within the NixOS system as a normal user with their
@@ -213,7 +241,7 @@ let
               '';
             };
             nixpkgsInstance = lib.mkOption {
-              type = lib.types.enum [ "global" "separate" "none" ];
+              type = lib.types.enum ["global" "separate" "none"];
               default = "global";
               description = ''
                 Indicates how to manage the nixpkgs instance (or instances)
@@ -238,7 +266,7 @@ let
             };
           };
         };
-        default = { };
+        default = {};
         example = lib.literalExpression ''
           {
             nixpkgsInstance = "global";
@@ -302,42 +330,48 @@ let
 
         # Mapping the declarative home-manager users (if it has one) into NixOS
         # users.
-        (lib.mkIf (config.homeManagerUsers.users != { })
+        (lib.mkIf (config.homeManagerUsers.users != {})
           (
             let
               setupConfig = config;
-              hasHomeManagerUsers = config.homeManagerUsers.users != { };
+              hasHomeManagerUsers = config.homeManagerUsers.users != {};
               inherit (config.homeManagerUsers) nixpkgsInstance;
               isNixpkgs = state: hasHomeManagerUsers && nixpkgsInstance == state;
             in
-            { config, lib, pkgs, ... }: {
-              config = lib.mkMerge [
-                (lib.mkIf hasHomeManagerUsers {
-                  users.users =
-                    lib.mkMerge
+              {
+                config,
+                lib,
+                pkgs,
+                ...
+              }: {
+                config = lib.mkMerge [
+                  (lib.mkIf hasHomeManagerUsers {
+                    users.users =
+                      lib.mkMerge
                       (lib.mapAttrsToList
-                        (name: hmUser: { ${name} = hmUser.userConfig; })
+                        (name: hmUser: {${name} = hmUser.userConfig;})
                         setupConfig.homeManagerUsers.users);
 
-                  home-manager.users = lib.mkMerge
-                    (lib.mapAttrsToList
-                      (name: hmUser: {
-                        ${name} = { lib, ... }: {
-                          imports =
-                            partsConfig.setups.home-manager.configs.${name}.modules
-                            ++ hmUser.additionalModules;
-                        };
-                      })
-                      setupConfig.homeManagerUsers.users);
-                })
+                    home-manager.users =
+                      lib.mkMerge
+                      (lib.mapAttrsToList
+                        (name: hmUser: {
+                          ${name} = {lib, ...}: {
+                            imports =
+                              partsConfig.setups.home-manager.configs.${name}.modules
+                              ++ hmUser.additionalModules;
+                          };
+                        })
+                        setupConfig.homeManagerUsers.users);
+                  })
 
-                (lib.mkIf (isNixpkgs "global") {
-                  home-manager.useGlobalPkgs = lib.mkForce true;
+                  (lib.mkIf (isNixpkgs "global") {
+                    home-manager.useGlobalPkgs = lib.mkForce true;
 
-                  # Disable all options that are going to be blocked once
-                  # `home-manager.useGlobalPkgs` is used.
-                  home-manager.users =
-                    lib.mkMerge
+                    # Disable all options that are going to be blocked once
+                    # `home-manager.useGlobalPkgs` is used.
+                    home-manager.users =
+                      lib.mkMerge
                       (lib.mapAttrsToList
                         (name: _: {
                           ${name} = {
@@ -347,19 +381,18 @@ let
                         })
                         setupConfig.homeManagerUsers.users);
 
-                  # Then apply all of the user overlays into the nixpkgs instance
-                  # of the NixOS system.
-                  nixpkgs.overlays =
-                    let
+                    # Then apply all of the user overlays into the nixpkgs instance
+                    # of the NixOS system.
+                    nixpkgs.overlays = let
                       hmUsersOverlays =
                         lib.mapAttrsToList
-                          (name: _:
-                            partsConfig.setups.home-manager.configs.${name}.overlays)
-                          setupConfig.homeManagerUsers.users;
+                        (name: _:
+                          partsConfig.setups.home-manager.configs.${name}.overlays)
+                        setupConfig.homeManagerUsers.users;
 
                       overlays = lib.lists.flatten hmUsersOverlays;
                     in
-                    # Most of the overlays are going to be imported from a
+                      # Most of the overlays are going to be imported from a
                       # variable anyways. This should massively reduce the step
                       # needed for nixpkgs to do its thing.
                       #
@@ -367,13 +400,13 @@ let
                       # overlay list is constructed. However, this is much more
                       # preferable than letting a massive list with duplicated
                       # overlays from different home-manager users to be applied.
-                    lib.lists.unique overlays;
-                })
+                      lib.lists.unique overlays;
+                  })
 
-                (lib.mkIf (isNixpkgs "separate") {
-                  home-manager.useGlobalPkgs = lib.mkForce false;
-                  home-manager.users =
-                    lib.mkMerge
+                  (lib.mkIf (isNixpkgs "separate") {
+                    home-manager.useGlobalPkgs = lib.mkForce false;
+                    home-manager.users =
+                      lib.mkMerge
                       (lib.mapAttrsToList
                         (name: _: {
                           ${name} = {
@@ -382,9 +415,9 @@ let
                           };
                         })
                         setupConfig.homeManagerUsers.users);
-                })
-              ];
-            }
+                  })
+                ];
+              }
           ))
 
         # Setting up the typical configuration.
@@ -392,42 +425,46 @@ let
           let
             setupConfig = config;
           in
-          { config, lib, ... }: {
-            config = lib.mkMerge [
-              {
-                nixpkgs.overlays = setupConfig.overlays;
-                networking.hostName = lib.mkDefault setupConfig.hostname;
-              }
+            {
+              config,
+              lib,
+              ...
+            }: {
+              config = lib.mkMerge [
+                {
+                  nixpkgs.overlays = setupConfig.overlays;
+                  networking.hostName = lib.mkDefault setupConfig.hostname;
+                }
 
-              (lib.mkIf (setupConfig.domain != null) {
-                networking.domain = lib.mkDefault setupConfig.domain;
-              })
-            ];
-          }
+                (lib.mkIf (setupConfig.domain != null) {
+                  networking.domain = lib.mkDefault setupConfig.domain;
+                })
+              ];
+            }
         )
       ];
     };
   };
-in
-{
+in {
   options.setups.nixos = {
     sharedModules = lib.mkOption {
       type = with lib.types; listOf raw;
-      default = [ ];
+      default = [];
       description = ''
         A list of modules to be shared by all of the declarative NixOS setups.
       '';
     };
 
     configs = lib.mkOption {
-      type = with lib.types; attrsOf (submoduleWith {
-        specialArgs = { inherit (config) systems; };
-        modules = [
-          ./shared/config-options.nix
-          configType
-        ];
-      });
-      default = { };
+      type = with lib.types;
+        attrsOf (submoduleWith {
+          specialArgs = {inherit (config) systems;};
+          modules = [
+            ./shared/config-options.nix
+            configType
+          ];
+        });
+      default = {};
       description = ''
         An attribute set of metadata for the declarative NixOS setups. This
         will then be used for related flake outputs such as
@@ -483,11 +520,10 @@ in
     };
   };
 
-  config = lib.mkIf (cfg.configs != { }) {
+  config = lib.mkIf (cfg.configs != {}) {
     setups.nixos.sharedModules = [
-
       # Set the home-manager-related settings.
-      ({ lib, ... }: {
+      ({lib, ...}: {
         home-manager.sharedModules = partsConfig.setups.home-manager.sharedModules;
 
         # These are just the recommended options for home-manager that may be
@@ -498,92 +534,90 @@ in
       })
     ];
 
-    flake =
-      let
-        # A quick data structure we can pass through multiple build pipelines.
-        pureNixosConfigs =
-          let
-            validConfigs =
-              lib.filterAttrs (_: v: v.formats == null || v.deploy != null) cfg.configs;
+    flake = let
+      # A quick data structure we can pass through multiple build pipelines.
+      pureNixosConfigs = let
+        validConfigs =
+          lib.filterAttrs (_: v: v.formats == null || v.deploy != null) cfg.configs;
 
-            generatePureConfigs = hostname: metadata:
-              lib.listToAttrs
-                (builtins.map
-                  (system:
-                    lib.nameValuePair system (mkHost {
-                      nixpkgsBranch = metadata.nixpkgsBranch;
-                      extraModules = cfg.sharedModules ++ metadata.modules;
-                      inherit system;
-                    })
-                  )
-                  metadata.systems);
-          in
-          lib.mapAttrs generatePureConfigs validConfigs;
+        generatePureConfigs = hostname: metadata:
+          lib.listToAttrs
+          (builtins.map
+            (
+              system:
+                lib.nameValuePair system (mkHost {
+                  nixpkgsBranch = metadata.nixpkgsBranch;
+                  extraModules = cfg.sharedModules ++ metadata.modules;
+                  inherit system;
+                })
+            )
+            metadata.systems);
       in
-      {
-        nixosConfigurations =
-          let
-            renameSystem = name: system: config:
-              lib.nameValuePair "${name}-${system}" config;
-          in
-          lib.concatMapAttrs
-            (name: configs:
-              lib.mapAttrs' (renameSystem name) configs)
-            pureNixosConfigs;
+        lib.mapAttrs generatePureConfigs validConfigs;
+    in {
+      nixosConfigurations = let
+        renameSystem = name: system: config:
+          lib.nameValuePair "${name}-${system}" config;
+      in
+        lib.concatMapAttrs
+        (name: configs:
+          lib.mapAttrs' (renameSystem name) configs)
+        pureNixosConfigs;
 
-        deploy.nodes =
-          let
-            validConfigs =
-              lib.filterAttrs
-                (name: _: cfg.configs.${name}.deploy != null)
-                pureNixosConfigs;
+      deploy.nodes = let
+        validConfigs =
+          lib.filterAttrs
+          (name: _: cfg.configs.${name}.deploy != null)
+          pureNixosConfigs;
 
-            generateDeployNode = name: system: config:
-              lib.nameValuePair "nixos-${name}-${system}"
-                (
-                  let
-                    deployConfig = cfg.configs.${name}.deploy;
-                    deployConfig' = lib.attrsets.removeAttrs deployConfig [ "profiles" ];
-                  in
-                  deployConfig'
-                  // {
-                    profiles =
-                      cfg.configs.${name}.deploy.profiles {
-                        inherit name config system;
-                      };
-                  }
-                );
-          in
-          lib.concatMapAttrs
-            (name: configs:
-              lib.mapAttrs' (generateDeployNode name) configs)
-            validConfigs;
-      };
-
-    perSystem = { system, lib, ... }: {
-      images =
-        let
-          validImages = lib.filterAttrs
-            (host: metadata:
-              metadata.formats != null && (lib.elem system metadata.systems))
-            cfg.configs;
-
-          generateImages = name: metadata:
+        generateDeployNode = name: system: config:
+          lib.nameValuePair "nixos-${name}-${system}"
+          (
             let
-              buildImage = format:
-                lib.nameValuePair
-                  "${name}-${format}"
-                  (mkImage {
-                    inherit (metadata) nixpkgsBranch;
-                    inherit system format;
-                    extraModules = cfg.sharedModules ++ metadata.modules;
-                  });
-
-              images =
-                builtins.map buildImage metadata.formats;
+              deployConfig = cfg.configs.${name}.deploy;
+              deployConfig' = lib.attrsets.removeAttrs deployConfig ["profiles"];
             in
-            lib.listToAttrs images;
+              deployConfig'
+              // {
+                profiles = cfg.configs.${name}.deploy.profiles {
+                  inherit name config system;
+                };
+              }
+          );
+      in
+        lib.concatMapAttrs
+        (name: configs:
+          lib.mapAttrs' (generateDeployNode name) configs)
+        validConfigs;
+    };
+
+    perSystem = {
+      system,
+      lib,
+      ...
+    }: {
+      images = let
+        validImages =
+          lib.filterAttrs
+          (host: metadata:
+            metadata.formats != null && (lib.elem system metadata.systems))
+          cfg.configs;
+
+        generateImages = name: metadata: let
+          buildImage = format:
+            lib.nameValuePair
+            "${name}-${format}"
+            (mkImage {
+              inherit (metadata) nixpkgsBranch;
+              inherit system format;
+              extraModules = cfg.sharedModules ++ metadata.modules;
+            });
+
+          images =
+            builtins.map buildImage metadata.formats;
         in
+          lib.listToAttrs images;
+      in
         lib.concatMapAttrs generateImages validImages;
     };
   };

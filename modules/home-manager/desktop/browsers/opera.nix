@@ -1,9 +1,12 @@
-{ config, inputs, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.desktop.browsers.opera;
-in
 {
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.desktop.browsers.opera;
+in {
   options.modules.desktop.browsers.opera = {
     enable = lib.mkOption {
       description = ''
@@ -15,6 +18,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ opera ];
+    home.packages = with pkgs; [opera];
   };
 }

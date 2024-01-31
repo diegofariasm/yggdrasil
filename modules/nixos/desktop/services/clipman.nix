@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.desktop.services.clipman;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.desktop.services.clipman;
+in {
   options.modules.desktop.services.clipman = {
     enable = lib.mkOption {
       description = ''
@@ -22,8 +24,8 @@ in
         wantedBy = [
           "graphical-session.target"
         ];
-        bindsTo = [ "graphical-session.target" ];
-        after = [ "graphical-session.target" ];
+        bindsTo = ["graphical-session.target"];
+        after = ["graphical-session.target"];
         serviceConfig.ExecStart = "${pkgs.clipman}/bin/clipman";
       };
     };

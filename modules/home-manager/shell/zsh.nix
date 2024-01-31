@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.shell.zsh;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.shell.zsh;
+in {
   options.modules.shell.zsh = {
     enable = lib.mkOption {
       description = ''

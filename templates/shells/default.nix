@@ -1,5 +1,4 @@
-{ pkgs ? import <nixpkgs> { } }:
-
+{pkgs ? import <nixpkgs> {}}:
 with pkgs; {
-  basic = callPackage ./basic { };
+  basic = callPackage ./basic {};
 }

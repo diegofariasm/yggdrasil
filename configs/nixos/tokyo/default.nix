@@ -1,9 +1,9 @@
-{ lib
-, config
-, inputs
-, ...
-}:
 {
+  lib,
+  config,
+  inputs,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
@@ -46,5 +46,4 @@
       ssh.enable = true;
     };
   };
-
 }

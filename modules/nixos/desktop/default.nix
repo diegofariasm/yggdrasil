@@ -1,5 +1,10 @@
-{ pkgs, config, inputs, lib, ... }:
-let
+{
+  pkgs,
+  config,
+  inputs,
+  lib,
+  ...
+}: let
   cfg = config.modules.desktop;
 
   # A util for setting the gtk theme.
@@ -9,55 +14,51 @@ let
     name = "configure-gtk";
     destination = "/bin/configure-gtk";
     executable = true;
-    text =
-      let
-        schema = pkgs.gsettings-desktop-schemas;
-        datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-      in
-      ''
-        #!/usr/bin/env bash
+    text = let
+      schema = pkgs.gsettings-desktop-schemas;
+      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+    in ''
+      #!/usr/bin/env bash
 
-        export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
 
-        available_options=(
-        	icon
-        	cursor
-        	gtk
-        )
+      available_options=(
+      	icon
+      	cursor
+      	gtk
+      )
 
-        if [[ -z "$1" || -z "$2" ]]; then
-        	echo "Improper usage: atleast 2 arguments are expected."
-        	echo "Example usage: $0 gtk Dracula"
-        else
+      if [[ -z "$1" || -z "$2" ]]; then
+      	echo "Improper usage: atleast 2 arguments are expected."
+      	echo "Example usage: $0 gtk Dracula"
+      else
 
-            if [[ ''${available_options[*]} =~ (^|[[:space:]])"$1"($|[[:space:]]) ]]; then
-                ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface "$1-theme" "$2"
-        		exit 0
-        	else
-        		echo "Invalid option. Available options are:"
-        		for option in "''${available_options[@]}"; do
-        			echo "* $option"
-        		done
-        	fi
-        fi
+          if [[ ''${available_options[*]} =~ (^|[[:space:]])"$1"($|[[:space:]]) ]]; then
+              ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface "$1-theme" "$2"
+      		exit 0
+      	else
+      		echo "Invalid option. Available options are:"
+      		for option in "''${available_options[@]}"; do
+      			echo "* $option"
+      		done
+      	fi
+      fi
 
-      '';
+    '';
   };
-in
-{
-
-  config =
-    let
-      enabledDesktops = lib.my.countAttrs (_: module: lib.isAttrs module && builtins.hasAttr "enable" module && module.enable) cfg;
-    in
+in {
+  config = let
+    enabledDesktops = lib.my.countAttrs (_: module: lib.isAttrs module && builtins.hasAttr "enable" module && module.enable) cfg;
+  in
     lib.mkIf (enabledDesktops > 0) {
-      assertions =
-        [{
+      assertions = [
+        {
           assertion = enabledDesktops <= 1;
           message = ''
             Only one desktop setup should be enabled at any given time.
           '';
-        }];
+        }
+      ];
 
       fonts.packages = with pkgs; [
         (nerdfonts.override {
@@ -76,7 +77,5 @@ in
         wl-clipboard
         configure-gtk
       ];
-
     };
-
 }

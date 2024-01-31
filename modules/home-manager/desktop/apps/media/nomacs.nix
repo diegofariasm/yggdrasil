@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.desktop.apps.media.nomacs;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.desktop.apps.media.nomacs;
+in {
   options.modules.desktop.apps.media.nomacs = {
     enable = lib.mkOption {
       description = ''

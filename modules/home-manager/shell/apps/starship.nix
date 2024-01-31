@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.shell.apps.starship;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.shell.apps.starship;
+in {
   options.modules.shell.apps.starship = {
     enable = lib.mkOption {
       description = ''
@@ -15,6 +17,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ starship ];
+    home.packages = with pkgs; [starship];
   };
 }

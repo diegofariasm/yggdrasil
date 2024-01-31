@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.desktop.apps.media.vlc;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.desktop.apps.media.vlc;
+in {
   options.modules.desktop.apps.media.vlc = {
     enable = lib.mkOption {
       description = ''

@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.shell.apps.eza;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.shell.apps.eza;
+in {
   options.modules.shell.apps.eza = {
     enable = lib.mkOption {
       description = ''
@@ -15,6 +17,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ eza ];
+    home.packages = with pkgs; [eza];
   };
 }

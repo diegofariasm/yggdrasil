@@ -1,10 +1,12 @@
-{ pkgs, config, inputs, lib, ... }:
-
-
-let
-  cfg = config.modules.hardware.language.en;
-in
 {
+  pkgs,
+  config,
+  inputs,
+  lib,
+  ...
+}: let
+  cfg = config.modules.hardware.language.en;
+in {
   options.modules.hardware.language.en.enable = lib.my.mkOpt lib.types.bool false;
 
   config = lib.mkIf cfg.enable {

@@ -1,13 +1,15 @@
 # This is the user usually used for installers. Don't treat it like a normal
 # user, pls. It will override several things just to teach you a lesson. :)
-{ lib, pkgs, ... }:
-
 {
+  lib,
+  pkgs,
+  ...
+}: {
   users.users.nixos = {
     password = "nixos";
     description = "default";
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
   };
 
   nix = {
@@ -17,7 +19,7 @@
     # Please see `nix-conf.5` manual for more details.
     settings = {
       # All to make improvement for using Nix.
-      trusted-users = [ "root" "@wheel" ];
+      trusted-users = ["root" "@wheel"];
       allow-import-from-derivation = true;
       allow-dirty = true;
       auto-optimise-store = true;

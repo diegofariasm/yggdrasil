@@ -1,8 +1,11 @@
-{ config, pkgs, lib, ... }:
-
-let cfg = config.modules.editors.code;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  cfg = config.modules.editors.code;
+in {
   options.modules.editors.code = {
     enable = lib.mkOption {
       description = ''
@@ -14,7 +17,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ vscode ];
+    home.packages = with pkgs; [vscode];
   };
-
 }
