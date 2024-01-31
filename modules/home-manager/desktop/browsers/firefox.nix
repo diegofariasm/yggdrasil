@@ -15,6 +15,17 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ firefox-devedition ];
+    programs.firefox = {
+      enable = true;
+      profiles = {
+        personal = {
+          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+            ublock-origin
+          ] ++ (with pkgs.firefox-addons; [
+            sourcegraph-for-firefox
+          ]);
+        };
+      };
+    };
   };
 }

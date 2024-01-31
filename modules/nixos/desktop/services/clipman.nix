@@ -22,11 +22,10 @@ in
         wantedBy = [
           "graphical-session.target"
         ];
+        bindsTo = [ "graphical-session.target" ];
         after = [ "graphical-session.target" ];
         serviceConfig.ExecStart = "${pkgs.clipman}/bin/clipman";
       };
     };
-    systemd.user.services.clipman.bindsTo = [ "graphical-session.target" ];
-
   };
 }

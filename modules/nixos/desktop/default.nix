@@ -65,9 +65,8 @@ in
             "Iosevka"
           ];
         })
-	fonts.icomoon
+        fonts.icomoon
       ];
-
 
       environment.systemPackages = with pkgs; [
         jq

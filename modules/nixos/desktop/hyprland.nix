@@ -6,12 +6,14 @@ in
 {
   options.modules.desktop.hyprland.enable = lib.my.mkOpt' lib.types.bool false "Wheter to enable the hyprland desktop";
 
-  imports = [
-    inputs.hyprland.nixosModules.default
-  ];
+  # imports = [
+  #   inputs.hyprland.nixosModules.default
+  # ];
 
   config = lib.mkIf cfg.enable {
-    programs.hyprland.enable = true;
+    programs.hyprland = {
+      enable = true;
+    };
 
     environment.systemPackages = with pkgs; [
       rofi-wayland
@@ -19,5 +21,6 @@ in
       hyprpicker
       hyprpaper
     ];
+
   };
 }

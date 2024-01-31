@@ -11,10 +11,9 @@ let
         san-francisco = callPackage ./fonts/san-francisco { };
         icomoon = callPackage ./fonts/icomoon { };
       };
-      vinegar = callPackage ./vinegar { wine = wineWowPackages.staging; };
-      luastatus = callPackage ./luastatus { };
       imagecolorizer = callPackage ./imagecolorizer { };
       pywalfox = callPackage ./pywalfox { };
+      recolor = callPackage ./recolor { };
     };
 in
 lib.fix' (lib.extends overrides packages)

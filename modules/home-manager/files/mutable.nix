@@ -10,7 +10,7 @@ let
         description = ''
           The URL of the file to be fetched.
         '';
-        example = "https://github.com/foo-dogsquared/dotfiles.git";
+        example = "https://github.com/enmeei/dotfiles.git";
       };
 
       path = lib.mkOption {
@@ -84,7 +84,7 @@ in
     example = lib.literalExpression ''
       {
         "library/dotfiles" = {
-          url = "https://github.com/foo-dogsquared/dotfiles.git";
+          url = "https://github.com/enmeei/dotfiles.git";
           type = "git";
         };
 

@@ -1,5 +1,0 @@
-# Each of the users defined here should correspond to one of the home-manager users at `./users/`.
-[enmei]
-systems = [
-    "x86_64-linux"
-]

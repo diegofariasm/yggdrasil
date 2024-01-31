@@ -4,13 +4,13 @@
 }:
 
 python310Packages.buildPythonApplication rec {
-  pname = "imagecolorizer";
+  pname = "recolor";
   version = "48623031e3106261093723cd536a4dae74309c5d";
 
   src = fetchFromGitHub (
     {
-      owner = "kiddae";
-      repo = "ImageColorizer";
+      owner = "enmeei";
+      repo = "recolor";
       rev = version;
       hash = "sha256-ucwo5DOMUON9HgQzXmh39RLQH4sWtSfYH7+UWfGIJCo=";
     }
@@ -22,4 +22,3 @@ python310Packages.buildPythonApplication rec {
 
   doCheck = false;
 }
-
