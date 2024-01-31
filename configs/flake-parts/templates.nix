@@ -1,10 +1,17 @@
-# Cookiecutter templates for your mama.
-{inputs, ...}: {
+{
+  inputs,
+  lib,
+  ...
+}: let
+in {
   flake.templates = {
-    default = inputs.self.templates.shells;
-    shells = {
-      path = ../../templates/shells;
-      description = "All of my development shells.";
+    shells-basic = {
+      path = ./../templates/shells/basic;
+      description = "A basic development shell";
+    };
+    shells-devenv = {
+      path = ../../templates/shells/devenv;
+      description = "A devenv based development shell";
     };
   };
 }

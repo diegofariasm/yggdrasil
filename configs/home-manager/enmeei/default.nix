@@ -21,6 +21,7 @@ in {
   modules = {
     shell = {
       apps = {
+        starship.enable = true;
         eza.enable = true;
         fzf.enable = true;
         zellij.enable = true;
