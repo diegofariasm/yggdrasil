@@ -34,20 +34,24 @@ in {
         files = {
           thunar.enable = true;
         };
+        media = {
+          vlc.enable = true;
+          nomacs.enable = true;
+          zathura.enable = true;
+        };
+        logseq.enable = true;
       };
       term = {
-        # default = {
-        #  bin = "kitty";
-        #  args = [
-        #    "--single-instance"
-        #  ];
-        #};
+        default = {
+          bin = "kitty";
+          args = [
+            "--single-instance"
+          ];
+        };
         kitty.enable = true;
       };
       browsers = {
-        firefox = {
-          enable = true;
-        };
+        brave.enable = true;
       };
     };
     editors = {
@@ -69,19 +73,16 @@ in {
           method = "symlink";
         }
         {
+          directory = ".local/share/flavours";
+          method = "symlink";
+        }
+
+        {
           directory = ".config/flavours";
           method = "symlink";
         }
         {
           directory = ".config/zsh";
-          method = "symlink";
-        }
-        {
-          directory = ".config/kak";
-          method = "symlink";
-        }
-        {
-          directory = ".config/kitty";
           method = "symlink";
         }
         {
@@ -109,18 +110,23 @@ in {
           directory = ".config/sops";
           method = "symlink";
         }
-        ".zi"
+        {
+          directory = ".themes";
+          method = "symlink";
+        }
         "projects"
-        # Add all of the directories under xdg.userDirs
       ]
+      ++ config.home.persist.directories
       ++ builtins.map (str: lib.removePrefix "/home/${user}/" str) (lib.attrValues (lib.filterAttrs (key: value: key != "enable" && key != "createDirectories" && key != "extraConfig" && key != "publishShare") config.xdg.userDirs));
 
-    files = [
-      ".zshrc"
-      ".xsettingsd"
-      ".config/starship.toml"
-      ".config/maiden/config.toml"
-    ];
+    files =
+      [
+        ".zshrc"
+        ".xsettingsd"
+        ".config/starship.toml"
+        ".config/maiden/config.toml"
+      ]
+      ++ config.home.persist.files;
   };
 
   home.stateVersion = "23.11";

@@ -39,6 +39,7 @@
         en.enable = true;
       };
       audio.enable = true;
+      intel.enable = true;
     };
 
     services = {

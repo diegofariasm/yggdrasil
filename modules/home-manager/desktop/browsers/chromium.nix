@@ -1,15 +1,16 @@
 {
   config,
-  pkgs,
+  inputs,
   lib,
+  pkgs,
   ...
 }: let
-  cfg = config.modules.editors.code;
+  cfg = config.modules.desktop.browsers.chromium;
 in {
-  options.modules.editors.code = {
+  options.modules.desktop.browsers.chromium = {
     enable = lib.mkOption {
       description = ''
-        Whether to install code.
+        Whether to install chromium.
       '';
       type = lib.types.bool;
       default = false;
@@ -19,11 +20,11 @@ in {
   config = lib.mkIf cfg.enable {
     home = {
       packages = with pkgs; [
-        vscode
+        chromium
       ];
       persist = {
         directories = [
-          ".config/Code"
+          ".config/chromium"
         ];
       };
     };

@@ -1,15 +1,16 @@
 {
   config,
-  pkgs,
+  inputs,
   lib,
+  pkgs,
   ...
 }: let
-  cfg = config.modules.editors.code;
+  cfg = config.modules.desktop.browsers.brave;
 in {
-  options.modules.editors.code = {
+  options.modules.desktop.browsers.brave = {
     enable = lib.mkOption {
       description = ''
-        Whether to install code.
+        Whether to install brave.
       '';
       type = lib.types.bool;
       default = false;
@@ -19,11 +20,11 @@ in {
   config = lib.mkIf cfg.enable {
     home = {
       packages = with pkgs; [
-        vscode
+        brave
       ];
       persist = {
         directories = [
-          ".config/Code"
+          ".config/BraveSoftware"
         ];
       };
     };

@@ -1,16 +1,15 @@
 {
   config,
-  inputs,
-  lib,
   pkgs,
+  lib,
   ...
 }: let
-  cfg = config.modules.desktop.browsers.opera;
+  cfg = config.modules.shell.apps.ranger;
 in {
-  options.modules.desktop.browsers.opera = {
+  options.modules.shell.apps.ranger = {
     enable = lib.mkOption {
       description = ''
-        Whether to install opera.
+        Whether to enable ranger.
       '';
       type = lib.types.bool;
       default = false;
@@ -18,6 +17,8 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [opera];
+    home.packages = with pkgs; [
+       ranger
+    ];
   };
 }

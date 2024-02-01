@@ -17,6 +17,16 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [kakoune kak-lsp];
+    home = {
+      packages = with pkgs; [
+        kak-lsp
+        kakoune
+      ];
+      persist = {
+        directories = [
+          ".config/kak"
+        ];
+      };
+    };
   };
 }

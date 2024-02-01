@@ -17,6 +17,18 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [fzf];
+    home = {
+      packages = with pkgs; [
+        fzf
+      ];
+       persist = {
+         directories = [
+           ".fzf"
+         ];
+         files = [
+           ".fzf.zsh"
+         ];
+       };
+    };
   };
 }

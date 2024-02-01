@@ -18,6 +18,15 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [kitty];
+    home = {
+      packages = with pkgs; [
+        kitty
+      ];
+      persist = {
+        directories = [
+          ".config/kitty"
+        ];
+      };
+    };
   };
 }
