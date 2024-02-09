@@ -31,52 +31,6 @@
       modules = extraModules;
     };
 
-  deploySettingsType = {
-    config,
-    lib,
-    username,
-    ...
-  }: {
-    freeformType = with lib.types; attrsOf anything;
-    imports = [./shared/deploy-node-type.nix];
-
-    options = {
-      profiles = lib.mkOption {
-        type = with lib.types; functionTo (attrsOf anything);
-        default = homeenv: {
-          home = {
-            sshUser = username;
-            user = username;
-            path = inputs.deploy.lib.${homeenv.system}.activate.home-manager homeenv.config;
-          };
-        };
-        defaultText = lib.literalExpression ''
-          homeenv: {
-            home = {
-              sshUser = "$USERNAME";
-              user = "$USERNAME";
-              path = <deploy-rs>.lib.''${homeenv.system}.activate.home-manager homeenv.config;
-            };
-          }
-        '';
-        description = ''
-          A set of profiles for the resulting deploy node.
-
-          Since each config can result in more than one home-manager
-          environment, it has to be a function where the passed argument is an
-          attribute set with the following values:
-
-          * `name` is the attribute name from `configs`.
-          * `config` is the home-manager configuration itself.
-          * `system` is a string indicating the platform of the NixOS system.
-
-          If unset, it will create a deploy-rs node profile called `home`
-          similar to those from nixops.
-        '';
-      };
-    };
-  };
-
   configType = {
     config,
     name,
@@ -132,21 +86,6 @@
           The home directory of the home-manager user.
         '';
       };
-
-      deploy = lib.mkOption {
-        type = with lib.types;
-          nullOr (submoduleWith {
-            specialArgs = {
-              username = name;
-            };
-            modules = [deploySettingsType];
-          });
-        default = null;
-        description = ''
-          deploy-rs settings to be passed onto the home-manager configuration
-          node.
-        '';
-      };
     };
 
     config = {
@@ -162,8 +101,10 @@
               ...
             }: {
               nixpkgs.overlays = setupConfig.overlays;
-              home.username = lib.mkForce name;
-              home.homeDirectory = lib.mkForce setupConfig.homeDirectory;
+              home = {
+                username = lib.mkForce name;
+                homeDirectory = lib.mkForce setupConfig.homeDirectory;
+              };
             }
         )
       ];
@@ -214,7 +155,7 @@ in {
       '';
       example = lib.literalExpression ''
         {
-          foo-dogsquared = {
+          enmeei = {
             systems = [  "x86_64-linux" ];
             modules = [
               inputs.nur.hmModules.nur
@@ -234,9 +175,6 @@ in {
   };
 
   config = lib.mkIf (cfg.configs != {}) {
-    # Import our own home-manager modules.
-    # setups.home-manager.sharedModules = homeManagerModules ++ [ ];
-
     flake = let
       # A quick data structure we can pass through multiple build pipelines.
       pureHomeManagerConfigs = let
@@ -266,31 +204,6 @@ in {
         (name: configs:
           lib.mapAttrs' (renameSystems name) configs)
         pureHomeManagerConfigs;
-
-      deploy.nodes = let
-        validConfigs =
-          lib.filterAttrs
-          (name: _: cfg.configs.${name}.deploy != null)
-          pureHomeManagerConfigs;
-
-        generateDeployNode = name: system: config:
-          lib.nameValuePair "home-manager-${name}-${system}" (
-            let
-              deployConfig = cfg.configs.${name}.deploy;
-              deployConfig' = lib.attrsets.removeAttrs deployConfig ["profiles"];
-            in
-              deployConfig'
-              // {
-                profiles = cfg.configs.${name}.deploy.profiles {
-                  inherit name config system;
-                };
-              }
-          );
-      in
-        lib.concatMapAttrs
-        (name: configs:
-          lib.mapAttrs' (generateDeployNode name) configs)
-        validConfigs;
     };
   };
 }

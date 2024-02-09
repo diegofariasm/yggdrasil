@@ -10,7 +10,11 @@
       tokyo = {
         systems = [
           "x86_64-linux"
-          "aarch64-linux"
+        ];
+        overlays = [
+          inputs.maiden.overlays.default
+          inputs.flavours.overlays.default
+          inputs.zelda.overlays.default
         ];
         formats = null;
         homeManagerUsers = {
@@ -19,6 +23,10 @@
             userConfig = {
               extraGroups = [
                 "wheel"
+                "storage"
+                "audio"
+                "docker"
+                "podman"
               ];
               hashedPassword = "$y$j9T$4kH1DpfluPRI4kjUG3eC..$O56uu5IvPNqoYDZ3zh95dNbiqHo7iQHcszhhVDdipo9";
             };

@@ -10,6 +10,9 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
+
+  system.activationScripts.createPersist = "mkdir -p /persist";
+
   boot = {
     initrd = {
       postDeviceCommands = lib.mkAfter ''

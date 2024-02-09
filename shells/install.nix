@@ -16,7 +16,6 @@ in
 
     packages = [
       git
-      deploy-rs
       alejandra
     ];
   }

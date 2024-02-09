@@ -22,11 +22,6 @@ in {
       packages = with pkgs; [
         chromium
       ];
-      persist = {
-        directories = [
-          ".config/chromium"
-        ];
-      };
     };
   };
 }

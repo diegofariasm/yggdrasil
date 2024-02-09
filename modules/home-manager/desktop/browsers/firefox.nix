@@ -22,11 +22,6 @@ in {
       packages = with pkgs; [
         firefox
       ];
-      persist = {
-        directories = [
-          ".mozilla"
-        ];
-      };
     };
   };
 }

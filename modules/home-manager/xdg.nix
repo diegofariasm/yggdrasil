@@ -4,6 +4,7 @@
     userDirs = let
       appendToHomeDir = path: "${config.home.homeDirectory}/${path}";
     in {
+      enable = true;
       desktop = appendToHomeDir "desktop";
       documents = appendToHomeDir "documents";
       download = appendToHomeDir "downloads";

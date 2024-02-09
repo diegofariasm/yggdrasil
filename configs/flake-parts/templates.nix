@@ -6,7 +6,7 @@
 in {
   flake.templates = {
     shells-basic = {
-      path = ./../templates/shells/basic;
+      path = ../../templates/shells/basic;
       description = "A basic development shell";
     };
     shells-devenv = {

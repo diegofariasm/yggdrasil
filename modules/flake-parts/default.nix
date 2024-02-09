@@ -5,7 +5,6 @@
 {lib, ...}: {
   imports = [
     ./images.nix
-    ./deploy-rs-nodes.nix
     ./home-configurations.nix
     ./home-modules.nix
     ./setups

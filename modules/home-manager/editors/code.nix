@@ -21,11 +21,6 @@ in {
       packages = with pkgs; [
         vscode
       ];
-      persist = {
-        directories = [
-          ".config/Code"
-        ];
-      };
     };
   };
 }

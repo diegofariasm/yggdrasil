@@ -21,14 +21,6 @@ in {
       packages = with pkgs; [
         fzf
       ];
-       persist = {
-         directories = [
-           ".fzf"
-         ];
-         files = [
-           ".fzf.zsh"
-         ];
-       };
     };
   };
 }

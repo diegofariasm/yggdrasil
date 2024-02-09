@@ -67,51 +67,6 @@
   in
     image.config.system.build.${image.config.formatAttr};
 
-  deployNodeType = {
-    config,
-    lib,
-    ...
-  }: {
-    freeformType = with lib.types; attrsOf anything;
-    imports = [./shared/deploy-node-type.nix];
-
-    options = {
-      profiles = lib.mkOption {
-        type = with lib.types; functionTo (attrsOf anything);
-        default = os: {
-          system = {
-            sshUser = "root";
-            user = "admin";
-            path = inputs.deploy.lib.${os.system}.activate.nixos os.config;
-          };
-        };
-        defaultText = lib.literalExpression ''
-          os: {
-            system = {
-              sshUser = "root";
-              user = "admin";
-              path = <deploy-rs>.lib.''${os.system}.activate.nixos os.config;
-            };
-          }
-        '';
-        description = ''
-          A set of profiles for the resulting deploy node.
-
-          Since each config can result in more than one NixOS system, it has to
-          be a function where the passed argument is an attribute set with the
-          following values:
-
-          * `name` is the attribute name from `configs`.
-          * `config` is the NixOS configuration itself.
-          * `system` is a string indicating the platform of the NixOS system.
-
-          If unset, it will create a deploy-rs node profile called `system`
-          similar to those from nixops.
-        '';
-      };
-    };
-  };
-
   homeManagerUserType = {
     name,
     config,
@@ -270,7 +225,7 @@
         example = lib.literalExpression ''
           {
             nixpkgsInstance = "global";
-            users.foo-dogsquared = {
+            users.enmeei = {
               userConfig = {
                 extraGroups = [
                   "adbusers"
@@ -285,7 +240,7 @@
                   "0000000000000000000000000000000000000000000000";
                 isNormalUser = true;
                 createHome = true;
-                home = "/home/foo-dogsquared";
+                home = "/home/enmeei";
                 description = "Gabriel Arazas";
               };
               additionalModules = [
@@ -301,24 +256,6 @@
           {option}`setups.home-manager.configs` and map them as a normal
           NixOS user.
         '';
-      };
-
-      deploy = lib.mkOption {
-        type = with lib.types; nullOr (submodule deployNodeType);
-        default = null;
-        description = ''
-          deploy-rs node settings for the resulting NixOS configuration. When
-          this attribute is given with a non-null value, it will be included in
-          `nixosConfigurations` even if
-          {option}`setups.nixos.configs.<config>.formats` is set.
-        '';
-        example = {
-          hostname = "work1.example.com";
-          fastConnection = true;
-          autoRollback = true;
-          magicRollback = true;
-          remoteBuild = true;
-        };
       };
     };
 
@@ -505,10 +442,6 @@ in {
             domain = "work.example.com";
             formats = [ "do" "linode" ];
             nixpkgsBranch = "nixos-unstable-small";
-            deploy = {
-              autoRollback = true;
-              magicRollback = true;
-            };
           };
 
           vm = {
@@ -524,13 +457,15 @@ in {
     setups.nixos.sharedModules = [
       # Set the home-manager-related settings.
       ({lib, ...}: {
-        home-manager.sharedModules = partsConfig.setups.home-manager.sharedModules;
+        home-manager = {
+          sharedModules = partsConfig.setups.home-manager.sharedModules;
 
-        # These are just the recommended options for home-manager that may be
-        # the default value in the future but this is how most of the NixOS
-        # setups are already done so...
-        home-manager.useUserPackages = lib.mkDefault true;
-        home-manager.useGlobalPkgs = lib.mkDefault true;
+          # These are just the recommended options for home-manager that may be
+          # the default value in the future but this is how most of the NixOS
+          # setups are already done so...
+          useUserPackages = lib.mkDefault true;
+          useGlobalPkgs = lib.mkDefault true;
+        };
       })
     ];
 
@@ -563,32 +498,6 @@ in {
         (name: configs:
           lib.mapAttrs' (renameSystem name) configs)
         pureNixosConfigs;
-
-      deploy.nodes = let
-        validConfigs =
-          lib.filterAttrs
-          (name: _: cfg.configs.${name}.deploy != null)
-          pureNixosConfigs;
-
-        generateDeployNode = name: system: config:
-          lib.nameValuePair "nixos-${name}-${system}"
-          (
-            let
-              deployConfig = cfg.configs.${name}.deploy;
-              deployConfig' = lib.attrsets.removeAttrs deployConfig ["profiles"];
-            in
-              deployConfig'
-              // {
-                profiles = cfg.configs.${name}.deploy.profiles {
-                  inherit name config system;
-                };
-              }
-          );
-      in
-        lib.concatMapAttrs
-        (name: configs:
-          lib.mapAttrs' (generateDeployNode name) configs)
-        validConfigs;
     };
 
     perSystem = {

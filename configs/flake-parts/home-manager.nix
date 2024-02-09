@@ -8,7 +8,9 @@
   setups.home-manager = {
     configs = {
       enmeei = {
-        systems = ["x86_64-linux" "aarch64-linux"];
+        systems = [
+          "x86_64-linux"
+        ];
         overlays = [
           inputs.nur.overlay
         ];
@@ -22,7 +24,6 @@
     # This is to be used by the NixOS `home-manager.sharedModules` anyways.
     sharedModules =
       [
-        # ...plus a bunch of third-party modules.
         inputs.sops-nix.homeManagerModules.sops
 
         # The default shared config for our home-manager configurations. This
@@ -38,11 +39,11 @@
           # Set some extra, yeah?
           _module.args = defaultExtraArgs;
 
-          manual = lib.mkDefault {
-            html.enable = true;
-            json.enable = true;
-            manpages.enable = true;
-          };
+          # manual = lib.mkDefault {
+          #   html.enable = true;
+          #   json.enable = true;
+          #   manpages.enable = true;
+          # };
 
           home.stateVersion = lib.mkDefault "24.05";
         })

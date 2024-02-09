@@ -22,11 +22,6 @@ in {
       packages = with pkgs; [
         kitty
       ];
-      persist = {
-        directories = [
-          ".config/kitty"
-        ];
-      };
     };
   };
 }

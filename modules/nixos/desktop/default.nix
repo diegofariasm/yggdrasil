@@ -72,6 +72,8 @@ in {
       environment.systemPackages = with pkgs; [
         jq
         socat
+        recolor
+        imagecolorizer
         libnotify
         xsettingsd
         wl-clipboard

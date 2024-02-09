@@ -1,15 +1,12 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
-let
-  cfg = config.modules.desktop.apps.logseq;
-
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.desktop.apps.logseq;
+in {
   options.modules.desktop.apps.logseq = {
-
     enable = lib.mkOption {
       description = ''
         Whether to install logseq

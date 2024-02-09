@@ -22,11 +22,6 @@ in {
         kak-lsp
         kakoune
       ];
-      persist = {
-        directories = [
-          ".config/kak"
-        ];
-      };
     };
   };
 }

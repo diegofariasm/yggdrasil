@@ -1,10 +1,11 @@
-{ config, lib, ... }:
-
-with lib;
-let
-  cfg = config.modules.desktop.term;
-in
 {
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.modules.desktop.term;
+in {
   options.modules.desktop.term = {
     default = {
       bin = lib.my.mkOpt types.str "xterm";

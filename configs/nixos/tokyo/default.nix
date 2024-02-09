@@ -18,7 +18,7 @@
         systemd = {
           enable = true;
         };
-        display.gdm.enable = true;
+        display.lightdm.enable = true;
       };
     };
     desktop = {
@@ -38,6 +38,7 @@
         };
         en.enable = true;
       };
+      ssd.enable = true;
       audio.enable = true;
       intel.enable = true;
     };
