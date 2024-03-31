@@ -1,6 +1,5 @@
 {
   inputs,
-  defaultExtraArgs,
   defaultNixConf,
   lib,
   ...
@@ -8,18 +7,22 @@
   setups.nixos = {
     configs = {
       tokyo = {
-        systems = [
-          "x86_64-linux"
-        ];
-        overlays = [
-          inputs.maiden.overlays.default
-          inputs.flavours.overlays.default
-          inputs.zelda.overlays.default
+        systems = ["x86_64-linux"];
+        overlays = with inputs; [
+          kak-rainbower.overlays.default
+          flavours.overlays.default
+          maiden.overlays.default
+          zelda.overlays.default
         ];
         formats = null;
+        modules = with inputs; [
+          hyprland.nixosModules.default
+          disko.nixosModules.disko
+          sops-nix.nixosModules.sops
+        ];
         homeManagerUsers = {
           nixpkgsInstance = "global";
-          users.enmeei = {
+          users.diegofariasm = {
             userConfig = {
               extraGroups = [
                 "wheel"
@@ -35,41 +38,42 @@
       };
     };
 
+    # Shared modules between the hosts.
+    # Note that importing all my personal modules
+    # here doesn't really matter, as they are all enable based.
     sharedModules =
       [
-        inputs.sops-nix.nixosModules.sops
-        inputs.disko.nixosModules.disko
-
-        # Bring our own teeny-tiny snippets of configurations.
         defaultNixConf
-
-        # The NixOS module that came from flake-parts.
         ({
           config,
+          pkgs,
           lib,
           ...
         }: {
-          _module.args = defaultExtraArgs;
+          environment = {
+            systemPackages = with pkgs; [maiden zelda flavours];
 
-          # Set several paths for the traditional channels.
-          nix.nixPath =
-            lib.mkIf config.nix.channel.enable
-            (lib.mapAttrsToList
-              (name: source: let
-                name' =
-                  if (name == "self")
-                  then "config"
-                  else name;
-              in "${name'}=${source}")
-              inputs
-              ++ [
-                "/nix/var/nix/profiles/per-user/root/channels"
-              ]);
+            sessionVariables = {
+              XDG_CACHE_HOME = "$HOME/.cache";
+              XDG_CONFIG_HOME = "$HOME/.config";
+              XDG_DATA_HOME = "$HOME/.local/share";
+              XDG_STATE_HOME = "$HOME/.local/state";
+            };
+          };
 
-          programs.fuse.userAllowOther = true;
+          # Find Nix files with these! Even if nix-index is already enabled, it
+          # is better to make it explicit.
+          programs = {
+            command-not-found.enable = false;
+            nix-index.enable = true;
+          };
 
+          # It's following the 'nixpkgs' flake input which should be in unstable
+          # branches. Not to mention, most of the system configurations should
+          # have this attribute set explicitly by default.
           system.stateVersion = lib.mkDefault "24.05";
         })
+        inputs.nix-index-database.nixosModules.nix-index
       ]
       ++ lib.my.modulesToList (lib.my.filesToAttr ../../modules/nixos);
   };

@@ -1,11 +1,8 @@
 {
   config,
   lib,
-  pkgs,
   ...
-}: let
-  user = "enmeei";
-in {
+}: {
   sops = {
     # Age key location.
     # Without having this on place,
@@ -45,14 +42,11 @@ in {
       term = {
         default = {
           bin = "kitty";
-          args = [
-            "--single-instance"
-          ];
         };
         kitty.enable = true;
       };
-
       browsers = {
+        firefox.enable = true;
         brave.enable = true;
       };
     };
@@ -60,23 +54,6 @@ in {
       code.enable = true;
       kakoune.enable = true;
     };
-  };
-
-  home.persistence."/persist/home/${user}" = {
-    allowOther = true;
-    directories =
-      [
-        {
-          directory = ".local/share/flavours";
-          method = "symlink";
-        }
-        {
-          directory = ".themes";
-          method = "symlink";
-        }
-        "projects"
-      ]
-      ++ builtins.map (str: lib.removePrefix "/home/${user}/" str) (lib.attrValues (lib.filterAttrs (key: value: key != "enable" && key != "createDirectories" && key != "extraConfig" && key != "publishShare") config.xdg.userDirs));
   };
 
   home.stateVersion = "23.11";

@@ -1,7 +1,5 @@
 {
-  pkgs,
   config,
-  inputs,
   lib,
   ...
 }: let
@@ -12,9 +10,8 @@ in {
   config = lib.mkIf cfg.enable {
     # This sets some sensible
     # defaults for the keyboard configuration.
-    services.xserver = {
-      layout = "br";
-    };
+    services.xserver.xkb.layout = "br";
+
     # This sets up the tty.
     # Not generally used, but good.
     console.keyMap = "br-abnt2";

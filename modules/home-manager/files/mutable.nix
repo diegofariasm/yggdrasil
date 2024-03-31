@@ -9,7 +9,6 @@
 
   fileType = baseDir: {
     name,
-    config,
     options,
     ...
   }: {
@@ -19,7 +18,7 @@
         description = ''
           The URL of the file to be fetched.
         '';
-        example = "https://github.com/enmeei/dotfiles.git";
+        example = "https://github.com/diegofariasm/dotfiles.git";
       };
 
       path = lib.mkOption {
@@ -94,7 +93,7 @@ in {
     example = lib.literalExpression ''
       {
         "library/dotfiles" = {
-          url = "https://github.com/enmeei/dotfiles.git";
+          url = "https://github.com/diegofariasm/dotfiles.git";
           type = "git";
         };
 
@@ -125,7 +124,7 @@ in {
         ExecStart = let
           mutableFilesCmds =
             lib.mapAttrsToList
-            (path: value: let
+            (_path: value: let
               url = lib.escapeShellArg value.url;
               path = lib.escapeShellArg value.path;
               extraArgs = lib.escapeShellArgs value.extraArgs;

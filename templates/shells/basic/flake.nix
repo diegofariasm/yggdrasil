@@ -8,9 +8,6 @@
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = inputs.nixpkgs.lib.systems.flakeExposed;
       perSystem = {
-        config,
-        self',
-        inputs',
         pkgs,
         system,
         ...

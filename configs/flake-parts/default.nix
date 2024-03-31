@@ -26,10 +26,17 @@
         inputs;
 
       # Set the package for generating the configuration.
-      nix.package = lib.mkDefault pkgs.nixUnstable;
+      nix.package = lib.mkDefault pkgs.nixStable;
 
-      # Set the configurations for the package manager.
+      ## Set the configurations for the package manager.
       nix.settings = {
+        # Set our wheel group users as trusted.
+        # They have admin privileges, anyway: why would it matter?
+        trusted-users = [
+          "root"
+          "@wheel"
+        ];
+
         # Set several binary caches.
         substituters = [
           "https://nix-community.cachix.org"
@@ -38,15 +45,12 @@
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
 
-        auto-allocate-uids = true;
-
         # Sane config for the package manager.
         # TODO: Remove this after nix-command and flakes has been considered
         # stable.
-        #
         # Since we're using flakes to make this possible, we need it. Plus, the
         # UX of Nix CLI is becoming closer to Guix's which is a nice bonus.
-        experimental-features = ["nix-command" "flakes" "repl-flake" "auto-allocate-uids"];
+        experimental-features = ["nix-command" "flakes" "repl-flake"];
         auto-optimise-store = lib.mkDefault true;
       };
 
@@ -59,9 +63,6 @@
     };
 
     defaultOverlays = lib.attrValues inputs.self.overlays;
-    defaultExtraArgs = {
-      inherit (inputs) nix-colors;
-    };
   };
 
   perSystem = {

@@ -8,7 +8,7 @@ stdenvNoCC.mkDerivation rec {
   version = "0ca39cb40b86afc29ed0295be719b3ca124821da";
 
   src = fetchFromGitHub {
-    owner = "enmeei";
+    owner = "diegofariasm";
     repo = "icomoon";
     rev = version;
     fetchSubmodules = false;

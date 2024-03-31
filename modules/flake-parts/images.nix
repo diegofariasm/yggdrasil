@@ -41,10 +41,10 @@ in {
   config = {
     flake.images =
       lib.mapAttrs
-      (k: v: v.images)
+      (_k: v: v.images)
       (
         lib.filterAttrs
-        (k: v: v.images != {})
+        (_k: v: v.images != {})
         config.allSystems
       );
 

@@ -16,6 +16,12 @@ in {
       audio.enable = true;
       wireplumber.enable = true;
     };
-    environment.systemPackages = with pkgs; [easyeffects alsa-tools pavucontrol];
+
+    environment.systemPackages = with pkgs; [
+      easyeffects
+      alsa-tools
+      pavucontrol
+      pamixer
+    ];
   };
 }

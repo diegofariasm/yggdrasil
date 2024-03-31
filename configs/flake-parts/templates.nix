@@ -1,9 +1,4 @@
-{
-  inputs,
-  lib,
-  ...
-}: let
-in {
+{...}: {
   flake.templates = {
     shells-basic = {
       path = ../../templates/shells/basic;

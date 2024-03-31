@@ -7,11 +7,7 @@
 }: let
   cfg = config.modules.desktop.hyprland;
 in {
-  options.modules.desktop.hyprland.enable = lib.my.mkOpt' lib.types.bool false "Wheter to enable the hyprland desktop";
-
-  # imports = [
-  #   inputs.hyprland.nixosModules.default
-  # ];
+  options.modules.desktop.hyprland.enable = lib.my.mkOpt' lib.types.bool false "Whether to enable the hyprland desktop";
 
   config = lib.mkIf cfg.enable {
     programs.hyprland = {
@@ -20,9 +16,13 @@ in {
 
     environment.systemPackages = with pkgs; [
       rofi-wayland
-      eww-wayland
-      hyprpicker
-      hyprpaper
+      eww
+      # hyprpicker
+      swww
+      # hyprpaper
+      # hyprshot
+      # hypridle
+      # hyprlock
     ];
   };
 }

@@ -8,15 +8,17 @@ in {
   options.modules.services.docker.enable = lib.my.mkOpt lib.types.bool false;
 
   config = lib.mkIf cfg.enable {
-    virtualisation.docker.rootless = {
+    virtualisation.docker = {
       enable = true;
-      # Set the socket variable to the rootless one.
-      # Without this, it will try to reach the one that needs root.
-      setSocketVariable = true;
-      daemon.settings = {
-        # My provider, for some reason,
-        # doesn't really seem to provide ipv6 support.
-        ipv6 = false;
+      enableOnBoot = false;
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+        daemon = {
+          settings = {
+            ipv6 = false;
+          };
+        };
       };
     };
   };

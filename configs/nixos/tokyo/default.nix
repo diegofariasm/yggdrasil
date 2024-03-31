@@ -1,11 +1,7 @@
-{
-  lib,
-  config,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ../default.nix
     ./disko.nix
   ];
 
@@ -18,11 +14,16 @@
         systemd = {
           enable = true;
         };
-        display.lightdm.enable = true;
+        display.gdm.enable = true;
       };
     };
     desktop = {
-      hyprland.enable = true;
+      river.enable = true;
+      apps = {
+        kde = {
+          connect.enable = true;
+        };
+      };
       services = {
         notifier = {
           mako.enable = true;
@@ -44,8 +45,8 @@
     };
 
     services = {
-      docker.enable = true;
       ssh.enable = true;
+      docker.enable = true;
     };
   };
 }

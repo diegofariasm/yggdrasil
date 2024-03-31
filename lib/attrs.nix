@@ -38,7 +38,7 @@ with lib; rec {
     };
     files = filterAttrs isModule (builtins.readDir dirPath);
   in
-    filterAttrs (name: value: value != null)
+    filterAttrs (_name: value: value != null)
     (mapAttrs' collect files);
 
   /*

@@ -29,7 +29,7 @@ with lib; {
             (pkgs.formats.toml {}).generate "maiden-toml-config"
             # Filter out all of the null values.
             # Note: toml doesn't support them, so that is needed.
-            (lib.filterAttrsRecursive (name: value: value != null) config.maiden);
+            (lib.filterAttrsRecursive (_name: value: value != null) config.maiden);
         };
       };
     };

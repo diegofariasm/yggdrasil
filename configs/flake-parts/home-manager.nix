@@ -1,22 +1,20 @@
 {
   inputs,
   lib,
-  defaultExtraArgs,
   defaultNixConf,
   ...
 }: {
   setups.home-manager = {
     configs = {
-      enmeei = {
-        systems = [
-          "x86_64-linux"
-        ];
+      diegofariasm = {
+        systems = ["x86_64-linux"];
         overlays = [
+          # Get all of the NUR.
           inputs.nur.overlay
         ];
-        modules = [
-          inputs.impermanence.nixosModules.home-manager.impermanence
-          inputs.nur.hmModules.nur
+        modules = with inputs; [
+          nur.hmModules.nur
+          sops-nix.homeManagerModules.sops
         ];
       };
     };
@@ -24,49 +22,16 @@
     # This is to be used by the NixOS `home-manager.sharedModules` anyways.
     sharedModules =
       [
-        inputs.sops-nix.homeManagerModules.sops
-
+        inputs.nix-index-database.hmModules.nix-index
         # The default shared config for our home-manager configurations. This
         # is also to be used for sharing modules among home-manager users from
         # NixOS configurations with `nixpkgs.useGlobalPkgs` set to `true` so
         # avoid setting nixpkgs-related options here.
-        ({
-          pkgs,
-          config,
-          lib,
-          ...
-        }: {
-          # Set some extra, yeah?
-          _module.args = defaultExtraArgs;
-
-          # manual = lib.mkDefault {
-          #   html.enable = true;
-          #   json.enable = true;
-          #   manpages.enable = true;
-          # };
-
+        ({lib, ...}: {
           home.stateVersion = lib.mkDefault "24.05";
         })
       ]
       ++ lib.my.modulesToList (lib.my.filesToAttr ../../modules/home-manager);
-
-    standaloneConfigModules = [
-      defaultNixConf
-
-      ({
-        config,
-        lib,
-        ...
-      }: {
-        # Don't create the user directories since they are assumed to
-        # be already created by a pre-installed system (which should
-        # already handle them).
-        xdg.userDirs.createDirectories = lib.mkForce false;
-
-        programs.home-manager.enable = lib.mkForce true;
-        targets.genericLinux.enable = lib.mkDefault true;
-      })
-    ];
   };
 
   flake = {

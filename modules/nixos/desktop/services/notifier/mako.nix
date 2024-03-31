@@ -19,15 +19,19 @@ in {
 
   config = lib.mkIf cfg.enable {
     systemd.user.services = {
-      mako = {
+      notifier = {
         enable = true;
         wantedBy = [
           "graphical-session.target"
         ];
+        bindsTo = ["graphical-session.target"];
         after = ["graphical-session.target"];
         serviceConfig.ExecStart = "${pkgs.mako}/bin/mako";
       };
     };
-    systemd.user.services.mako.bindsTo = ["graphical-session.target"];
+
+    environment.systemPackages = with pkgs; [
+      mako
+    ];
   };
 }

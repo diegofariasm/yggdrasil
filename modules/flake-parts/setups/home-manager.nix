@@ -6,8 +6,6 @@
   ...
 }: let
   cfg = config.setups.home-manager;
-  homeManagerModules = lib.my.modulesToList (lib.my.filesToAttr ../../home-manager);
-  partsConfig = config;
 
   # A thin wrapper around the home-manager configuration function.
   mkHome = {
@@ -22,7 +20,7 @@
       inherit pkgs;
       lib =
         inputs.nixpkgs.lib.extend
-        (self: super: {
+        (self: _super: {
           my = import ../../../lib {
             inherit inputs;
             lib = self;
@@ -95,11 +93,7 @@
           let
             setupConfig = config;
           in
-            {
-              config,
-              lib,
-              ...
-            }: {
+            {lib, ...}: {
               nixpkgs.overlays = setupConfig.overlays;
               home = {
                 username = lib.mkForce name;
@@ -155,15 +149,12 @@ in {
       '';
       example = lib.literalExpression ''
         {
-          enmeei = {
+          diegofariasm = {
             systems = [  "x86_64-linux" ];
             modules = [
               inputs.nur.hmModules.nur
             ];
             overlays = [
-              inputs.neovim-nightly-overlay.overlays.default
-              inputs.emacs-overlay.overlays.default
-              inputs.helix-editor.overlays.default
               inputs.nur.overlay
             ];
           };
@@ -178,7 +169,7 @@ in {
     flake = let
       # A quick data structure we can pass through multiple build pipelines.
       pureHomeManagerConfigs = let
-        generatePureConfigs = username: metadata:
+        generatePureConfigs = _username: metadata:
           lib.listToAttrs
           (builtins.map
             (

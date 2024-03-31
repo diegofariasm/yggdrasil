@@ -1,13 +1,11 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
   cfg = config.modules.dotfiles;
 
   dotfiles = config.lib.file.mkOutOfStoreSymlink config.home.mutableFile."library/dotfiles".path;
-  getDotfiles = path: "${dotfiles}/${path}";
 in {
   options.modules.dotfiles = {
     enable = lib.mkOption {
@@ -22,7 +20,7 @@ in {
   config = lib.mkIf cfg.enable {
     home = {
       mutableFile."library/dotfiles" = {
-        url = "https://github.com/enmeei/dotfiles.git";
+        url = "https://github.com/diegofariasm/dotfiles.git";
         type = "git";
       };
     };

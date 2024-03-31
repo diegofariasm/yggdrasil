@@ -1,22 +1,16 @@
 {
-  lib,
-  fetchFromGitHub,
+  fetchzip,
   python310Packages,
 }:
-python310Packages.buildPythonApplication rec {
+python310Packages.buildPythonApplication {
   pname = "recolor";
-  version = "48623031e3106261093723cd536a4dae74309c5d";
+  version = "6c22de47b8b912672dc08909dacc2598b0a091e8";
 
-  src = fetchFromGitHub {
-    owner = "enmeei";
-    repo = "recolor";
-    rev = version;
-    hash = "sha256-ucwo5DOMUON9HgQzXmh39RLQH4sWtSfYH7+UWfGIJCo=";
+  src = fetchzip {
+    url = "https://github.com/diegofariasm/recolor/archive/94b018b71298ca35d30dc573113140b5f9b6f91a.tar.gz";
+    hash = "sha256-lNJ96r1qjhxTcZIqKd0W3SOJGJmqo23iD6y6CzsNFKs=";
   };
 
-  propagatedBuildInputs = with python310Packages; [
-    pillow
-  ];
-
+  propagatedBuildInputs = with python310Packages; [pillow tqdm colormath];
   doCheck = false;
 }

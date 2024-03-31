@@ -11,14 +11,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  system.activationScripts.createPersist = "mkdir -p /persist";
-
   boot = {
     initrd = {
-      postDeviceCommands = lib.mkAfter ''
-        zfs rollback -r zroot/root@blank
-        zfs rollback -r zroot/home@blank
-      '';
       availableKernelModules = [
         "xhci_pci"
         "ahci"

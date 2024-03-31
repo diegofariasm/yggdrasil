@@ -1,3 +1,6 @@
 [formatter.nix]
 command = "alejandra"
-includes = [ "*.nix", "**/*.nix" ]
+includes = [
+    "*.nix"
+]
+excludes = [ "*.lock" ]

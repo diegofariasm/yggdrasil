@@ -1,17 +1,14 @@
 {
   pkgs ? import <nixpkgs> {},
-  overrides ? (self: super: {}),
+  overrides ? (_self: _super: {}),
 }:
 with pkgs; let
   packages = self: let
     callPackage = newScope self;
   in {
-    fonts = {
-      san-francisco = callPackage ./fonts/san-francisco {};
-      icomoon = callPackage ./fonts/icomoon {};
-    };
+    san-francisco = callPackage ./fonts/san-francisco {};
+    icomoon = callPackage ./fonts/icomoon {};
     imagecolorizer = callPackage ./imagecolorizer {};
-    pywalfox = callPackage ./pywalfox {};
     recolor = callPackage ./recolor {};
   };
 in

@@ -1,4 +1,10 @@
 {
+  nixConfig = {
+    extra-substituters = "https://nix-community.cachix.org";
+    extra-trusted-public-keys = "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+    commit-lockfile-summary = "flake.lock: update inputs";
+  };
+
   inputs = {
     nixpkgs.follows = "nixos-unstable";
 
@@ -25,27 +31,31 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    hyprland.url = "github:hyprwm/Hyprland";
-
+    disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    maiden.url = "git+file:///persist/home/enmeei/projects/maiden";
-    flavours.url = "git+file:///persist/home/enmeei/projects/flavours";
-    zelda.url = "git+file:///persist/home/enmeei/projects/zelda";
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
-    flake-schemas.url = github:DeterminateSystems/flake-schemas;
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    # The rice machine.
+    # I have been using it for a while, nothing beats it.
+    hyprland.url = "github:hyprwm/Hyprland";
+
+    # kak-rainbower.url = "git+file:///home/diegofariasm/projects/kak-rainbower";
+    # maiden.url = "git+file:///home/diegofariasm/projects/maiden";
+    # flavours.url = "git+file:///home/diegofariasm/projects/flavours";
+    # zelda.url = "git+file:///home/diegofariasm/projects/zelda";
+
+    kak-rainbower.url = "git+ssh://git@github.com/diegofariasm/kak-rainbower";
+    maiden.url = "git+ssh://git@github.com/diegofariasm/maiden";
+    flavours.url = "git+ssh://git@github.com/diegofariasm/flavours";
+    zelda.url = "git+ssh://git@github.com/diegofariasm/zelda";
   };
 
-  outputs = inputs @ {
-    self,
-    flake-parts,
-    ...
-  }: let
+  outputs = inputs @ {flake-parts, ...}: let
     lib =
       inputs.nixpkgs.lib.extend
-      (self: super: {
+      (self: _super: {
         my = import ./lib {
           inherit inputs;
           lib = self;
@@ -54,7 +64,9 @@
   in
     flake-parts.lib.mkFlake {
       inherit inputs;
-      specialArgs.lib = lib;
+      specialArgs = {
+        lib = lib;
+      };
     }
     {
       systems = ["x86_64-linux"];

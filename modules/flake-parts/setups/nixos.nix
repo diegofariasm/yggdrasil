@@ -10,7 +10,6 @@
   ...
 }: let
   cfg = config.setups.nixos;
-  nixosModules = lib.my.modulesToList (lib.my.filesToAttr ../../nixos);
   partsConfig = config;
 
   # A thin wrapper around the NixOS configuration function.
@@ -23,7 +22,7 @@
 
     lib' =
       inputs.nixpkgs.lib.extend
-      (self: super: {
+      (self: _super: {
         my = import ../../../lib {
           inherit inputs;
           lib = self;
@@ -225,7 +224,7 @@
         example = lib.literalExpression ''
           {
             nixpkgsInstance = "global";
-            users.enmeei = {
+            users.diegofariasm = {
               userConfig = {
                 extraGroups = [
                   "adbusers"
@@ -240,7 +239,7 @@
                   "0000000000000000000000000000000000000000000000";
                 isNormalUser = true;
                 createHome = true;
-                home = "/home/enmeei";
+                home = "/home/diegofariasm";
                 description = "Gabriel Arazas";
               };
               additionalModules = [
@@ -278,7 +277,6 @@
               {
                 config,
                 lib,
-                pkgs,
                 ...
               }: {
                 config = lib.mkMerge [
@@ -293,7 +291,7 @@
                       lib.mkMerge
                       (lib.mapAttrsToList
                         (name: hmUser: {
-                          ${name} = {lib, ...}: {
+                          ${name} = {...}: {
                             imports =
                               partsConfig.setups.home-manager.configs.${name}.modules
                               ++ hmUser.additionalModules;
@@ -423,15 +421,6 @@ in {
               inputs.nur.nixosModules.nur
             ];
             overlays = [
-              # Neovim nightly!
-              inputs.neovim-nightly-overlay.overlays.default
-
-              # Emacs unstable version!
-              inputs.emacs-overlay.overlays.default
-
-              # Helix master!
-              inputs.helix-editor.overlays.default
-
               # Access to NUR.
               inputs.nur.overlay
             ];
@@ -475,7 +464,7 @@ in {
         validConfigs =
           lib.filterAttrs (_: v: v.formats == null || v.deploy != null) cfg.configs;
 
-        generatePureConfigs = hostname: metadata:
+        generatePureConfigs = _hostname: metadata:
           lib.listToAttrs
           (builtins.map
             (
@@ -508,7 +497,7 @@ in {
       images = let
         validImages =
           lib.filterAttrs
-          (host: metadata:
+          (_host: metadata:
             metadata.formats != null && (lib.elem system metadata.systems))
           cfg.configs;
 

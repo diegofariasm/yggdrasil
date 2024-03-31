@@ -1,7 +1,7 @@
 {
   config,
-  lib,
   pkgs,
+  lib,
   ...
 }: let
   cfg = config.modules.shell.zsh;
@@ -19,9 +19,6 @@ in {
   config = lib.mkIf cfg.enable {
     programs.zsh = {
       enable = true;
-      sessionVariables = {
-        EDITOR = "kak";
-      };
     };
   };
 }

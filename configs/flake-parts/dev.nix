@@ -1,18 +1,8 @@
 # All of the development-related shtick for this project is over here.
-{
-  inputs,
-  pkgs,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   flake.lib = lib;
 
-  perSystem = {
-    config,
-    lib,
-    pkgs,
-    ...
-  }: {
+  perSystem = {pkgs, ...}: {
     formatter = pkgs.writeShellApplication {
       name = "treefmt";
       runtimeInputs = with pkgs; [

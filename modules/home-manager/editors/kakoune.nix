@@ -17,11 +17,10 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home = {
-      packages = with pkgs; [
-        kak-lsp
-        kakoune
-      ];
-    };
+    home.packages = with pkgs; [
+      diegofariasm-kak-lsp
+      diegofariasm-kakoune
+      rainbower
+    ];
   };
 }
