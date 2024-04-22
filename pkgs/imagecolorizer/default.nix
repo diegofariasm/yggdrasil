@@ -3,7 +3,7 @@
   python310Packages,
 }:
 python310Packages.buildPythonApplication rec {
-  pname = "imagecolorizr";
+  pname = "imagecolorizer";
   version = "48623031e3106261093723cd536a4dae74309c5d";
 
   src = fetchzip {

@@ -10,8 +10,6 @@ in {
   config = lib.mkIf cfg.enable {
     services.openssh = {
       enable = true;
-      # You really shouldn't make any of this default behaviour.
-      # Just use a ssh key or any other method of signing instead.
       settings = {
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;

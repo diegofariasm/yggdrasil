@@ -1,6 +1,5 @@
 {
   config,
-  options,
   lib,
   pkgs,
   ...
@@ -18,7 +17,7 @@
         description = ''
           The URL of the file to be fetched.
         '';
-        example = "https://github.com/diegofariasm/dotfiles.git";
+        example = "https://github.com/baldur/dotfiles.git";
       };
 
       path = lib.mkOption {
@@ -93,7 +92,7 @@ in {
     example = lib.literalExpression ''
       {
         "library/dotfiles" = {
-          url = "https://github.com/diegofariasm/dotfiles.git";
+          url = "https://github.com/baldur/dotfiles.git";
           type = "git";
         };
 

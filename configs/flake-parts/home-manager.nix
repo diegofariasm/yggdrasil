@@ -6,32 +6,79 @@
 }: {
   setups.home-manager = {
     configs = {
-      diegofariasm = {
+      baldur = {
         systems = ["x86_64-linux"];
-        overlays = [
-          # Get all of the NUR.
-          inputs.nur.overlay
+
+        modules = [
+          inputs.nur.hmModules.nur
+          inputs.sops-nix.homeManagerModules.sops
         ];
-        modules = with inputs; [
-          nur.hmModules.nur
-          sops-nix.homeManagerModules.sops
-        ];
+        # overlays = [
+        #   inputs.kak-rainbower.overlays.default
+        #   inputs.nur.overlay
+        # ];
+        deploy = {
+          autoRollback = true;
+          magicRollback = true;
+        };
       };
     };
 
-    # This is to be used by the NixOS `home-manager.sharedModules` anyways.
-    sharedModules =
-      [
-        inputs.nix-index-database.hmModules.nix-index
-        # The default shared config for our home-manager configurations. This
-        # is also to be used for sharing modules among home-manager users from
-        # NixOS configurations with `nixpkgs.useGlobalPkgs` set to `true` so
-        # avoid setting nixpkgs-related options here.
-        ({lib, ...}: {
-          home.stateVersion = lib.mkDefault "24.05";
-        })
-      ]
-      ++ lib.my.modulesToList (lib.my.filesToAttr ../../modules/home-manager);
+    # Pretty much the baseline home-manager configuration for the whole
+    # cluster.
+    sharedModules = [
+      # ...plus a bunch of third-party modules.
+      inputs.nix-index-database.hmModules.nix-index
+
+      # The default shared config for our home-manager configurations. This
+      # is also to be used for sharing modules among home-manager users from
+      # NixOS configurations with `nixpkgs.useGlobalPkgs` set to `true` so
+      # avoid setting nixpkgs-related options here.
+      ({
+        pkgs,
+        lib,
+        ...
+      }: let
+        importUserEnvironment = pkgs.writeScriptBin "importUserEnvironment" ''
+          #!${pkgs.stdenv.shell}
+
+          echo "User environment"
+          ${pkgs.systemd}/bin/systemctl --user show-environment
+          echo "Importing user environment"
+          ${pkgs.systemd}/bin/systemctl --user import-environment
+          echo "Imported user environment"
+          ${pkgs.systemd}/bin/systemctl --user show-environment
+        '';
+      in {
+        home = {
+          packages = [importUserEnvironment];
+          #  activation = {
+          #    importUserEnvironment = lib.hm.dag.entryAfter ["writeBoundary"] ''
+          #      ${importUserEnvironment}/bin/importUserEnvironment
+          #    '';
+          #  };
+        };
+
+        home.stateVersion = lib.mkDefault "24.05";
+      })
+    ];
+
+    sharedOverlays = [
+      inputs.kak-rainbower.overlays.default
+    ];
+
+    standaloneConfigModules = [
+      defaultNixConf
+      ({lib, ...}: {
+        # Don't create the user directories since they are assumed to
+        # be already created by a pre-installed system (which should
+        # already handle them).
+        xdg.userDirs.createDirectories = lib.mkForce false;
+
+        programs.home-manager.enable = lib.mkForce true;
+        targets.genericLinux.enable = lib.mkDefault true;
+      })
+    ];
   };
 
   flake = {

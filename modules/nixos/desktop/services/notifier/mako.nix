@@ -18,20 +18,20 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.user.services = {
-      notifier = {
-        enable = true;
-        wantedBy = [
-          "graphical-session.target"
-        ];
-        bindsTo = ["graphical-session.target"];
-        after = ["graphical-session.target"];
-        serviceConfig.ExecStart = "${pkgs.mako}/bin/mako";
+    systemd.user.services.notifier = {
+      enable = true;
+      partOf = ["graphical-session.target"];
+      wantedBy = [
+        "graphical-session.target"
+      ];
+      after = ["graphical-session.target"];
+      serviceConfig = {
+        Type = "dbus";
+        BusName = "org.freedesktop.Notifications";
+        ExecCondition = "${pkgs.bash}/bin/bash -c '[ -n $WAYLAND_DISPLAY ]'";
+        ExecStart = "${pkgs.mako}/bin/mako";
+        ExecReload = "${pkgs.mako}/bin/makoctl reload";
       };
     };
-
-    environment.systemPackages = with pkgs; [
-      mako
-    ];
   };
 }

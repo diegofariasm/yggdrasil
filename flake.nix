@@ -19,11 +19,14 @@
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs";
 
+    # We're using these libraries for other functions.
     flake-utils.url = "github:numtide/flake-utils";
 
     nur.url = "github:nix-community/NUR";
 
     impermanence.url = "github:nix-community/impermanence";
+
+    pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
 
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
@@ -34,12 +37,11 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    deploy.url = "github:serokell/deploy-rs";
+    deploy.inputs.nixpkgs.follows = "nixpkgs";
+
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
-    # The rice machine.
-    # I have been using it for a while, nothing beats it.
-    hyprland.url = "github:hyprwm/Hyprland";
 
     # kak-rainbower.url = "git+file:///home/diegofariasm/projects/kak-rainbower";
     # maiden.url = "git+file:///home/diegofariasm/projects/maiden";
@@ -62,18 +64,18 @@
         };
       });
   in
-    flake-parts.lib.mkFlake {
+    flake-parts.lib.mkFlake
+    {
       inherit inputs;
       specialArgs = {
-        lib = lib;
+        inherit lib;
       };
     }
     {
       systems = ["x86_64-linux"];
-      imports =
-        [
-          ./modules/flake-parts
-        ]
-        ++ lib.my.modulesToList (lib.my.filesToAttr ./configs/flake-parts);
+      imports = [
+        ./modules/flake-parts
+        ./configs/flake-parts
+      ];
     };
 }

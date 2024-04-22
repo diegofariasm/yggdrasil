@@ -13,6 +13,10 @@
       publicShare = appendToHomeDir "public";
       templates = appendToHomeDir "templates";
       videos = appendToHomeDir "videos";
+      extraConfig = {
+        library = appendToHomeDir "library";
+        projects = appendToHomeDir "projects";
+      };
     };
   };
 }

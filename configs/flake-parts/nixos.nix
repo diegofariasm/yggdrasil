@@ -1,31 +1,31 @@
 {
   inputs,
-  defaultNixConf,
   lib,
+  defaultNixConf,
   ...
 }: {
   setups.nixos = {
     configs = {
-      tokyo = {
+      asgard = {
         systems = ["x86_64-linux"];
-        overlays = with inputs; [
-          kak-rainbower.overlays.default
-          flavours.overlays.default
-          maiden.overlays.default
-          zelda.overlays.default
-        ];
         formats = null;
-        modules = with inputs; [
-          hyprland.nixosModules.default
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
+        modules = [
+          inputs.disko.nixosModules.disko
+          inputs.sops-nix.nixosModules.sops
         ];
+        # overlays = [
+        #   inputs.kak-rainbower.overlays.default
+        #   inputs.flavours.overlays.default
+        #   inputs.maiden.overlays.default
+        #   inputs.zelda.overlays.default
+        # ];
         homeManagerUsers = {
           nixpkgsInstance = "global";
-          users.diegofariasm = {
+          users.baldur = {
             userConfig = {
               extraGroups = [
                 "wheel"
+                "vboxusers"
                 "storage"
                 "audio"
                 "docker"
@@ -36,46 +36,98 @@
           };
         };
       };
+
+      bootstrap = {
+        systems = ["x86_64-linux"];
+        formats = ["install-iso"];
+        nixpkgsBranch = "nixos-unstable-small";
+      };
+
+      graphical-installer = {
+        systems = ["x86_64-linux"];
+        formats = ["install-iso-graphical"];
+        nixpkgsBranch = "nixos-unstable";
+      };
     };
 
-    # Shared modules between the hosts.
-    # Note that importing all my personal modules
-    # here doesn't really matter, as they are all enable based.
-    sharedModules =
-      [
-        defaultNixConf
-        ({
-          config,
-          pkgs,
-          lib,
-          ...
-        }: {
-          environment = {
-            systemPackages = with pkgs; [maiden zelda flavours];
+    sharedModules = [
+      defaultNixConf
+      ({
+        pkgs,
+        lib,
+        ...
+      }: let
+        importSystemEnvironment = pkgs.writeScriptBin "importSystemEnvironment" ''
+          #!${pkgs.stdenv.shell}
 
-            sessionVariables = {
-              XDG_CACHE_HOME = "$HOME/.cache";
-              XDG_CONFIG_HOME = "$HOME/.config";
-              XDG_DATA_HOME = "$HOME/.local/share";
-              XDG_STATE_HOME = "$HOME/.local/state";
-            };
+          echo "System environment"
+          ${pkgs.systemd}/bin/systemctl show-environment
+
+          echo "Importing system environment"
+          ${pkgs.systemd}/bin/systemctl import-environment
+
+          echo "Imported system environment"
+          ${pkgs.systemd}/bin/systemctl show-environment
+        '';
+      in {
+        # environment.systemPackages = [importSystemEnvironment];
+        # Like is explicit by the name, we import the user environment to systemctl.
+        # In my opnion, this is the sane thing to do. Running user services with the user environment.
+        # system.userActivationScripts.importSystemEnvironment = ''
+        #   ${importSystemEnvironment}/bin/importSystemEnvironment
+        # '';
+
+        environment = {
+          systemPackages = with pkgs; [
+            git
+            nil
+            nixpkgs-fmt
+            alejandra
+            duf
+            file
+            killall
+            tree
+            tldr
+            shellcheck
+            shfmt
+            fd
+            sops
+            age
+            unzip
+            zip
+            rm-improved
+            importSystemEnvironment
+            cached-nix-shell
+          ];
+
+          sessionVariables = {
+            XDG_CACHE_HOME = "$HOME/.cache";
+            XDG_CONFIG_HOME = "$HOME/.config";
+            XDG_DATA_HOME = "$HOME/.local/share";
+            XDG_STATE_HOME = "$HOME/.local/state";
           };
+        };
 
-          # Find Nix files with these! Even if nix-index is already enabled, it
-          # is better to make it explicit.
-          programs = {
-            command-not-found.enable = false;
-            nix-index.enable = true;
-          };
+        # Find Nix files with these! Even if nix-index is already enabled, it
+        # is better to make it explicit.
+        programs = {
+          command-not-found.enable = false;
+          nix-index.enable = true;
+        };
 
-          # It's following the 'nixpkgs' flake input which should be in unstable
-          # branches. Not to mention, most of the system configurations should
-          # have this attribute set explicitly by default.
-          system.stateVersion = lib.mkDefault "24.05";
-        })
-        inputs.nix-index-database.nixosModules.nix-index
-      ]
-      ++ lib.my.modulesToList (lib.my.filesToAttr ../../modules/nixos);
+        environment.etc."yggdrasil".source = ../../.;
+
+        # It's following the 'nixpkgs' flake input which should be in unstable
+        # branches. Not to mention, most of the system configurations should
+        # have this attribute set explicitly by default.
+        system.stateVersion = lib.mkDefault "24.05";
+      })
+      inputs.nix-index-database.nixosModules.nix-index
+    ];
+
+    sharedOverlays = [
+      inputs.kak-rainbower.overlays.default
+    ];
   };
 
   flake = {

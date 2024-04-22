@@ -16,11 +16,14 @@ in {
       example = true;
     };
   };
-  config = lib.mkIf cfg.enable {
-    home = {
-      packages = with pkgs; [
-        kitty
-      ];
-    };
-  };
+  config = lib.mkIf cfg.enable (lib.mkMerge [
+    {
+      home.packages = with pkgs; [kitty];
+    }
+    (lib.mkIf config.modules.roots.enable {
+      xdg.configFile = {
+        kitty.source = "${config.modules.roots.directory}/.config/kitty";
+      };
+    })
+  ]);
 }

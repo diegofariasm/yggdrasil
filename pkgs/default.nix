@@ -6,10 +6,12 @@ with pkgs; let
   packages = self: let
     callPackage = newScope self;
   in {
-    san-francisco = callPackage ./fonts/san-francisco {};
-    icomoon = callPackage ./fonts/icomoon {};
+    icomoon = callPackage ./icomoon {};
     imagecolorizer = callPackage ./imagecolorizer {};
     recolor = callPackage ./recolor {};
+    kak-popup = callPackage ./kak-popup {};
+    ktsctl = callPackage ./ktsctl {};
+    kak-tree-sitter = callPackage ./kak-tree-sitter {};
   };
 in
   lib.fix' (lib.extends overrides packages)

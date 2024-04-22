@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  inputs,
   lib,
   ...
 }: let
@@ -12,12 +11,14 @@ in {
   config = lib.mkIf cfg.enable {
     programs.river = {
       enable = true;
+      package = pkgs.yggdrasil-river;
     };
 
     environment.systemPackages = with pkgs; [
       rofi-wayland
-      eww
       swww
+      wlr-randr
+      river-tag-overlay
     ];
   };
 }

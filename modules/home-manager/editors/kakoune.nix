@@ -16,11 +16,26 @@ in {
       example = true;
     };
   };
-  config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      diegofariasm-kak-lsp
-      diegofariasm-kakoune
-      rainbower
-    ];
-  };
+
+  config = lib.mkIf cfg.enable (lib.mkMerge [
+    {
+      home.packages = with pkgs; [
+        yggdrasil-kak-lsp
+        yggdrasil-kakoune
+        kak-tree-sitter
+        kak-popup
+        ktsctl
+        sad
+        tmux
+        delta
+        ripgrep
+        rainbower
+      ];
+    }
+    (lib.mkIf config.modules.roots.enable {
+      xdg.configFile = {
+        kak.source = "${config.modules.roots.directory}/.config/kak";
+      };
+    })
+  ]);
 }

@@ -22,15 +22,13 @@ with lib; {
   };
 
   config = {
-    xdg = {
-      configFile = {
-        "maiden/generated.toml" = {
-          source =
-            (pkgs.formats.toml {}).generate "maiden-toml-config"
-            # Filter out all of the null values.
-            # Note: toml doesn't support them, so that is needed.
-            (lib.filterAttrsRecursive (_name: value: value != null) config.maiden);
-        };
+    xdg.configFile = {
+      "maiden/generated.toml" = {
+        source =
+          (pkgs.formats.toml {}).generate "maiden-toml-config"
+          # Filter out all of the null values.
+          # Note: toml doesn't support them, so that is needed.
+          (lib.filterAttrsRecursive (_name: value: value != null) config.maiden);
       };
     };
 

@@ -1,6 +1,5 @@
 .direnv
-result
-build-iso-result
+*result*
 *.qcow2
 
 # These are dotenv files with sensitive data so we won't have to include them.
