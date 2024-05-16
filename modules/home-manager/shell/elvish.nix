@@ -1,14 +1,15 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }: let
-  cfg = config.modules.shell.zsh;
+  cfg = config.modules.shell.elvish;
 in {
-  options.modules.shell.zsh = {
+  options.modules.shell.elvish = {
     enable = lib.mkOption {
       description = ''
-        Whether to enable the zsh shell.
+        Whether to enable the elvish shell.
       '';
       type = lib.types.bool;
       default = false;
@@ -17,14 +18,17 @@ in {
   };
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
-      programs.zsh.enable = true;
+      home.packages = with pkgs; [
+        elvish
+      ];
     }
     (lib.mkIf config.modules.roots.enable {
       home.file = {
-        ".zshrc".source = "${config.modules.roots.directory}/.zshrc";
+        ".elvishrc".source = "${config.modules.roots.directory}/.elvishrc";
       };
+
       xdg.configFile = {
-        zsh.source = "${config.modules.roots.directory}/.config/zsh";
+        elvish.source = "${config.modules.roots.directory}/.config/elvish";
       };
     })
   ]);

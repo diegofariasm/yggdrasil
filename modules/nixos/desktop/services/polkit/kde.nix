@@ -4,12 +4,12 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.desktop.services.kanshi;
+  cfg = config.modules.desktop.services.polkit.kde;
 in {
-  options.modules.desktop.services.kanshi = {
+  options.modules.desktop.services.polkit.kde = {
     enable = lib.mkOption {
       description = ''
-        Whether to enable the kanshi service.
+        Whether to enable the kde service.
       '';
       type = lib.types.bool;
       default = false;
@@ -18,14 +18,17 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.user.services.kanshi = {
-      description = "kanshi daemon";
+    systemd.user.services.polkit-agent = {
+      enable = true;
       wantedBy = ["graphical-session.target"];
       wants = ["graphical-session.target"];
       after = ["graphical-session.target"];
       serviceConfig = {
         Type = "simple";
-        ExecStart = ''${pkgs.kanshi}/bin/kanshi'';
+        ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
       };
     };
   };

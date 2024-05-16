@@ -1,4 +1,4 @@
-name: "Update flake inputs"
+name: "update"
 on:
   workflow_dispatch:
   schedule:
@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v10
-      - name: Update flake inputs
+      - name: inputs
         run: |
           nix flake update --commit-lock-file --commit-lockfile-summary "flake.lock: update inputs"
         env:

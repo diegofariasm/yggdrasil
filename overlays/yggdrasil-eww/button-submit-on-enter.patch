@@ -1,0 +1,33 @@
+diff --git a/crates/eww/src/widgets/widget_definitions.rs b/crates/eww/src/widgets/widget_definitions.rs
+index eac61e8..ad66897 100644
+--- a/crates/eww/src/widgets/widget_definitions.rs
++++ b/crates/eww/src/widgets/widget_definitions.rs
+@@ -8,7 +8,7 @@ use crate::{
+ use anyhow::{anyhow, Context, Result};
+ use codespan_reporting::diagnostic::Severity;
+ use eww_shared_util::Spanned;
+-use gdk::{ModifierType, NotifyType};
++use gdk::{keys::Key, ModifierType, NotifyType};
+ 
+ use glib::translate::FromGlib;
+ use gtk::{self, glib, prelude::*, DestDefaults, TargetEntry, TargetList};
+@@ -499,7 +499,19 @@ fn build_gtk_button(bargs: &mut BuilderArgs) -> Result<gtk::Button> {
+             // @prop onrightclick - a command that get's run when the button is rightclicked
+             onrightclick: as_string = ""
+         ) {
++            gtk_widget.add_events(gdk::EventMask::KEY_PRESS_MASK);
+             gtk_widget.add_events(gdk::EventMask::BUTTON_PRESS_MASK);
++
++            // We should add https://docs.rs/glib-macros/0.15.6/glib_macros/macro.clone.html
++            let onclick_c = onclick.clone();
++            connect_signal_handler!(gtk_widget, gtk_widget.connect_key_press_event(move |_, evt| {
++                let is_enter = evt.keyval() == Key::from_name("Return");
++                if is_enter {
++                    run_command(timeout, &onclick_c, &[] as &[&str]);
++                }
++                gtk::Inhibit(false)
++            }));
++
+             connect_signal_handler!(gtk_widget, gtk_widget.connect_button_press_event(move |_, evt| {
+                 match evt.button() {
+                     1 => run_command(timeout, &onclick, &[] as &[&str]),

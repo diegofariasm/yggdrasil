@@ -13,25 +13,25 @@
         enable = true;
       };
     };
-
     desktop = {
-      river.enable = true;
+      hypr.enable = true;
 
-      apps = {
-        emulation = {
-          bottles.enable = true;
-          vm = {
-            lxd.enable = true;
-            qemu.enable = true;
-            virtualbox.enable = true;
-          };
-        };
-      };
+      #  apps = {
+      #    emulation = {
+      #      bottles.enable = true;
+      #      vm = {
+      #        lxd.enable = true;
+      #        qemu.enable = true;
+      #        virtualbox.enable = true;
+      #      };
+      #    };
+      #  };
 
       services = {
         notifier = {
           mako.enable = true;
         };
+        polkit.gnome.enable = true;
         kanshi.enable = true;
         gammastep.enable = true;
       };
@@ -47,10 +47,13 @@
       ssd.enable = true;
       audio.enable = true;
       intel.enable = true;
+      wifi.enable = true;
+      bluetooth.enable = true;
     };
 
     services = {
       ssh.enable = true;
+      docker.enable = true;
     };
   };
 }

@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.modules.roots;
-  projectsDir = config.xdg.userDirs.extraConfig.projects;
+  projectsDir = config.xdg.userDirs.extraConfig.library;
   roots = "${projectsDir}/roots";
   rootsDirectory = config.lib.file.mkOutOfStoreSymlink config.home.mutableFile."${roots}".path;
 in {

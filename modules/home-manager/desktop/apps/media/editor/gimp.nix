@@ -4,12 +4,12 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.desktop.apps.files.dolphin;
+  cfg = config.modules.desktop.apps.media.editor.gimp;
 in {
-  options.modules.desktop.apps.files.dolphin = {
+  options.modules.desktop.apps.media.editor.gimp = {
     enable = lib.mkOption {
       description = ''
-        Whether to install dolphin.
+        Whether to install gimp.
       '';
       type = lib.types.bool;
       default = false;
@@ -18,10 +18,7 @@ in {
   };
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      dolphin
-      libsForQt5.kio
-      libsForQt5.ffmpegthumbs
-      libsForQt5.kio-extras
+      gimp
     ];
   };
 }

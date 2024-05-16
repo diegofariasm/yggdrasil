@@ -1,19 +1,19 @@
-name: "Cache outputs"
+name: "build"
 on:
   push:
     branches:
       - main
       - staging
 jobs:
-  build-custom-packages:
+  packages:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/magic-nix-cache-action@v4
       - uses: DeterminateSystems/nix-installer-action@v10
         with:
           extra-conf: |
             keep-going = true
+      - uses: DeterminateSystems/magic-nix-cache-action@v4
       - name: Prepare push to binary cache
         uses: cachix/cachix-action@v14
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -24,3 +24,25 @@ jobs:
         run: nix build -f ./pkgs --impure
         env:
           NIXPKGS_ALLOW_UNFREE: "1"
+  iso:
+    strategy:
+      matrix:
+        arch:
+          - "x86_64-linux"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/magic-nix-cache-action@v4
+      - uses: DeterminateSystems/nix-installer-action@v10
+      - name: Build ISO
+        run: |
+          nix build .#images.${{ matrix.arch }}.bootstrap-install-iso --impure --out-link iso-result
+        env:
+          NIXPKGS_ALLOW_BROKEN: "1"
+          NIXPKGS_ALLOW_UNFREE: "1"
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest --cleanup-tag --yes || true
+          gh release create latest --prerelease --generate-notes iso-result/iso/*.iso

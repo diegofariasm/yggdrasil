@@ -66,9 +66,11 @@ in {
         (nerdfonts.override {
           fonts = [
             "Iosevka"
+            "Ubuntu"
           ];
         })
         icomoon
+        monoki
       ];
 
       qt.enable = true;
@@ -76,18 +78,49 @@ in {
         platformTheme = "qt5ct";
       };
 
-      environment = {
-        systemPackages = with pkgs; [
-          jq
-          socat
-          recolor
-          imagecolorizer
-          libnotify
-          wlr-randr
-          xsettingsd
-          wl-clipboard
-          configure-gtk
-        ];
+      environment.systemPackages = with pkgs; [
+        recolor
+        imagecolorizer
+        yggdrasil-flavours
+        libnotify
+        brightnessctl
+        jq
+        fd
+        socat
+        wlr-randr
+        xsettingsd
+        breeze-qt5
+        breeze-icons
+        breeze-gtk
+        wl-clipboard
+        configure-gtk
+      ];
+
+      systemd.user = {
+        services.desktop-session = {
+          description = "desktop session";
+          wantedBy = ["desktop-session.target"];
+          wants = ["desktop-session.target"];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+            ExecStart = "${pkgs.coreutils}/bin/true";
+            Restart = "on-failure";
+          };
+        };
+        targets.desktop-session = {
+          description = "desktop session";
+          wantedBy = ["graphical-session.target"];
+          requires = ["basic.target"];
+          bindsTo = ["graphical-session.target"];
+          before = ["graphical-session.target"];
+          unitConfig = {
+            DefaultDependencies = false;
+            RefuseManualStart = true;
+            RefuseManualStop = true;
+            StopWhenUnneeded = true;
+          };
+        };
       };
     };
 }

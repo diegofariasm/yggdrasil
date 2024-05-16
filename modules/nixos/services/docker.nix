@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }: let
@@ -8,6 +9,7 @@ in {
   options.modules.services.docker.enable = lib.my.mkOpt lib.types.bool false;
 
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [yggdrasil-act];
     virtualisation.docker = {
       enable = true;
       enableOnBoot = false;

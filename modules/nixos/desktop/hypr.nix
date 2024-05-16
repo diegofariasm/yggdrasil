@@ -15,9 +15,10 @@ in {
 
     environment.systemPackages = with pkgs; [
       rofi-wayland
-      eww-wayland
+      yggdrasil-eww
       hyprpicker
       swww
+      hyprpicker
     ];
   };
 }

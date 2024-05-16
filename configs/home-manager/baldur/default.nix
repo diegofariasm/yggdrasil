@@ -27,7 +27,6 @@
 
   modules = {
     roots.enable = true;
-
     shell = {
       apps = {
         starship.enable = true;
@@ -46,6 +45,9 @@
           dolphin.enable = true;
         };
         media = {
+          editor = {
+            gimp.enable = true;
+          };
           vlc.enable = true;
           nomacs.enable = true;
           zathura.enable = true;
@@ -60,10 +62,9 @@
       };
     };
     editors = {
+      emacs.enable = true;
       code.enable = true;
       kakoune.enable = true;
     };
   };
-
-  home.stateVersion = "24.05";
 }

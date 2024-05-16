@@ -38,27 +38,7 @@
         pkgs,
         lib,
         ...
-      }: let
-        importUserEnvironment = pkgs.writeScriptBin "importUserEnvironment" ''
-          #!${pkgs.stdenv.shell}
-
-          echo "User environment"
-          ${pkgs.systemd}/bin/systemctl --user show-environment
-          echo "Importing user environment"
-          ${pkgs.systemd}/bin/systemctl --user import-environment
-          echo "Imported user environment"
-          ${pkgs.systemd}/bin/systemctl --user show-environment
-        '';
-      in {
-        home = {
-          packages = [importUserEnvironment];
-          #  activation = {
-          #    importUserEnvironment = lib.hm.dag.entryAfter ["writeBoundary"] ''
-          #      ${importUserEnvironment}/bin/importUserEnvironment
-          #    '';
-          #  };
-        };
-
+      }: {
         home.stateVersion = lib.mkDefault "24.05";
       })
     ];

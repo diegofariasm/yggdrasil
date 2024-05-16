@@ -1,0 +1,13 @@
+diff --git a/crates/eww/src/widgets/widget_definitions.rs b/crates/eww/src/widgets/widget_definitions.rs
+index d5d97fb..eac61e8 100644
+--- a/crates/eww/src/widgets/widget_definitions.rs
++++ b/crates/eww/src/widgets/widget_definitions.rs
+@@ -871,7 +871,7 @@ fn build_gtk_event_box(bargs: &mut BuilderArgs) -> Result<gtk::EventBox> {
+             onrightclick: as_string = ""
+         ) {
+             gtk_widget.add_events(gdk::EventMask::BUTTON_PRESS_MASK);
+-            connect_signal_handler!(gtk_widget, gtk_widget.connect_button_press_event(move |_, evt| {
++            connect_signal_handler!(gtk_widget, gtk_widget.connect_button_release_event(move |_, evt| {
+                 match evt.button() {
+                     1 => run_command(timeout, &onclick, &[] as &[&str]),
+                     2 => run_command(timeout, &onmiddleclick, &[] as &[&str]),

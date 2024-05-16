@@ -24,8 +24,6 @@
 
     nur.url = "github:nix-community/NUR";
 
-    impermanence.url = "github:nix-community/impermanence";
-
     pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
 
     nixos-generators.url = "github:nix-community/nixos-generators";
@@ -45,12 +43,10 @@
 
     # kak-rainbower.url = "git+file:///home/diegofariasm/projects/kak-rainbower";
     # maiden.url = "git+file:///home/diegofariasm/projects/maiden";
-    # flavours.url = "git+file:///home/diegofariasm/projects/flavours";
     # zelda.url = "git+file:///home/diegofariasm/projects/zelda";
 
     kak-rainbower.url = "git+ssh://git@github.com/diegofariasm/kak-rainbower";
     maiden.url = "git+ssh://git@github.com/diegofariasm/maiden";
-    flavours.url = "git+ssh://git@github.com/diegofariasm/flavours";
     zelda.url = "git+ssh://git@github.com/diegofariasm/zelda";
   };
 

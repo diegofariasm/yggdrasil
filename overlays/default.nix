@@ -7,4 +7,7 @@
   yggdrasil-kak-lsp = import ./yggdrasil-kak-lsp;
   yggdrasil-kakoune = import ./yggdrasil-kakoune;
   yggdrasil-river = import ./yggdrasil-river;
+  yggdrasil-eww = import ./yggdrasil-eww;
+  yggdrasil-act = import ./yggdrasil-act;
+  yggdrasil-flavours = import ./yggdrasil-flavours;
 }

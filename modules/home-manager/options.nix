@@ -32,13 +32,13 @@ with lib; {
       };
     };
 
-    home = {
-      # Add a few things to path.
-      # These are used in all of the users.
-      sessionPath = [
-        "$XDG_BIN_HOME"
-        "$PATH"
-      ];
-    };
+    # home = {
+    #   # Add a few things to path.
+    #   # These are used in all of the users.
+    #   sessionPath = [
+    #     "$XDG_BIN_HOME"
+    #     "$PATH"
+    #   ];
+    # };
   };
 }

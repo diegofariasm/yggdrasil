@@ -1,21 +1,19 @@
-name: "Check flake outputs"
+name: "check"
 on:
   pull_request:
   push:
     branches:
       - main
       - staging
-  schedule:
-    - cron: '5 10 * * 4' # At 10:05 on Thursday.
 jobs:
-  check-outputs:
+  outputs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v10
-      - name: Check flake lockfile
+      - name: lockfile
         uses: DeterminateSystems/flake-checker-action@v5
-      - name: Check flake outputs
+      - name: outputs
         run: |
           nix flake check --impure --accept-flake-config --keep-going
         env:

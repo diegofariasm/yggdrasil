@@ -18,7 +18,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.user.services.notifier = {
+    systemd.user.services.notifier-agent = {
       enable = true;
       partOf = ["graphical-session.target"];
       wantedBy = [

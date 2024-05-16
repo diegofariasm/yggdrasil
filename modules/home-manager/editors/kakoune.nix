@@ -26,6 +26,7 @@ in {
         kak-popup
         ktsctl
         sad
+        kakounePlugins.parinfer-rust
         tmux
         delta
         ripgrep

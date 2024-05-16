@@ -10,7 +10,10 @@ in {
   config = lib.mkIf cfg.enable {
     # This sets some sensible
     # defaults for the keyboard configuration.
-    services.xserver.xkb.layout = "br";
+    services.xserver.xkb = {
+      layout = "br";
+      options = "caps:escape";
+    };
 
     # This sets up the tty.
     # Not generally used, but good.

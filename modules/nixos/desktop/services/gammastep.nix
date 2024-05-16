@@ -18,8 +18,13 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    services.geoclue2.enable = true;
+
     systemd.user.services.gammastep = {
       description = "gammastep daemon";
+      wantedBy = ["graphical-session.target"];
+      wants = ["graphical-session.target"];
+      after = ["graphical-session.target"];
       serviceConfig = {
         Type = "simple";
         ExecStart = ''${pkgs.gammastep}/bin/gammastep'';

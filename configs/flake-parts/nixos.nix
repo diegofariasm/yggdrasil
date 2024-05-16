@@ -13,12 +13,6 @@
           inputs.disko.nixosModules.disko
           inputs.sops-nix.nixosModules.sops
         ];
-        # overlays = [
-        #   inputs.kak-rainbower.overlays.default
-        #   inputs.flavours.overlays.default
-        #   inputs.maiden.overlays.default
-        #   inputs.zelda.overlays.default
-        # ];
         homeManagerUsers = {
           nixpkgsInstance = "global";
           users.baldur = {
@@ -35,6 +29,7 @@
             };
           };
         };
+        nixpkgsBranch = "nixos-unstable";
       };
 
       bootstrap = {
@@ -46,7 +41,6 @@
       graphical-installer = {
         systems = ["x86_64-linux"];
         formats = ["install-iso-graphical"];
-        nixpkgsBranch = "nixos-unstable";
       };
     };
 
@@ -56,47 +50,13 @@
         pkgs,
         lib,
         ...
-      }: let
-        importSystemEnvironment = pkgs.writeScriptBin "importSystemEnvironment" ''
-          #!${pkgs.stdenv.shell}
-
-          echo "System environment"
-          ${pkgs.systemd}/bin/systemctl show-environment
-
-          echo "Importing system environment"
-          ${pkgs.systemd}/bin/systemctl import-environment
-
-          echo "Imported system environment"
-          ${pkgs.systemd}/bin/systemctl show-environment
-        '';
-      in {
-        # environment.systemPackages = [importSystemEnvironment];
-        # Like is explicit by the name, we import the user environment to systemctl.
-        # In my opnion, this is the sane thing to do. Running user services with the user environment.
-        # system.userActivationScripts.importSystemEnvironment = ''
-        #   ${importSystemEnvironment}/bin/importSystemEnvironment
-        # '';
-
+      }: {
         environment = {
           systemPackages = with pkgs; [
             git
-            nil
-            nixpkgs-fmt
-            alejandra
-            duf
-            file
-            killall
-            tree
-            tldr
-            shellcheck
-            shfmt
-            fd
+            cachix
             sops
             age
-            unzip
-            zip
-            rm-improved
-            importSystemEnvironment
             cached-nix-shell
           ];
 
