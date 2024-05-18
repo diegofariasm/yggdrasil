@@ -13,7 +13,6 @@ with pkgs; let
     kak-popup = callPackage ./kak-popup {};
     ktsctl = callPackage ./ktsctl {};
     kak-tree-sitter = callPackage ./kak-tree-sitter {};
-
     san-francisco-mono = callPackage ./san-francisco-mono {};
     san-francisco-compact = callPackage ./san-francisco-compact {};
     san-francisco-arabic = callPackage ./san-francisco-arabic {};
