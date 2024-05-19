@@ -34,18 +34,14 @@
       # is also to be used for sharing modules among home-manager users from
       # NixOS configurations with `nixpkgs.useGlobalPkgs` set to `true` so
       # avoid setting nixpkgs-related options here.
-      ({
-        pkgs,
-        lib,
-        ...
-      }: {
+      ({lib, ...}: {
         home.stateVersion = lib.mkDefault "24.05";
       })
     ];
 
-    sharedOverlays = [
-      inputs.kak-rainbower.overlays.default
-    ];
+    # sharedOverlays = [
+    #   inputs.kak-rainbower.overlays.default
+    # ];
 
     standaloneConfigModules = [
       defaultNixConf

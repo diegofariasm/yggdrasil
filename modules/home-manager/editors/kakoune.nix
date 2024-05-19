@@ -30,7 +30,6 @@ in {
         tmux
         delta
         ripgrep
-        rainbower
       ];
     }
     (lib.mkIf config.modules.roots.enable {

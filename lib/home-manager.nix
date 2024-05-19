@@ -1,9 +1,5 @@
 # Custom libraries for home-manager library.
-{
-  self,
-  lib,
-  ...
-}: rec {
+{lib, ...}: rec {
   /*
   Checks if there is the `osConfig` attribute and get the attribute path from
   its system configuration.

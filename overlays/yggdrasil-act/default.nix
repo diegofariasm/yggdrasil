@@ -1,6 +1,5 @@
 _final: prev: {
-  yggdrasil-act = prev.act.override (old: let
-    pname = "yggdrasil-act";
+  yggdrasil-act = prev.act.override (_old: let
     version = "master";
 
     src = prev.fetchzip {

@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v10
-      - name: lockfile
-        uses: DeterminateSystems/flake-checker-action@v5
+      - uses: DeterminateSystems/nix-installer-action@75ffa7fc743135e1db864b699d78402ccc8ed988
+      - uses: DeterminateSystems/magic-nix-cache-action@v4
+      - uses: DeterminateSystems/flake-checker-action@v7
       - name: outputs
         run: |
-          nix flake check --impure --accept-flake-config --keep-going
+          nix flake check --impure  --keep-going --accept-flake-config
         env:
           NIXPKGS_ALLOW_BROKEN: "1"
           NIXPKGS_ALLOW_UNFREE: "1"

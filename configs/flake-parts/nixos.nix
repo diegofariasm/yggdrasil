@@ -85,9 +85,9 @@
       inputs.nix-index-database.nixosModules.nix-index
     ];
 
-    sharedOverlays = [
-      inputs.kak-rainbower.overlays.default
-    ];
+    # sharedOverlays = [
+    #   inputs.kak-rainbower.overlays.default
+    # ];
   };
 
   flake = {

@@ -1,7 +1,7 @@
 {
   nixConfig = {
-    extra-substituters = "https://nix-community.cachix.org";
-    extra-trusted-public-keys = "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+    extra-substituters = "https://nix-community.cachix.org https://yggdrasil.cachix.org";
+    extra-trusted-public-keys = "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= yggdrasil.cachix.org-1:NJ6EZvfzu3iwnqMW6E0Wmd+ZR262OA5+9bZQrWm3imo=";
     commit-lockfile-summary = "flake.lock: update inputs";
   };
 
@@ -40,14 +40,6 @@
 
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
-    # kak-rainbower.url = "git+file:///home/diegofariasm/projects/kak-rainbower";
-    # maiden.url = "git+file:///home/diegofariasm/projects/maiden";
-    # zelda.url = "git+file:///home/diegofariasm/projects/zelda";
-
-    kak-rainbower.url = "git+ssh://git@github.com/diegofariasm/kak-rainbower";
-    maiden.url = "git+ssh://git@github.com/diegofariasm/maiden";
-    zelda.url = "git+ssh://git@github.com/diegofariasm/zelda";
   };
 
   outputs = inputs @ {flake-parts, ...}: let

@@ -1,9 +1,5 @@
 # All of the functions suitable only for NixOS.
-{
-  self,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   # Checks if the NixOS configuration is part of the nixos-generator build.
   # Typically, we just check if there's a certain attribute that is imported
   # from it.
