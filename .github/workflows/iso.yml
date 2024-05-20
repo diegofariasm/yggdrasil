@@ -1,0 +1,32 @@
+name: "iso"
+on:
+  push:
+    branches:
+      - main
+jobs:
+  bootstrap:
+    permissions:
+      contents: write
+      actions: read
+    strategy:
+      matrix:
+        arch:
+          - "x86_64-linux"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@75ffa7fc743135e1db864b699d78402ccc8ed988
+      - uses: DeterminateSystems/magic-nix-cache-action@v4
+      - uses: DeterminateSystems/flake-checker-action@v7
+      - name: build
+        env:
+          NIXPKGS_ALLOW_BROKEN: "1"
+          NIXPKGS_ALLOW_UNFREE: "1"
+        run: |
+          nix build --accept-flake-config .#images.${{ matrix.arch }}.bootstrap-install-iso --impure --out-link iso-result
+      - name: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest --cleanup-tag --yes || true
+          gh release create latest --prerelease --generate-notes iso-result/iso/*.iso
