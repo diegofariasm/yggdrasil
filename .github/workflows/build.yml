@@ -24,6 +24,9 @@ jobs:
         run: |
           nix build --accept-flake-config --file ./pkgs --impure
   iso:
+    permissions:
+      contents: write
+      actions: read
     strategy:
       matrix:
         arch:
