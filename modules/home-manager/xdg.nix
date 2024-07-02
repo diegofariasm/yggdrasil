@@ -1,4 +1,12 @@
-{config, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
+  home.packages = with pkgs; [
+    xdg-utils
+  ];
+
   xdg = {
     enable = true;
     userDirs = let

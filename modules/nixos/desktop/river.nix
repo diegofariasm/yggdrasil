@@ -11,40 +11,13 @@ in {
   config = lib.mkIf cfg.enable {
     programs.river = {
       enable = true;
-      package = pkgs.yggdrasil-river;
-    };
-
-    systemd.user = {
-      services.river-session = {
-        description = "river window manager session";
-        wantedBy = ["river-session.target"];
-        wants = ["river-session.target"];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStart = "${pkgs.coreutils}/bin/true";
-          Restart = "on-failure";
-        };
-      };
-      targets.river-session = {
-        description = "river session";
-        wantedBy = ["graphical-session.target"];
-        requires = ["basic.target"];
-        bindsTo = ["graphical-session.target"];
-        before = ["graphical-session.target"];
-        unitConfig = {
-          DefaultDependencies = false;
-          RefuseManualStart = true;
-          RefuseManualStop = true;
-          StopWhenUnneeded = true;
-        };
-      };
     };
 
     environment.systemPackages = with pkgs; [
-      rofi-wayland
-      swww
       river-tag-overlay
+      rofi-wayland
+      yggdrasil-eww
+      swww
     ];
   };
 }

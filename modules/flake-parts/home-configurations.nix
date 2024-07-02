@@ -16,7 +16,7 @@
         '';
         example = lib.literalExpression ''
           {
-            foodogsquared = inputs.home-manager.lib.homeManagerConfiguration {
+            baldur = inputs.home-manager.lib.homeManagerConfiguration {
               pkgs = inputs.nixpkgs.legacyPackages.''${system};
               modules = [
                 inputs.sops-nix.homeManagerModules.sops

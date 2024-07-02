@@ -6,28 +6,37 @@
   ];
 
   modules = {
-    shell.zsh.enable = true;
-
+    shell = {
+      zsh.enable = true;
+    };
     boot.loader = {
       systemd = {
         enable = true;
       };
     };
     desktop = {
-      hypr.enable = true;
+      river.enable = true;
 
-      #  apps = {
-      #    emulation = {
-      #      bottles.enable = true;
-      #      vm = {
-      #        lxd.enable = true;
-      #        qemu.enable = true;
-      #        virtualbox.enable = true;
-      #      };
-      #    };
-      #  };
+      app = {
+        gaming = {
+          steam.enable = true;
+        };
+        emulation = {
+          playstation = {
+            one.enable = true;
+            two.enable = true;
+          };
+          vm = {
+            lxd.enable = true;
+            qemu.enable = true;
+            virtualbox.enable = true;
+          };
+          bottles.enable = true;
+        };
+        connect.enable = true;
+      };
 
-      services = {
+      service = {
         notifier = {
           mako.enable = true;
         };
@@ -44,6 +53,7 @@
         };
         en.enable = true;
       };
+      controller.enable = true;
       ssd.enable = true;
       audio.enable = true;
       intel.enable = true;
@@ -51,7 +61,7 @@
       bluetooth.enable = true;
     };
 
-    services = {
+    service = {
       ssh.enable = true;
       docker.enable = true;
     };

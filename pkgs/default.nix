@@ -7,15 +7,15 @@ with pkgs; let
     callPackage = newScope self;
   in {
     icomoon = callPackage ./icomoon {};
-    monoki = callPackage ./monoki {};
     imagecolorizer = callPackage ./imagecolorizer {};
     recolor = callPackage ./recolor {};
     kak-popup = callPackage ./kak-popup {};
     ktsctl = callPackage ./ktsctl {};
     kak-tree-sitter = callPackage ./kak-tree-sitter {};
+    new-york = callPackage ./new-york {};
+    apple-emoji = callPackage ./apple-emoji {};
     san-francisco-mono = callPackage ./san-francisco-mono {};
     san-francisco-compact = callPackage ./san-francisco-compact {};
-    san-francisco-arabic = callPackage ./san-francisco-arabic {};
     san-francisco-pro = callPackage ./san-francisco-pro {};
   };
 in

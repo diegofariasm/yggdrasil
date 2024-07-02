@@ -1,0 +1,10 @@
+[workspace]
+resolver = "2"
+members = ["yggdrasil*", ""]
+
+[workspace.metadata.crane]
+name = "yggdrasil-workspace"
+
+[workspace.package]
+version = "0.0.0"
+edition = "2021"

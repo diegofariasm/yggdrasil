@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package yggdrasil.wallpaper;
+
+message Wallpaper {
+    string path = 1;
+    string thumbnail = 2;
+}
+
+message Wallpapers {
+    repeated Wallpaper wallpapers = 2;
+}

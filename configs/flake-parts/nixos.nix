@@ -44,6 +44,10 @@
       };
     };
 
+    sharedOverlays = [
+      inputs.yggdrasil-shell.overlays.default
+    ];
+
     sharedModules = [
       defaultNixConf
       ({
@@ -80,14 +84,10 @@
         # It's following the 'nixpkgs' flake input which should be in unstable
         # branches. Not to mention, most of the system configurations should
         # have this attribute set explicitly by default.
-        system.stateVersion = lib.mkDefault "24.05";
+        system.stateVersion = lib.mkDefault "24.11";
       })
       inputs.nix-index-database.nixosModules.nix-index
     ];
-
-    # sharedOverlays = [
-    #   inputs.kak-rainbower.overlays.default
-    # ];
   };
 
   flake = {

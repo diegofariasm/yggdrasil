@@ -8,15 +8,15 @@
     configs = {
       baldur = {
         systems = ["x86_64-linux"];
-
+        overlays = [
+          inputs.nur.overlay
+        ];
         modules = [
           inputs.nur.hmModules.nur
           inputs.sops-nix.homeManagerModules.sops
+          inputs.stylix.homeManagerModules.stylix
+          inputs.nix-colors.homeManagerModules.default
         ];
-        # overlays = [
-        #   inputs.kak-rainbower.overlays.default
-        #   inputs.nur.overlay
-        # ];
         deploy = {
           autoRollback = true;
           magicRollback = true;
@@ -35,13 +35,9 @@
       # NixOS configurations with `nixpkgs.useGlobalPkgs` set to `true` so
       # avoid setting nixpkgs-related options here.
       ({lib, ...}: {
-        home.stateVersion = lib.mkDefault "24.05";
+        home.stateVersion = lib.mkDefault "24.11";
       })
     ];
-
-    # sharedOverlays = [
-    #   inputs.kak-rainbower.overlays.default
-    # ];
 
     standaloneConfigModules = [
       defaultNixConf
@@ -50,7 +46,6 @@
         # be already created by a pre-installed system (which should
         # already handle them).
         xdg.userDirs.createDirectories = lib.mkForce false;
-
         programs.home-manager.enable = lib.mkForce true;
         targets.genericLinux.enable = lib.mkDefault true;
       })

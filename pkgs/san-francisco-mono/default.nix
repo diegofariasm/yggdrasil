@@ -6,7 +6,7 @@
   ...
 }:
 stdenvNoCC.mkDerivation {
-  name = "sf-mono";
+  name = "san-francisco-mono";
 
   buildInputs = [undmg p7zip];
 

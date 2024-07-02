@@ -9,7 +9,7 @@ in {
   options.modules.hardware.intel.enable = lib.my.mkOpt lib.types.bool false;
 
   config = lib.mkIf cfg.enable {
-    hardware.opengl = {
+    hardware.graphics = {
       enable = true;
       extraPackages = with pkgs; [
         intel-media-driver

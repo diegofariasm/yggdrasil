@@ -4,31 +4,32 @@
   fetchzip,
   makeWrapper,
   rustPlatform,
+  git,
 }: let
-  version = "b390d1fb3e30582cf8b29d2648ef03355ae80283";
+  version = "ktsctl-v1.1.1";
 in
   rustPlatform.buildRustPackage {
     pname = "ktsctl";
     inherit version;
 
     src = fetchzip {
-      url = "https://github.com/hadronized/kak-tree-sitter/archive/${version}.tar.gz";
-      sha256 = "sha256-bCeA41DT8By3eIoGxyh6+BgwvszuJg7xKlm0y1Hsn0Q=";
+      url = "https://git.sr.ht/~hadronized/kak-tree-sitter/archive/${version}.tar.gz";
+      sha256 = "sha256-zlh4xtOfLSaLuXKmGy3lj5pyiaaL5S9QWODXyAJXHFw=";
     };
 
-    # Patch to ensure the build phase does not rely on a .git folder
-    patches = [
-      ./build.patch
+    nativeBuildInputs = [
+      git
     ];
 
-    cargoBuildFlags = "-p ktsctl";
-    buildAndTestSubdir = "ktsctl";
-
     buildInputs = [makeWrapper];
+
     postFixup = ''
       wrapProgram $out/bin/ktsctl \
         --prefix PATH : ${lib.makeBinPath [gcc]}
     '';
 
-    cargoSha256 = "sha256-KbkcHvMH+e0wDKgUGpbV3LwBLEZeKN1GAQ9/07eV3nM=";
+    cargoBuildFlags = "-p ktsctl";
+    buildAndTestSubdir = "ktsctl";
+
+    cargoSha256 = "sha256-GNubyv9L1cAL3CLSSmRPCgO/CCZKDJ1jIajAvUbV/V0=";
   }

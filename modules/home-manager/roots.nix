@@ -37,12 +37,5 @@ in {
           type = "git";
         };
       }
-
-      # (lib.mkIf (osConfig.modules.desktop.hypr.enable) # Check if nested attribute exists
-      #   {
-      #     xdg.configFile = {
-      #       hypr.source = "${rootsDirectory}/.config/hypr";
-      #     };
-      #   })
     ]);
 }

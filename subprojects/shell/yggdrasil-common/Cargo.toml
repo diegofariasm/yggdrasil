@@ -1,0 +1,13 @@
+[package]
+name = "yggdrasil-common"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[dependencies]
+
+
+prost = "0.12.6"
+prost-types = "0.12.6"
+[build-dependencies]
+prost-build = "0.12.6"

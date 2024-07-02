@@ -559,6 +559,8 @@ in {
         # Set the home-manager-related settings.
         ({lib, ...}: {
           home-manager = {
+            # backupFileExtension = "backup";
+
             sharedModules = partsConfig.setups.home-manager.sharedModules;
             # These are just the recommended options for home-manager that may be
             # the default value in the future but this is how most of the NixOS

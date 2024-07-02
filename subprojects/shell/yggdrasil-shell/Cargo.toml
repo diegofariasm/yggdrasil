@@ -1,0 +1,26 @@
+[package]
+name = "yggdrasil-shell"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[dependencies]
+
+serde = { version = "1.0", features = ["derive", "rc"] }
+serde_json = "1.0"
+walkdir = "2.5.0"
+allmytoes = "0.4.0"
+infer = "0.16.0"
+directories = "5.0.1"
+strum = { version = "0.26.3", features = ["derive"] }
+yggdrasil-common = { version = "0.0.0", path = "../yggdrasil-common" }
+tokio = { version = "1.38.0", features = ["full"] }
+futures = "0.3.30"
+zbus = { version = "4.3.0", features = ["tokio"] }
+zvariant = "4.1.1"
+image = "0.25.1"
+lru-cache = "0.1.2"
+cached = { version = "0.51.4", features = ["tokio", "async"] }
+anyhow = "1.0.86"
+zbus_macros = "4.3.1"
+event-listener = "5.3.1"

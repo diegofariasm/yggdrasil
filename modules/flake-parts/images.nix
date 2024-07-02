@@ -18,7 +18,6 @@ in {
           An attribute set of per-system NixOS configurations built as an image
           output supported by
           [nixos-generators](https://github.com/nix-community/nixos-generators).
-          This is exclusively used for foodogsquared's NixOS setup.
         '';
       };
     };

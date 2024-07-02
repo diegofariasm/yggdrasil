@@ -4,6 +4,7 @@
 
 # These are dotenv files with sensitive data so we won't have to include them.
 .*.envrc
+.pre-commit-config.yaml
 
 ### Terraform ###
 # Local .terraform directories

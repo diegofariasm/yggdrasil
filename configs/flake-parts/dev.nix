@@ -4,8 +4,12 @@
     inputs.pre-commit-hooks-nix.flakeModule
   ];
 
-  perSystem = {pkgs, ...}: let
-    formatter = pkgs.writeShellApplication {
+  perSystem = {
+    config,
+    pkgs,
+    ...
+  }: let
+    formatterPackage = pkgs.writeShellApplication {
       name = "treefmt";
       runtimeInputs = with pkgs; [
         treefmt
@@ -13,22 +17,20 @@
       ];
       text = ''
         exec treefmt "$@"
-
       '';
     };
   in {
     # No amount of formatters will make this codebase nicer but it sure does
     # feel like it does.
-    formatter = formatter;
+    formatter = formatterPackage;
 
     pre-commit = {
-      check.enable = true;
       settings = {
         hooks = {
           deadnix.enable = true;
           treefmt = {
             enable = true;
-            package = formatter;
+            package = formatterPackage;
           };
         };
       };
@@ -40,7 +42,15 @@
     devShells =
       import ../../shells {inherit pkgs;}
       // {
-        default = import ../../shells/install.nix {inherit pkgs;};
+        default = pkgs.mkShell {
+          shellHook = ''
+            ${config.pre-commit.installationScript}
+          '';
+
+          packages = with pkgs; [
+            formatterPackage
+          ];
+        };
       };
   };
 }

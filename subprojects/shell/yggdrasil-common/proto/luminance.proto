@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package yggdrasil.luminance;
+
+enum Luminance {
+    Dark = 0;
+    Light = 1;
+}
+
+
